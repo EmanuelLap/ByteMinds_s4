@@ -11,28 +11,28 @@
 	</ui:define>
 	
 	<ui:define name="content">
-			 
+		 
 		<f:metadata>
-		    <f:viewParam name="id" value="#{gestionEmpleado.id}" />
-		    <f:viewParam name="modalidad" value="#{gestionEmpleado.modalidad}" />
-		    <f:event type="preRenderView" listener="#{gestionEmpleado.preRenderViewListener}"/>
+		    <f:viewParam name="id" value="1" /> <!-- #{gestionUsuario.id}"-->
+		   <!--  <f:viewParam name="modalidad" value="#{gestionUsuario.modalidad}" />
+		    <f:event type="preRenderView" listener="#{gestionUsuario.preRenderViewListener}"/> -->
 		</f:metadata>
 
-	<h:form id="idDatosEmpleado">
+	<h:form id="idDatosUsuario">
 		 
 		<p:messages id="messages" showDetail="true" closable="true">
         	<p:autoUpdate />
     	</p:messages>
-    	<h:commandButton id="idVolver" immediate="true=" value="Volver"	action="Empleados" >
+    	<h:commandButton id="idVolver" immediate="true=" value="Volver"	action="Usuarios" >
     		<f:ajax />
     	</h:commandButton> 
-		<h:commandButton id="idModificar"  value="Modificar" rendered="#{!gestionEmpleado.modoEdicion}"	>
-    			<f:param name="id" value="${gestionEmpleado.id}" />
+		<h:commandButton id="idModificar"  value="Modificar" rendered="#{!gestionUsuario.modoEdicion}"	>
+    			<f:param name="id" value="${gestionUsuario.id}" />
     			<f:param name="modalidad" value="update" />
 		</h:commandButton> 
-		<h:commandButton value="Salvar cambios"	rendered="#{gestionEmpleado.modoEdicion}" 
-			update=":form" 	action="#{gestionEmpleado.salvarCambios}">
-		    	<f:param name="id" value="${gestionEmpleado.id}" />
+		<h:commandButton value="Salvar cambios"	rendered="#{gestionUsuario.modoEdicion}" 
+			update=":form" 	action="#{gestionUsuario.salvarCambios}">
+		    	<f:param name="id" value="${gestionUsuario.id}" />
     			<f:param name="modalidad" value="update" />
 		</h:commandButton>
 		
@@ -43,16 +43,16 @@
 		<p:panelGrid columns="3">
 
 			<p:outputLabel  value="Id" />
-			<p:inputText id="id" disabled="true"  value="#{gestionEmpleado.empleadoSeleccionado.id}" />
+			<p:inputText id="id" disabled="true"  value="#{gestionUsuario.usuarioSeleccionado.id}" />
 			<p:message for="id" style="color:red" />
 			
 			<p:outputLabel value="Nombre" />
-			<p:inputText id="nombre" disabled="#{!gestionEmpleado.modoEdicion}" value="#{gestionEmpleado.empleadoSeleccionado.nombre}" />
+			<p:inputText id="nombre" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.nombre}" />
 			<p:message for="nombre" style="color:red" />
 			
 
 			<p:outputLabel value="Departamento" />
-			<p:selectOneMenu id="departamento" disabled="#{!gestionEmpleado.modoEdicion}" value="#{gestionEmpleado.empleadoSeleccionado.departamento}">
+			<p:selectOneMenu id="departamento" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.departamento}">
    				<f:selectItem itemValue="" itemLabel="" />
    				<f:selectItem itemValue="Ventas" itemLabel="Ventas" />
    				<f:selectItem itemValue="Administracion" itemLabel="Administracion" />
@@ -62,12 +62,12 @@
 			
 
 			<p:outputLabel value="Edad" />
-			<p:inputText id="edad" disabled="#{!gestionEmpleado.modoEdicion}" value="#{gestionEmpleado.empleadoSeleccionado.edad}" />
+			<p:inputText id="edad" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.edad}" />
 			<p:message for="edad" style="color:red" />
 			
 
-			<p:outputLabel disabled="#{!gestionEmpleado.modoEdicion}" value="Salario" />
-			<p:inputText id="salario" disabled="#{!gestionEmpleado.modoEdicion}" value="#{gestionEmpleado.empleadoSeleccionado.salario}" />
+			<p:outputLabel disabled="#{!gestionUsuario.modoEdicion}" value="Salario" />
+			<p:inputText id="salario" disabled="#{!gestionusuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.salario}" />
 			<p:message for="salario" style="color:red" />
 			
 

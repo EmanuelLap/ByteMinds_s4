@@ -7,12 +7,12 @@
 	xmlns:p="http://primefaces.org/ui">
 	
 	<ui:define name="title">
-		<c:set var="title" value="Gestion de Empleados" scope="request" />
+		<c:set var="title" value="Gestion de Usuarios" scope="request" />
 	</ui:define>
 	
 	<ui:define name="content">
 	<h:form>
-		<h:link value="Nuevo empleado" outcome="DatosEmpleado.xhtml">
+		<h:link value="Nuevo usuario" outcome="DatosUsuario.xhtml">
     			<f:param name="id" value="" />
     			<f:param name="modalidad" value="insert" />
     	</h:link>
@@ -26,10 +26,10 @@
     	</p:messages>
 		<h:panelGrid columns="2">
 			<p:outputLabel value="Nombre" />
-			<p:inputText id="nombre" value="#{gestionEmpleados.criterioNombre}" />
+			<p:inputText id="nombre" value="#{gestionUsuarios.criterioNombre}" />
 
 			<p:outputLabel value="Departamento" />
-			<p:selectOneMenu value="#{gestionEmpleados.criterioDepartamento}">
+			<p:selectOneMenu value="#{gestionUsuarios.criterioDepartamento}">
    				<f:selectItem itemValue="" itemLabel="--Todos--" />
    				<f:selectItem itemValue="Ventas" itemLabel="Ventas" />
    				<f:selectItem itemValue="Administracion" itemLabel="Administracion" />
@@ -38,45 +38,45 @@
 			
 
 		</h:panelGrid>
-		<h:commandButton value="Buscar"	action="#{gestionEmpleados.seleccionarEmpleados}" />
+		<h:commandButton value="Buscar"	action="#{gestionUsuarios.seleccionarUsuarios}" />
 				
 	</h:form>
 
-	<h3><h:outputLabel value="Empleados seleccionados"/></h3>
-	<p:dataTable value="#{gestionEmpleados.empleadosSeleccionados}"
+	<h3><h:outputLabel value="Usuarios seleccionados"/></h3>
+	<p:dataTable value="#{gestionusuarios.usuariosSeleccionados}"
 		var="empleado"
 		   styleClass = "employeeTable"
    		   headerClass = "employeeTableHeader">
    
-   		<p:column  sortBy="#{empleado.id}">
+   		<p:column  sortBy="#{usuario.id}">
 			<f:facet name="header">Nombre</f:facet>    				
-      		#{empleado.nombre}
+      		#{usuario.nombre}
    		</p:column>
    
         
-		<p:column  sortBy="#{empleado.nombre}">
+		<p:column  sortBy="#{usuario.nombre}">
 			<f:facet name="header">Nombre</f:facet>    				
-      		#{empleado.nombre}
+      		#{usuario.nombre}
    		</p:column>
 
-		<p:column sortBy="#{empleado.departamento}">
+		<p:column sortBy="#{usuario.departamento}">
 			<f:facet name="header">Departmento</f:facet>
-		      #{empleado.departamento}
+		      #{usuario.departamento}
 		</p:column>
 
-		<p:column sortBy="#{empleado.edad}">
+		<p:column sortBy="#{usuario.edad}">
 			<f:facet name="header">Edad</f:facet>
-      		#{empleado.edad}
+      		#{usuario.edad}
    		</p:column>
 
-		<p:column sortBy="#{empleado.salario}">
+		<p:column sortBy="#{usuario.salario}">
 			<f:facet name="header">Salario</f:facet>
-      		#{empleado.salario}
+      		#{usuario.salario}
 		</p:column>
-		<p:column sortBy="#{empleado.salario}">
+		<p:column sortBy="#{usuario.salario}">
 			<f:facet name="header">Ver Detalle</f:facet>
-	      	<p:commandLink  action="#{gestionEmpleados.verDatosEmpleado}"  >
-	      		<f:param name="id" value="${empleado.id}" />
+	      	<p:commandLink  action="#{gestionUsuarios.verDatosUsuario}"  >
+	      		<f:param name="id" value="${usuario.id}" />
     			<f:param name="modalidad" value="view" />
 	      		<!-- <f:setPropertyActionListener value="#{empleado}" target="#{gestionEmpleados.empleadoSeleccionado}" /> -->
                 <h:outputText value="Ver detalle" />

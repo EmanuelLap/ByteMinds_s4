@@ -10,8 +10,8 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name =  "EMPLEADO")
-public class EmpleadoEmpresa implements Serializable {	   
+@Table(name =  "USUARIO")
+public class UsuarioEmpresa implements Serializable {	   
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,11 +26,11 @@ public class EmpleadoEmpresa implements Serializable {
 	private Integer salario;
 	private boolean activo;
 
-	public EmpleadoEmpresa() {
+	public UsuarioEmpresa() {
 		super();
 	}
 	
-	public EmpleadoEmpresa(String nombre, String departamento, Integer edad, Integer salario) {
+	public UsuarioEmpresa(String nombre, String departamento, Integer edad, Integer salario) {
 		super();
 		this.nombre = nombre;
 		this.departamento = departamento;

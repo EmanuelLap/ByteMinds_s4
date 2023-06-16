@@ -10,52 +10,52 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import com.capa2LogicaNegocio.Empleado;
-import com.capa2LogicaNegocio.GestionEmpleadoService;
-import com.capa3Persistencia.dao.EmpleadosEmpresaDAO;
-import com.capa3Persistencia.entities.EmpleadoEmpresa;
+import com.capa2LogicaNegocio.Usuario;
+import com.capa2LogicaNegocio.GestionUsuarioService;
+import com.capa3Persistencia.dao.UsuariosEmpresaDAO;
+import com.capa3Persistencia.entities.UsuarioEmpresa;
 
-@Path("empleados")
+@Path("usuarios")
 public class RestApiService {
 	
 	
 
 	@EJB
-	GestionEmpleadoService gestionEmpleadoService;
+	GestionUsuarioService gestionUsuarioService;
 	
 	
 	@GET
-	@Path("obtenerEmpleado/{id}")
+	@Path("obtenerusuario/{id}")
 	@Produces("application/json")
-	public Empleado obtenerEmpleado(@PathParam("id") Long id){
+	public Usuario obtenerEmpleado(@PathParam("id") Long id){
 		try {
-			 Empleado empleado = gestionEmpleadoService.buscarEmpleado(id);
-			 if (empleado==null) {
-				 return new Empleado();
+			 Usuario usuario = gestionUsuarioService.buscarUsuario(id);
+			 if (usuario==null) {
+				 return new Usuario();
 			 }
-			 return empleado;
+			 return usuario;
 		}catch(Exception e) {
 			e.printStackTrace();
-			return new Empleado(); 
+			return new Usuario(); 
 		}
 	
 		
 	}
 	
 	@GET
-	@Path("listarEmpleados")
+	@Path("listarUsuarios")
 	@Produces("application/json")
-	public List<Empleado> listarEmpleados(){
+	public List<Usuario> listarUsuarios(){
 		
 
 		try {
-			 List<Empleado> listaEmpleados = gestionEmpleadoService.seleccionarEmpleados();
-			 return listaEmpleados;
+			 List<Usuario> listaUsuarios = gestionUsuarioService.seleccionarUsuarios();
+			 return listaUsuarios;
 			
 			
 		}catch(Exception e) {
 			e.printStackTrace();
-			return  new ArrayList<Empleado>(); 
+			return  new ArrayList<Usuario>(); 
 		}
 		
 	}

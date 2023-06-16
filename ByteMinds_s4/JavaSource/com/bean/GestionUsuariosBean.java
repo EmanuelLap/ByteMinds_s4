@@ -11,8 +11,8 @@ import javax.inject.Named;
 
 
 
-import com.capa2LogicaNegocio.Empleado;
-import com.capa2LogicaNegocio.GestionEmpleadoService;
+import com.capa2LogicaNegocio.Usuario;
+import com.capa2LogicaNegocio.GestionUsuarioService;
 import com.capa3Persistencia.exception.PersistenciaException;
 
 import sun.misc.Perf.GetPerfAction;
@@ -25,12 +25,12 @@ import javax.enterprise.context.SessionScoped;	//JEE8
 
 //@ManagedBean(name="usuario")
 
-@Named(value="gestionEmpleados")		//JEE8
+@Named(value="gestionUsuarios")		//JEE8
 @SessionScoped				        //JEE8
-public class GestionEmpleadosBean implements Serializable{
+public class GestionUsuariosBean implements Serializable{
 	
 	@EJB
-	GestionEmpleadoService gestionEmpleadoService;
+	GestionUsuarioService gestionUsuarioService;
 
 //	@Inject
 //	PersistenciaBean persistenciaBean;
@@ -46,22 +46,22 @@ public class GestionEmpleadosBean implements Serializable{
 	private String criterioDepartamento;
 	private Boolean criterioActivo;
 	
-	private List<Empleado> empleadosSeleccionados;
-	private Empleado empleadoSeleccionado;
-	public GestionEmpleadosBean() {
+	private List<Usuario> usuariosSeleccionados;
+	private Usuario usuarioSeleccionado;
+	public GestionUsuariosBean() {
 		super();
 	}
 	
 	// ********Acciones****************************
-	public String seleccionarEmpleados() throws PersistenciaException {
-		empleadosSeleccionados=gestionEmpleadoService.seleccionarEmpleados(criterioNombre, criterioDepartamento, criterioActivo);
+	public String seleccionarUsuarios() throws PersistenciaException {
+		usuariosSeleccionados=gestionUsuarioService.seleccionarUsuarios(criterioNombre, criterioDepartamento, criterioActivo);
 		return "";
 	}
 	
 	
-	public String verDatosEmpleado() {
+	public String verDatosUsuario() {
 		//Navegamos a datos empleado
-		return "DatosEmpleado";
+		return "DatosUsuario";
 	}
 	
 	// ******** Getters & Setters****************************
@@ -84,19 +84,19 @@ public class GestionEmpleadosBean implements Serializable{
 	public void setCriterioActivo(Boolean criterioActivo) {
 		this.criterioActivo = criterioActivo;
 	}
-	public List<Empleado> getEmpleadosSeleccionados() {
-		return empleadosSeleccionados;
+	public List<Usuario> getUsuariosSeleccionados() {
+		return usuariosSeleccionados;
 	}
-	public void setEmpleadosSeleccionados(List<Empleado> empleadosSeleccionados) {
-		this.empleadosSeleccionados = empleadosSeleccionados;
-	}
-
-	public Empleado getEmpleadoSeleccionado() {
-		return empleadoSeleccionado;
+	public void setUsuariosSeleccionados(List<Usuario> usuariosSeleccionados) {
+		this.usuariosSeleccionados = usuariosSeleccionados;
 	}
 
-	public void setEmpleadoSeleccionado(Empleado empleadoSeleccionado) {
-		this.empleadoSeleccionado = empleadoSeleccionado;
+	public Usuario getUsuarioSeleccionado() {
+		return usuarioSeleccionado;
+	}
+
+	public void setUsuarioSeleccionado(Usuario usuarioSeleccionado) {
+		this.usuarioSeleccionado = usuarioSeleccionado;
 	}
 	
 	

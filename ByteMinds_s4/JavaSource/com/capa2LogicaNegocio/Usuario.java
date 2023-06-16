@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-public class Empleado {
+public class Usuario {
 
 	@NotNull
 	private Long id;
@@ -27,11 +27,11 @@ public class Empleado {
 	private boolean activo;
 	
 
-	public Empleado() {
+	public Usuario() {
 		super();
 	}
 	
-	public Empleado(Long id, String nombre, String departamento, Integer edad, Integer salario) {
+	public Usuario(Long id, String nombre, String departamento, Integer edad, Integer salario) {
 		super();
 		this.id = id;
 		this.nombre = nombre;

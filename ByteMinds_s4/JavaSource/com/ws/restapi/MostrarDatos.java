@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.capa3Persistencia.dao.EmpleadosEmpresaDAO;
-import com.capa3Persistencia.entities.EmpleadoEmpresa;
+import com.capa3Persistencia.dao.UsuariosEmpresaDAO;
+import com.capa3Persistencia.entities.UsuarioEmpresa;
 
 /**
  * Servlet implementation class CargarDatos
@@ -22,7 +22,7 @@ public class MostrarDatos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	@EJB
-	EmpleadosEmpresaDAO empleadosEmpresaDAO;
+	UsuariosEmpresaDAO usuariosEmpresaDAO;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -41,14 +41,14 @@ public class MostrarDatos extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		try {
-			 List<EmpleadoEmpresa> listaEmpleados = empleadosEmpresaDAO.buscarEmpleados();
-			 for(EmpleadoEmpresa e: listaEmpleados ) {
-				 out.println("Empleado:"+ e.getId()+ " Nombre:" + e.getNombre());
+			 List<UsuarioEmpresa> listaUsuarios = usuariosEmpresaDAO.buscarUsuarios();
+			 for(UsuarioEmpresa e: listaUsuarios ) {
+				 out.println("Usuario:"+ e.getId()+ " Nombre:" + e.getNombre());
 			 }
 			
 			
 		}catch(Exception e) {
-			out.println("No se creo el empleado:"+ e.getClass().getSimpleName()+"-"+e.getMessage());
+			out.println("No se creo el usuario:"+ e.getClass().getSimpleName()+"-"+e.getMessage());
 		}
 		
 		

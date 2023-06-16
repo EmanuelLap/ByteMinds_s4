@@ -9,8 +9,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 
-import com.capa2LogicaNegocio.Empleado;
-import com.capa2LogicaNegocio.GestionEmpleadoService;
+import com.capa2LogicaNegocio.Usuario;
+import com.capa2LogicaNegocio.GestionUsuarioService;
 import com.capa3Persistencia.exception.PersistenciaException;
 import com.utils.ExceptionsTools;
 
@@ -25,9 +25,9 @@ import javax.faces.context.FacesContext;
 
 //@ManagedBean(name="usuario")
 
-@Named(value="gestionEmpleado")		//JEE8
+@Named(value="gestionUsuario")		//JEE8
 @SessionScoped				        //JEE8
-public class GestionEmpleadoBean implements Serializable{
+public class GestionUsuarioBean implements Serializable{
 	
 	/**
 	 * 
@@ -37,14 +37,14 @@ public class GestionEmpleadoBean implements Serializable{
 	//@Inject
 	//PersistenciaBean persistenciaBean;
 	@EJB
-	GestionEmpleadoService gestionEmpleadoService;
+	GestionUsuarioService gestionUsuarioService;
 
 	private Long id;
 	private String modalidad;
 	
-	private Empleado empleadoSeleccionado;
+	private Usuario usuarioSeleccionado;
 	private boolean modoEdicion=false;
-	public GestionEmpleadoBean() {
+	public GestionUsuarioBean() {
 		super();
 	}
 	@PostConstruct
@@ -58,9 +58,9 @@ public class GestionEmpleadoBean implements Serializable{
 	public void preRenderViewListener() {
 		
 		if (id!=null) {
-			empleadoSeleccionado=gestionEmpleadoService.buscarEmpleado(id);
+			usuarioSeleccionado=gestionUsuarioService.buscarUsuario(id);
 		} else {
-			empleadoSeleccionado=new Empleado();
+			usuarioSeleccionado=new Usuario();
 		}
 		if (modalidad.contentEquals("view")) {
 			modoEdicion=false;
@@ -77,22 +77,22 @@ public class GestionEmpleadoBean implements Serializable{
 	//acciones
 	public String cambiarModalidadUpdate() throws CloneNotSupportedException {
 		//this.modalidad="update";
-		return "DatosEmpleado?faces-redirect=true&includeViewParams=true";
+		return "DatosUsuario?faces-redirect=true&includeViewParams=true";
 		
 	}
 	//Pasar a modo 
 	public String salvarCambios() {
 		
-		if (empleadoSeleccionado.getId()==null) {
-			empleadoSeleccionado.setActivo(true);
+		if (usuarioSeleccionado.getId()==null) {
+			usuarioSeleccionado.setActivo(true);
 			
-			Empleado empleadoNuevo;
+			Usuario usuarioNuevo;
 			try {
-				empleadoNuevo = (Empleado) gestionEmpleadoService.agregarEmpleado(empleadoSeleccionado);
-				this.id=empleadoNuevo.getId();
+				usuarioNuevo = (Usuario) gestionUsuarioService.agregarUsuario(usuarioSeleccionado);
+				this.id=usuarioNuevo.getId();
 			
 				//mensaje de actualizacion correcta
-				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha agregado un nuevo Empleado", "");
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha agregado un nuevo usuario", "");
 				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 				
 				this.modalidad="view";
@@ -117,10 +117,10 @@ public class GestionEmpleadoBean implements Serializable{
 		} else if (modalidad.equals("update")) {
 			
 			try {
-				gestionEmpleadoService.actualizarEmpleado(empleadoSeleccionado);
+				gestionUsuarioService.actualizarUsuario(usuarioSeleccionado);
 
 				FacesContext.getCurrentInstance().addMessage(null, 
-						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado Empleado.",""));
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el usuario.",""));
 				
 			} catch (PersistenciaException e) {
 
@@ -151,11 +151,11 @@ public class GestionEmpleadoBean implements Serializable{
 	public void setModalidad(String modalidad) {
 		this.modalidad = modalidad;
 	}
-	public Empleado getEmpleadoSeleccionado() {
-		return empleadoSeleccionado;
+	public Usuario getUsuarioSeleccionado() {
+		return usuarioSeleccionado;
 	}
-	public void setEmpleadoSeleccionado(Empleado empleadoSeleccionado) {
-		this.empleadoSeleccionado = empleadoSeleccionado;
+	public void setUsuarioSeleccionado(Usuario empleadoSeleccionado) {
+		this.usuarioSeleccionado = empleadoSeleccionado;
 	}
 	public boolean getModoEdicion() {
 		return modoEdicion;

@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.capa3Persistencia.dao.EmpleadosEmpresaDAO;
-import com.capa3Persistencia.entities.EmpleadoEmpresa;
+import com.capa3Persistencia.dao.UsuariosEmpresaDAO;
+import com.capa3Persistencia.entities.UsuarioEmpresa;
 
 /**
  * Servlet implementation class CargarDatos
@@ -21,7 +21,7 @@ public class CargarDatos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	@EJB
-	EmpleadosEmpresaDAO empleadosEmpresaDAO;
+	UsuariosEmpresaDAO usuariosEmpresaDAO;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -40,27 +40,27 @@ public class CargarDatos extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		try {
-			EmpleadoEmpresa e=new EmpleadoEmpresa("Gerardo", "ventas",33,15000);
+			UsuarioEmpresa e=new UsuarioEmpresa("Gerardo", "ventas",33,15000);
 			e.setActivo(true);
-			EmpleadoEmpresa empleadoCreado = empleadosEmpresaDAO.agregarEmpleado(e);
-			out.println("Se creo el empleado:"+ empleadoCreado.getId()+" Nombre"+empleadoCreado.getNombre());
+			UsuarioEmpresa usuarioCreado = usuariosEmpresaDAO.agregarUsuario(e);
+			out.println("Se creo el usuario:"+ usuarioCreado.getId()+" Nombre"+usuarioCreado.getNombre());
 			
-			e=new EmpleadoEmpresa("Daniel", "ventas",33,15000);
+			e=new UsuarioEmpresa("Daniel", "ventas",33,15000);
 			e.setActivo(true);
-			empleadoCreado = empleadosEmpresaDAO.agregarEmpleado(e);
-			out.println("Se creo el empleado:"+ empleadoCreado.getId()+" Nombre"+empleadoCreado.getNombre());
+			usuarioCreado = usuariosEmpresaDAO.agregarUsuario(e);
+			out.println("Se creo el usuario:"+ usuarioCreado.getId()+" Nombre"+usuarioCreado.getNombre());
 			
-			e=new EmpleadoEmpresa("Maria", "ventas",33,15000);
+			e=new UsuarioEmpresa("Maria", "ventas",33,15000);
 			e.setActivo(true);
-			empleadoCreado = empleadosEmpresaDAO.agregarEmpleado(e);
-			out.println("Se creo el empleado:"+ empleadoCreado.getId()+" Nombre"+empleadoCreado.getNombre());
+			usuarioCreado = usuariosEmpresaDAO.agregarUsuario(e);
+			out.println("Se creo el usuario:"+ usuarioCreado.getId()+" Nombre"+usuarioCreado.getNombre());
 			
 			
 			
-			out.println("Se creo el empleado:"+ empleadoCreado.getId());
+			out.println("Se creo el usuario:"+ usuarioCreado.getId());
 			
 		}catch(Exception e) {
-			out.println("No se creo el empleado:"+ e.getClass().getSimpleName()+"-"+e.getMessage());
+			out.println("No se creo el usuario:"+ e.getClass().getSimpleName()+"-"+e.getMessage());
 		}
 		
 		

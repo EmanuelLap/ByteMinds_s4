@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
-import com.capa3Persistencia.entities.EmpleadoEmpresa;
+import com.capa3Persistencia.entities.UsuarioEmpresa;
 import com.capa3Persistencia.exception.PersistenciaException;
 
 /**
@@ -19,7 +19,7 @@ import com.capa3Persistencia.exception.PersistenciaException;
 @LocalBean
 
 
-public class EmpleadosEmpresaDAO {
+public class UsuariosEmpresaDAO {
 
 	@PersistenceContext
 	private EntityManager em;
@@ -27,62 +27,62 @@ public class EmpleadosEmpresaDAO {
 	/**
 	 * Default constructor.
 	 */
-	public EmpleadosEmpresaDAO() {
+	public UsuariosEmpresaDAO() {
 		super();
 	}
 
 	
-	public EmpleadoEmpresa agregarEmpleado(EmpleadoEmpresa empleado) throws PersistenciaException {
+	public UsuarioEmpresa agregarUsuario(UsuarioEmpresa usuario) throws PersistenciaException {
 
 		try {
-			EmpleadoEmpresa empleadoEmpresa = em.merge(empleado);
+			UsuarioEmpresa usuarioEmpresa = em.merge(usuario);
 			em.flush();
-			return empleadoEmpresa;
+			return usuarioEmpresa;
 		} 
 		catch (PersistenceException e) {
-			throw new PersistenciaException("No se pudo agregar el empleado." + e.getMessage(), e);
+			throw new PersistenciaException("No se pudo agregar el usuario." + e.getMessage(), e);
 		}
 		finally {
 			
 		}
 	}
 
-	public EmpleadoEmpresa borrarEmpleado(EmpleadoEmpresa empleado) throws PersistenciaException {
+	public UsuarioEmpresa borrarUsuario(UsuarioEmpresa usuario) throws PersistenciaException {
 
-		EmpleadoEmpresa empleadoEmpresa = em.find(EmpleadoEmpresa.class, empleado.getId());
-		if (empleadoEmpresa == null) {
-			throw new PersistenciaException("No existe el empleado a borrar. Id=" + empleado.getId());
+		UsuarioEmpresa usuarioEmpresa = em.find(UsuarioEmpresa.class, usuario.getId());
+		if (usuarioEmpresa == null) {
+			throw new PersistenciaException("No existe el usuario a borrar. Id=" + usuario.getId());
 		}
 		try {
-		empleadoEmpresa = em.merge(empleado);
+		usuarioEmpresa = em.merge(usuario);
 		em.flush();
-		return empleadoEmpresa;
+		return usuarioEmpresa;
 		}catch(PersistenceException e) {
-			throw new PersistenciaException("No se pudo borrar el empleado. Id=" + empleado.getId());
+			throw new PersistenciaException("No se pudo borrar el usuario. Id=" + usuario.getId());
 		}
 	}
 	
-	public EmpleadoEmpresa modificarEmpleado(EmpleadoEmpresa empleado) throws PersistenciaException {
+	public UsuarioEmpresa modificarUsuario(UsuarioEmpresa usuario) throws PersistenciaException {
 
 		try {
-			EmpleadoEmpresa empleadoEmpresa = em.merge(empleado);
+			UsuarioEmpresa usuarioEmpresa = em.merge(usuario);
 			em.flush();
-			return empleadoEmpresa;
+			return usuarioEmpresa;
 		} catch (PersistenceException e) {
-			throw new PersistenciaException("No se pudo modificar el empleado." + e.getMessage(), e);
+			throw new PersistenciaException("No se pudo modificar el usuario." + e.getMessage(), e);
 		}
 	}
 
-	public EmpleadoEmpresa buscarEmpleado(Long id) {
-		EmpleadoEmpresa empleadoEmpresa = em.find(EmpleadoEmpresa.class, id);
-		return empleadoEmpresa;
+	public UsuarioEmpresa buscarUsuario(Long id) {
+		UsuarioEmpresa usuarioEmpresa = em.find(UsuarioEmpresa.class, id);
+		return usuarioEmpresa;
 	}
 
-	public List<EmpleadoEmpresa> buscarEmpleados() throws PersistenciaException {
+	public List<UsuarioEmpresa> buscarUsuarios() throws PersistenciaException {
 		try {
 		
-		String query= 	"Select e from EmpleadoEmpresa e";
-		List<EmpleadoEmpresa> resultList = (List<EmpleadoEmpresa>) em.createQuery(query,EmpleadoEmpresa.class)
+		String query= 	"Select e from UsuarioEmpresa e";
+		List<UsuarioEmpresa> resultList = (List<UsuarioEmpresa>) em.createQuery(query,UsuarioEmpresa.class)
 							 .getResultList();
 		return  resultList;
 		}catch(PersistenceException e) {
@@ -92,11 +92,11 @@ public class EmpleadosEmpresaDAO {
 	}
 
 
-	public List<EmpleadoEmpresa> seleccionarEmpleados(String criterioNombre,
+	public List<UsuarioEmpresa> seleccionarUsuarios(String criterioNombre,
 			String criterioDepartamento, Boolean criterioActivo) throws PersistenciaException {
 		try {
 			
-			String query= 	"Select e from EmpleadoEmpresa e  ";
+			String query= 	"Select e from UsuarioEmpresa e  ";
 			String queryCriterio="";
 			if (criterioNombre!=null && ! criterioNombre.contentEquals("")) {
 				queryCriterio+=(!queryCriterio.isEmpty()?" and ":"")+ " e.nombre like '%"+criterioNombre +"%' ";
@@ -111,7 +111,7 @@ public class EmpleadosEmpresaDAO {
 			if (!queryCriterio.contentEquals("")) {
 				query+=" where "+queryCriterio;
 			}
-			List<EmpleadoEmpresa> resultList = (List<EmpleadoEmpresa>) em.createQuery(query,EmpleadoEmpresa.class)
+			List<UsuarioEmpresa> resultList = (List<UsuarioEmpresa>) em.createQuery(query,UsuarioEmpresa.class)
 								 .getResultList();
 			return  resultList;
 			}catch(PersistenceException e) {
