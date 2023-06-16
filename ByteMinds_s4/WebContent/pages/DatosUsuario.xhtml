@@ -13,9 +13,9 @@
 	<ui:define name="content">
 		 
 		<f:metadata>
-		    <f:viewParam name="id" value="1" /> <!-- #{gestionUsuario.id}"-->
-		   <!--  <f:viewParam name="modalidad" value="#{gestionUsuario.modalidad}" />
-		    <f:event type="preRenderView" listener="#{gestionUsuario.preRenderViewListener}"/> -->
+		    <f:viewParam name="id" value="#{gestionUsuario.id}" />  
+		    <f:viewParam name="modalidad" value="#{gestionUsuario.modalidad}" />
+		    <f:event type="preRenderView" listener="#{gestionUsuario.preRenderViewListener}"/> 
 		</f:metadata>
 
 	<h:form id="idDatosUsuario">
