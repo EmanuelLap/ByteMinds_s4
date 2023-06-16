@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="/layout/layout.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="title">
+		<c:set var="title" value="Gestion de Empleados" scope="request" />
+	</ui:define>
+	
+	<ui:define name="content">
+	<h:form>
+		<h:link value="Nuevo empleado" outcome="DatosEmpleado.xhtml">
+    			<f:param name="id" value="" />
+    			<f:param name="modalidad" value="insert" />
+    	</h:link>
+	
+    
+	<h3><h:outputLabel value="Criterios de Seleccion"/></h3>
+	
+		
+		 <p:messages id="messages" showDetail="true" closable="true">
+        	<p:autoUpdate />
+    	</p:messages>
+		<h:panelGrid columns="2">
+			<p:outputLabel value="Nombre" />
+			<p:inputText id="nombre" value="#{gestionEmpleados.criterioNombre}" />
+
+			<p:outputLabel value="Departamento" />
+			<p:selectOneMenu value="#{gestionEmpleados.criterioDepartamento}">
+   				<f:selectItem itemValue="" itemLabel="--Todos--" />
+   				<f:selectItem itemValue="Ventas" itemLabel="Ventas" />
+   				<f:selectItem itemValue="Administracion" itemLabel="Administracion" />
+   				<f:selectItem itemValue="Personal" itemLabel="Personal" />
+			</p:selectOneMenu>
+			
+
+		</h:panelGrid>
+		<h:commandButton value="Buscar"	action="#{gestionEmpleados.seleccionarEmpleados}" />
+				
+	</h:form>
+
+	<h3><h:outputLabel value="Empleados seleccionados"/></h3>
+	<p:dataTable value="#{gestionEmpleados.empleadosSeleccionados}"
+		var="empleado"
+		   styleClass = "employeeTable"
+   		   headerClass = "employeeTableHeader">
+   
+   		<p:column  sortBy="#{empleado.id}">
+			<f:facet name="header">Nombre</f:facet>    				
+      		#{empleado.nombre}
+   		</p:column>
+   
+        
+		<p:column  sortBy="#{empleado.nombre}">
+			<f:facet name="header">Nombre</f:facet>    				
+      		#{empleado.nombre}
+   		</p:column>
+
+		<p:column sortBy="#{empleado.departamento}">
+			<f:facet name="header">Departmento</f:facet>
+		      #{empleado.departamento}
+		</p:column>
+
+		<p:column sortBy="#{empleado.edad}">
+			<f:facet name="header">Edad</f:facet>
+      		#{empleado.edad}
+   		</p:column>
+
+		<p:column sortBy="#{empleado.salario}">
+			<f:facet name="header">Salario</f:facet>
+      		#{empleado.salario}
+		</p:column>
+		<p:column sortBy="#{empleado.salario}">
+			<f:facet name="header">Ver Detalle</f:facet>
+	      	<p:commandLink  action="#{gestionEmpleados.verDatosEmpleado}"  >
+	      		<f:param name="id" value="${empleado.id}" />
+    			<f:param name="modalidad" value="view" />
+	      		<!-- <f:setPropertyActionListener value="#{empleado}" target="#{gestionEmpleados.empleadoSeleccionado}" /> -->
+                <h:outputText value="Ver detalle" />
+	         </p:commandLink>
+	        <!--  
+            <f:facet name="header">Ver Detalle</f:facet>
+			<h:link value="Ver detalle" outcome="DatosEmpleado.xhtml">
+    			<f:param name="id" value="${empleado.id}" />
+    			<f:param name="modalidad" value="view" />
+			</h:link>
+			 -->	
+		</p:column>
+		
+		
+	</p:dataTable>
+
+    
+    
+    </ui:define>
+</ui:composition>

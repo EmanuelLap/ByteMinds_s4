@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="/layout/layout.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="title">
+		<c:set var="title" value="Datos de Empleado" scope="request" />
+	</ui:define>
+	
+	<ui:define name="content">
+			 
+		<f:metadata>
+		    <f:viewParam name="id" value="#{gestionEmpleado.id}" />
+		    <f:viewParam name="modalidad" value="#{gestionEmpleado.modalidad}" />
+		    <f:event type="preRenderView" listener="#{gestionEmpleado.preRenderViewListener}"/>
+		</f:metadata>
+
+	<h:form id="idDatosEmpleado">
+		 
+		<p:messages id="messages" showDetail="true" closable="true">
+        	<p:autoUpdate />
+    	</p:messages>
+    	<h:commandButton id="idVolver" immediate="true=" value="Volver"	action="Empleados" >
+    		<f:ajax />
+    	</h:commandButton> 
+		<h:commandButton id="idModificar"  value="Modificar" rendered="#{!gestionEmpleado.modoEdicion}"	>
+    			<f:param name="id" value="${gestionEmpleado.id}" />
+    			<f:param name="modalidad" value="update" />
+		</h:commandButton> 
+		<h:commandButton value="Salvar cambios"	rendered="#{gestionEmpleado.modoEdicion}" 
+			update=":form" 	action="#{gestionEmpleado.salvarCambios}">
+		    	<f:param name="id" value="${gestionEmpleado.id}" />
+    			<f:param name="modalidad" value="update" />
+		</h:commandButton>
+		
+		
+		
+		
+			
+		<p:panelGrid columns="3">
+
+			<p:outputLabel  value="Id" />
+			<p:inputText id="id" disabled="true"  value="#{gestionEmpleado.empleadoSeleccionado.id}" />
+			<p:message for="id" style="color:red" />
+			
+			<p:outputLabel value="Nombre" />
+			<p:inputText id="nombre" disabled="#{!gestionEmpleado.modoEdicion}" value="#{gestionEmpleado.empleadoSeleccionado.nombre}" />
+			<p:message for="nombre" style="color:red" />
+			
+
+			<p:outputLabel value="Departamento" />
+			<p:selectOneMenu id="departamento" disabled="#{!gestionEmpleado.modoEdicion}" value="#{gestionEmpleado.empleadoSeleccionado.departamento}">
+   				<f:selectItem itemValue="" itemLabel="" />
+   				<f:selectItem itemValue="Ventas" itemLabel="Ventas" />
+   				<f:selectItem itemValue="Administracion" itemLabel="Administracion" />
+   				<f:selectItem itemValue="Personal" itemLabel="Personal" />
+			</p:selectOneMenu>
+			<p:message for="departamento" style="color:red" />
+			
+
+			<p:outputLabel value="Edad" />
+			<p:inputText id="edad" disabled="#{!gestionEmpleado.modoEdicion}" value="#{gestionEmpleado.empleadoSeleccionado.edad}" />
+			<p:message for="edad" style="color:red" />
+			
+
+			<p:outputLabel disabled="#{!gestionEmpleado.modoEdicion}" value="Salario" />
+			<p:inputText id="salario" disabled="#{!gestionEmpleado.modoEdicion}" value="#{gestionEmpleado.empleadoSeleccionado.salario}" />
+			<p:message for="salario" style="color:red" />
+			
+
+		</p:panelGrid>
+		
+	</h:form>
+
+			 
+			 
+			 
+			 
+
+    </ui:define>
+</ui:composition>
+

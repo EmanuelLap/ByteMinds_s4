@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui" >
+ <!-- <p:panelGrid columns="1" style="text-align: left;" cellpadding="2">  -->
+    	
+    	
+   	<div style="background-color: #809fff;padding: 12px">
+		<span
+			style="color: white; font-size: 180%; font-family: Arial; margin: 20px">
+			Sistema de Gestion del Personal</span>
+
+	</div>
+   	
+    	
+    <h:form>  
+    <p:growl id="messages"/>
+     <p:menubar>
+ 		
+        <p:submenu label="Gestion de Empleados" icon="ui-icon-document">
+            <p:menuitem value="Seleccion de empleado"   outcome="/pages/Empleados.xhtml" />
+            <p:menuitem value="Alta de empleado" outcome="/pages/DatosEmpleado.xhtml"  >
+            	<f:param name="id" value="" />
+    			<f:param name="modalidad" value="insert" />
+            </p:menuitem>
+        </p:submenu>
+ 
+    
+        <p:submenu label="Busquedas" icon="ui-icon-search">
+            <p:menuitem value="Busqueda/nombre emp." url="#" />
+            <p:menuitem value="Busqueda/Deptartamento" url="#" />
+        </p:submenu>
+ 
+    
+ 
+        <p:submenu label="Configuration" icon="ui-icon-gear">
+            <p:menuitem value="Gestionar Usuarios"   />
+            <p:menuitem value="Gestionar Clientes"   />
+        </p:submenu>
+ 
+      
+ 
+ 		<p:menuitem value="Quit" url="/" icon="ui-icon-close" />
+ 
+        <f:facet name="options">
+            <p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"/>
+            <p:commandButton type="button" value="Logout" icon="pi pi-home" />
+        </f:facet>
+    </p:menubar>
+</h:form>
+ 
+    
+   <!--   </p:panelGrid> -->      	
+   	
+    		
+            
+</ui:composition>
