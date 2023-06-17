@@ -35,9 +35,9 @@ public class UsuariosDAO {
 	public UsuarioEntity agregarUsuario(UsuarioEntity usuario) throws PersistenciaException {
 
 		try {
-			UsuarioEntity usuarioEmpresa = em.merge(usuario);
+			UsuarioEntity usuarioEntity = em.merge(usuario);
 			em.flush();
-			return usuarioEmpresa;
+			return usuarioEntity;
 		} 
 		catch (PersistenceException e) {
 			throw new PersistenciaException("No se pudo agregar el usuario." + e.getMessage(), e);
@@ -49,14 +49,14 @@ public class UsuariosDAO {
 
 	public UsuarioEntity borrarUsuario(UsuarioEntity usuario) throws PersistenciaException {
 
-		UsuarioEntity usuarioEmpresa = em.find(UsuarioEntity.class, usuario.getId());
-		if (usuarioEmpresa == null) {
+		UsuarioEntity usuarioEntity = em.find(UsuarioEntity.class, usuario.getId());
+		if (usuarioEntity == null) {
 			throw new PersistenciaException("No existe el usuario a borrar. Id=" + usuario.getId());
 		}
 		try {
-		usuarioEmpresa = em.merge(usuario);
+			usuarioEntity = em.merge(usuario);
 		em.flush();
-		return usuarioEmpresa;
+		return usuarioEntity;
 		}catch(PersistenceException e) {
 			throw new PersistenciaException("No se pudo borrar el usuario. Id=" + usuario.getId());
 		}
@@ -65,17 +65,17 @@ public class UsuariosDAO {
 	public UsuarioEntity modificarUsuario(UsuarioEntity usuario) throws PersistenciaException {
 
 		try {
-			UsuarioEntity usuarioEmpresa = em.merge(usuario);
+			UsuarioEntity usuarioEntity = em.merge(usuario);
 			em.flush();
-			return usuarioEmpresa;
+			return usuarioEntity;
 		} catch (PersistenceException e) {
 			throw new PersistenciaException("No se pudo modificar el usuario." + e.getMessage(), e);
 		}
 	}
 
 	public UsuarioEntity buscarUsuario(Long id) {
-		UsuarioEntity usuarioEmpresa = em.find(UsuarioEntity.class, id);
-		return usuarioEmpresa;
+		UsuarioEntity usuarioEntity = em.find(UsuarioEntity.class, id);
+		return usuarioEntity;
 	}
 
 	public List<UsuarioEntity> buscarUsuarios() throws PersistenciaException {
