@@ -2,6 +2,7 @@ package com.ws.restapi;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -10,8 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.capa3Persistencia.dao.UsuariosEmpresaDAO;
-import com.capa3Persistencia.entities.UsuarioEmpresa;
+import com.capa3Persistencia.dao.UsuariosDAO;
+import com.capa3Persistencia.entities.UsuarioEntity;
 
 /**
  * Servlet implementation class CargarDatos
@@ -21,7 +22,7 @@ public class CargarDatos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	@EJB
-	UsuariosEmpresaDAO usuariosEmpresaDAO;
+	UsuariosDAO usuariosEntityDAO;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -40,25 +41,25 @@ public class CargarDatos extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		try {
-			UsuarioEmpresa e=new UsuarioEmpresa("Gerardo", "ventas",33,15000);
+			UsuarioEntity e=new UsuarioEntity(12345678,"usuario1","usuario1","Apellido1","nombre1",new Date(System.currentTimeMillis()),
+					"departamento1","Genero1","localidad1","mail1@mail.com","mailpersonal1@mail.com","099999999","ITR","ESTUDIANTE");
 			e.setActivo(true);
-			UsuarioEmpresa usuarioCreado = usuariosEmpresaDAO.agregarUsuario(e);
-			out.println("Se creo el usuario:"+ usuarioCreado.getId()+" Nombre"+usuarioCreado.getNombre());
+			UsuarioEntity usuarioCreado = usuariosEntityDAO.agregarUsuario(e);
+			out.println("Se creo el usuario:"+ usuarioCreado.getId()+" Nombre"+usuarioCreado.getNombres());
 			
-			e=new UsuarioEmpresa("Daniel", "ventas",33,15000);
-			e.setActivo(true);
-			usuarioCreado = usuariosEmpresaDAO.agregarUsuario(e);
-			out.println("Se creo el usuario:"+ usuarioCreado.getId()+" Nombre"+usuarioCreado.getNombre());
+			UsuarioEntity e1=new UsuarioEntity(22345678,"usuario2","usuario2","Apellido2","nombre2",new Date(System.currentTimeMillis()),
+					"departamento2","Genero2","localidad2","mail2@mail.com","mailpersonal2@mail.com","099999999","ITR","ESTUDIANTE");
+			e1.setActivo(true);
+			usuarioCreado = usuariosEntityDAO.agregarUsuario(e1);
+			out.println("Se creo el usuario:"+ usuarioCreado.getId()+" Nombre"+usuarioCreado.getNombres());
 			
-			e=new UsuarioEmpresa("Maria", "ventas",33,15000);
-			e.setActivo(true);
-			usuarioCreado = usuariosEmpresaDAO.agregarUsuario(e);
-			out.println("Se creo el usuario:"+ usuarioCreado.getId()+" Nombre"+usuarioCreado.getNombre());
+			UsuarioEntity e2=new UsuarioEntity(32345678,"usuario3","usuario3","Apellido3","nombre3",new Date(System.currentTimeMillis()),
+					"departamento3","Genero3","localidad3","mail3@mail.com","mailpersonal3@mail.com","099999999","ITR","ESTUDIANTE");
+			e2.setActivo(true);
+			usuarioCreado = usuariosEntityDAO.agregarUsuario(e2);
+			out.println("Se creo el usuario:"+ usuarioCreado.getId()+" Nombre"+usuarioCreado.getNombres());
 			
-			
-			
-			out.println("Se creo el usuario:"+ usuarioCreado.getId());
-			
+						
 		}catch(Exception e) {
 			out.println("No se creo el usuario:"+ e.getClass().getSimpleName()+"-"+e.getMessage());
 		}

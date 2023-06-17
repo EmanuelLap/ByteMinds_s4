@@ -10,10 +10,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import com.capa2LogicaNegocio.Usuario;
 import com.capa2LogicaNegocio.GestionUsuarioService;
-import com.capa3Persistencia.dao.UsuariosEmpresaDAO;
-import com.capa3Persistencia.entities.UsuarioEmpresa;
+import com.capa2LogicaNegocio.Usuario;
+
 
 @Path("usuarios")
 public class RestApiService {
@@ -25,15 +24,15 @@ public class RestApiService {
 	
 	
 	@GET
-	@Path("obtenerusuario/{id}")
+	@Path("obtenerUsuario/{id}")
 	@Produces("application/json")
 	public Usuario obtenerEmpleado(@PathParam("id") Long id){
 		try {
-			 Usuario usuario = gestionUsuarioService.buscarUsuario(id);
-			 if (usuario==null) {
+			 Usuario empleado = gestionUsuarioService.buscarUsuario(id);
+			 if (empleado==null) {
 				 return new Usuario();
 			 }
-			 return usuario;
+			 return empleado;
 		}catch(Exception e) {
 			e.printStackTrace();
 			return new Usuario(); 
@@ -49,8 +48,8 @@ public class RestApiService {
 		
 
 		try {
-			 List<Usuario> listaUsuarios = gestionUsuarioService.seleccionarUsuarios();
-			 return listaUsuarios;
+			 List<Usuario> listaEmpleados = gestionUsuarioService.seleccionarUsuarios();
+			 return listaEmpleados;
 			
 			
 		}catch(Exception e) {

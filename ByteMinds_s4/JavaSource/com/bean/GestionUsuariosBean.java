@@ -15,8 +15,6 @@ import com.capa2LogicaNegocio.Usuario;
 import com.capa2LogicaNegocio.GestionUsuarioService;
 import com.capa3Persistencia.exception.PersistenciaException;
 
-import sun.misc.Perf.GetPerfAction;
-
 import javax.enterprise.context.SessionScoped;	//JEE8
 
 //import javax.faces.bean.ManagedBean;
@@ -43,7 +41,8 @@ public class GestionUsuariosBean implements Serializable{
 	 */
 	
 	private String criterioNombre;
-	private String criterioDepartamento;
+	private String criterioApellido;
+	private Integer criterioDocumento;
 	private Boolean criterioActivo;
 	
 	private List<Usuario> usuariosSeleccionados;
@@ -54,7 +53,7 @@ public class GestionUsuariosBean implements Serializable{
 	
 	// ********Acciones****************************
 	public String seleccionarUsuarios() throws PersistenciaException {
-		usuariosSeleccionados=gestionUsuarioService.seleccionarUsuarios(criterioNombre, criterioDepartamento, criterioActivo);
+		usuariosSeleccionados=gestionUsuarioService.seleccionarUsuarios(criterioNombre, criterioApellido, criterioDocumento,criterioActivo);
 		return "";
 	}
 	
@@ -72,12 +71,23 @@ public class GestionUsuariosBean implements Serializable{
 	public void setCriterioNombre(String criterioNombre) {
 		this.criterioNombre = criterioNombre;
 	}
-	public String getCriterioDepartamento() {
-		return criterioDepartamento;
+
+	public String getCriterioApellido() {
+		return criterioApellido;
 	}
-	public void setCriterioDepartamento(String criterioDepartamento) {
-		this.criterioDepartamento = criterioDepartamento;
+
+	public void setCriterioApellido(String criterioApellido) {
+		this.criterioApellido = criterioApellido;
 	}
+
+	public Integer getCriterioDocumento() {
+		return criterioDocumento;
+	}
+
+	public void setCriterioDocumento(Integer criterioDocumento) {
+		this.criterioDocumento = criterioDocumento;
+	}
+
 	public Boolean getCriterioActivo() {
 		return criterioActivo;
 	}

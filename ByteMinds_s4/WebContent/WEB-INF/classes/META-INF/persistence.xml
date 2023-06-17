@@ -3,7 +3,7 @@
 	<persistence-unit name="EjemploEJB_JSF">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
-		<class>com.capa3Persistencia.entities.EmpleadoEmpresa</class>
+		<class>com.capa3Persistencia.entities.UsuarioEmpresa</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/> 			
      		<property name="hibernate.hbm2ddl.auto" value="create-drop" />

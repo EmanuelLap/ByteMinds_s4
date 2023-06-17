@@ -10,15 +10,14 @@ import javax.ejb.Stateless;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import com.capa3Persistencia.dao.UsuariosEmpresaDAO;
-import com.capa3Persistencia.entities.UsuarioEmpresa;
+import com.capa3Persistencia.dao.UsuariosDAO;
+import com.capa3Persistencia.entities.UsuarioEntity;
 import com.capa3Persistencia.exception.PersistenciaException;
 
 
 
 @Stateless
 @LocalBean
-
 public class GestionUsuarioService implements Serializable{
 
 
@@ -28,30 +27,51 @@ public class GestionUsuarioService implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@EJB
-	UsuariosEmpresaDAO usuariosPersistenciaDAO;
+	UsuariosDAO usuariosPersistenciaDAO;
 	
 	
 
-	public Usuario fromUsuarioEmpresa(UsuarioEmpresa e) {
+	public Usuario fromUsuarioEntity(UsuarioEntity e) {
 		Usuario usuario=new Usuario();
 		usuario.setId(e.getId().longValue());
-		usuario.setActivo(e.getActivo());
+		usuario.setDocumento(e.getDocumento());
+		usuario.setApellidos(e.getApellidos());
+		usuario.setNombres(e.getNombres());
+		usuario.setUsuario(e.getUsuario());
+		usuario.setContrasenia(e.getContrasenia());
 		usuario.setDepartamento(e.getDepartamento());
-		usuario.setEdad(e.getEdad());
-		usuario.setNombre(e.getNombre());
-		usuario.setSalario(e.getSalario());
+		usuario.setFechaNacimiento(e.getFechaNacimiento());
+		usuario.setGenero(e.getGenero());
+		usuario.setItr(e.getItr());
+		usuario.setLocalidad(e.getLocalidad());
+		usuario.setMail(e.getMail());
+		usuario.setMailPersonal(e.getMailPersonal());
+		usuario.setRol(e.getRol());
+		usuario.setTelefono(e.getTelefono());
+		usuario.setActivo(e.isActivo());
 		return usuario;
 	}
-	public UsuarioEmpresa toUsuarioEmpresa(Usuario e) {
-		UsuarioEmpresa usuarioEmpresa=new UsuarioEmpresa();
-		usuarioEmpresa.setId(e.getId()!=null?e.getId().longValue():null);
-		usuarioEmpresa.setActivo(e.getActivo());
-		usuarioEmpresa.setDepartamento(e.getDepartamento());
-		usuarioEmpresa.setEdad(e.getEdad());
-		usuarioEmpresa.setNombre(e.getNombre());
-		usuarioEmpresa.setSalario(e.getSalario());
-		return usuarioEmpresa;
+	public UsuarioEntity toUsuarioEntity(Usuario e) {
+		UsuarioEntity usuarioEntity=new UsuarioEntity();
+		usuarioEntity.setId(e.getId()!=null?e.getId().longValue():null);
+		usuarioEntity.setDocumento(e.getDocumento());
+		usuarioEntity.setApellidos(e.getApellidos());
+		usuarioEntity.setNombres(e.getNombres());
+		usuarioEntity.setUsuario(e.getUsuario());
+		usuarioEntity.setContrasenia(e.getContrasenia());
+		usuarioEntity.setDepartamento(e.getDepartamento());
+		usuarioEntity.setFechaNacimiento(e.getFechaNacimiento());
+		usuarioEntity.setGenero(e.getGenero());
+		usuarioEntity.setItr(e.getItr());
+		usuarioEntity.setLocalidad(e.getLocalidad());
+		usuarioEntity.setMail(e.getMail());
+		usuarioEntity.setMailPersonal(e.getMailPersonal());
+		usuarioEntity.setRol(e.getRol());
+		usuarioEntity.setTelefono(e.getTelefono());
+		usuarioEntity.setActivo(e.getActivo());
+		return usuarioEntity;
 	}
+
 
 
 	
@@ -63,48 +83,48 @@ public class GestionUsuarioService implements Serializable{
 
 	public List<Usuario> seleccionarUsuarios() throws PersistenciaException {
 		//buscamos todos los  objetos EmpleadoEmpresa
-		List<UsuarioEmpresa> listaUsuariosEmpresa = usuariosPersistenciaDAO.buscarUsuarios();
+		List<UsuarioEntity> listaUsuariosEmpresa = usuariosPersistenciaDAO.buscarUsuarios();
 		
 		List<Usuario> listaUsuarios=new ArrayList<Usuario>();
 		//recorremos listaEmpleadosEmpresa y vamos populando listaEmpleado (haciendo la conversion requerida)
-		for (UsuarioEmpresa usuarioEmpresa : listaUsuariosEmpresa) {
-			listaUsuarios.add(fromUsuarioEmpresa(usuarioEmpresa));
+		for (UsuarioEntity usuarioEmpresa : listaUsuariosEmpresa) {
+			listaUsuarios.add(fromUsuarioEntity(usuarioEmpresa));
 		}
 		return listaUsuarios;
 	}
 
 
-	public List<Usuario> seleccionarUsuarios(String criterioNombre,String criterioDepartamento,Boolean criterioActivo) throws PersistenciaException {
+	public List<Usuario> seleccionarUsuarios(String criterioNombre,String criterioApellido,Integer criterioDocumento,Boolean criterioActivo) throws PersistenciaException {
 		//buscamos empleados segun criterio indicado
-		List<UsuarioEmpresa> listaUsuariosEmpresa = usuariosPersistenciaDAO.seleccionarUsuarios(criterioNombre,criterioDepartamento,criterioActivo);
+		List<UsuarioEntity> listaUsuariosEmpresa = usuariosPersistenciaDAO.seleccionarUsuarios(criterioNombre,criterioApellido,criterioDocumento,criterioActivo);
 		//lista para devolver la seleccion de empleados
 		List<Usuario> listaUsuarios=new ArrayList<Usuario>();
 		//recorremos listaEmpleadosEmpresa y vamos populando listaEmpleado (haciendo la conversion requerida)
-		for (UsuarioEmpresa usuarioEmpresa : listaUsuariosEmpresa) {
-			listaUsuarios.add(fromUsuarioEmpresa(usuarioEmpresa));
+		for (UsuarioEntity usuarioEmpresa : listaUsuariosEmpresa) {
+			listaUsuarios.add(fromUsuarioEntity(usuarioEmpresa));
 		}
 		return listaUsuarios;
 		
 	}
 	
 	
-	public Usuario buscarUsuarioEmpresa(Long id) {
-		UsuarioEmpresa e = usuariosPersistenciaDAO.buscarUsuario(id);
-		return fromUsuarioEmpresa(e);
+	public Usuario buscarUsuarioEntity(Long id) {
+		UsuarioEntity e = usuariosPersistenciaDAO.buscarUsuario(id);
+		return fromUsuarioEntity(e);
 	}
 
 	public Usuario buscarUsuario(Long i) {
-		UsuarioEmpresa e = usuariosPersistenciaDAO.buscarUsuario(i);
-		return fromUsuarioEmpresa(e);
+		UsuarioEntity e = usuariosPersistenciaDAO.buscarUsuario(i);
+		return fromUsuarioEntity(e);
 	}
 	
 	public Usuario agregarUsuario(Usuario usuarioSeleccionado) throws PersistenciaException   {
-		UsuarioEmpresa e = usuariosPersistenciaDAO.agregarUsuario(toUsuarioEmpresa(usuarioSeleccionado));
-		return fromUsuarioEmpresa(e);
+		UsuarioEntity e = usuariosPersistenciaDAO.agregarUsuario(toUsuarioEntity(usuarioSeleccionado));
+		return fromUsuarioEntity(e);
 	}
 
 	public void actualizarUsuario(Usuario usuarioSeleccionado) throws PersistenciaException   {
-		UsuarioEmpresa e = usuariosPersistenciaDAO.modificarUsuario(toUsuarioEmpresa(usuarioSeleccionado));
+		UsuarioEntity e = usuariosPersistenciaDAO.modificarUsuario(toUsuarioEntity(usuarioSeleccionado));
 	}
 	
 	
