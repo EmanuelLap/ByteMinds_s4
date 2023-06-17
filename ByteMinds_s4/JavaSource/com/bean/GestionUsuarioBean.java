@@ -1,23 +1,18 @@
 package com.bean;
 
+import java.io.Serializable;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import java.io.Serializable;
-import java.util.ArrayList;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
-
-import com.capa2LogicaNegocio.Usuario;
-import com.capa2LogicaNegocio.GestionUsuarioService;
-import com.capa3Persistencia.exception.PersistenciaException;
-import com.utils.ExceptionsTools;
-
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;	//JEE8
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
+
+import com.capa2LogicaNegocio.GestionUsuarioService;
+import com.capa2LogicaNegocio.Usuario;
+import com.capa3Persistencia.exception.PersistenciaException;
+import com.utils.ExceptionsTools;
 
 //import javax.faces.bean.ManagedBean;
 //import javax.faces.bean.SessionScoped;
@@ -43,10 +38,15 @@ public class GestionUsuarioBean implements Serializable{
 	private String modalidad;
 	
 	private Usuario usuarioSeleccionado;
+	
+
 	private boolean modoEdicion=false;
 	public GestionUsuarioBean() {
 		super();
+	
+		
 	}
+	
 	@PostConstruct
 	public void init() {
 		//empleadoSeleccionado=new Empleado();
@@ -167,7 +167,12 @@ public class GestionUsuarioBean implements Serializable{
 		this.modoEdicion = modoEdicion;
 	}
 		
-	
+	public GestionUsuarioService getGestionUsuarioService() {
+		return gestionUsuarioService;
+	}
+	public void setGestionUsuarioService(GestionUsuarioService gestionUsuarioService) {
+		this.gestionUsuarioService = gestionUsuarioService;
+	}
 	
 	
 }

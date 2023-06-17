@@ -7,15 +7,15 @@
 	xmlns:p="http://primefaces.org/ui">
 	
 	<ui:define name="title">
-		<c:set var="title" value="Datos de Empleado" scope="request" />
+		<c:set var="title" value="Datos de Usuario" scope="request" />
 	</ui:define>
 	
 	<ui:define name="content">
 		 
 		<f:metadata>
-		    <f:viewParam name="id" value="1" /> <!-- #{gestionUsuario.id}"-->
-		   <!--  <f:viewParam name="modalidad" value="#{gestionUsuario.modalidad}" />
-		    <f:event type="preRenderView" listener="#{gestionUsuario.preRenderViewListener}"/> -->
+		    <f:viewParam name="id" value="#{gestionUsuario.id}" />  
+		    <f:viewParam name="modalidad" value="#{gestionUsuario.modalidad}" />
+		    <f:event type="preRenderView" listener="#{gestionUsuario.preRenderViewListener}"/> 
 		</f:metadata>
 
 	<h:form id="idDatosUsuario">
@@ -42,33 +42,84 @@
 			
 		<p:panelGrid columns="3">
 
-			<p:outputLabel  value="Id" />
-			<p:inputText id="id" disabled="true"  value="#{gestionUsuario.usuarioSeleccionado.id}" />
-			<p:message for="id" style="color:red" />
+<!-- 			<p:outputLabel  value="Id" /> -->
+<!-- 			<p:inputText id="id" disabled="true"  value="#{gestionUsuario.usuarioSeleccionado.id}" /> -->
+<!-- 			<p:message for="id" style="color:red" /> -->
 			
-			<p:outputLabel value="Nombre" />
-			<p:inputText id="nombre" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.nombre}" />
-			<p:message for="nombre" style="color:red" />
-			
-
-			<p:outputLabel value="Departamento" />
-			<p:selectOneMenu id="departamento" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.departamento}">
-   				<f:selectItem itemValue="" itemLabel="" />
-   				<f:selectItem itemValue="Ventas" itemLabel="Ventas" />
-   				<f:selectItem itemValue="Administracion" itemLabel="Administracion" />
-   				<f:selectItem itemValue="Personal" itemLabel="Personal" />
-			</p:selectOneMenu>
-			<p:message for="departamento" style="color:red" />
+<!-- 			<p:outputLabel value="Nombre" /> -->
+<!-- 			<p:inputText id="nombre" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.nombres}" /> -->
+<!-- 			<p:message for="nombre" style="color:red" /> -->
 			
 
-			<p:outputLabel value="Edad" />
-			<p:inputText id="edad" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.edad}" />
-			<p:message for="edad" style="color:red" />
+<!-- 			<p:outputLabel value="Apellidos" /> -->
+<!-- 			<p:inputText id="inputApellidos" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.apellidos}" /> -->
+<!-- 			<p:message for="msgApellidos" style="color:red" /> -->
 			
 
-			<p:outputLabel disabled="#{!gestionUsuario.modoEdicion}" value="Salario" />
-			<p:inputText id="salario" disabled="#{!gestionusuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.salario}" />
-			<p:message for="salario" style="color:red" />
+		<p:outputLabel value="ID" />
+		<p:inputText id="id" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.id}" />
+		<p:message for="id" style="color:red" />
+		
+		<p:outputLabel value="Documento" />
+		<p:inputText id="documento" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.documento}" />
+		<p:message for="documento" style="color:red" />
+		
+		<p:outputLabel value="Usuario" />
+		<p:inputText id="usuario" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.usuario}" />
+		<p:message for="usuario" style="color:red" />
+		
+		<p:outputLabel value="Contraseña" />
+		<p:inputText id="contrasenia" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.contrasenia}" />
+		<p:message for="contrasenia" style="color:red" />
+		
+		<p:outputLabel value="Apellidos" />
+		<p:inputText id="apellidos" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.apellidos}" />
+		<p:message for="apellidos" style="color:red" />
+		
+		<p:outputLabel value="Nombres" />
+		<p:inputText id="nombres" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.nombres}" />
+		<p:message for="nombres" style="color:red" />
+		
+		<p:outputLabel value="Fecha de Nacimiento" />
+		<p:calendar id="fechaNacimiento" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.fechaNacimiento}" />
+		<p:message for="fechaNacimiento" style="color:red" />
+		
+		<p:outputLabel value="Departamento" />
+		<p:inputText id="departamento" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.departamento}" />
+		<p:message for="departamento" style="color:red" />
+		
+		<p:outputLabel value="Género" />
+		<p:inputText id="genero" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.genero}" />
+		<p:message for="genero" style="color:red" />
+		
+		<p:outputLabel value="Localidad" />
+		<p:inputText id="localidad" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.localidad}" />
+		<p:message for="localidad" style="color:red" />
+		
+		<p:outputLabel value="Email" />
+		<p:inputText id="mail" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.mail}" />
+		<p:message for="mail" style="color:red" />
+		
+		<p:outputLabel value="Email Personal" />
+		<p:inputText id="mailPersonal" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.mailPersonal}" />
+		<p:message for="mailPersonal" style="color:red" />
+		
+		<p:outputLabel value="Teléfono" />
+		<p:inputText id="telefono" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.telefono}" />
+		<p:message for="telefono" style="color:red" />
+		
+		<p:outputLabel value="ITR" />
+		<p:inputText id="itr" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.itr}" />
+		<p:message for="itr" style="color:red" />
+		
+		<p:outputLabel value="Rol" />
+		<p:inputText id="rol" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.rol}" />
+		<p:message for="rol" style="color:red" />
+		
+		<p:outputLabel value="Activo" />
+		<p:selectBooleanCheckbox id="activo" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.activo}" />
+		<p:message for="activo" style="color:red" />
+
 			
 
 		</p:panelGrid>
