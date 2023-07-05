@@ -3,7 +3,7 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
  <display-name>ByteMinds_s4</display-name>
   <welcome-file-list>
-    <welcome-file>index.xhtml</welcome-file>
+    <welcome-file>Login.xhtml</welcome-file>
   </welcome-file-list>
 
  <servlet>
@@ -31,4 +31,8 @@
     <param-name>primefaces.THEME</param-name>
     <param-value>bootstrap</param-value>
   </context-param>
+  <context-param>
+   <param-name>facelets.SKIP_COMMENTS</param-name>
+   <param-value>true</param-value>
+</context-param>
 </web-app>

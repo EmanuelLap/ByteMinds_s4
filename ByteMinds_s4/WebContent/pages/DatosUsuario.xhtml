@@ -29,6 +29,7 @@
 		<h:commandButton id="idModificar"  value="Modificar" rendered="#{!gestionUsuario.modoEdicion}"	>
     			<f:param name="id" value="${gestionUsuario.id}" />
     			<f:param name="modalidad" value="update" />
+    			
 		</h:commandButton> 
 		<h:commandButton value="Salvar cambios"	rendered="#{gestionUsuario.modoEdicion}" 
 			update=":form" 	action="#{gestionUsuario.salvarCambios}">

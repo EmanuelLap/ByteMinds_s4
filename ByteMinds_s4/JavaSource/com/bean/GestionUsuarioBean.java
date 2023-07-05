@@ -68,7 +68,10 @@ public class GestionUsuarioBean implements Serializable{
 			modoEdicion=true;
 		}else if (modalidad.contentEquals("insert")) {
 			modoEdicion=true;
+		}else if (modalidad.contentEquals("edit")) {
+			modoEdicion=true;
 		}else {
+			
 			modoEdicion=false;
 			modalidad="view";
 	
