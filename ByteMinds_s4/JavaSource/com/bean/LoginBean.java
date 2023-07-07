@@ -75,6 +75,12 @@ public class LoginBean implements Serializable {
         }
     }
 
+    public String logout() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().invalidateSession();
+        return "/Login?faces-redirect=true";
+    }
+    
     private boolean validateUsernamePassword() {
         // Dummy check: replace with your database check
         return "admin".equals(username) && "admin".equals(password);
