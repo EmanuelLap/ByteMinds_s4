@@ -110,6 +110,9 @@ public class UsuariosDAO {
 			if (criterioActivo!=null) {
 				queryCriterio+=(!queryCriterio.isEmpty()?" and ":"")+" e.activo  " ;
 			}
+			
+			queryCriterio+=(!queryCriterio.isEmpty()?" and ":"")+" e.eliminado =false  " ;
+			
 			if (!queryCriterio.contentEquals("")) {
 				query+=" where "+queryCriterio;
 			}

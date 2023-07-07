@@ -8,6 +8,9 @@
 </h:head>
 <h:body>
     <h:form>
+<!--     	<p:growl id="messagesGrowl" sticky="true" showDetail="true" life="3000" /> -->
+   
+<!--     	<p:messages id="messages" /> -->
         <p:panel header="Login">
             <h:outputLabel for="username" value="Username:" />
             <h:inputText id="username" value="#{loginBean.username}" required="true" />
@@ -17,6 +20,7 @@
         </p:panel>
         <p:panel>
         <h:outputLabel id="lableToken" value="#{loginBean.token}" />
+         <p:growl id="messages"/>
         </p:panel>
     </h:form>
 </h:body>

@@ -48,7 +48,8 @@ public class GestionUsuarioService implements Serializable{
 		usuario.setMailPersonal(e.getMailPersonal());
 		usuario.setRol(e.getRol());
 		usuario.setTelefono(e.getTelefono());
-		usuario.setActivo(e.isActivo());
+		usuario.setActivo(e.getActivo());
+		usuario.setEliminado(e.getEliminado());
 		return usuario;
 	}
 	public UsuarioEntity toUsuarioEntity(Usuario e) {
@@ -69,6 +70,7 @@ public class GestionUsuarioService implements Serializable{
 		usuarioEntity.setRol(e.getRol());
 		usuarioEntity.setTelefono(e.getTelefono());
 		usuarioEntity.setActivo(e.getActivo());
+		usuarioEntity.setEliminado(e.getEliminado());
 		return usuarioEntity;
 	}
 

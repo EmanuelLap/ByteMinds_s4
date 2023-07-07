@@ -4,6 +4,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
 import javax.crypto.SecretKey;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -53,6 +54,7 @@ public class LoginBean implements Serializable {
 	// This method should be modified to validate login against your database
     public String login() {
         boolean valid = validateUsernamePassword();
+        FacesMessage message = null;
         
         if (valid) {
             String jws = Jwts.builder().setSubject(username).signWith(key).compact();
@@ -60,16 +62,16 @@ public class LoginBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("jwt", jws);
             System.out.println("TOKEN: "+jws);
             this.token = jws;
-//            try {
-//                FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-//            } catch (IOException e) {
-//                // Maneja la excepción
-//                e.printStackTrace();
-//            }
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido "+username, username);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+
             return "index?faces-redirect=true";
         } else {
-            // login failed
-            return "/pages/failLogin?faces-redirect=true";
+        	 message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Credenciales invalidas");
+        	 FacesContext.getCurrentInstance().addMessage(null, message);
+        	 FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+            return null;
         }
     }
 

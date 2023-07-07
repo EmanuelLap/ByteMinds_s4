@@ -49,11 +49,13 @@ public class Usuario {
 	@NotNull
 	private boolean activo;
 
+	private boolean eliminado;
+	
 	public Usuario() {
 		super();
 	}
 
-	public Usuario(Long id, Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String mailPersonal, String telefono, String itr, String rol, boolean activo) {
+	public Usuario(Long id, Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String mailPersonal, String telefono, String itr, String rol, boolean activo, boolean eliminado) {
 		this.id = id;
 		this.documento = documento;
 		this.usuario = usuario;
@@ -70,6 +72,7 @@ public class Usuario {
 		this.itr = itr;
 		this.rol = rol;
 		this.activo = activo;
+		this.eliminado=eliminado;
 	}
 
     public Long getId() {
@@ -199,7 +202,14 @@ public class Usuario {
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
-	
+    
+    public boolean getEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
         
         
         

@@ -47,6 +47,9 @@ public class UsuarioEntity implements Serializable {
 
     @Column(nullable = false)
     private boolean activo;
+    
+    @Column(nullable = false)
+    private boolean eliminado;
 
     public UsuarioEntity() {
      
@@ -54,7 +57,7 @@ public class UsuarioEntity implements Serializable {
 
     public UsuarioEntity(Integer documento, String usuario, String contrasenia, String apellidos, 
             String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, 
-            String mail, String mailPersonal, String telefono, String itr, String rol) {
+            String mail, String mailPersonal, String telefono, String itr, String rol ,Boolean eliminado) {
         this.documento = documento;
         this.usuario = usuario;
         this.contrasenia = contrasenia;
@@ -69,6 +72,7 @@ public class UsuarioEntity implements Serializable {
         this.telefono = telefono;
         this.itr = itr;
         this.rol = rol;
+        this.eliminado=eliminado;
     }
 
     public Long getId() {
@@ -191,12 +195,20 @@ public class UsuarioEntity implements Serializable {
         this.rol = rol;
     }
 
-    public boolean isActivo() {
+    public boolean getActivo() {
         return activo;
     }
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+    
+    public boolean getEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
     }
 
     @Override

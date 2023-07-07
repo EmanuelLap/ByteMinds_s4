@@ -14,12 +14,6 @@ import com.capa2LogicaNegocio.Usuario;
 import com.capa3Persistencia.exception.PersistenciaException;
 import com.utils.ExceptionsTools;
 
-//import javax.faces.bean.ManagedBean;
-//import javax.faces.bean.SessionScoped;
-
-
-//@ManagedBean(name="usuario")
-
 @Named(value="gestionUsuario")		//JEE8
 @SessionScoped				        //JEE8
 public class GestionUsuarioBean implements Serializable{
@@ -142,6 +136,41 @@ public class GestionUsuarioBean implements Serializable{
 		return "";
 	}
 	
+	public String bajaLogicaUsuario() {
+
+		if (usuarioSeleccionado.getId()!=null) {
+			usuarioSeleccionado.setEliminado(true);
+			
+			try {
+				gestionUsuarioService.actualizarUsuario(usuarioSeleccionado);
+
+				FacesContext.getCurrentInstance().addMessage(null, 
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha eliminado el usuario.",""));
+				
+			} catch (PersistenciaException e) {
+
+				Throwable rootException=ExceptionsTools.getCause(e);
+				String msg1=e.getMessage();
+				String msg2=ExceptionsTools.formatedMsg(e.getCause());
+				//mensaje de actualizacion correcta
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR,msg1, msg2);
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+			
+				this.modalidad="update";
+			
+				e.printStackTrace();
+			}
+		}
+		return "";
+	}
+	
+	
+	public String print() {
+		
+		System.out.println("Apretaste el boton!");
+		return "";
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -157,8 +186,8 @@ public class GestionUsuarioBean implements Serializable{
 	public Usuario getUsuarioSeleccionado() {
 		return usuarioSeleccionado;
 	}
-	public void setUsuarioSeleccionado(Usuario empleadoSeleccionado) {
-		this.usuarioSeleccionado = empleadoSeleccionado;
+	public void setUsuarioSeleccionado(Usuario usuarioSeleccionado) {
+		this.usuarioSeleccionado = usuarioSeleccionado;
 	}
 	public boolean getModoEdicion() {
 		return modoEdicion;

@@ -4,6 +4,7 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
 		<class>com.capa3Persistencia.entities.UsuarioEntity</class>
+		
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/> 			
      		<property name="hibernate.hbm2ddl.auto" value="create-drop" />
@@ -11,6 +12,21 @@
       		<property name="hibernate.format_sql" value="true"/>
 		</properties>
 	</persistence-unit>
+	
+<!-- 	<persistence-unit name="TecnoFenixEJB" transaction-type="JTA"> -->
+<!-- 		<provider>org.hibernate.ejb.HibernatePersistence</provider> -->
+		
+<!-- 		<jta-data-source>java:/TecnoFenixDS</jta-data-source> -->
+<!-- 		<class>com.capa3Persistencia.entities.UsuarioEntity</class> -->
+<!-- 	<properties> -->
+<!-- 			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" /> -->
+<!-- 			<property name="hibernate.hbm2ddl.auto" value="none" /> -->
+<!-- 			<property name="show_sql" value="true" /> -->
+<!-- 			<property name="hibernate.format_sql" value="true" /> -->
+<!-- 	</properties> -->
+<!-- 	</persistence-unit> -->
+	
+	
 	<!-- 
 	<persistence-unit name="EjemploEJB_JSF">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
