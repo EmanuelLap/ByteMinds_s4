@@ -30,14 +30,23 @@
  
  		  <!-- Nuevo submenu para el perfil del usuario -->
             <p:submenu label="Perfil del usuario" icon="ui-icon-user">
-                <p:menuitem value="Ver perfil" url="#" />
-                <p:menuitem value="Editar perfil" url="#" />
-                <p:menuitem value="Cambiar contraseña" url="#" />
+                <p:menuitem value="Ver perfil" outcome="/pages/VerPerfil.xhtml">
+                <f:param name="id" value="" />
+    			<f:param name="modalidad" value="insert" />
+    			</p:menuitem>
+                <p:menuitem value="Editar perfil" outcome="/pages/EditarPerfil.xhtml">
+                 <f:param name="id" value="" />
+    			<f:param name="modalidad" value="insert" />
+    			</p:menuitem>
+                <p:menuitem value="Cambiar contraseña" outcome="/pages/CambiarContrasena.xhtml">
+                <f:param name="id" value="" />
+    			<f:param name="modalidad" value="insert" />
+    			</p:menuitem>
     
             </p:submenu>
             
  		
-                   <p:menuitem value="Logout"  action="#{loginBean.logout}" >
+                   <p:menuitem value="Cerrar sesión"  action="#{loginBean.logout}" >
 <!--                 <h:commandLink value="Logout"  /> -->
                 </p:menuitem>
     </p:menubar>
