@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="/layout/layout.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="title">
+		<c:set var="title" value="Cambiar Contraseña" scope="request" />
+	</ui:define>
+	
+	<ui:define name="content">
+	 
+		<f:metadata>
+		    <f:viewParam name="id" value="#{gestionUsuario.id}" />  
+		    <f:viewParam name="modalidad" value="#{gestionUsuario.modalidad}" />
+		    <f:event type="preRenderView" listener="#{gestionUsuario.preRenderViewListener}"/> 
+		</f:metadata>
+
+
+	<h:form id="idDatosUsuario">
+		 
+		
+		
+		
+		<p:panelGrid columns="3">
+
+		
+		<p:outputLabel value="Contraseña actual" />
+		<p:inputText id="contrasenia" value="#{gestionUsuario.usuarioSeleccionado.contrasenia}" placeholder="Contraseña" />
+		<p:message for="contrasenia" style="color:red" />
+		
+		<p:outputLabel value="Nueva contraseña" />
+		<p:inputText id="contraseniaNueva"  value="#{gestionUsuario.usuarioSeleccionado.contrasenia}" placeholder="Nueva contraseña" />
+		<p:message for="contraseniaNueva" style="color:red" />
+		
+		<p:outputLabel value="Repite nueva contraseña" />
+		<p:inputText id="contraseniaNuevaRep" value="#{gestionUsuario.usuarioSeleccionado.contrasenia}" placeholder="Repite la nueva contraseña" />
+		<p:message for="contraseniaNuevaRep" style="color:red" />
+	
+		</p:panelGrid>
+		
+		
+		<p:messages id="messages" showDetail="true" closable="true">
+        	<p:autoUpdate />
+    	</p:messages>
+    	<h:commandButton id="idVolver" immediate="true=" value="Volver"	action="Usuarios" >
+    		<f:ajax />
+    	</h:commandButton> 
+		<h:commandButton id="idModificar"  value="Modificar" rendered="#{!gestionUsuario.modoEdicion}"	>
+    			<f:param name="id" value="${gestionUsuario.id}" />
+    			<f:param name="modalidad" value="update" />
+    			
+		</h:commandButton> 
+		<h:commandButton value="Salvar cambios"	rendered="#{gestionUsuario.modoEdicion}" 
+			update=":form" 	action="#{gestionUsuario.salvarCambios}">
+		    	<f:param name="id" value="${gestionUsuario.id}" />
+    			<f:param name="modalidad" value="update" />
+		</h:commandButton>
+	</h:form>
+
+			 
+    </ui:define>
+</ui:composition>
+
