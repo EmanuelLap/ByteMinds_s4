@@ -22,7 +22,7 @@ public class LoginFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
         HttpSession session = request.getSession(false);
 
-        String loginURL = request.getContextPath() + "/Login.xhtml";
+        String loginURL = request.getContextPath() + "/login.xhtml";
 
         boolean loggedIn = (session != null) && (session.getAttribute("jwt") != null);
         boolean loginRequest = request.getRequestURI().equals(loginURL);

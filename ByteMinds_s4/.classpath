@@ -14,5 +14,9 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jboss-client.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jakarta.persistence-api-2.2.3.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jboss-ejb-api_3.2_spec-2.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/TecnoFenixEJB.jar"/>
 	<classpathentry kind="output" path="WebContent/WEB-INF/classes"/>
 </classpath>
