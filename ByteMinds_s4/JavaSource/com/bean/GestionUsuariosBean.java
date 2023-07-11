@@ -11,7 +11,7 @@ import javax.inject.Named;
 
 
 
-import com.capa2LogicaNegocio.Usuario;
+import com.capa2LogicaNegocio.UsuarioDTO;
 import com.capa2LogicaNegocio.GestionUsuarioService;
 import com.capa3Persistencia.exception.PersistenciaException;
 
@@ -45,8 +45,8 @@ public class GestionUsuariosBean implements Serializable{
 	private Integer criterioDocumento;
 	private Boolean criterioActivo;
 	
-	private List<Usuario> usuariosSeleccionados;
-	private Usuario usuarioSeleccionado;
+	private List<UsuarioDTO> usuariosSeleccionados;
+	private UsuarioDTO usuarioSeleccionado;
 	public GestionUsuariosBean() {
 		super();
 	}
@@ -94,18 +94,18 @@ public class GestionUsuariosBean implements Serializable{
 	public void setCriterioActivo(Boolean criterioActivo) {
 		this.criterioActivo = criterioActivo;
 	}
-	public List<Usuario> getUsuariosSeleccionados() {
+	public List<UsuarioDTO> getUsuariosSeleccionados() {
 		return usuariosSeleccionados;
 	}
-	public void setUsuariosSeleccionados(List<Usuario> usuariosSeleccionados) {
+	public void setUsuariosSeleccionados(List<UsuarioDTO> usuariosSeleccionados) {
 		this.usuariosSeleccionados = usuariosSeleccionados;
 	}
 
-	public Usuario getUsuarioSeleccionado() {
+	public UsuarioDTO getUsuarioSeleccionado() {
 		return usuarioSeleccionado;
 	}
 
-	public void setUsuarioSeleccionado(Usuario usuarioSeleccionado) {
+	public void setUsuarioSeleccionado(UsuarioDTO usuarioSeleccionado) {
 		this.usuarioSeleccionado = usuarioSeleccionado;
 	}
 	

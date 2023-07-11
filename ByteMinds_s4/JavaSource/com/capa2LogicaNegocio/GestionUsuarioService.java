@@ -10,30 +10,36 @@ import javax.ejb.Stateless;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import com.capa3Persistencia.dao.UsuariosDAO;
-import com.capa3Persistencia.entities.UsuarioEntity;
+import com.byteminds.remoto.EJBUsuarioRemoto;
 import com.capa3Persistencia.exception.PersistenciaException;
 
-
+import tecnofenix.entidades.Analista;
+import tecnofenix.entidades.Estudiante;
+import tecnofenix.entidades.TipoArea;
+import tecnofenix.entidades.TipoTutorTipo;
+import tecnofenix.entidades.Tutor;
+import tecnofenix.entidades.Usuario;
 
 @Stateless
 @LocalBean
-public class GestionUsuarioService implements Serializable{
-
+public class GestionUsuarioService implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private EJBUsuarioRemoto ejbRemoto;
 	
-	@EJB
-	UsuariosDAO usuariosPersistenciaDAO;
-	
-	
+	public GestionUsuarioService() {
+		ejbRemoto = new EJBUsuarioRemoto();
+	}
 
-	public Usuario fromUsuarioEntity(UsuarioEntity e) {
-		Usuario usuario=new Usuario();
-		usuario.setId(e.getId().longValue());
+	public UsuarioDTO fromUsuario(Usuario e) {
+		UsuarioDTO usuario = new UsuarioDTO();
+		GestionItrService gItr= new GestionItrService();
+		GestionRolService gRol= new GestionRolService();
+		
+		usuario.setId(e.getId());
 		usuario.setDocumento(e.getDocumento());
 		usuario.setApellidos(e.getApellidos());
 		usuario.setNombres(e.getNombres());
@@ -42,92 +48,120 @@ public class GestionUsuarioService implements Serializable{
 		usuario.setDepartamento(e.getDepartamento());
 		usuario.setFechaNacimiento(e.getFechaNacimiento());
 		usuario.setGenero(e.getGenero());
-		usuario.setItr(e.getItr());
 		usuario.setLocalidad(e.getLocalidad());
 		usuario.setMail(e.getMail());
 		usuario.setMailPersonal(e.getMailPersonal());
-		usuario.setRol(e.getRol());
+		
+		usuario.setItr(gItr.fromITR(e.getItr()));
+		usuario.setRol(gRol.fromRol(e.getRol()));
+		
 		usuario.setTelefono(e.getTelefono());
 		usuario.setActivo(e.getActivo());
-		usuario.setEliminado(e.getEliminado());
+//		usuario.setEliminado(e.getEliminado());
+		
+		
+//		 aca hacer los instance off de los otros dto
 		return usuario;
 	}
-	public UsuarioEntity toUsuarioEntity(Usuario e) {
-		UsuarioEntity usuarioEntity=new UsuarioEntity();
-		usuarioEntity.setId(e.getId()!=null?e.getId().longValue():null);
-		usuarioEntity.setDocumento(e.getDocumento());
-		usuarioEntity.setApellidos(e.getApellidos());
-		usuarioEntity.setNombres(e.getNombres());
-		usuarioEntity.setUsuario(e.getUsuario());
-		usuarioEntity.setContrasenia(e.getContrasenia());
-		usuarioEntity.setDepartamento(e.getDepartamento());
-		usuarioEntity.setFechaNacimiento(e.getFechaNacimiento());
-		usuarioEntity.setGenero(e.getGenero());
-		usuarioEntity.setItr(e.getItr());
-		usuarioEntity.setLocalidad(e.getLocalidad());
-		usuarioEntity.setMail(e.getMail());
-		usuarioEntity.setMailPersonal(e.getMailPersonal());
-		usuarioEntity.setRol(e.getRol());
-		usuarioEntity.setTelefono(e.getTelefono());
-		usuarioEntity.setActivo(e.getActivo());
-		usuarioEntity.setEliminado(e.getEliminado());
-		return usuarioEntity;
+
+	public Usuario toUsuario(UsuarioDTO userDTO) {
+		Usuario usuario= null;
+		GestionItrService gItr= new GestionItrService();
+		GestionRolService gRol= new GestionRolService();
+		
+		if (userDTO.getUTipo().equals("ANALISTA")) {
+			usuario = new Analista();
+		}
+		if (userDTO.getUTipo().equals("TUTOR")) {
+			usuario = new Tutor();
+		}
+		if (userDTO.getUTipo().equals("ESTUDIANTE")) {
+			usuario = new Estudiante();
+		}
+	
+	        
+	        
+		usuario.setId(userDTO.getId() != null ? userDTO.getId() : null);
+		usuario.setDocumento(userDTO.getDocumento());
+		usuario.setApellidos(userDTO.getApellidos());
+		usuario.setNombres(userDTO.getNombres());
+		usuario.setUsuario(userDTO.getUsuario());
+		usuario.setContrasenia(userDTO.getContrasenia());
+		usuario.setDepartamento(userDTO.getDepartamento());
+		usuario.setFechaNacimiento(userDTO.getFechaNacimiento());
+		usuario.setGenero(userDTO.getGenero());
+		usuario.setLocalidad(userDTO.getLocalidad());
+		usuario.setMail(userDTO.getMail());
+		usuario.setMailPersonal(userDTO.getMailPersonal());
+		
+		usuario.setItr( gItr.toITR( userDTO.getItr()) );
+		usuario.setRol( gRol.toRol(userDTO.getRol())  );
+		
+		usuario.setTelefono(userDTO.getTelefono());
+		usuario.setActivo(userDTO.getActivo());
+
+		
+		return usuario;
 	}
 
-
-
-	
 	// servicios para capa de Presentacion
 
-	
+	public List<UsuarioDTO> seleccionarUsuarios() throws PersistenciaException {
+		// buscamos todos los objetos EmpleadoEmpresa
+		List<Usuario> listaUsuarios = ejbRemoto.listarUsuarios();
 
-	
+		List<UsuarioDTO> listaUsuariosDTO = new ArrayList<UsuarioDTO>();
+		// recorremos listaEmpleadosEmpresa y vamos populando listaEmpleado (haciendo la
+		// conversion requerida)
+		for (Usuario usuario : listaUsuarios) {
+			listaUsuariosDTO.add(fromUsuario(usuario));
+		}
+		return listaUsuariosDTO;
+	}
 
-	public List<Usuario> seleccionarUsuarios() throws PersistenciaException {
-		//buscamos todos los  objetos EmpleadoEmpresa
-		List<UsuarioEntity> listaUsuariosEmpresa = usuariosPersistenciaDAO.buscarUsuarios();
-		
-		List<Usuario> listaUsuarios=new ArrayList<Usuario>();
-		//recorremos listaEmpleadosEmpresa y vamos populando listaEmpleado (haciendo la conversion requerida)
-		for (UsuarioEntity usuarioEmpresa : listaUsuariosEmpresa) {
-			listaUsuarios.add(fromUsuarioEntity(usuarioEmpresa));
+	public List<UsuarioDTO> seleccionarUsuarios(String criterioNombre, String criterioApellido,
+			Integer criterioDocumento, Boolean criterioActivo) throws PersistenciaException {
+		// buscamos empleados segun criterio indicado
+		List<Usuario> listaUsuariosEmpresa = 
+				ejbRemoto.buscarUsuarioPor("", "",
+				"", String.valueOf(criterioDocumento), 
+				criterioNombre, criterioApellido, 
+				"", "", 
+				"", "", true, 
+				true, true, "",
+				"", true, true);
+//		String tipo, String id ,String depto,String doc,String nombre,String apellido
+//		,String mail,String usuario,String itrNombre,String generacion, Boolean validado ,Boolean activo,Boolean todos,String localidad
+//		,String telefono,Boolean noValidados ,Boolean noActivos){
+//		
+		// lista para devolver la seleccion de empleados
+		List<UsuarioDTO> listaUsuarios = new ArrayList<UsuarioDTO>();
+		// recorremos listaEmpleadosEmpresa y vamos populando listaEmpleado (haciendo la
+		// conversion requerida)
+		for (Usuario usuarioEmpresa : listaUsuariosEmpresa) {
+			listaUsuarios.add(fromUsuario(usuarioEmpresa));
 		}
 		return listaUsuarios;
+
 	}
 
-
-	public List<Usuario> seleccionarUsuarios(String criterioNombre,String criterioApellido,Integer criterioDocumento,Boolean criterioActivo) throws PersistenciaException {
-		//buscamos empleados segun criterio indicado
-		List<UsuarioEntity> listaUsuariosEmpresa = usuariosPersistenciaDAO.seleccionarUsuarios(criterioNombre,criterioApellido,criterioDocumento,criterioActivo);
-		//lista para devolver la seleccion de empleados
-		List<Usuario> listaUsuarios=new ArrayList<Usuario>();
-		//recorremos listaEmpleadosEmpresa y vamos populando listaEmpleado (haciendo la conversion requerida)
-		for (UsuarioEntity usuarioEmpresa : listaUsuariosEmpresa) {
-			listaUsuarios.add(fromUsuarioEntity(usuarioEmpresa));
-		}
-		return listaUsuarios;
-		
-	}
-	
-	
-	public Usuario buscarUsuarioEntity(Long id) {
-		UsuarioEntity e = usuariosPersistenciaDAO.buscarUsuario(id);
-		return fromUsuarioEntity(e);
+	public UsuarioDTO buscarUsuario(Integer id) {
+		Usuario e = ejbRemoto.encontrarUsuario(id);
+		return fromUsuario(e);
 	}
 
-	public Usuario buscarUsuario(Long i) {
-		UsuarioEntity e = usuariosPersistenciaDAO.buscarUsuario(i);
-		return fromUsuarioEntity(e);
-	}
-	
-	public Usuario agregarUsuario(Usuario usuarioSeleccionado) throws PersistenciaException   {
-		UsuarioEntity e = usuariosPersistenciaDAO.agregarUsuario(toUsuarioEntity(usuarioSeleccionado));
-		return fromUsuarioEntity(e);
+//	public UsuarioDTO buscarUsuario(Integer i) {
+//		Usuario e = ejbRemoto.encontrarUsuario(i);
+//		return fromUsuario(e);
+//	}
+
+	public UsuarioDTO agregarUsuario(UsuarioDTO usuarioSeleccionado) throws PersistenciaException {
+		Usuario e = ejbRemoto.crearUsuario(toUsuario(usuarioSeleccionado));
+		return fromUsuario(e);
 	}
 
-	public void actualizarUsuario(Usuario usuarioSeleccionado) throws PersistenciaException   {
-		UsuarioEntity e = usuariosPersistenciaDAO.modificarUsuario(toUsuarioEntity(usuarioSeleccionado));
+	public void actualizarUsuario(UsuarioDTO usuarioSeleccionado) throws PersistenciaException {
+		Usuario e = ejbRemoto.modificarUsuario(toUsuario(usuarioSeleccionado));
 	}
-	
-	
+
 }

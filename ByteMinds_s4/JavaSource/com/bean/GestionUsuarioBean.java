@@ -10,7 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import com.capa2LogicaNegocio.GestionUsuarioService;
-import com.capa2LogicaNegocio.Usuario;
+import com.capa2LogicaNegocio.UsuarioDTO;
 import com.capa3Persistencia.exception.PersistenciaException;
 import com.utils.ExceptionsTools;
 
@@ -28,10 +28,10 @@ public class GestionUsuarioBean implements Serializable{
 	@EJB
 	GestionUsuarioService gestionUsuarioService;
 
-	private Long id;
+	private Integer id;
 	private String modalidad;
 	
-	private Usuario usuarioSeleccionado;
+	private UsuarioDTO usuarioSeleccionado;
 	
 
 	private boolean modoEdicion=false;
@@ -54,7 +54,7 @@ public class GestionUsuarioBean implements Serializable{
 		if (id!=null) {
 			usuarioSeleccionado=gestionUsuarioService.buscarUsuario(id);
 		} else {
-			usuarioSeleccionado=new Usuario();
+			usuarioSeleccionado=new UsuarioDTO();
 		}
 		if (modalidad.contentEquals("view")) {
 			modoEdicion=false;
@@ -83,9 +83,9 @@ public class GestionUsuarioBean implements Serializable{
 		if (usuarioSeleccionado.getId()==null) {
 			usuarioSeleccionado.setActivo(true);
 			
-			Usuario usuarioNuevo;
+			UsuarioDTO usuarioNuevo;
 			try {
-				usuarioNuevo = (Usuario) gestionUsuarioService.agregarUsuario(usuarioSeleccionado);
+				usuarioNuevo = (UsuarioDTO) gestionUsuarioService.agregarUsuario(usuarioSeleccionado);
 				this.id=usuarioNuevo.getId();
 			
 				//mensaje de actualizacion correcta
@@ -139,7 +139,7 @@ public class GestionUsuarioBean implements Serializable{
 	public String bajaLogicaUsuario() {
 
 		if (usuarioSeleccionado.getId()!=null) {
-			usuarioSeleccionado.setEliminado(true);
+			usuarioSeleccionado.setActivo(false);
 			
 			try {
 				gestionUsuarioService.actualizarUsuario(usuarioSeleccionado);
@@ -171,10 +171,10 @@ public class GestionUsuarioBean implements Serializable{
 		return "";
 	}
 	
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getModalidad() {
@@ -183,10 +183,10 @@ public class GestionUsuarioBean implements Serializable{
 	public void setModalidad(String modalidad) {
 		this.modalidad = modalidad;
 	}
-	public Usuario getUsuarioSeleccionado() {
+	public UsuarioDTO getUsuarioSeleccionado() {
 		return usuarioSeleccionado;
 	}
-	public void setUsuarioSeleccionado(Usuario usuarioSeleccionado) {
+	public void setUsuarioSeleccionado(UsuarioDTO usuarioSeleccionado) {
 		this.usuarioSeleccionado = usuarioSeleccionado;
 	}
 	public boolean getModoEdicion() {

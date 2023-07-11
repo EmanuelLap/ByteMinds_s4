@@ -7,10 +7,10 @@ import javax.validation.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import java.util.Date;
 
-public class Usuario {
+public class UsuarioDTO {
 
 	@NotNull
-	private Long id;
+	private Integer id;
 	
 	@NotNull
 	private Integer documento;
@@ -43,20 +43,28 @@ public class Usuario {
 
 	private String mailPersonal;
 	private String telefono;
-	private String itr;
-	private String rol;
+	private ItrDTO itr;
+	private RolDTO rol;
 
 	@NotNull
 	private boolean activo;
 
-	private boolean eliminado;
+	@NotNull
+	private boolean validado;
 	
-	public Usuario() {
+	
+	
+	
+	
+	private String uTipo;
+	
+	
+	public UsuarioDTO() {
 		super();
 	}
 
-	public Usuario(Long id, Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String mailPersonal, String telefono, String itr, String rol, boolean activo, boolean eliminado) {
-		this.id = id;
+	public UsuarioDTO( Integer documento, String usuario, String contrasenia, String apellidos, String nombres, Date fechaNacimiento, String departamento, String genero, String localidad, String mail, String mailPersonal, String telefono, ItrDTO itr, RolDTO rol, boolean activo,boolean validado) {
+		
 		this.documento = documento;
 		this.usuario = usuario;
 		this.contrasenia = contrasenia;
@@ -72,14 +80,14 @@ public class Usuario {
 		this.itr = itr;
 		this.rol = rol;
 		this.activo = activo;
-		this.eliminado=eliminado;
+		this.validado=validado;
 	}
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -179,36 +187,44 @@ public class Usuario {
         this.telefono = telefono;
     }
 
-    public String getItr() {
+    public ItrDTO getItr() {
         return itr;
     }
 
-    public void setItr(String itr) {
+    public void setItr(ItrDTO itr) {
         this.itr = itr;
     }
 
-    public String getRol() {
+    public RolDTO getRol() {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void setRol(RolDTO rol) {
         this.rol = rol;
     }
+    public String getUTipo() {
+        return uTipo;
+    }
 
+    public void setUTipo(String uTipo) {
+        this.uTipo = uTipo;
+    }
     public boolean getActivo() {
         return activo;
     }
-
+    
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
     
-    public boolean getEliminado() {
-        return eliminado;
+
+    
+    public boolean getValidado() {
+        return validado;
     }
 
-    public void setEliminado(boolean eliminado) {
-        this.eliminado = eliminado;
+    public void setValidado(boolean validado) {
+        this.validado = validado;
     }
         
         

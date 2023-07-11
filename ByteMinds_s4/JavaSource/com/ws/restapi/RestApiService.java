@@ -11,7 +11,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import com.capa2LogicaNegocio.GestionUsuarioService;
-import com.capa2LogicaNegocio.Usuario;
+import com.capa2LogicaNegocio.UsuarioDTO;
 
 
 @Path("usuarios")
@@ -22,39 +22,39 @@ public class RestApiService {
 	@EJB
 	GestionUsuarioService gestionUsuarioService;
 	
-	
-	@GET
-	@Path("obtenerUsuario/{id}")
-	@Produces("application/json")
-	public Usuario obtenerEmpleado(@PathParam("id") Long id){
-		try {
-			 Usuario empleado = gestionUsuarioService.buscarUsuario(id);
-			 if (empleado==null) {
-				 return new Usuario();
-			 }
-			 return empleado;
-		}catch(Exception e) {
-			e.printStackTrace();
-			return new Usuario(); 
-		}
-	
-		
-	}
+//	
+//	@GET
+//	@Path("obtenerUsuario/{id}")
+//	@Produces("application/json")
+//	public UsuarioDTO obtenerEmpleado(@PathParam("id") Long id){
+//		try {
+//			 UsuarioDTO empleado = gestionUsuarioService.buscarUsuario(id);
+//			 if (empleado==null) {
+//				 return new UsuarioDTO();
+//			 }
+//			 return empleado;
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//			return new UsuarioDTO(); 
+//		}
+//	
+//		
+//	}
 	
 	@GET
 	@Path("listarUsuarios")
 	@Produces("application/json")
-	public List<Usuario> listarUsuarios(){
+	public List<UsuarioDTO> listarUsuarios(){
 		
 
 		try {
-			 List<Usuario> listaEmpleados = gestionUsuarioService.seleccionarUsuarios();
+			 List<UsuarioDTO> listaEmpleados = gestionUsuarioService.seleccionarUsuarios();
 			 return listaEmpleados;
 			
 			
 		}catch(Exception e) {
 			e.printStackTrace();
-			return  new ArrayList<Usuario>(); 
+			return  new ArrayList<UsuarioDTO>(); 
 		}
 		
 	}

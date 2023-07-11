@@ -71,15 +71,14 @@ public class LoginBean implements Serializable {
     }
     
     private Usuario validateUsernamePassword() {
-		System.out.println("CLICK EN LOGIN LLAMANDO A JNDI");
 		Usuario user =null;
 		try {
 			ejbRemoto = new EJBUsuarioRemoto();
 			user=ejbRemoto.login(username, password);
 			ejbRemoto.ping();
-			System.out.println("PASO EL METODO PING");
+
 			ejbRemoto.ejecutarMetodo();
-			System.out.println("PASO EL METODO ejecutarMetodo");
+			
 		} catch (Exception e) {
 			System.out.println(e);
 		}
