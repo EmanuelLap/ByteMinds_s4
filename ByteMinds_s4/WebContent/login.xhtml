@@ -5,23 +5,49 @@
     xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title>Login Page</title>
+    <style>
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 15px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .login-form .ui-inputfield,
+        .login-form .ui-button {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .login-form .ui-button {
+            color: black;
+            background-color: #007BFF;
+        }
+
+        .login-form .ui-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </h:head>
 <h:body>
-    <h:form>
-<!--     	<p:growl id="messagesGrowl" sticky="true" showDetail="true" life="3000" /> -->
-   
-<!--     	<p:messages id="messages" /> -->
-        <p:panel header="Login">
-            <h:outputLabel for="username" value="Username:" />
-            <h:inputText id="username" value="#{loginBean.username}" required="true" />
-            <h:outputLabel for="password" value="Password:" />
-            <h:inputSecret id="password" value="#{loginBean.password}" required="true" />
-            <p:commandButton value="Login" action="#{loginBean.login}" />
-        </p:panel>
-        <p:panel>
-        <h:outputLabel id="lableToken" value="#{loginBean.token}" />
-         <p:growl id="messages"/>
-        </p:panel>
-    </h:form>
+    <div class="login-form">
+        <h:form>
+            <p:growl id="messagesLogin" sticky="true" showDetail="true" life="3000" />
+        
+            <p:panel header="Login" style="text-align: center;">
+                <h:outputLabel for="username" value="Username:" />
+                <p:inputText id="username" value="#{loginBean.username}" required="true" />
+                <h:outputLabel for="password" value="Password:" />
+                <p:password id="password" value="#{loginBean.password}" required="true" />
+                <div style="position: relative;text-align: center;">
+                <h:commandButton value="Login" action="#{loginBean.login}" update="messagesLogin"/>
+                </div>
+            </p:panel>
+
+
+        </h:form>
+    </div>
 </h:body>
 </html>

@@ -39,7 +39,60 @@
 				<p:inputText id="documentoCrit"
 					value="#{gestionUsuarios.criterioDocumento}" />
 
+				<p:outputLabel value="ITR" />
+				<p:selectOneMenu id="itrCrit" value="#{gestionUsuarios.criterioITR}"
+					effect="fold" editable="false">
+<!-- 					<f:selectItem itemLabel="Select One" itemValue="" /> -->
+					<f:selectItems value="#{combosBean.comboItr}" />
+				</p:selectOneMenu>
+
+<!-- 				<p:outputLabel value="ROL" /> -->
+<!-- 				<p:selectOneMenu id="rolCrit" value="#{gestionUsuarios.criterioROL}" -->
+<!-- 					effect="fold" editable="false"> -->
+<!-- 					<f:selectItem itemLabel="Select One" itemValue="" /> -->
+<!-- 					<f:selectItems value="#{combosBean.comboRol}" /> -->
+<!-- 				</p:selectOneMenu> -->
+
+
+				<p:outputLabel value="Todos" />
+				<p:selectBooleanCheckbox id="todosCrit"
+					value="#{gestionUsuarios.criterioTodos}" itemLabel="Todos"
+					disabled="false">
+					<p:ajax event="change"
+						listener="#{gestionUsuarios.cambiarChecks()}" update="checkGroup" />
+				</p:selectBooleanCheckbox>
+
 			</h:panelGrid>
+
+			<h:panelGroup id="checkGroup">
+
+				<p:outputLabel value="Opciones:"
+					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" />
+
+				<p:selectBooleanCheckbox id="actCrit"
+					value="#{gestionUsuarios.criterioActivo}" itemLabel="Activo"
+					disabled="false"
+					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" />
+
+				<p:selectBooleanCheckbox id="noActCrit"
+					value="#{gestionUsuarios.criterioNoActivo}" itemLabel="No activo"
+					disabled="false"
+					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" />
+
+
+				<p:selectBooleanCheckbox id="valCrit"
+					value="#{gestionUsuarios.criterioValidado}" itemLabel="Validado"
+					disabled="false"
+					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" />
+
+				<p:selectBooleanCheckbox id="noValCrit"
+					value="#{gestionUsuarios.criterioNoValidado}"
+					itemLabel="No validado" disabled="false"
+					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" />
+
+
+			</h:panelGroup><br/>
+
 			<h:commandButton value="Buscar"
 				action="#{gestionUsuarios.seleccionarUsuarios}" />
 
@@ -69,10 +122,10 @@
 				#{usuario.usuario}
 			</p:column>
 
-<!-- 			<p:column sortBy="#{usuario.contrasenia}"> -->
-<!-- 				<f:facet name="header">Contraseña</f:facet> -->
-<!-- 				#{usuario.contrasenia} -->
-<!-- 			</p:column> -->
+			<!-- 			<p:column sortBy="#{usuario.contrasenia}"> -->
+			<!-- 				<f:facet name="header">Contraseña</f:facet> -->
+			<!-- 				#{usuario.contrasenia} -->
+			<!-- 			</p:column> -->
 
 			<p:column sortBy="#{usuario.apellidos}">
 				<f:facet name="header">Apellidos</f:facet>
@@ -84,25 +137,25 @@
 				#{usuario.nombres}
 			</p:column>
 
-<!-- 			<p:column sortBy="#{usuario.fechaNacimiento}"> -->
-<!-- 				<f:facet name="header">Fecha de Nacimiento</f:facet> -->
-<!-- 				#{usuario.fechaNacimiento} -->
-<!-- 			</p:column> -->
+			<!-- 			<p:column sortBy="#{usuario.fechaNacimiento}"> -->
+			<!-- 				<f:facet name="header">Fecha de Nacimiento</f:facet> -->
+			<!-- 				#{usuario.fechaNacimiento} -->
+			<!-- 			</p:column> -->
 
-<!-- 			<p:column sortBy="#{usuario.departamento}"> -->
-<!-- 				<f:facet name="header">Departamento</f:facet> -->
-<!-- 				#{usuario.departamento} -->
-<!-- 			</p:column> -->
+			<!-- 			<p:column sortBy="#{usuario.departamento}"> -->
+			<!-- 				<f:facet name="header">Departamento</f:facet> -->
+			<!-- 				#{usuario.departamento} -->
+			<!-- 			</p:column> -->
 
-<!-- 			<p:column sortBy="#{usuario.genero}"> -->
-<!-- 				<f:facet name="header">Género</f:facet> -->
-<!-- 				#{usuario.genero} -->
-<!-- 			</p:column> -->
+			<!-- 			<p:column sortBy="#{usuario.genero}"> -->
+			<!-- 				<f:facet name="header">Género</f:facet> -->
+			<!-- 				#{usuario.genero} -->
+			<!-- 			</p:column> -->
 
-<!-- 			<p:column sortBy="#{usuario.localidad}"> -->
-<!-- 				<f:facet name="header">Localidad</f:facet> -->
-<!-- 				#{usuario.localidad} -->
-<!-- 			</p:column> -->
+			<!-- 			<p:column sortBy="#{usuario.localidad}"> -->
+			<!-- 				<f:facet name="header">Localidad</f:facet> -->
+			<!-- 				#{usuario.localidad} -->
+			<!-- 			</p:column> -->
 
 			<!-- 			<p:column sortBy="#{usuario.mail}"> -->
 			<!-- 				<f:facet name="header">Email</f:facet> -->
@@ -119,49 +172,56 @@
 				<p:commandButton value="Ver mas" type="button"
 					onclick="PF('${usuario}').show();" />
 
-				<p:dialog header="Informacion de usuario" widgetVar="${usuario}" showEffect="explode"
-					hideEffect="bounce" height="200">
+				<p:dialog header="Informacion de usuario" widgetVar="${usuario}"
+					showEffect="explode" hideEffect="bounce" height="200">
 
-					<h:outputLabel value="Contrasenia:${usuario.contrasenia}" /><br/>
-					<h:outputLabel value="Fecha de nacimiento:${usuario.fechaNacimiento}" /><br/>
-					<h:outputLabel value="Genero:${usuario.genero}" /><br/>
-					<h:outputLabel value="Localidad:${usuario.localidad}" /><br/>
-					<h:outputLabel value="Mail:${usuario.mail}" /><br/>
-					<h:outputLabel value="Mail personal:${usuario.mailPersonal}" /><br/>
+					<h:outputLabel value="Contrasenia:${usuario.contrasenia}" />
+					<br />
+					<h:outputLabel
+						value="Fecha de nacimiento:${usuario.fechaNacimiento}" />
+					<br />
+					<h:outputLabel value="Genero:${usuario.genero}" />
+					<br />
+					<h:outputLabel value="Localidad:${usuario.localidad}" />
+					<br />
+					<h:outputLabel value="Mail:${usuario.mail}" />
+					<br />
+					<h:outputLabel value="Mail personal:${usuario.mailPersonal}" />
+					<br />
 					<h:outputLabel value="Teléfono:${usuario.telefono}" />
 				</p:dialog>
 			</p:column>
 
 
-<!-- 			<p:column sortBy="#{usuario.telefono}"> -->
-<!-- 				<f:facet name="header">Teléfono</f:facet> -->
-<!-- 				#{usuario.telefono} -->
-<!-- 			</p:column> -->
+			<!-- 			<p:column sortBy="#{usuario.telefono}"> -->
+			<!-- 				<f:facet name="header">Teléfono</f:facet> -->
+			<!-- 				#{usuario.telefono} -->
+			<!-- 			</p:column> -->
 
-			<p:column sortBy="#{usuario.itr}">
+			<p:column sortBy="#{usuario.itr.nombre}">
 				<f:facet name="header">ITR</f:facet>
-				#{usuario.itr}
+				#{usuario.itr.nombre}
 			</p:column>
 
-			<p:column sortBy="#{usuario.rol}">
+			<p:column sortBy="#{usuario.rol.nombre}">
 				<f:facet name="header">Rol</f:facet>
-				#{usuario.rol}
+				#{usuario.rol.nombre}
 			</p:column>
 
 			<p:column sortBy="#{usuario.activo}">
 				<f:facet name="header">Activo/Eliminado</f:facet>
 				<p:selectBooleanCheckbox value="#{usuario.activo}"
-					itemLabel="Activo" disabled="true"/>
+					itemLabel="Activo" disabled="true" />
 				<p:selectBooleanCheckbox value="#{usuario.validado}"
-					itemLabel="Validado" disabled="true"/>
+					itemLabel="Validado" disabled="true" />
 			</p:column>
 			<p:column>
-				<f:facet name="header">Eliminar</f:facet>
+				<f:facet name="header">Desactivar</f:facet>
 
-				<p:commandButton value="Eliminar"
+				<p:commandButton value="Desactivar"
 					actionListener="#{gestionUsuario.setUsuarioSeleccionado(usuario)}"
 					action="#{gestionUsuario.bajaLogicaUsuario}"
-					onclick="if(!confirm('¿Estás seguro de que quieres eliminar ${usuario.nombres}?')) return false;"
+					onclick="if(!confirm('¿Estás seguro de que quieres desactivar ${usuario.nombres}?')) return false;"
 					update=":tablaUsuarios" />
 
 			</p:column>

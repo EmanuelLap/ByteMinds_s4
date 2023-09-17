@@ -40,7 +40,7 @@
 </context-param>
 <filter>
     <filter-name>AuthenticationFilter</filter-name>
-    <filter-class>com.utils.LoginFilter</filter-class>
+    <filter-class>com.byteminds.utils.LoginFilter</filter-class>
 </filter>
 <filter-mapping>
     <filter-name>AuthenticationFilter</filter-name>

@@ -35,7 +35,7 @@
 		<p:message for="usuario" style="color:red" />
 		
 		<p:outputLabel value="Contraseña" />
-		<p:inputText id="contrasenia" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.contrasenia}" placeholder="Contraseña" />
+		<p:password id="contrasenia" disabled="true" value="#{gestionUsuario.usuarioSeleccionado.contrasenia}" placeholder="Contraseña" />
 		<p:message for="contrasenia" style="color:red" />
 		
 		<p:outputLabel value="Apellidos" />
@@ -71,7 +71,7 @@
 		<p:message for="telefono" style="color:red" />
 		
 		<p:outputLabel value="ITR" />
-		<p:inputText id="itr" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.itr}" placeholder="ITR" />
+		<p:inputText id="itr" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.itr.nombre}" placeholder="ITR" />
 		<p:message for="itr" style="color:red" />
 	
 		</p:panelGrid>

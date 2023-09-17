@@ -4,17 +4,15 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:p="http://primefaces.org/ui" >
- <!-- <p:panelGrid columns="1" style="text-align: left;" cellpadding="2">  -->
     	
     	
    	<div style="background-color: #809fff;padding: 12px">
 		<span
 			style="color: white; font-size: 180%; font-family: Arial; margin: 20px">
-			Sistema de Gestion de Usuarios</span>
+			Sistema de Gestion de Usuarios ByteMinds</span>
 
 	</div>
    	
-    	
     <h:form>  
     <p:growl id="messages2"/>
      <p:menubar>
@@ -33,29 +31,29 @@
  		  <!-- Nuevo submenu para el perfil del usuario -->
             <p:submenu label="Perfil del usuario" icon="ui-icon-user">
                 <p:menuitem value="Ver perfil" outcome="/pages/VerPerfil.xhtml">
-                <f:param name="id" value="" />
-    			<f:param name="modalidad" value="insert" />
+                <f:param name="id" value="#{loginBean.userioLogeado.id}" />
+    			<f:param name="modalidad" value="view" />
     			</p:menuitem>
                 <p:menuitem value="Editar perfil" outcome="/pages/EditarPerfil.xhtml">
-                 <f:param name="id" value="" />
-    			<f:param name="modalidad" value="insert" />
+                 <f:param name="id" value="#{loginBean.userioLogeado.id}" />
+    			<f:param name="modalidad" value="edit" />
     			</p:menuitem>
                 <p:menuitem value="Cambiar contraseña" outcome="/pages/CambiarContrasena.xhtml">
-                <f:param name="id" value="" />
-    			<f:param name="modalidad" value="insert" />
+                <f:param name="id" value="#{loginBean.userioLogeado.id}" />
+    			<f:param name="modalidad" value="edit" />
     			</p:menuitem>
     
             </p:submenu>
             
  		
                    <p:menuitem value="Cerrar sesión"  action="#{loginBean.logout}" >
-<!--                 <h:commandLink value="Logout"  /> -->
+
                 </p:menuitem>
     </p:menubar>
 </h:form>
  
     
-   <!--   </p:panelGrid> -->      	
+    	
    	
     		
             
