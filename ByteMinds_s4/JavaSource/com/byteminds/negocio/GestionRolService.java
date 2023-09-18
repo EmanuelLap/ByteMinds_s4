@@ -36,6 +36,10 @@ public class GestionRolService implements Serializable {
 		
 		GestionFuncionalidadesService funcionalidad = new GestionFuncionalidadesService();
 		
+		System.out.println("Transformando informacion de ROl");
+		System.out.println("Rol id"+rol.getId());
+		System.out.println("Rol nombre"+rol.getNombre());
+		System.out.println("Rol Descripcion"+rol.getDescripcion());
 		rolDTO.setId(rol.getId());
 		rolDTO.setNombre(rol.getNombre());
 		rolDTO.setDescripcion(rol.getDescripcion());
