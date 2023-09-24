@@ -45,6 +45,25 @@
     
             </p:submenu>
             
+             <p:submenu label="Reclamos" icon="ui-icon-document">
+            <p:menuitem value="Alta de reclamos"   outcome="/pages/reclamos/altaReclamo.xhtml">
+            	<f:param name="modalidad" value="insert" />
+            </p:menuitem>
+            	
+            <p:menuitem value="Listado de reclamos" outcome="/pages/reclamos/altaReclamo.xhtml"  />
+            
+            <p:menuitem value="Modificacion de reclamos"   outcome="/pages/reclamos/altaReclamo.xhtml" >
+            	<f:param name="id" value="" />
+    			<f:param name="modalidad" value="insert" />
+            </p:menuitem>
+            <p:menuitem value="Registro de acciones"   outcome="/pages/reclamos/altaReclamo.xhtml" />
+            <p:menuitem value="Modificacion de estado"   outcome="/pages/reclamos/altaReclamo.xhtml" >
+            		<f:param name="id" value="" />
+    				<f:param name="modalidad" value="insert" />
+            </p:menuitem>
+            <p:menuitem value="Baja de reclamo"   outcome="/pages/reclamos/altaReclamo.xhtml" />
+            <p:menuitem value="Mantenimiento de lista aux"   outcome="/pages/reclamos/altaReclamo.xhtml" />
+        </p:submenu>
  		
                    <p:menuitem value="Cerrar sesión"  action="#{loginBean.logout}" >
 

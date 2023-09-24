@@ -7,6 +7,7 @@ import java.util.List;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+
 import tecnofenix.entidades.*;
 import tecnofenix.exception.*;
 import tecnofenix.interfaces.*;
@@ -899,5 +900,50 @@ public class EJBUsuarioRemoto {
 		
 		/*
 		 * METODOS TipoArea REMOTOS  FIN
+		 */
+		
+		/*
+		 * METODOS RECLAMOS REMOTOS
+		 */
+		
+		public Reclamo buscarReclamo(Reclamo id) throws UsuarioNoEncontradoException {
+			
+			return (Reclamo) reclamoBeanRemote.obtenerReclamoPorAtributo(id);
+		}
+		
+		public Reclamo buscarReclamoPorId(Integer id) throws UsuarioNoEncontradoException {
+			
+			return (Reclamo) reclamoBeanRemote.buscarReclamoPorId(id);
+		}
+		
+		public Reclamo crearReclamo(Reclamo reclamo) {
+			Reclamo reclamoNew = new Reclamo();
+			try {
+				
+				reclamoNew=reclamoBeanRemote.crearReclamo(reclamo);
+			} catch (ServiciosException e) {
+				System.out.println("Error al crear el reclamo: " + e.getMessage());
+				e.printStackTrace();
+				reclamoNew = null;
+			}
+			return reclamoNew;
+		}
+		
+		public Reclamo modificarReclamo(Reclamo reclamo) {
+			Reclamo reclamoNew = new Reclamo();
+			try {
+				
+				reclamoNew=reclamoBeanRemote.modificarReclamo(reclamo);
+			} catch (ServiciosException e) {
+				System.out.println("Error al modificar el reclamo: " + e.getMessage());
+				e.printStackTrace();
+				reclamoNew = null;
+			}
+			return reclamoNew;
+		}
+		
+		
+		/*
+		 * METODOS RECLAMOS REMOTOS FIN
 		 */
 }

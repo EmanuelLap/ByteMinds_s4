@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="/layout/layout.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">
+		<c:set var="title" value="Datos del reclamo" scope="request" />
+	</ui:define>
+
+	<ui:define name="content">
+		<f:metadata>
+			<f:viewParam name="modalidad" value="#{gestionUsuario.modalidad}" />
+			<f:event type="preRenderView"
+				listener="#{gestionUsuario.preRenderViewListener}" />
+		</f:metadata>
+
+		<h:form id="idDatosReclamos">
+			<p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+			<h:commandButton id="idVolverReclamo" immediate="true" value="Volver"
+				action="/pages/Usuarios">
+				<f:ajax />
+			</h:commandButton>
+			<h:commandButton id="idModificarReclamo" value="Modificar"
+				rendered="#{!gestionUsuario.modoEdicion}">
+				<f:param name="id" value="${gestionUsuario.id}" />
+				<f:param name="modalidad" value="update" />
+
+			</h:commandButton>
+			<h:commandButton value="Generar reclamo"
+				rendered="#{gestionUsuario.modoEdicion}" update=":form"
+				action="#{gestionUsuario.salvarCambios}">
+				<f:param name="id" value="${gestionUsuario.id}" />
+				<f:param name="modalidad" value="update" />
+			</h:commandButton>
+
+			<p:panelGrid columns="3">
+				<p:outputLabel value="Titulo de reclamo" />
+				<p:inputText id="documento"
+					disabled="#{!gestionUsuario.modoEdicion}"
+					value="#{gestionUsuario.usuarioSeleccionado.documento}" />
+				<p:message for="documento" style="color:red" />
+
+				<p:outputLabel value="Descripcion" />
+				<p:inputText id="usuario" disabled="#{!gestionUsuario.modoEdicion}"
+					value="#{gestionUsuario.usuarioSeleccionado.usuario}" />
+				<p:message for="usuario" style="color:red" />
+
+				<p:outputLabel value="Fecha" />
+				<p:calendar id="fechaNacimiento"
+					disabled="#{!gestionUsuario.modoEdicion}"
+					value="#{gestionUsuario.usuarioSeleccionado.fechaNacimiento}" />
+				<p:message for="fechaNacimiento" style="color:red" />
+
+				<p:outputLabel value="Evento / Actividad" />
+				<p:inputText id="apellidos"
+					disabled="#{!gestionUsuario.modoEdicion}"
+					value="#{gestionUsuario.usuarioSeleccionado.apellidos}" />
+				<p:message for="apellidos" style="color:red" />
+
+				<p:outputLabel value="Semestre" />
+				<p:inputText id="nombres" disabled="#{!gestionUsuario.modoEdicion}"
+					value="#{gestionUsuario.usuarioSeleccionado.nombres}" />
+				<p:message for="nombres" style="color:red" />
+
+				<p:outputLabel value="Fecha de realizacion" />
+				<p:calendar id="fechaNacimiento"
+					disabled="#{!gestionUsuario.modoEdicion}"
+					value="#{gestionUsuario.usuarioSeleccionado.fechaNacimiento}" />
+				<p:message for="fechaNacimiento" style="color:red" />
+
+				<p:outputLabel value="Docente" />
+				<p:inputText id="departamento"
+					disabled="#{!gestionUsuario.modoEdicion}"
+					value="#{gestionUsuario.usuarioSeleccionado.departamento}" />
+				<p:message for="departamento" style="color:red" />
+
+				<p:outputLabel value="Creditos" />
+				<p:inputText id="genero" disabled="#{!gestionUsuario.modoEdicion}"
+					value="#{gestionUsuario.usuarioSeleccionado.genero}" />
+				<p:message for="genero" style="color:red" />
+
+				<p:outputLabel value="Tipo tutor"
+					rendered="#{gestionUsuario.esTutor()}" />
+				<p:inputText id="tipotutor"
+					disabled="#{!gestionUsuario.modoEdicion}"
+					value="#{gestionUsuario.usuarioSeleccionado.tipoDTO.nombre}"
+					rendered="#{gestionUsuario.esTutor()}" />
+				<p:message for="tipotutor" style="color:red"
+					rendered="#{gestionUsuario.esTutor()}" />
+
+				<p:outputLabel value="Tipo area"
+					rendered="#{gestionUsuario.esTutor()}" />
+				<p:inputText id="tipoArea" disabled="#{!gestionUsuario.modoEdicion}"
+					value="#{gestionUsuario.usuarioSeleccionado.areaDTO.nombre}"
+					rendered="#{gestionUsuario.esTutor()}" />
+				<p:message for="tipoArea" style="color:red"
+					rendered="#{gestionUsuario.esTutor()}" />
+
+				<p:outputLabel value="Generacion"
+					rendered="#{gestionUsuario.esEstudiante()}" />
+				<p:inputText id="generacion"
+					disabled="#{!gestionUsuario.modoEdicion}"
+					value="#{gestionUsuario.usuarioSeleccionado.generacion}"
+					rendered="#{gestionUsuario.esEstudiante()}" />
+				<p:message for="generacion" style="color:red"
+					rendered="#{gestionUsuario.esEstudiante()}" />
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
