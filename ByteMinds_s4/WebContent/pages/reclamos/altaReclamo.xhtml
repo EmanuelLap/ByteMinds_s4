@@ -12,9 +12,9 @@
 
 	<ui:define name="content">
 		<f:metadata>
-			<f:viewParam name="modalidad" value="#{gestionUsuario.modalidad}" />
+			<f:viewParam name="modalidad" value="#{gestionReclamo.modalidad}" />
 			<f:event type="preRenderView"
-				listener="#{gestionUsuario.preRenderViewListener}" />
+				listener="#{gestionReclamo.preRenderViewListener}" />
 		</f:metadata>
 
 		<h:form id="idDatosReclamos">
@@ -22,93 +22,91 @@
 				<p:autoUpdate />
 			</p:messages>
 			<h:commandButton id="idVolverReclamo" immediate="true" value="Volver"
-				action="/pages/Usuarios">
+				action="/index">
 				<f:ajax />
 			</h:commandButton>
-			<h:commandButton id="idModificarReclamo" value="Modificar"
-				rendered="#{!gestionUsuario.modoEdicion}">
-				<f:param name="id" value="${gestionUsuario.id}" />
-				<f:param name="modalidad" value="update" />
 
-			</h:commandButton>
-			<h:commandButton value="Generar reclamo"
-				rendered="#{gestionUsuario.modoEdicion}" update=":form"
-				action="#{gestionUsuario.salvarCambios}">
-				<f:param name="id" value="${gestionUsuario.id}" />
-				<f:param name="modalidad" value="update" />
-			</h:commandButton>
+			<!-- 			<h:commandButton id="idModificarReclamo" value="Modificar" -->
+			<!-- 				rendered="#{!gestionReclamo.modoEdicion}"> -->
+			<!-- 				<f:param name="id" value="${gestionReclamo.id}" /> -->
+			<!-- 				<f:param name="modalidad" value="update" /> -->
+			<!-- 			</h:commandButton> -->
+
+			<!-- 			<h:commandButton value="Generar reclamo" -->
+			<!-- 				rendered="#{gestionReclamo.modoEdicion}" update=":form" -->
+			<!-- 				action="#{gestionReclamo.salvarCambios}"> -->
+			<!-- 				<f:param name="id" value="${gestionReclamo.id}" /> -->
+			<!-- 				<f:param name="modalidad" value="update" /> -->
+			<!-- 			</h:commandButton> -->
 
 			<p:panelGrid columns="3">
 				<p:outputLabel value="Titulo de reclamo" />
-				<p:inputText id="documento"
-					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.documento}" />
-				<p:message for="documento" style="color:red" />
+				<p:inputText id="reclamoTitulo" disabled="true"
+					value="#{gestionReclamo.reclamoSeleccionado.titulo}" />
+				<p:message for="reclamoTitulo" style="color:red" />
 
 				<p:outputLabel value="Descripcion" />
-				<p:inputText id="usuario" disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.usuario}" />
-				<p:message for="usuario" style="color:red" />
+				<p:inputTextarea id="reclamoDescripcion"
+					disabled="#{!gestionReclamo.modoEdicion}"
+					value="#{gestionReclamo.reclamoSeleccionado.detalle}" />
+				<p:message for="reclamoDescripcion" style="color:red" />
 
 				<p:outputLabel value="Fecha" />
-				<p:calendar id="fechaNacimiento"
-					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.fechaNacimiento}" />
-				<p:message for="fechaNacimiento" style="color:red" />
+				<p:calendar id="reclamoFecha" disabled="true"
+					value="#{gestionReclamo.reclamoSeleccionado.fecha}" />
+				<p:message for="reclamoFecha" style="color:red" />
+
+				<!-- 				<p:outputLabel value="Evento / Actividad" /> -->
+				<!-- 				<p:selectOneMenu id="reclamoEventoList" value="#{gestionReclamo.eventoSeleccionado}"> -->
+				<!-- 	            <f:selectItems value="#{gestionReclamo.listaDeEventosDTO}" /> -->
+				<!-- 			    <f:converter converterId="eventoConverter" /> -->
+				<!-- 	                 <p:ajax process="@this" update="fechaEvento" /> -->
+				<!--             	</p:selectOneMenu> -->
+				<!-- 				<p:message for="reclamoEventoList" style="color:red" /> -->
 
 				<p:outputLabel value="Evento / Actividad" />
-				<p:inputText id="apellidos"
-					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.apellidos}" />
-				<p:message for="apellidos" style="color:red" />
+				<p:selectOneMenu id="reclamoEventoList"
+					value="#{gestionReclamo.idEventoSeleccionado}"
+					valueChangeListener="#{gestionReclamo.actualizarEventoSeleccionado}"
+					onchange="submit()">
 
-				<p:outputLabel value="Semestre" />
-				<p:inputText id="nombres" disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.nombres}" />
-				<p:message for="nombres" style="color:red" />
+					<!-- 					<f:selectItem itemLabel="Selecciona un elemento" itemValue="0" /> -->
+					<f:selectItems value="#{gestionReclamo.listaDeEventosDTO}" />
+					<!-- 					 <p:ajax update="fechaEvento" /> -->
+					<!-- 				<f:ajax event="valueChange" listener="#{gestionReclamo.actualizarEventoSeleccionado}" execute="@this" render="@all" /> -->
+				</p:selectOneMenu>
+				<p:message for="reclamoEventoList" style="color:red" />
 
-				<p:outputLabel value="Fecha de realizacion" />
-				<p:calendar id="fechaNacimiento"
-					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.fechaNacimiento}" />
-				<p:message for="fechaNacimiento" style="color:red" />
+				<p:outputLabel value="Fecha de evento" />
+				<!-- 													rendered="#{!gestionReclamo.reclamoSeleccionado.eventoId eq null}"	 -->
+				<p:calendar id="fechaEvento" disabled="true"
+					value="#{gestionReclamo.reclamoSeleccionado.eventoId.inicio}" />
+				<p:message for="fechaEvento" style="color:red" />
 
 				<p:outputLabel value="Docente" />
-				<p:inputText id="departamento"
-					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.departamento}" />
-				<p:message for="departamento" style="color:red" />
+				<p:dataList id="reclamoEventoDocente" value="#{gestionReclamo.reclamoSeleccionado.eventoId.tutorResponsableEventoDTOCollection}" var="tutorNombre">
+        			#{tutorNombre.tutorId.nombres} #{tutorNombre.tutorId.apellidos}
+   				 </p:dataList>
+<!-- 				<p:inputText id="reclamoEventoDocente" -->
+<!-- 					disabled="#{!gestionReclamo.modoEdicion}" -->
+<!-- 					value="#{gestionReclamo.reclamoSeleccionado.eventoId.tutorResponsableEventoDTOCollection.toArray()}" /> -->
+				<p:message for="reclamoEventoDocente" style="color:red" />
+
+				<p:outputLabel value="Semestre" />
+				<p:inputText id="reclamoSemestre"
+					disabled="#{!gestionReclamo.modoEdicion}"
+					value="#{gestionReclamo.reclamoSeleccionado.semestre}" />
+				<p:message for="reclamoSemestre" style="color:red" />
+
+
 
 				<p:outputLabel value="Creditos" />
-				<p:inputText id="genero" disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.genero}" />
-				<p:message for="genero" style="color:red" />
+				<p:inputText id="reclamoCreditos"
+					disabled="#{!gestionReclamo.modoEdicion}"
+					value="#{gestionReclamo.reclamoSeleccionado.creditos}" />
+				<p:message for="reclamoCreditos" style="color:red" />
 
-				<p:outputLabel value="Tipo tutor"
-					rendered="#{gestionUsuario.esTutor()}" />
-				<p:inputText id="tipotutor"
-					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.tipoDTO.nombre}"
-					rendered="#{gestionUsuario.esTutor()}" />
-				<p:message for="tipotutor" style="color:red"
-					rendered="#{gestionUsuario.esTutor()}" />
 
-				<p:outputLabel value="Tipo area"
-					rendered="#{gestionUsuario.esTutor()}" />
-				<p:inputText id="tipoArea" disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.areaDTO.nombre}"
-					rendered="#{gestionUsuario.esTutor()}" />
-				<p:message for="tipoArea" style="color:red"
-					rendered="#{gestionUsuario.esTutor()}" />
-
-				<p:outputLabel value="Generacion"
-					rendered="#{gestionUsuario.esEstudiante()}" />
-				<p:inputText id="generacion"
-					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.generacion}"
-					rendered="#{gestionUsuario.esEstudiante()}" />
-				<p:message for="generacion" style="color:red"
-					rendered="#{gestionUsuario.esEstudiante()}" />
 			</p:panelGrid>
 		</h:form>
 	</ui:define>

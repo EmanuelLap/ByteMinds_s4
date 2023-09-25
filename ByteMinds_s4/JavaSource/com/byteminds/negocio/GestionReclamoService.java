@@ -24,32 +24,36 @@ public class GestionReclamoService implements Serializable {
 	private EJBUsuarioRemoto ejbRemoto;
 	private GestionUsuarioService gUS;
 	private GestionAccionReclamoService gAR;
+	private GestionEventoService gEvento;
 	
 	
 	public GestionReclamoService() {
 		ejbRemoto = new EJBUsuarioRemoto();
 		gUS= new GestionUsuarioService();
-		gAR = new GestionAccionReclamoService();
+//		gAR = new GestionAccionReclamoService();
+		gEvento = new GestionEventoService();
 	}
 
 	
 	public ReclamoDTO fromReclamo(Reclamo reclamoEntidad) {
 		ReclamoDTO reclamoDTO = new ReclamoDTO();
 		
-		ArrayList<AccionReclamoDTO> accionReclamoCollectionDTO = new ArrayList<AccionReclamoDTO>();
-		
-		for (AccionReclamo ac: reclamoEntidad.getAccionReclamoCollection()) {
-			accionReclamoCollectionDTO.add((AccionReclamoDTO)gAR.fromAccionReclamoEntidad(ac));
-		}
-		
-		reclamoDTO.setAccionReclamoDTOCollection(accionReclamoCollectionDTO);
+//		ArrayList<AccionReclamoDTO> accionReclamoCollectionDTO = new ArrayList<AccionReclamoDTO>();
+//		
+//		for (AccionReclamo ac: reclamoEntidad.getAccionReclamoCollection()) {
+//			accionReclamoCollectionDTO.add((AccionReclamoDTO)gAR.fromAccionReclamoEntidad(ac));
+//		}
+//		
+//		reclamoDTO.setAccionReclamoDTOCollection(accionReclamoCollectionDTO);
+		reclamoDTO.setTitulo(reclamoEntidad.getTitulo());
 		reclamoDTO.setDetalle(reclamoEntidad.getDetalle());
 		reclamoDTO.setEstudianteId(((EstudianteDTO)gUS.fromUsuario(reclamoEntidad.getEstudianteId())));
-		reclamoDTO.setEventoId(reclamoEntidad.getEventoId());
+		reclamoDTO.setEventoId(gEvento.fromEvento(reclamoEntidad.getEventoId()));
 		reclamoDTO.setFecha(reclamoEntidad.getFecha());
 		reclamoDTO.setId(reclamoEntidad.getId());
 		reclamoDTO.setDetalle(reclamoEntidad.getDetalle());
-		
+		reclamoDTO.setCreditos(reclamoEntidad.getCreditos());
+		reclamoDTO.setSemestre(reclamoEntidad.getSemestre());
 		
 		return reclamoDTO;
 	}
@@ -58,16 +62,19 @@ public class GestionReclamoService implements Serializable {
 	public Reclamo toReclamoEntidad(ReclamoDTO reclamoDTO) {
 		Reclamo reclamoEntidad = new Reclamo();
 		
-		ArrayList<AccionReclamo> accionReclamoCollection = new ArrayList<AccionReclamo>();
-		
-		for (AccionReclamoDTO acDTO: reclamoDTO.getAccionReclamoDTOCollection()) {
-			accionReclamoCollection.add((AccionReclamo)gAR.toAccionReclamoEntidad(acDTO));
-		}
-		
-		reclamoEntidad.setAccionReclamoCollection(accionReclamoCollection);
+//		ArrayList<AccionReclamo> accionReclamoCollection = new ArrayList<AccionReclamo>();
+//		
+//		for (AccionReclamoDTO acDTO: reclamoDTO.getAccionReclamoDTOCollection()) {
+//			accionReclamoCollection.add((AccionReclamo)gAR.toAccionReclamoEntidad(acDTO));
+//		}
+//		
+//		reclamoEntidad.setAccionReclamoCollection(accionReclamoCollection);
+		reclamoEntidad.setCreditos(reclamoDTO.getCreditos());
+		reclamoEntidad.setSemestre(reclamoDTO.getSemestre());
+		reclamoEntidad.setTitulo(reclamoDTO.getTitulo());
 		reclamoEntidad.setDetalle(reclamoDTO.getDetalle());
 		reclamoEntidad.setEstudianteId(((Estudiante)gUS.toUsuario(reclamoDTO.getEstudianteId())));
-		reclamoEntidad.setEventoId(reclamoDTO.getEventoId());
+		reclamoEntidad.setEventoId(gEvento.toEventoEntidad(reclamoDTO.getEventoId()));
 		reclamoEntidad.setFecha(reclamoDTO.getFecha());
 		reclamoEntidad.setId(reclamoDTO.getId());
 		reclamoEntidad.setDetalle(reclamoDTO.getDetalle());

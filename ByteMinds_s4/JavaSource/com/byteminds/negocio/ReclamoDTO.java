@@ -14,30 +14,38 @@ public class ReclamoDTO {
 	
 		@NotNull
 	    private Integer id;
-	    
-	    @NotNull
+		
+		@NotNull
+	    private String titulo;
+		
+		@NotNull
 	    private String detalle;
 	    
 	    private Date fecha;
 	    
-	    @JsonIgnore
-	    private Collection<AccionReclamoDTO> accionReclamoDTOCollection;
+//	    @JsonIgnore
+//	    private Collection<AccionReclamoDTO> accionReclamoDTOCollection;
 	    
-	    private Evento eventoId;
+	    private EventoDTO eventoId;
 	    
 	    private EstudianteDTO estudianteId;
+	    
+	    private Integer creditos;
+	    
+	    private Integer semestre;
 
 		public ReclamoDTO() {
 			super();
+					
 		}
 
 		public ReclamoDTO(@NotNull Integer id, @NotNull String detalle, Date fecha,
-				Collection<AccionReclamoDTO> accionReclamoDTOCollection, Evento eventoId, EstudianteDTO estudianteId) {
+				/*Collection<AccionReclamoDTO> accionReclamoDTOCollection,*/ EventoDTO eventoId, EstudianteDTO estudianteId) {
 			super();
 			this.id = id;
 			this.detalle = detalle;
 			this.fecha = fecha;
-			this.accionReclamoDTOCollection = accionReclamoDTOCollection;
+//			this.accionReclamoDTOCollection = accionReclamoDTOCollection;
 			this.eventoId = eventoId;
 			this.estudianteId = estudianteId;
 		}
@@ -49,7 +57,13 @@ public class ReclamoDTO {
 		public void setId(Integer id) {
 			this.id = id;
 		}
+	    public String getTitulo() {
+			return titulo;
+		}
 
+		public void setTitulo(String titulo) {
+			this.titulo = titulo;
+		}
 		public String getDetalle() {
 			return detalle;
 		}
@@ -65,20 +79,33 @@ public class ReclamoDTO {
 		public void setFecha(Date fecha) {
 			this.fecha = fecha;
 		}
-
-		public Collection<AccionReclamoDTO> getAccionReclamoDTOCollection() {
-			return accionReclamoDTOCollection;
+	    public Integer getCreditos() {
+			return creditos;
 		}
 
-		public void setAccionReclamoDTOCollection(Collection<AccionReclamoDTO> accionReclamoDTOCollection) {
-			this.accionReclamoDTOCollection = accionReclamoDTOCollection;
+		public void setCreditos(Integer creditos) {
+			this.creditos = creditos;
+		}
+		public Integer getSemestre() {
+			return semestre;
 		}
 
-		public Evento getEventoId() {
+		public void setSemestre(Integer semestre) {
+			this.semestre = semestre;
+		}
+//		public Collection<AccionReclamoDTO> getAccionReclamoDTOCollection() {
+//			return accionReclamoDTOCollection;
+//		}
+//
+//		public void setAccionReclamoDTOCollection(Collection<AccionReclamoDTO> accionReclamoDTOCollection) {
+//			this.accionReclamoDTOCollection = accionReclamoDTOCollection;
+//		}
+
+		public EventoDTO getEventoId() {
 			return eventoId;
 		}
 
-		public void setEventoId(Evento eventoId) {
+		public void setEventoId(EventoDTO eventoId) {
 			this.eventoId = eventoId;
 		}
 

@@ -1,43 +1,77 @@
 package com.byteminds.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
+
+import javax.faces.model.SelectItem;
 import javax.inject.Named;
 
 import com.byteminds.exception.PersistenciaException;
 import com.byteminds.negocio.GestionReclamoService;
-import com.byteminds.negocio.GestionUsuarioService;
+
 import com.byteminds.negocio.ReclamoDTO;
-import com.byteminds.negocio.UsuarioDTO;
+import com.byteminds.negocio.TutorResponsableEventoDTO;
+import com.byteminds.negocio.EventoDTO;
+import com.byteminds.negocio.GestionEventoService;
 import com.byteminds.remoto.EJBUsuarioRemoto;
 import com.byteminds.utils.ExceptionsTools;
+
+import tecnofenix.entidades.Evento;
 
 @Named(value = "gestionReclamo") // JEE8
 @SessionScoped // JEE8
 public class GestionReclamoBean implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@EJB
 	GestionReclamoService gestionReclamoService;
+
 	private EJBUsuarioRemoto ejbReclamoRemoto;
 
+	private GestionEventoService gestEventService;
 	private Integer id;
 	private String modalidad;
+
 	private ReclamoDTO reclamoSeleccionado;
+	private List<EventoDTO> listEventosDTO = new ArrayList<EventoDTO>();
+	private EventoDTO eventoSeleccionado = new EventoDTO();
+
+	private List<SelectItem> listaDeEventosDTO;
+
+	private Integer idEventoSeleccionado;
+
+
 	private boolean modoEdicion = false;
 
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
-	public void preRenderViewListener() {
 
+	public GestionReclamoBean() {
+		System.out.println("INICIALIZANDO GestionReclamoBean");
+		ejbReclamoRemoto = new EJBUsuarioRemoto();
+		gestEventService = new GestionEventoService();
+		cargarComboEventosDisponibles();
+		idEventoSeleccionado=0;
+		reclamoSeleccionado = new ReclamoDTO();
+		reclamoSeleccionado.setEventoId(new EventoDTO());
+		reclamoSeleccionado.setFecha(new Date(System.currentTimeMillis()));
+	}
+
+	public void preRenderViewListener() {
+		System.out.println("INICIALIZANDO GestionReclamoBean preRenderViewListener");
 		if (id != null) {
-			reclamoSeleccionado = gestionReclamoService.fromReclamo(ejbReclamoRemoto.buscarReclamoPorId(id));
+			//			reclamoSeleccionado = gestionReclamoService.fromReclamo(ejbReclamoRemoto.buscarReclamoPorId(id));
 		} else {
-			reclamoSeleccionado = new ReclamoDTO();
+//			reclamoSeleccionado = new ReclamoDTO();
+//			reclamoSeleccionado.setEventoId(new EventoDTO());
+//			reclamoSeleccionado.setFecha(new Date(System.currentTimeMillis()));
 		}
 		if (modalidad.contentEquals("view")) {
 			modoEdicion = false;
@@ -54,11 +88,11 @@ public class GestionReclamoBean implements Serializable {
 
 		}
 	}
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+
 	public String salvarCambios() {
 
 		if (reclamoSeleccionado.getId() == null) {
-			
+
 
 			ReclamoDTO nuevoReclamoDTO;
 			try {
@@ -109,6 +143,102 @@ public class GestionReclamoBean implements Serializable {
 		}
 		return "";
 	}
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
 
+	private void cargarComboEventosDisponibles(){
+		List<Evento> listEventos = new ArrayList<Evento>();
+		listEventos = ejbReclamoRemoto.listarEventos();
+		listaDeEventosDTO = new ArrayList<>();
+
+		for(Evento e :listEventos) {
+			listEventosDTO.add(gestEventService.fromEvento(e));
+
+		}
+		for(EventoDTO e :listEventosDTO) {
+			listaDeEventosDTO.add(new SelectItem(e.getId(), e.toString()));	
+		}
+	}
+	
+	public void actualizarEventoSeleccionado(ValueChangeEvent event) {
+		System.out.println(event.getNewValue()); 
+		System.out.println("idEventoSeleccionado"+idEventoSeleccionado);
+		idEventoSeleccionado=(Integer)event.getNewValue();
+		eventoSeleccionado= gestEventService.obtenerEvento((Integer)event.getNewValue());
+		System.out.println(eventoSeleccionado.toString());
+		reclamoSeleccionado.setEventoId(eventoSeleccionado);
+		
+		if(eventoSeleccionado.getTutorResponsableEventoDTOCollection() !=null) {
+			for (TutorResponsableEventoDTO tre :eventoSeleccionado.getTutorResponsableEventoDTOCollection()) {
+				System.out.println("Tutor "+tre.getTutorId().getNombres() + " "+tre.getTutorId().getApellidos());
+				
+			}
+		}else {
+			System.out.println("El evento no devolvio tutores");
+		}
+		
+//		 FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("fechaEvento");
+//	return"";
+	}
+
+
+	public List<EventoDTO> getListEventosDTO() {
+		return listEventosDTO;
+	}
+
+	public void setListEventosDTO(List<EventoDTO> listEventosDTO) {
+		this.listEventosDTO = listEventosDTO;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getModalidad() {
+		return modalidad;
+	}
+
+	public void setModalidad(String modalidad) {
+		this.modalidad = modalidad;
+	}
+
+	public boolean getModoEdicion() {
+		return modoEdicion;
+	}
+
+	public void setModoEdicion(boolean modoEdicion) {
+		this.modoEdicion = modoEdicion;
+	}
+	public ReclamoDTO getReclamoSeleccionado() {
+		return reclamoSeleccionado;
+	}
+
+	public void setReclamoSeleccionado(ReclamoDTO reclamoSeleccionado) {
+		this.reclamoSeleccionado = reclamoSeleccionado;
+	}
+
+
+	public List<SelectItem> getListaDeEventosDTO() {
+		return listaDeEventosDTO;
+	}
+
+	public void setListaDeEventosDTO(List<SelectItem> listaDeEventosDTO) {
+		this.listaDeEventosDTO = listaDeEventosDTO;
+	}
+	public EventoDTO getEventoSeleccionado() {
+		return eventoSeleccionado;
+	}
+
+	public void setEventoSeleccionado(EventoDTO eventoSeleccionado) {
+		this.eventoSeleccionado = eventoSeleccionado;
+	}
+	public Integer getIdEventoSeleccionado() {
+		return idEventoSeleccionado;
+	}
+
+	public void setIdEventoSeleccionado(Integer idEventoSeleccionado) {
+		this.idEventoSeleccionado = idEventoSeleccionado;
+	}
 }
