@@ -12,6 +12,8 @@ public class EstudianteDTO extends UsuarioDTO {
 
 	public EstudianteDTO() {
 		// TODO Auto-generated constructor stub
+		this.setValidado(false);
+		this.setActivo(true);
 	}
 
 	public EstudianteDTO(Integer documento,
@@ -43,4 +45,11 @@ public class EstudianteDTO extends UsuarioDTO {
 		this.generacion = generacion;
 	}
 
+	@Override
+	public String toString() {
+		return "EstudianteDTO [generacion=" + generacion + "]";
+	}
+
+	
+	
 }

@@ -7,6 +7,8 @@ public class AnalistaDTO extends UsuarioDTO{
 	
 	public AnalistaDTO() {
 		// TODO Auto-generated constructor stub
+		this.setValidado(false);
+		this.setActivo(true);
 	}
 
 	public AnalistaDTO(Integer documento, String usuario, String contrasenia, String apellidos, String nombres,
@@ -17,5 +19,6 @@ public class AnalistaDTO extends UsuarioDTO{
 				mailPersonal, telefono, itr, rol, activo, validado);
 		// TODO Auto-generated constructor stub
 	}
-	
+
+
 }

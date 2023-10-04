@@ -25,7 +25,7 @@ public class LoginFilter implements Filter {
         
         String path = request.getRequestURI().substring(request.getContextPath().length());
 
-        if (path.startsWith("/layout") || path.equals("/css")) {
+        if (path.startsWith("/layout") || path.equals("/css")|| path.equals("/registroweb/registro.xhtml")) {
             // No aplicamos el filtro a /layout o /login
             chain.doFilter(req, res); 
             return;

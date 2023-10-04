@@ -299,6 +299,19 @@ public class EJBUsuarioRemoto {
 		return lista;
 		
 	}
+	
+	public Itr obtenerITRporId(Integer id) {
+		Itr itr = new Itr();
+		try {
+			itr = itrRemote.findById(id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch blocks
+			e.printStackTrace();
+		}
+		return itr;
+		
+	}
+	
 	/*
 	 * METODOS ITR REMOTOS FIN
 	 */

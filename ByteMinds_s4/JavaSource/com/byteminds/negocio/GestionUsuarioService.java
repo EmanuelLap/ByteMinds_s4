@@ -5,19 +5,14 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
 
 import com.byteminds.exception.PersistenciaException;
 import com.byteminds.remoto.EJBUsuarioRemoto;
 
 import tecnofenix.entidades.Analista;
 import tecnofenix.entidades.Estudiante;
-import tecnofenix.entidades.TipoArea;
-import tecnofenix.entidades.TipoTutorTipo;
 import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.Usuario;
 
@@ -43,13 +38,13 @@ public class GestionUsuarioService implements Serializable {
 		GestionTipoTutorService gTT = new GestionTipoTutorService();
 
 		if (usuarioEntidad instanceof Analista) {
-			System.out.println("Es instancia de ANALISTA -->"+usuarioEntidad.getUTtipo());
+//			System.out.println("Es instancia de ANALISTA -->"+usuarioEntidad.getUTtipo());
 			if (usuarioEntidad.getUTtipo().equals("ANALISTA")) {
 				usuarioDTO = new AnalistaDTO();
 			}
 		}
 		if (usuarioEntidad instanceof Estudiante) {
-			System.out.println("Es instancia de ESTUDIANTE -->"+usuarioEntidad.getUTtipo());
+//			System.out.println("Es instancia de ESTUDIANTE -->"+usuarioEntidad.getUTtipo());
 			if (usuarioEntidad.getUTtipo().equals("ESTUDIANTE")) {
 				usuarioDTO = new EstudianteDTO();
 				if (((Estudiante) usuarioEntidad).getGeneracion() != null) {
@@ -58,7 +53,7 @@ public class GestionUsuarioService implements Serializable {
 			}
 		}
 		if (usuarioEntidad instanceof Tutor) {
-			System.out.println("Es instancia de TUTOR -->"+usuarioEntidad.getUTtipo());
+//			System.out.println("Es instancia de TUTOR -->"+usuarioEntidad.getUTtipo());
 			if (usuarioEntidad.getUTtipo().equals("TUTOR")) {
 				usuarioDTO = new TutorDTO();
 				if (((Tutor) usuarioEntidad).getTipo() != null) {
@@ -84,7 +79,7 @@ public class GestionUsuarioService implements Serializable {
 		usuarioDTO.setMailPersonal(usuarioEntidad.getMailPersonal());
 
 		usuarioDTO.setItr(gItr.fromITR(usuarioEntidad.getItr()));
-		System.out.println("usuarioEntidad.getRol() "+usuarioEntidad.getRol().getNombre());
+//		System.out.println("usuarioEntidad.getRol() "+usuarioEntidad.getRol().getNombre());
 		usuarioDTO.setRol(gRol.fromRol(usuarioEntidad.getRol()));
 
 		usuarioDTO.setTelefono(usuarioEntidad.getTelefono());
@@ -159,7 +154,9 @@ public class GestionUsuarioService implements Serializable {
 		usuario.setLocalidad(userDTO.getLocalidad());
 		usuario.setMail(userDTO.getMail());
 		usuario.setMailPersonal(userDTO.getMailPersonal());
-
+		
+		usuario.setUTipoo(userDTO.getUTipo());
+		
 		usuario.setItr(gItr.toITR(userDTO.getItr()));
 		usuario.setRol(gRol.toRol(userDTO.getRol()));
 

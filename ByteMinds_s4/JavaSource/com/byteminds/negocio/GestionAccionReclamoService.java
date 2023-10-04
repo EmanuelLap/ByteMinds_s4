@@ -1,20 +1,17 @@
 package com.byteminds.negocio;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.ejb.EJB;
+
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
-
-import com.byteminds.exception.PersistenciaException;
 import com.byteminds.remoto.EJBUsuarioRemoto;
 
 import tecnofenix.entidades.AccionReclamo;
+//import tecnofenix.entidades.AccionReclamo;
 import tecnofenix.entidades.Analista;
+
 
 
 @Stateless
@@ -35,7 +32,6 @@ public class GestionAccionReclamoService implements Serializable {
 		ejbRemoto = new EJBUsuarioRemoto();
 		gRS = new GestionReclamoService();
 		gUS = new GestionUsuarioService();
-		
 	}
 	
 	public AccionReclamoDTO fromAccionReclamoEntidad(AccionReclamo accionReclamoEntidad) {
@@ -48,6 +44,7 @@ public class GestionAccionReclamoService implements Serializable {
 		accionReclamoDTO.setFecha(accionReclamoEntidad.getFecha());
 		
 		accionReclamoDTO.setReclamoId(gRS.fromReclamo(accionReclamoEntidad.getReclamoId()));
+		
 		accionReclamoDTO.setAnalistaId(((AnalistaDTO)gUS.fromUsuario(accionReclamoEntidad.getAnalistaId())));
 		
 		
@@ -60,21 +57,12 @@ public class GestionAccionReclamoService implements Serializable {
 		
 		
 		accionReclamoEntidad.setId(accionReclamoDTO.getId());
-
 		accionReclamoEntidad.setDetalle(accionReclamoDTO.getDetalle());
-		accionReclamoEntidad.setFecha(accionReclamoDTO.getFecha());
+		accionReclamoEntidad.setFecha(accionReclamoDTO.getFecha());		
 		
-	
 		accionReclamoEntidad.setReclamoId(gRS.toReclamoEntidad(accionReclamoDTO.getReclamoId()));
 		accionReclamoEntidad.setAnalistaId(((Analista)gUS.toUsuario(accionReclamoDTO.getAnalistaId())));
-	
-		
-		
+
 		return accionReclamoEntidad;
 	}
-
-	// servicios para capa de Presentacion
-
-
-
 }

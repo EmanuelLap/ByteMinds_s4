@@ -19,9 +19,20 @@
  		
         <p:submenu label="Gestion de Usuarios" icon="ui-icon-document">
             <p:menuitem value="Seleccion de usuario"   outcome="/pages/Usuarios.xhtml" />
-            <p:menuitem value="Alta de usuario" outcome="/pages/DatosUsuario.xhtml"  >
+            <p:menuitem value="Alta de usuario estudiante" outcome="/pages/DatosUsuario.xhtml"  >
             	<f:param name="id" value="" />
     			<f:param name="modalidad" value="insert" />
+    			<f:param name="u_tipo" value="ESTUDIANTE" />
+            </p:menuitem>
+            <p:menuitem value="Alta de usuario tutor" outcome="/pages/DatosUsuario.xhtml"  >
+            	<f:param name="id" value="" />
+    			<f:param name="modalidad" value="insert" />
+            	<f:param name="u_tipo" value="TUTOR" />
+            </p:menuitem>
+            <p:menuitem value="Alta de usuario analista" outcome="/pages/DatosUsuario.xhtml"  >
+            	<f:param name="id" value="" />
+    			<f:param name="modalidad" value="insert" />
+    			<f:param name="u_tipo" value="ANALISTA" />
             </p:menuitem>
              
         </p:submenu>
@@ -39,6 +50,24 @@
     			<f:param name="modalidad" value="edit" />
     			</p:menuitem>
                 <p:menuitem value="Cambiar contraseña" outcome="/pages/CambiarContrasena.xhtml">
+                <f:param name="id" value="#{loginBean.userioLogeado.id}" />
+    			<f:param name="modalidad" value="edit" />
+    			</p:menuitem>
+    
+            </p:submenu>
+            
+            
+            <!-- Nuevo submenu para eventos -->
+            <p:submenu label="Eventos" icon="ui-icon-user">
+                <p:menuitem value="Listar Eventos" outcome="/pages/eventos/listadoEventos.xhtml">
+                <f:param name="id" value="#{loginBean.userioLogeado.id}" />
+    			<f:param name="modalidad" value="view" />
+    			</p:menuitem>
+                <p:menuitem value="Nuevo evento" outcome="/pages/eventos/datosEvento.xhtml">
+                 <f:param name="id" value="#{loginBean.userioLogeado.id}" />
+    			<f:param name="modalidad" value="edit" />
+    			</p:menuitem>
+                <p:menuitem value="Editar evento" outcome="/pages/eventos/datosEvento.xhtml">
                 <f:param name="id" value="#{loginBean.userioLogeado.id}" />
     			<f:param name="modalidad" value="edit" />
     			</p:menuitem>

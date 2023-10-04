@@ -8,12 +8,16 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 import javax.inject.Named;
 
 import com.byteminds.exception.PersistenciaException;
+import com.byteminds.remoto.EJBUsuarioRemoto;
 
 import tecnofenix.entidades.Analista;
 import tecnofenix.entidades.Estudiante;
+import tecnofenix.entidades.Evento;
 import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.TipoArea;
 import tecnofenix.entidades.TipoTutorTipo;
@@ -28,8 +32,13 @@ public class GestionItrService implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private EJBUsuarioRemoto ejbRemoto;
 
-
+	public GestionItrService() {
+	ejbRemoto = new EJBUsuarioRemoto();
+	}
+	
 	public ItrDTO fromITR(Itr itr) {
 		ItrDTO itrDTO = new ItrDTO();
 		
@@ -52,4 +61,15 @@ public class GestionItrService implements Serializable {
 	}
 
 
+	public ItrDTO obtenerITRSeleccionado(Integer id) {
+		ItrDTO itrDTO = new ItrDTO();
+		Itr itr = new Itr();
+		itr=ejbRemoto.obtenerITRporId(id);
+		System.out.println("ITR DE LA BASE ="+itr.toString());
+		itrDTO= fromITR(itr);
+		System.out.println("ITRDTO DEVUELTO ="+itrDTO.toString());
+		return itrDTO;
+	}
+
+	
 }

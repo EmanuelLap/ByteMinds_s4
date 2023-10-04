@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Registro de usuario</title>
+	<style>
+</style>
+</h:head>
+<h:body>
+	<div class="registro-form">
+
+		<p:panel header="Registro" style="text-align: center;">
+
+
+			<f:metadata>
+				<f:viewParam name="id" value="#{gestionUsuario.id}" />
+				<f:viewParam name="modalidad" value="#{gestionUsuario.modalidad}" />
+				<f:viewParam name="u_tipo" value="#{gestionUsuario.u_tipo}" />
+				<f:event type="preRenderView"
+					listener="#{gestionUsuario.preRenderViewListener}" />
+			</f:metadata>
+
+
+
+			<h:form id="idRegistro">
+
+				<p:messages id="messages" showDetail="true" closable="true">
+					<p:autoUpdate />
+				</p:messages>
+				<h:button outcome="/login.xhtml" value="Volver" />
+				<h:commandButton id="idModificar" value="Modificar"
+					rendered="#{!gestionUsuario.modoEdicion}">
+					<f:param name="id" value="${gestionUsuario.id}" />
+					<f:param name="modalidad" value="update" />
+
+				</h:commandButton>
+				<h:commandButton value="Salvar cambios"
+					rendered="#{gestionUsuario.modoEdicion}" update=":form"
+					action="#{gestionUsuario.salvarCambios}">
+					<f:param name="id" value="${gestionUsuario.id}" />
+					<f:param name="modalidad" value="update" />
+				</h:commandButton>
+
+
+				<p:panelGrid columns="3">
+
+					<p:outputLabel value="ID" />
+					<p:inputText id="id" disabled="true"
+						value="#{gestionUsuario.usuarioSeleccionado.id}" />
+					<p:message for="id" style="color:red" />
+
+					<p:outputLabel value="Documento" />
+					<p:inputText id="documento"
+						disabled="#{!gestionUsuario.modoEdicion}"
+						value="#{gestionUsuario.usuarioSeleccionado.documento}" />
+					<p:message for="documento" style="color:red" />
+
+					<p:outputLabel value="Usuario" />
+					<p:inputText id="usuario" disabled="#{!gestionUsuario.modoEdicion}"
+						value="#{gestionUsuario.usuarioSeleccionado.usuario}" />
+					<p:message for="usuario" style="color:red" />
+
+					<p:outputLabel value="Contraseña" />
+					<p:inputText id="contrasenia"
+						disabled="#{!gestionUsuario.modoEdicion}"
+						value="#{gestionUsuario.usuarioSeleccionado.contrasenia}" />
+					<p:message for="contrasenia" style="color:red" />
+
+					<p:outputLabel value="Apellidos" />
+					<p:inputText id="apellidos"
+						disabled="#{!gestionUsuario.modoEdicion}"
+						value="#{gestionUsuario.usuarioSeleccionado.apellidos}" />
+					<p:message for="apellidos" style="color:red" />
+
+					<p:outputLabel value="Nombres" />
+					<p:inputText id="nombres" disabled="#{!gestionUsuario.modoEdicion}"
+						value="#{gestionUsuario.usuarioSeleccionado.nombres}" />
+					<p:message for="nombres" style="color:red" />
+
+					<p:outputLabel value="Fecha de Nacimiento" />
+					<p:calendar id="fechaNacimiento"
+						disabled="#{!gestionUsuario.modoEdicion}"
+						value="#{gestionUsuario.usuarioSeleccionado.fechaNacimiento}" 
+						onblur="if(!validarEdad()){alert('Debes ser mayor de 18 años.'); this.value='';}"
+						/>
+					<p:message for="fechaNacimiento" style="color:red" />
+
+					<p:outputLabel value="Departamento" />
+					<p:inputText id="departamento"
+						disabled="#{!gestionUsuario.modoEdicion}"
+						value="#{gestionUsuario.usuarioSeleccionado.departamento}" />
+					<p:message for="departamento" style="color:red" />
+
+					<p:outputLabel value="Género" />
+					<p:selectOneMenu id="genero"
+						value="#{gestionUsuario.usuarioSeleccionado.genero}">
+						<f:selectItem itemLabel="Seleccione genero" itemValue="-1" />
+						<f:selectItem itemLabel="Masculino" itemValue="M" />
+						<f:selectItem itemLabel="Femenino" itemValue="F" />
+						<f:selectItem itemLabel="Prefiero No decirlo" itemValue="O" />
+					</p:selectOneMenu>
+					<p:message for="genero" style="color:red" />
+
+					<p:outputLabel value="Localidad" />
+					<p:inputText id="localidad"
+						disabled="#{!gestionUsuario.modoEdicion}"
+						value="#{gestionUsuario.usuarioSeleccionado.localidad}" />
+					<p:message for="localidad" style="color:red" />
+
+					<p:outputLabel value="Email" />
+					<p:inputText id="mail" disabled="#{!gestionUsuario.modoEdicion}"
+						value="#{gestionUsuario.usuarioSeleccionado.mail}" />
+					<p:message for="mail" style="color:red" />
+
+					<p:outputLabel value="Email Personal" />
+					<p:inputText id="mailPersonal"
+						disabled="#{!gestionUsuario.modoEdicion}"
+						value="#{gestionUsuario.usuarioSeleccionado.mailPersonal}" />
+					<p:message for="mailPersonal" style="color:red" />
+
+					<p:outputLabel value="Teléfono" />
+					<p:inputText id="telefono"
+						disabled="#{!gestionUsuario.modoEdicion}"
+						value="#{gestionUsuario.usuarioSeleccionado.telefono}" />
+					<p:message for="telefono" style="color:red" />
+
+
+					<p:outputLabel value="Tipo tutor"
+						rendered="#{gestionUsuario.esTutor()}" />
+					<p:selectOneMenu id="tipoTutorParaUsuarioTutor"
+						rendered="#{gestionUsuario.esTutor()}"
+						value="#{gestionUsuario.tipoTutorDTOSeleccionadoId}">
+						<f:selectItem itemLabel="Seleccione tipo tutor" itemValue="-1" />
+						<f:selectItems value="#{combosBean.comboTipoTutorSelectItem}" />
+						<p:ajax process="@this" partialSubmit="true"
+							listener="#{gestionUsuario.actualizarTipoTutorSeleccionado}" />
+
+					</p:selectOneMenu>
+
+					<p:message for="tipoTutorParaUsuarioTutor" style="color:red"
+						rendered="#{gestionUsuario.esTutor()}" />
+
+
+					<p:outputLabel value="Tipo area"
+						rendered="#{gestionUsuario.esTutor()}" />
+					<p:selectOneMenu id="tipoAreaParaUsuarioTutor"
+						rendered="#{gestionUsuario.esTutor()}"
+						value="#{gestionUsuario.tipoAreaDTOSeleccionadoId}">
+						<f:selectItem itemLabel="Seleccione tipo area" itemValue="-1" />
+						<f:selectItems value="#{combosBean.comboTipoAreaSelectItem}" />
+						<p:ajax process="@this" partialSubmit="true"
+							listener="#{gestionUsuario.actualizarTipoTutorAreaSeleccionado}" />
+
+					</p:selectOneMenu>
+					<p:message for="tipoAreaParaUsuarioTutor" style="color:red"
+						rendered="#{gestionUsuario.esTutor()}" />
+
+
+
+
+					<p:outputLabel value="Generacion"
+						rendered="#{gestionUsuario.esEstudiante()}" />
+					<p:selectOneMenu id="generacion"
+						value="#{gestionUsuario.usuarioSeleccionado.generacion}"
+						disabled="#{!gestionUsuario.modoEdicion}"
+						rendered="#{gestionUsuario.esEstudiante()}">
+						<f:selectItems value="#{gestionUsuario.anosGeneracion}" var="ano"
+							itemValue="#{ano}" itemLabel="#{ano}" />
+					</p:selectOneMenu>
+					<p:message for="generacion" style="color:red"
+						rendered="#{gestionUsuario.esEstudiante()}" />
+
+
+
+					<p:outputLabel value="ITRCombo" />
+					<p:selectOneMenu id="itrListaDeITRparaUsuario"
+						value="#{gestionUsuario.itrDTOSeleccionadoId}">
+						<f:selectItem itemLabel="Seleccione Itr" itemValue="-1" />
+						<f:selectItems value="#{combosBean.comboItrSelectItem}" />
+						<p:ajax process="@this" partialSubmit="true"
+							listener="#{gestionUsuario.actualizarITRSeleccionado}" />
+
+					</p:selectOneMenu>
+					<p:message for="itrListaDeITRparaUsuario" style="color:red" />
+
+
+					<p:outputLabel value="Rol" />
+					<p:selectOneMenu id="listaDerolDTOparaUsuario"
+						value="#{gestionUsuario.rolDTOSeleccionadoId}">
+						<f:selectItem itemLabel="Seleccione Rol" itemValue="-1" />
+						<f:selectItems value="#{combosBean.comboROLSelectItem}" />
+						<f:ajax process="@this" partialSubmit="true"
+							listener="#{gestionUsuario.actualizarROLSeleccionado}" />
+
+					</p:selectOneMenu>
+					<p:message for="listaDerolDTOparaUsuario" style="color:red" />
+
+					<p:outputLabel value="Activo" />
+					<p:selectBooleanCheckbox id="activo"
+						disabled="#{!gestionUsuario.modoEdicion}"
+						value="#{gestionUsuario.usuarioSeleccionado.activo}" />
+					<p:message for="activo" style="color:red" />
+
+					<p:outputLabel value="Validado" />
+					<p:selectBooleanCheckbox id="validado"
+						disabled="#{!gestionUsuario.modoEdicion}"
+						value="#{gestionUsuario.usuarioSeleccionado.validado}" />
+					<p:message for="validado" style="color:red" />
+
+
+					<p:commandButton id="botonBeanROl2"
+						action="#{gestionUsuario.print()}" value="Imprimir" />
+				</p:panelGrid>
+
+			</h:form>
+
+
+		</p:panel>
+
+	</div>
+	<script>
+	 function validarEdad() {
+	        var fechaNacimiento = document.getElementById('form:fechaNacimiento_input').value;
+	        var fechaNacimientoDate = new Date(fechaNacimiento);
+	        var hoy = new Date();
+	        var edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+	        var m = hoy.getMonth() - fechaNacimientoDate.getMonth();
+	        if (m &lt; 0 || (m === 0 &amp;&amp; hoy.getDate() &lt; fechaNacimientoDate.getDate())) {
+	            edad--;
+	        }
+	        return edad &gt;= 18;
+	    }
+ </script> 
+	
+</h:body>
+</html>
+
