@@ -59,6 +59,7 @@ public class GestionUsuariosBean implements Serializable{
 
 	private List<UsuarioDTO> usuariosSeleccionados;
 	private UsuarioDTO usuarioSeleccionado;
+	
 	public GestionUsuariosBean() {
 		super();
 		criterioNombre="";

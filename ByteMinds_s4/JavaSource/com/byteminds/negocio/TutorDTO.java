@@ -10,6 +10,8 @@ public class TutorDTO extends UsuarioDTO {
 
 	public TutorDTO() {
 		// TODO Auto-generated constructor stub
+		this.setValidado(false);
+		this.setActivo(true);
 	}
 
 
@@ -40,5 +42,6 @@ public class TutorDTO extends UsuarioDTO {
 	public void setAreaDTO(TipoAreaDTO areaDTO) {
 		this.areaDTO = areaDTO;
 	}
+
 
 }

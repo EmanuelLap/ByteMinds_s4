@@ -97,8 +97,6 @@ public class GestionEventoService implements Serializable {
 	}
 	
 	public TutorResponsableEventoDTO obtenerTutorResponsableEventoDTO() {
-		ejbRemoto.obtenerTutoresDeEvento()
-		
-		return null;
+		return new TutorResponsableEventoDTO();
 	}
 }

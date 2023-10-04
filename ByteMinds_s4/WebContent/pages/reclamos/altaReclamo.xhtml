@@ -69,11 +69,7 @@
 					value="#{gestionReclamo.idEventoSeleccionado}"
 					valueChangeListener="#{gestionReclamo.actualizarEventoSeleccionado}"
 					onchange="submit()">
-
-					<!-- 					<f:selectItem itemLabel="Selecciona un elemento" itemValue="0" /> -->
-					<f:selectItems value="#{gestionReclamo.listaDeEventosDTO}" />
-					<!-- 					 <p:ajax update="fechaEvento" /> -->
-					<!-- 				<f:ajax event="valueChange" listener="#{gestionReclamo.actualizarEventoSeleccionado}" execute="@this" render="@all" /> -->
+					<f:selectItems value="#{gestionReclamo.listaDeEventosDTO}" />	
 				</p:selectOneMenu>
 				<p:message for="reclamoEventoList" style="color:red" />
 

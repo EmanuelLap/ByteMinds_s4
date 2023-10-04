@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
 <ui:composition template="/layout/layout.xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -7,12 +6,12 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="title">
-		<c:set var="title" value="Datos de Usuario" scope="request" />
+		<c:set var="title" value="Datos Evento" scope="request" />
 	</ui:define>
 
 	<ui:define name="content">
-
-		<f:metadata>
+	
+	<f:metadata>
 			<f:viewParam name="id" value="#{gestionUsuario.id}" />
 			<f:viewParam name="modalidad" value="#{gestionUsuario.modalidad}" />
 			<f:viewParam name="u_tipo" value="#{gestionUsuario.u_tipo}" />
@@ -20,15 +19,13 @@
 				listener="#{gestionUsuario.preRenderViewListener}" />
 		</f:metadata>
 	
-		<h:form id="idDatosUsuario">
+		<h:form id="idDatosEvento">
 
 			<p:messages id="messages" showDetail="true" closable="true">
 				<p:autoUpdate />
 			</p:messages>
-			<h:commandButton id="idVolver" immediate="true" value="Volver"
-				action="/pages/Usuarios">
-				<f:ajax />
-			</h:commandButton>
+			<h:button outcome="/" value="Volver" />
+			
 			<h:commandButton id="idModificar" value="Modificar"
 				rendered="#{!gestionUsuario.modoEdicion}">
 				<f:param name="id" value="${gestionUsuario.id}" />
@@ -61,7 +58,7 @@
 					value="#{gestionUsuario.usuarioSeleccionado.usuario}" />
 				<p:message for="usuario" style="color:red" />
 
-				<p:outputLabel value="Contraseña" />
+				<p:outputLabel value="ContraseÃ±a" />
 				<p:inputText id="contrasenia"
 					disabled="#{!gestionUsuario.modoEdicion}"
 					value="#{gestionUsuario.usuarioSeleccionado.contrasenia}" />
@@ -90,7 +87,7 @@
 					value="#{gestionUsuario.usuarioSeleccionado.departamento}" />
 				<p:message for="departamento" style="color:red" />
 
-				<p:outputLabel value="Género" />
+				<p:outputLabel value="GÃ©nero" />
 				<p:selectOneMenu id="genero" value="#{gestionUsuario.usuarioSeleccionado.genero}">
 					<f:selectItem itemLabel="Seleccione genero" itemValue="-1" />
 					<f:selectItem itemLabel="Masculino" itemValue="M" />
@@ -116,7 +113,7 @@
 					value="#{gestionUsuario.usuarioSeleccionado.mailPersonal}" />
 				<p:message for="mailPersonal" style="color:red" />
 
-				<p:outputLabel value="Teléfono" />
+				<p:outputLabel value="TelÃ©fono" />
 				<p:inputText id="telefono" disabled="#{!gestionUsuario.modoEdicion}"
 					value="#{gestionUsuario.usuarioSeleccionado.telefono}" />
 				<p:message for="telefono" style="color:red" />
@@ -209,4 +206,3 @@
 
 	</ui:define>
 </ui:composition>
-

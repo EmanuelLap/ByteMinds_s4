@@ -58,6 +58,12 @@ public class GestionTipoAreaService implements Serializable {
 
 	// servicios para capa de Presentacion
 
+public TipoAreaDTO obtenerTipoAreaPorId(Integer id) {
+
+	
+	return null;
+}
+
 
 
 }
