@@ -80,7 +80,7 @@
 
 				<p:outputLabel value="Fecha de Nacimiento" />
 				<p:calendar id="fechaNacimiento"
-					disabled="#{!gestionUsuario.modoEdicion}"
+					disabled="#{!gestionUsuario.modoEdicion}"  maxdate="#{gestionUsuario.fechaMaximaNacimiento}"
 					value="#{gestionUsuario.usuarioSeleccionado.fechaNacimiento}" />
 				<p:message for="fechaNacimiento" style="color:red" />
 

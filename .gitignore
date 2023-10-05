@@ -6,7 +6,7 @@ target/
 # Por ejemplo, si usas Gradle, puedes incluir `build/`
 # Si estás descargando las dependencias manualmente, asegúrate de excluir el directorio correspondiente
 # Por ejemplo, si usas lib/ para almacenar las dependencias, incluye lib/
-lib/
+ByteMinds_s4/WebContent/WEB-INF/classes/
 
 # Archivos de configuración específicos de IDEs
 .idea/

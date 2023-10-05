@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+
 import com.byteminds.remoto.EJBUsuarioRemoto;
 
 import tecnofenix.entidades.Evento;
@@ -11,6 +14,8 @@ import tecnofenix.entidades.ModalidadEvento;
 import tecnofenix.entidades.TipoEvento;
 import tecnofenix.entidades.TutorResponsableEvento;
 
+@Stateless
+@LocalBean
 public class GestionEventoService implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

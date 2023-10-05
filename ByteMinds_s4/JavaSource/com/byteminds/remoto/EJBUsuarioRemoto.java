@@ -11,12 +11,12 @@ import javax.naming.NamingException;
 import tecnofenix.entidades.*;
 import tecnofenix.exception.*;
 import tecnofenix.interfaces.*;
-import tecnofenix.servicios.ConexionClienteJNDIRemote;
+
 
 
 public class EJBUsuarioRemoto {
 
-	private static String CONEXION_CLIENTE_EJB = "ejb:/TecnoFenixEJB/ConexionClienteJNDI!tecnofenix.servicios.ConexionClienteJNDIRemote";
+	private static String CONEXION_CLIENTE_EJB = "ejb:/TecnoFenixEJB/ConexionClienteJNDI!tecnofenix.interfaces.ConexionClienteJNDIRemote";
 	private static String RUTA_USUARIO_EJB = "ejb:/TecnoFenixEJB/UsuarioBean!tecnofenix.interfaces.UsuarioBeanRemote";
 	private static String RUTA_USUARIO_ESTUDIANTE_EJB = "ejb:/TecnoFenixEJB/EstudianteBean!tecnofenix.interfaces.EstudianteBeanRemote";
 	private static String RUTA_USUARIO_TUTOR_EJB = "ejb:/TecnoFenixEJB/TutorBean!tecnofenix.interfaces.TutorBeanRemote";

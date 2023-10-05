@@ -81,9 +81,8 @@
 
 					<p:outputLabel value="Fecha de Nacimiento" />
 					<p:calendar id="fechaNacimiento"
-						disabled="#{!gestionUsuario.modoEdicion}"
+						disabled="#{!gestionUsuario.modoEdicion}"  maxdate="#{gestionUsuario.fechaMaximaNacimiento}"
 						value="#{gestionUsuario.usuarioSeleccionado.fechaNacimiento}" 
-						onblur="if(!validarEdad()){alert('Debes ser mayor de 18 años.'); this.value='';}"
 						/>
 					<p:message for="fechaNacimiento" style="color:red" />
 
@@ -220,19 +219,6 @@
 		</p:panel>
 
 	</div>
-	<script>
-	 function validarEdad() {
-	        var fechaNacimiento = document.getElementById('form:fechaNacimiento_input').value;
-	        var fechaNacimientoDate = new Date(fechaNacimiento);
-	        var hoy = new Date();
-	        var edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
-	        var m = hoy.getMonth() - fechaNacimientoDate.getMonth();
-	        if (m &lt; 0 || (m === 0 &amp;&amp; hoy.getDate() &lt; fechaNacimientoDate.getDate())) {
-	            edad--;
-	        }
-	        return edad &gt;= 18;
-	    }
- </script> 
 	
 </h:body>
 </html>

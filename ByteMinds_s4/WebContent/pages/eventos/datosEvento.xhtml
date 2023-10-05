@@ -12,11 +12,11 @@
 	<ui:define name="content">
 	
 	<f:metadata>
-			<f:viewParam name="id" value="#{gestionUsuario.id}" />
-			<f:viewParam name="modalidad" value="#{gestionUsuario.modalidad}" />
-			<f:viewParam name="u_tipo" value="#{gestionUsuario.u_tipo}" />
+			<f:viewParam name="id" value="#{gestionEventoBean.id}" />
+			<f:viewParam name="modalidad" value="#{gestionEventoBean.modalidad}" />
+			
 			<f:event type="preRenderView"
-				listener="#{gestionUsuario.preRenderViewListener}" />
+				listener="#{gestionEventoBean.preRenderViewListener}" />
 		</f:metadata>
 	
 		<h:form id="idDatosEvento">
@@ -27,15 +27,15 @@
 			<h:button outcome="/" value="Volver" />
 			
 			<h:commandButton id="idModificar" value="Modificar"
-				rendered="#{!gestionUsuario.modoEdicion}">
-				<f:param name="id" value="${gestionUsuario.id}" />
+				rendered="#{!gestionEventoBean.modoEdicion}">
+				<f:param name="id" value="${gestionEventoBean.id}" />
 				<f:param name="modalidad" value="update" />
 
 			</h:commandButton>
 			<h:commandButton value="Salvar cambios"
-				rendered="#{gestionUsuario.modoEdicion}" update=":form"
-				action="#{gestionUsuario.salvarCambios}">
-				<f:param name="id" value="${gestionUsuario.id}" />
+				rendered="#{gestionEventoBean.modoEdicion}" update=":form"
+				action="#{gestionEventoBean.salvarCambios}">
+				<f:param name="id" value="${gestionEventoBean.id}" />
 				<f:param name="modalidad" value="update" />
 			</h:commandButton>
 
@@ -44,157 +44,79 @@
 
 				<p:outputLabel value="ID" />
 				<p:inputText id="id" disabled="true"
-					value="#{gestionUsuario.usuarioSeleccionado.id}" />
+					value="#{gestionEventoBean.eventoDTO.id}" />
 				<p:message for="id" style="color:red" />
 
-				<p:outputLabel value="Documento" />
-				<p:inputText id="documento"
-					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.documento}" />
-				<p:message for="documento" style="color:red" />
+				<p:outputLabel value="Titulo" />
+				<p:inputText id="eventoTitulo"
+					disabled="#{!gestionEventoBean.modoEdicion}"
+					value="#{gestionEventoBean.eventoDTO.titulo}" />
+				<p:message for="eventoTitulo" style="color:red" />
 
-				<p:outputLabel value="Usuario" />
-				<p:inputText id="usuario" disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.usuario}" />
-				<p:message for="usuario" style="color:red" />
-
-				<p:outputLabel value="Contraseña" />
-				<p:inputText id="contrasenia"
-					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.contrasenia}" />
-				<p:message for="contrasenia" style="color:red" />
-
-				<p:outputLabel value="Apellidos" />
-				<p:inputText id="apellidos"
-					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.apellidos}" />
-				<p:message for="apellidos" style="color:red" />
-
-				<p:outputLabel value="Nombres" />
-				<p:inputText id="nombres" disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.nombres}" />
-				<p:message for="nombres" style="color:red" />
-
-				<p:outputLabel value="Fecha de Nacimiento" />
-				<p:calendar id="fechaNacimiento"
-					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.fechaNacimiento}" />
-				<p:message for="fechaNacimiento" style="color:red" />
-
-				<p:outputLabel value="Departamento" />
-				<p:inputText id="departamento"
-					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.departamento}" />
-				<p:message for="departamento" style="color:red" />
-
-				<p:outputLabel value="Género" />
-				<p:selectOneMenu id="genero" value="#{gestionUsuario.usuarioSeleccionado.genero}">
-					<f:selectItem itemLabel="Seleccione genero" itemValue="-1" />
-					<f:selectItem itemLabel="Masculino" itemValue="M" />
-					<f:selectItem itemLabel="Femenino" itemValue="F" />
-					<f:selectItem itemLabel="Prefiero No decirlo" itemValue="O" />
+				<p:outputLabel value="Tipo de Evento" />
+				<p:selectOneMenu id="tipoEvento" value="#{gestionEventoBean.eventoDTO.tipoEvento}">
+					<f:selectItem itemLabel="Sin Seleccionar" itemValue="" />
+					<f:selectItem itemLabel="Jornada presencial" itemValue="JORNADA_PRESENCIAL" />
+					<f:selectItem itemLabel="Prueba final" itemValue="PRUEBA_FINAL" />
+					<f:selectItem itemLabel="Examen" itemValue="EXAMEN" />
+					<f:selectItem itemLabel="Defensa de Proyecto" itemValue="DEFENSA_PROYECTO" />
 				</p:selectOneMenu>
-				<p:message for="genero" style="color:red" />
+				<p:message for="tipoEvento" style="color:red" />
 
-				<p:outputLabel value="Localidad" />
-				<p:inputText id="localidad"
-					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.localidad}" />
-				<p:message for="localidad" style="color:red" />
-
-				<p:outputLabel value="Email" />
-				<p:inputText id="mail" disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.mail}" />
-				<p:message for="mail" style="color:red" />
-
-				<p:outputLabel value="Email Personal" />
-				<p:inputText id="mailPersonal"
-					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.mailPersonal}" />
-				<p:message for="mailPersonal" style="color:red" />
-
-				<p:outputLabel value="Teléfono" />
-				<p:inputText id="telefono" disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.telefono}" />
-				<p:message for="telefono" style="color:red" />
-
-
-				<p:outputLabel value="Tipo tutor"
-					rendered="#{gestionUsuario.esTutor()}" />
-				<p:selectOneMenu id="tipoTutorParaUsuarioTutor" rendered="#{gestionUsuario.esTutor()}"
-					value="#{gestionUsuario.tipoTutorDTOSeleccionadoId}">
-					<f:selectItem itemLabel="Seleccione tipo tutor" itemValue="-1" />
-					<f:selectItems value="#{combosBean.comboTipoTutorSelectItem}" />
-					<p:ajax process="@this" partialSubmit="true"
-						listener="#{gestionUsuario.actualizarTipoTutorSeleccionado}" />
-
+	
+				<p:outputLabel value="Modalidad" />
+				<p:selectOneMenu id="modalidadEvento" value="#{gestionEventoBean.eventoDTO.tipoEvento}">
+					<f:selectItem itemLabel="Sin Seleccionar" itemValue="SIN_SELECCIONAR" />
+					<f:selectItem itemLabel="Virtual" itemValue="VIRTUAL" />
+					<f:selectItem itemLabel="Presencial" itemValue="PRESENCIAL" />
+					<f:selectItem itemLabel="Semipresencial" itemValue="SEMI_PRESENCIAL" />
 				</p:selectOneMenu>
+				<p:message for="modalidadEvento" style="color:red" />
+				
+				<p:outputLabel value="Inicio" />
+				<p:calendar id="inicioEvento"
+					disabled="#{!gestionEventoBean.modoEdicion}"
+					value="#{gestionEventoBean.eventoDTO.inicio}" />
+				<p:message for="inicioEvento" style="color:red" />
+				
+				
+				<p:outputLabel value="Fin" />
+				<p:calendar id="finEvento"
+					disabled="#{!gestionEventoBean.modoEdicion}"
+					value="#{gestionEventoBean.eventoDTO.fin}" />
+				<p:message for="inicioEvento" style="color:red" />
 
-				<p:message for="tipoTutorParaUsuarioTutor" style="color:red"
-					rendered="#{gestionUsuario.esTutor()}" />
+				<p:outputLabel value="Localizacion" />
+				<p:inputText id="localizacionEvento"
+					disabled="#{!gestionEventoBean.modoEdicion}"
+					value="#{gestionEventoBean.eventoDTO.localizacion}" />
+				<p:message for="localizacionEvento" style="color:red" />
 
-
-				<p:outputLabel value="Tipo area"
-					rendered="#{gestionUsuario.esTutor()}" />
-				<p:selectOneMenu id="tipoAreaParaUsuarioTutor" rendered="#{gestionUsuario.esTutor()}"
-					value="#{gestionUsuario.tipoAreaDTOSeleccionadoId}">
-					<f:selectItem itemLabel="Seleccione tipo area" itemValue="-1" />
-					<f:selectItems value="#{combosBean.comboTipoAreaSelectItem}" />
-					<p:ajax process="@this" partialSubmit="true"
-						listener="#{gestionUsuario.actualizarTipoTutorAreaSeleccionado}" />
-
-				</p:selectOneMenu>
-				<p:message for="tipoAreaParaUsuarioTutor" style="color:red"
-					rendered="#{gestionUsuario.esTutor()}" />
-
-
-
-
-				<p:outputLabel value="Generacion"
-					rendered="#{gestionUsuario.esEstudiante()}" />
-				<p:selectOneMenu id="generacion" value="#{gestionUsuario.usuarioSeleccionado.generacion}" disabled="#{!gestionUsuario.modoEdicion}" rendered="#{gestionUsuario.esEstudiante()}">
-					<f:selectItems value="#{gestionUsuario.anosGeneracion}" var="ano" itemValue="#{ano}" itemLabel="#{ano}" />
-				 </p:selectOneMenu>
-				<p:message for="generacion" style="color:red"
-					rendered="#{gestionUsuario.esEstudiante()}" />
-
+				
+			
 
 
 				<p:outputLabel value="ITRCombo" />
-				<p:selectOneMenu id="itrListaDeITRparaUsuario"	value="#{gestionUsuario.itrDTOSeleccionadoId}">
+				<p:selectOneMenu id="itrListaDeITRparaUsuario"	value="#{gestionEventoBean.itrDTOSeleccionadoId}">
 				<f:selectItem itemLabel="Seleccione Itr" itemValue="-1"/>
 					<f:selectItems value="#{combosBean.comboItrSelectItem}" />
 					<p:ajax process="@this" partialSubmit="true"
-						listener="#{gestionUsuario.actualizarITRSeleccionado}" />
+						listener="#{gestionEventoBean.actualizarITRSeleccionado}" />
 						
 				</p:selectOneMenu>
 				<p:message for="itrListaDeITRparaUsuario" style="color:red" />
 
-				
-				<p:outputLabel value="Rol" />
-				<p:selectOneMenu id="listaDerolDTOparaUsuario"	value="#{gestionUsuario.rolDTOSeleccionadoId}">
-					<f:selectItem itemLabel="Seleccione Rol" itemValue="-1"/>
-					<f:selectItems value="#{combosBean.comboROLSelectItem}" />
-					<f:ajax process="@this" partialSubmit="true"
-						listener="#{gestionUsuario.actualizarROLSeleccionado}"  />
-						
-				</p:selectOneMenu>
-					<p:message for="listaDerolDTOparaUsuario" style="color:red" />
+			
 					
 					<p:outputLabel value="Activo" />
-					<p:selectBooleanCheckbox id="activo"
-						disabled="#{!gestionUsuario.modoEdicion}"
-						value="#{gestionUsuario.usuarioSeleccionado.activo}" />
-					<p:message for="activo" style="color:red" />
+					<p:selectBooleanCheckbox id="activoEvento"
+						disabled="#{!gestionEventoBean.modoEdicion}"
+						value="#{gestionEventoBean.eventoDTO.bajaLogica}" />
+					<p:message for="activoEvento" style="color:red" />
 
-					<p:outputLabel value="Validado" />
-					<p:selectBooleanCheckbox id="validado"
-						disabled="#{!gestionUsuario.modoEdicion}"
-						value="#{gestionUsuario.usuarioSeleccionado.validado}" />
-					<p:message for="validado" style="color:red" />
 					
-				
-					<p:commandButton id="botonBeanROl2" action="#{gestionUsuario.print()}" value="Imprimir" />
+					
+			
 			</p:panelGrid>
 
 		</h:form>

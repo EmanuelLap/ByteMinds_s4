@@ -3,6 +3,7 @@ package com.byteminds.bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -75,6 +76,8 @@ public class GestionUsuarioBean implements Serializable {
 	private Integer tipoAreaDTOSeleccionadoId;
 	
 	private List<Integer> anosGeneracion;
+	private Date fechaMaximaNacimiento;
+	
 	
 	private boolean modoEdicion = false;
 
@@ -84,6 +87,11 @@ public class GestionUsuarioBean implements Serializable {
 		gestionRolService = new GestionRolService();
 		itrDTOSeleccionado = new ItrDTO();
 		rolDTOSeleccionado = new RolDTO();
+		 
+		Calendar cal = Calendar.getInstance();
+	        cal.add(Calendar.YEAR, -18);
+	         
+		fechaMaximaNacimiento = cal.getTime();
 	}
 
 	@PostConstruct
@@ -586,5 +594,13 @@ public class GestionUsuarioBean implements Serializable {
 
 	public void setTipoAreaDTOSeleccionadoId(Integer tipoAreaDTOSeleccionadoId) {
 		this.tipoAreaDTOSeleccionadoId = tipoAreaDTOSeleccionadoId;
+	}
+
+	public Date getFechaMaximaNacimiento() {
+		return fechaMaximaNacimiento;
+	}
+
+	public void setFechaMaximaNacimiento(Date fechaMaximaNacimiento) {
+		this.fechaMaximaNacimiento = fechaMaximaNacimiento;
 	}
 }

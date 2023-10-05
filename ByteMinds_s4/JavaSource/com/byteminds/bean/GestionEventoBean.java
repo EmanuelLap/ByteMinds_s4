@@ -6,13 +6,15 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-
+import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
-
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Named;
 
 import com.byteminds.negocio.EventoDTO;
 import com.byteminds.negocio.GestionEventoService;
+import com.byteminds.negocio.GestionItrService;
+import com.byteminds.negocio.ItrDTO;
 
 
 
@@ -25,7 +27,7 @@ public class GestionEventoBean implements Serializable {
 
 	@EJB
 	GestionEventoService gestionEventoService;
-
+	GestionItrService gestionItrService;
 	
 	private Integer id;
 	private String modalidad;
@@ -33,6 +35,8 @@ public class GestionEventoBean implements Serializable {
 	
 	private EventoDTO eventoDTO;
 	
+	private ItrDTO itrDTOSeleccionado;
+	private Integer itrDTOSeleccionadoId;
 
 
 	public GestionEventoBean() {
@@ -124,17 +128,17 @@ public class GestionEventoBean implements Serializable {
 	}
 
 	
-//	public void actualizarROLSeleccionado(AjaxBehaviorEvent event) {
-//	    Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
-//	    
-//	    System.out.println(nuevoValor); 
-//	    System.out.println("idROLSeleccionado AjaxBehaviorEvent " + idRolSeleccionado);
-//	    idRolSeleccionado = nuevoValor;
-//	    rolDTOSeleccionado = gestionRolService.obtenerRolSeleccionado(nuevoValor);
-//	    System.out.println(rolDTOSeleccionado.toString());
-//	    gestionUsuarioBean.getUsuarioSeleccionado().setRol(rolDTOSeleccionado);
-//	    System.out.println("ROL SETEADO = "+gestionUsuarioBean.getUsuarioSeleccionado().getRol().getNombre());
-//	}
+	public void actualizarITRSeleccionado(AjaxBehaviorEvent event) {
+	    Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
+	    if(nuevoValor == -1) {
+	    	FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar un ITR valido",	"");
+			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+	    }else {
+	    itrDTOSeleccionado = gestionItrService.obtenerITRSeleccionado(nuevoValor);
+	    this.eventoDTO.setItrDTO(itrDTOSeleccionado);
+
+	    }
+	}
 
 
 	public Integer getId() {
@@ -169,6 +173,20 @@ public class GestionEventoBean implements Serializable {
 		this.eventoDTO = eventoDTO;
 	}
 
+	public Integer getItrDTOSeleccionadoId() {
+		return itrDTOSeleccionadoId;
+	}
+
+	public void setItrDTOSeleccionadoId(Integer itrDTOSeleccionadoId) {
+		this.itrDTOSeleccionadoId = itrDTOSeleccionadoId;
+	}
 
 
+	public ItrDTO getItrDTOSeleccionado() {
+		return itrDTOSeleccionado;
+	}
+
+	public void setItrDTOSeleccionado(ItrDTO itrDTOSeleccionado) {
+		this.itrDTOSeleccionado = itrDTOSeleccionado;
+	}
 }
