@@ -587,6 +587,18 @@ public class EJBUsuarioRemoto {
 
 	}
 	
+	public List<Tutor> listarTutoresActivos() {
+		List<Tutor> lista = new ArrayList<Tutor>();
+		try {
+			lista = tutorBeanRemote.listarTutoresActivos();
+		} catch (ServiciosException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+
+	}
+	
 	public List<Tutor> buscarTutorPor(String id,String ci, String nombre ,String apellido,String tipo ,String area) {
 		List<Tutor> lista = new ArrayList<Tutor>();
 		try {
@@ -955,6 +967,11 @@ public class EJBUsuarioRemoto {
 			return reclamoNew;
 		}
 		
+		public List<Reclamo> listarReclamos() {
+			List<Reclamo> listReclamo = new ArrayList<Reclamo>();
+			listReclamo=reclamoBeanRemote.listarReclamos();
+			return listReclamo;
+		}
 		
 		/*
 		 * METODOS RECLAMOS REMOTOS FIN

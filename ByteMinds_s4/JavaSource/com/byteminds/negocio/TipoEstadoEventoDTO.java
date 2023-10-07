@@ -13,9 +13,9 @@ public class TipoEstadoEventoDTO {
     
     
     public TipoEstadoEventoDTO() {
-		this.id=1;
-		this.nombre="Evento inicial new";
-		this.activo=true;
+//		this.id=1;
+//		this.nombre="Evento inicial new";
+//		this.activo=true;
 	}
     
     

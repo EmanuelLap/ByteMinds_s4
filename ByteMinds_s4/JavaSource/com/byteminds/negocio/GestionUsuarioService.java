@@ -142,7 +142,7 @@ public class GestionUsuarioService implements Serializable {
 
 		}
 
-		usuario.setId(userDTO.getId() != null ? userDTO.getId() : null);
+		usuario.setId(userDTO.getId());
 		usuario.setDocumento(userDTO.getDocumento());
 		usuario.setApellidos(userDTO.getApellidos());
 		usuario.setNombres(userDTO.getNombres());
@@ -155,7 +155,7 @@ public class GestionUsuarioService implements Serializable {
 		usuario.setMail(userDTO.getMail());
 		usuario.setMailPersonal(userDTO.getMailPersonal());
 		
-		usuario.setUTipoo(userDTO.getUTipo());
+		usuario.setUTipo(userDTO.getUTipo());
 		
 		usuario.setItr(gItr.toITR(userDTO.getItr()));
 		usuario.setRol(gRol.toRol(userDTO.getRol()));
@@ -222,6 +222,35 @@ public class GestionUsuarioService implements Serializable {
 //		return fromUsuario(e);
 //	}
 
+	
+	public List<TutorDTO> listadoDeTutores(){
+		List<TutorDTO> listadoTutoresDTO = new ArrayList<TutorDTO>();
+		List<Tutor> listadoTutores = new ArrayList<Tutor>();
+		
+		listadoTutores=ejbRemoto.listarTutores();
+		
+		for (Tutor tut:listadoTutores) {
+			TutorDTO tutorcito =(TutorDTO)this.fromUsuario(tut);
+			listadoTutoresDTO.add(tutorcito);
+		}
+		
+		return listadoTutoresDTO;
+	}
+	
+	public List<TutorDTO> listadoDeTutoresActivos(){
+		List<TutorDTO> listadoTutoresDTO = new ArrayList<TutorDTO>();
+		List<Tutor> listadoTutores = new ArrayList<Tutor>();
+		
+		listadoTutores=ejbRemoto.listarTutoresActivos();
+		
+		for (Tutor tut:listadoTutores) {
+			TutorDTO tutorcito =(TutorDTO)this.fromUsuario(tut);
+			listadoTutoresDTO.add(tutorcito);
+		}
+		
+		return listadoTutoresDTO;
+	}
+	
 	public UsuarioDTO agregarUsuario(UsuarioDTO usuarioSeleccionado) throws PersistenciaException {
 		Usuario e = ejbRemoto.crearUsuario(toUsuario(usuarioSeleccionado));
 		return fromUsuario(e);

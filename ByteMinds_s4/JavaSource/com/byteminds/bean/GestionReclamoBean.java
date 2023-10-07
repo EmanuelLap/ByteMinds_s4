@@ -16,9 +16,10 @@ import javax.inject.Named;
 
 import com.byteminds.exception.PersistenciaException;
 import com.byteminds.negocio.GestionReclamoService;
-
+import com.byteminds.negocio.GestionUsuarioService;
 import com.byteminds.negocio.ReclamoDTO;
 import com.byteminds.negocio.TutorResponsableEventoDTO;
+import com.byteminds.negocio.EstudianteDTO;
 import com.byteminds.negocio.EventoDTO;
 import com.byteminds.negocio.GestionEventoService;
 import com.byteminds.remoto.EJBUsuarioRemoto;
@@ -34,12 +35,17 @@ public class GestionReclamoBean implements Serializable {
 
 	@EJB
 	GestionReclamoService gestionReclamoService;
-
+	GestionUsuarioService gestionUsuarioService;
+	
 	private EJBUsuarioRemoto ejbReclamoRemoto;
 
 	private GestionEventoService gestEventService;
 	private Integer id;
 	private String modalidad;
+	
+	private EstudianteDTO estudianteQueReclamaDTO;
+	private Integer idEstudianteDTO;
+	
 
 	private ReclamoDTO reclamoSeleccionado;
 	private List<EventoDTO> listEventosDTO = new ArrayList<EventoDTO>();
@@ -57,6 +63,8 @@ public class GestionReclamoBean implements Serializable {
 		System.out.println("INICIALIZANDO GestionReclamoBean");
 		ejbReclamoRemoto = new EJBUsuarioRemoto();
 		gestEventService = new GestionEventoService();
+		estudianteQueReclamaDTO = new EstudianteDTO();
+		gestionUsuarioService = new GestionUsuarioService();
 		cargarComboEventosDisponibles();
 		idEventoSeleccionado=0;
 		reclamoSeleccionado = new ReclamoDTO();
@@ -66,6 +74,12 @@ public class GestionReclamoBean implements Serializable {
 
 	public void preRenderViewListener() {
 		System.out.println("INICIALIZANDO GestionReclamoBean preRenderViewListener");
+		if(idEstudianteDTO!= null) {
+			
+//			estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.fromUsuario(ejbReclamoRemoto.buscarUsuarioPor("ESTUDIANTE", "123", "", "", "", "", "", "", "", "", null, null, null, "", "", null, null).get(0));
+			estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.buscarUsuario(123);
+			
+		}
 		if (id != null) {
 			//			reclamoSeleccionado = gestionReclamoService.fromReclamo(ejbReclamoRemoto.buscarReclamoPorId(id));
 		} else {
@@ -96,6 +110,7 @@ public class GestionReclamoBean implements Serializable {
 
 			ReclamoDTO nuevoReclamoDTO;
 			try {
+				reclamoSeleccionado.setEstudianteId(estudianteQueReclamaDTO);
 				nuevoReclamoDTO = gestionReclamoService.agregarReclamo(reclamoSeleccionado);
 				this.id = nuevoReclamoDTO.getId();
 
@@ -240,5 +255,21 @@ public class GestionReclamoBean implements Serializable {
 
 	public void setIdEventoSeleccionado(Integer idEventoSeleccionado) {
 		this.idEventoSeleccionado = idEventoSeleccionado;
+	}
+
+	public Integer getIdEstudianteDTO() {
+		return idEstudianteDTO;
+	}
+
+	public void setIdEstudianteDTO(Integer idEstudianteDTO) {
+		this.idEstudianteDTO = idEstudianteDTO;
+	}
+
+	public EstudianteDTO getEstudianteQueReclamaDTO() {
+		return estudianteQueReclamaDTO;
+	}
+
+	public void setEstudianteQueReclamaDTO(EstudianteDTO estudianteQueReclamaDTO) {
+		this.estudianteQueReclamaDTO = estudianteQueReclamaDTO;
 	}
 }

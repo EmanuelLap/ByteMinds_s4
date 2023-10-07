@@ -1,6 +1,7 @@
 package com.byteminds.bean;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 //import tecnofenix.entidades.Usuario;
 import tecnofenix.entidades.Usuario;
@@ -15,6 +16,7 @@ import javax.inject.Named;
 import com.byteminds.negocio.GestionUsuarioService;
 import com.byteminds.negocio.UsuarioDTO;
 import com.byteminds.remoto.EJBUsuarioRemoto;
+import com.byteminds.utils.AuthService;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -31,13 +33,13 @@ public class LoginBean implements Serializable {
 	private UsuarioDTO userioLogeado;
 	private EJBUsuarioRemoto ejbRemoto;
 	private GestionUsuarioService gUS;
-
-	private static final String secretKeyString = "EstaEsUnaClaveSecretaDeAlMenos32Caracteres";
-	private SecretKey key = Keys.hmacShaKeyFor(secretKeyString.getBytes());
-
+	private AuthService auth;
+//	private static final String secretKeyString = "EstaEsUnaClaveSecretaDeAlMenos32Caracteres";
+//	private SecretKey key = Keys.hmacShaKeyFor(secretKeyString.getBytes());
+//	SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 	@PostConstruct
 	public void init() {
-
+		auth = new AuthService();
 		gUS = new GestionUsuarioService();
 	}
 
@@ -49,11 +51,13 @@ public class LoginBean implements Serializable {
 
 		if (user != null) {
 			userioLogeado = gUS.fromUsuario(user);
-			String jws = Jwts.builder().setSubject(user.getApellidos()).signWith(key).compact();
+			this.token =auth.createJWT(String.valueOf(user.getId()), "ByteMindsApp", user.getApellidos()+user.getNombres(), 3600000);
+//			this.token = Jwts.builder().setSubject(user.getApellidos()).signWith(key).compact();
 			// Save the JWT token to session or somewhere else
-			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("jwt", jws);
-			System.out.println("TOKEN: " + jws);
-			this.token = jws;
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("jwt", token);
+			System.out.println("TOKEN: " + token);
+//			System.out.println("SecretKey key: " + key.toString());
+			
 			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido " + username, username);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);

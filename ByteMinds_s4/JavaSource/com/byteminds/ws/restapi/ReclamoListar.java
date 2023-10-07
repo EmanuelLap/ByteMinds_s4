@@ -23,10 +23,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Servlet implementation class CargarDatos
+ * Servlet implementation class ReclamoListar
  */
-@WebServlet("/MostrarDatos")
-public class MostrarDatos extends HttpServlet {
+@WebServlet("/AgregarListar")
+public class ReclamoListar extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	
@@ -35,7 +35,7 @@ public class MostrarDatos extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MostrarDatos() {
+    public ReclamoListar() {
         super();
 //        gUS = new GestionUsuarioService();
         // TODO Auto-generated constructor stub
@@ -46,12 +46,12 @@ public class MostrarDatos extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath()+"\n");
+//		response.getWriter().append("Served at: ").append(request.getContextPath()+"\n");
 		PrintWriter out = response.getWriter();
 		
 		try {
 		
-			out.println("Ejecutando metodo rest:");
+//			out.println("Ejecutando metodo rest:");
 			
 			GestionEventoService gES = new GestionEventoService();
 			GestionUsuarioService gUS = new GestionUsuarioService();
@@ -73,13 +73,13 @@ public class MostrarDatos extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println(json);
+//			System.out.println(json);
 			out.println(json);
 			
 			
 			
 		}catch(Exception e) {
-			out.println("No se creo el empleado:"+ e.getClass().getSimpleName()+"-"+e.getMessage());
+			out.println("Error al ejecutar:"+ e.getClass().getSimpleName()+"-"+e.getMessage());
 		}
 		
 		

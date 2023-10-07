@@ -10,6 +10,12 @@
 	</ui:define>
 
 	<ui:define name="content">
+	<style>
+	.ui-picklist-list {
+    max-height: 300px; /* o cualquier valor que consideres adecuado */
+    overflow-y: auto !important;
+}
+	</style>
 	
 	<f:metadata>
 			<f:viewParam name="id" value="#{gestionEventoBean.id}" />
@@ -44,17 +50,17 @@
 
 				<p:outputLabel value="ID" />
 				<p:inputText id="id" disabled="true"
-					value="#{gestionEventoBean.eventoDTO.id}" />
+					value="#{gestionEventoBean.eventoDTOseleccionado.id}" />
 				<p:message for="id" style="color:red" />
 
 				<p:outputLabel value="Titulo" />
 				<p:inputText id="eventoTitulo"
 					disabled="#{!gestionEventoBean.modoEdicion}"
-					value="#{gestionEventoBean.eventoDTO.titulo}" />
+					value="#{gestionEventoBean.eventoDTOseleccionado.titulo}" />
 				<p:message for="eventoTitulo" style="color:red" />
 
 				<p:outputLabel value="Tipo de Evento" />
-				<p:selectOneMenu id="tipoEvento" value="#{gestionEventoBean.eventoDTO.tipoEvento}">
+				<p:selectOneMenu id="tipoEvento" value="#{gestionEventoBean.eventoDTOseleccionado.tipoEvento}">
 					<f:selectItem itemLabel="Sin Seleccionar" itemValue="" />
 					<f:selectItem itemLabel="Jornada presencial" itemValue="JORNADA_PRESENCIAL" />
 					<f:selectItem itemLabel="Prueba final" itemValue="PRUEBA_FINAL" />
@@ -65,7 +71,7 @@
 
 	
 				<p:outputLabel value="Modalidad" />
-				<p:selectOneMenu id="modalidadEvento" value="#{gestionEventoBean.eventoDTO.tipoEvento}">
+				<p:selectOneMenu id="modalidadEvento" value="#{gestionEventoBean.eventoDTOseleccionado.tipoEvento}">
 					<f:selectItem itemLabel="Sin Seleccionar" itemValue="SIN_SELECCIONAR" />
 					<f:selectItem itemLabel="Virtual" itemValue="VIRTUAL" />
 					<f:selectItem itemLabel="Presencial" itemValue="PRESENCIAL" />
@@ -76,20 +82,20 @@
 				<p:outputLabel value="Inicio" />
 				<p:calendar id="inicioEvento"
 					disabled="#{!gestionEventoBean.modoEdicion}"
-					value="#{gestionEventoBean.eventoDTO.inicio}" />
+					value="#{gestionEventoBean.eventoDTOseleccionado.inicio}" />
 				<p:message for="inicioEvento" style="color:red" />
 				
 				
 				<p:outputLabel value="Fin" />
 				<p:calendar id="finEvento"
 					disabled="#{!gestionEventoBean.modoEdicion}"
-					value="#{gestionEventoBean.eventoDTO.fin}" />
+					value="#{gestionEventoBean.eventoDTOseleccionado.fin}" />
 				<p:message for="inicioEvento" style="color:red" />
 
 				<p:outputLabel value="Localizacion" />
 				<p:inputText id="localizacionEvento"
 					disabled="#{!gestionEventoBean.modoEdicion}"
-					value="#{gestionEventoBean.eventoDTO.localizacion}" />
+					value="#{gestionEventoBean.eventoDTOseleccionado.localizacion}" />
 				<p:message for="localizacionEvento" style="color:red" />
 
 				
@@ -111,12 +117,28 @@
 					<p:outputLabel value="Activo" />
 					<p:selectBooleanCheckbox id="activoEvento"
 						disabled="#{!gestionEventoBean.modoEdicion}"
-						value="#{gestionEventoBean.eventoDTO.bajaLogica}" />
+						value="#{gestionEventoBean.eventoDTOseleccionado.bajaLogica}" />
 					<p:message for="activoEvento" style="color:red" />
 
-					
-					
+				<p:pickList value="#{gestionEventoBean.tutores}" var="tut"
+					itemLabel="#{tut.nombres} #{tut.apellidos} #{tut.itr.nombre}" itemValue="#{tut}"
+					converter="tutorConverter">
+					<p:ajax event="transfer" update=":idDatosEvento:display" />
+					<f:facet name="sourceCaption">Tutores Disponibles</f:facet>
+					<f:facet name="targetCaption">Tutores Asignados</f:facet>
+				</p:pickList>
+
+				<p:commandButton value="Asignar Tutores" partialSubmit="true"
+					action="#{gestionEventoBean.asignarTutores}" update="tutoresAsignadosList">
+<!-- 					<f:ajax/> -->
+					</p:commandButton>
+
 			
+				<p:outputLabel value="Tutores Asignados" />
+				<p:dataList id="tutoresAsignadosList" value="#{gestionEventoBean.listaDeTutoresAsignados}" var="tutorNombre">
+        			#{tutorNombre.nombres} #{tutorNombre.apellidos} - #{tutorNombre.itr.nombre} 
+   				 </p:dataList>
+
 			</p:panelGrid>
 
 		</h:form>

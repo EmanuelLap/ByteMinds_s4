@@ -13,6 +13,8 @@
 	<ui:define name="content">
 		<f:metadata>
 			<f:viewParam name="modalidad" value="#{gestionReclamo.modalidad}" />
+			<f:viewParam name="idEstudianteDTO" value="#{gestionReclamo.idEstudianteDTO}" />
+			
 			<f:event type="preRenderView"
 				listener="#{gestionReclamo.preRenderViewListener}" />
 		</f:metadata>
@@ -32,16 +34,16 @@
 			<!-- 				<f:param name="modalidad" value="update" /> -->
 			<!-- 			</h:commandButton> -->
 
-			<!-- 			<h:commandButton value="Generar reclamo" -->
-			<!-- 				rendered="#{gestionReclamo.modoEdicion}" update=":form" -->
-			<!-- 				action="#{gestionReclamo.salvarCambios}"> -->
-			<!-- 				<f:param name="id" value="${gestionReclamo.id}" /> -->
-			<!-- 				<f:param name="modalidad" value="update" /> -->
-			<!-- 			</h:commandButton> -->
+						<h:commandButton value="Generar reclamo"
+							rendered="#{gestionReclamo.modoEdicion}" update=":form"
+							action="#{gestionReclamo.salvarCambios}">
+							<f:param name="id" value="${gestionReclamo.id}" />
+							<f:param name="modalidad" value="update" />
+						</h:commandButton>
 
 			<p:panelGrid columns="3">
 				<p:outputLabel value="Titulo de reclamo" />
-				<p:inputText id="reclamoTitulo" disabled="true"
+				<p:inputText id="reclamoTitulo" disabled="false"
 					value="#{gestionReclamo.reclamoSeleccionado.titulo}" />
 				<p:message for="reclamoTitulo" style="color:red" />
 

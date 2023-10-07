@@ -2,6 +2,7 @@ package com.byteminds.negocio;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -12,6 +13,7 @@ import com.byteminds.remoto.EJBUsuarioRemoto;
 import tecnofenix.entidades.Evento;
 import tecnofenix.entidades.ModalidadEvento;
 import tecnofenix.entidades.TipoEvento;
+import tecnofenix.entidades.Tutor;
 import tecnofenix.entidades.TutorResponsableEvento;
 
 @Stateless
@@ -23,11 +25,13 @@ public class GestionEventoService implements Serializable {
 	private GestionItrService gITR;
 	private GestionTipoEstadoEventoService gTEE;
 	private GestionTutorResponsableEventoService gTRE;
+
 	public GestionEventoService() {
 		ejbRemoto = new EJBUsuarioRemoto();
 		gITR = new GestionItrService();
 		gTEE = new GestionTipoEstadoEventoService();
 		gTRE = new GestionTutorResponsableEventoService();
+		
 	}
 
 	public EventoDTO fromEvento (Evento evento) {
@@ -101,7 +105,4 @@ public class GestionEventoService implements Serializable {
 		
 	}
 	
-	public TutorResponsableEventoDTO obtenerTutorResponsableEventoDTO() {
-		return new TutorResponsableEventoDTO();
-	}
 }

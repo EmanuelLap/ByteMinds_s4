@@ -51,16 +51,16 @@ public class EventoDTO {
 	
 
 	public EventoDTO() {
-		this.id = 0;
-		this.titulo = "";
-		this.tipoEvento = "";
-		this.modalidadEvento = "";
-		this.inicio = new Date(System.currentTimeMillis());
-		this.fin = new Date(System.currentTimeMillis());
-		this.localizacion = "";
-		this.bajaLogica = false;
-		this.itrDTO = null;
-		this.tipoEstadoEventoDTO = new TipoEstadoEventoDTO();
+//		this.id = 0;
+//		this.titulo = "";
+//		this.tipoEvento = "";
+//		this.modalidadEvento = "";
+//		this.inicio = new Date(System.currentTimeMillis());
+//		this.fin = new Date(System.currentTimeMillis());
+//		this.localizacion = "";
+//		this.bajaLogica = false;
+//		this.itrDTO = null;
+//		this.tipoEstadoEventoDTO = new TipoEstadoEventoDTO();
 	}
 
 public EventoDTO(Integer id, @NotNull String titulo, @NotNull String tipoEvento, @NotNull String modalidadEvento,

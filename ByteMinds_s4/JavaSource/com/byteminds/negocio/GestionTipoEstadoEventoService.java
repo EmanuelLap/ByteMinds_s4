@@ -23,7 +23,10 @@ public class GestionTipoEstadoEventoService implements Serializable {
 	public TipoEstadoEventoDTO fromTipoEstadoEvento (TipoEstadoEvento tipoEstadoEventoEntidad) {
 		TipoEstadoEventoDTO tipoEstadoEventoDTO = new TipoEstadoEventoDTO();
 		
-		
+		tipoEstadoEventoDTO.setId(tipoEstadoEventoEntidad.getId());
+		tipoEstadoEventoDTO.setNombre(tipoEstadoEventoEntidad.getNombre());
+		tipoEstadoEventoDTO.setActivo(tipoEstadoEventoEntidad.getActivo());
+
 		
 		return tipoEstadoEventoDTO;
 	}
@@ -31,10 +34,21 @@ public class GestionTipoEstadoEventoService implements Serializable {
 	public TipoEstadoEvento toTipoEstadoEvento (TipoEstadoEventoDTO tipoEstadoEventoDTO) {
 		TipoEstadoEvento tipoEstadoEvento = new TipoEstadoEvento();
 		
-		
+		tipoEstadoEvento.setId(tipoEstadoEventoDTO.getId());
+		tipoEstadoEvento.setNombre(tipoEstadoEventoDTO.getNombre());
+		tipoEstadoEvento.setActivo(tipoEstadoEventoDTO.getActivo());
 		
 		return tipoEstadoEvento;
 	}	
+	
+	public TipoEstadoEventoDTO obtenerTipoEstadoEventoDTO(Integer id) {
+		
+		TipoEstadoEventoDTO tee= new TipoEstadoEventoDTO();
+		
+		tee=fromTipoEstadoEvento(ejbRemoto.buscarTipoEstadoEventoPor(String.valueOf(id), null).get(0));
+		
+		return tee;
+	}
 	
 
 }

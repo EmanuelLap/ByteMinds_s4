@@ -33,6 +33,8 @@ public class ReclamoDTO {
 	    private Integer creditos;
 	    
 	    private Integer semestre;
+	    
+	    private Boolean activo;
 
 		public ReclamoDTO() {
 			super();
@@ -115,5 +117,13 @@ public class ReclamoDTO {
 
 		public void setEstudianteId(EstudianteDTO estudianteId) {
 			this.estudianteId = estudianteId;
+		}
+
+		public Boolean getActivo() {
+			return activo;
+		}
+
+		public void setActivo(Boolean activo) {
+			this.activo = activo;
 		}
 }

@@ -3,6 +3,7 @@ package com.byteminds.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 import javax.crypto.SecretKey;
@@ -11,9 +12,10 @@ import java.util.Date;
 
 public class AuthService {
   
-    private final String keyString = "EstaEsUnaClaveSecretaDeAlMenos32Caracteres"; // clave secreta de al menos 32 caracteres
-    private final SecretKey key = Keys.hmacShaKeyFor(keyString.getBytes(StandardCharsets.UTF_8)); // genera una Key a partir de la clave secreta
-
+//    private final String keyString = "EstaEsUnaClaveSecretaDeAlMenos32Caracteres"; // clave secreta de al menos 32 caracteres
+//    private final SecretKey key = Keys.hmacShaKeyFor(keyString.getBytes(StandardCharsets.UTF_8)); // genera una Key a partir de la clave secreta
+    SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    
     public String login(String username, String password) {
         // Aquí debes implementar la lógica de autenticación. Este es solo un ejemplo simple.
         if ("user".equals(username) && "password".equals(password)) {

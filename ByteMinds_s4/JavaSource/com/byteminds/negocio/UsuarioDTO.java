@@ -7,7 +7,7 @@ import javax.validation.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import java.util.Date;
 
-public class UsuarioDTO {
+public abstract class UsuarioDTO  {
 
 	@NotNull
 	private Integer id;

@@ -1,7 +1,8 @@
 package com.byteminds.bean;
 
 import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -11,10 +12,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Named;
 
+import org.primefaces.model.DualListModel;
+
 import com.byteminds.negocio.EventoDTO;
 import com.byteminds.negocio.GestionEventoService;
 import com.byteminds.negocio.GestionItrService;
+import com.byteminds.negocio.GestionUsuarioService;
 import com.byteminds.negocio.ItrDTO;
+import com.byteminds.negocio.TutorDTO;
 
 
 
@@ -28,30 +33,45 @@ public class GestionEventoBean implements Serializable {
 	@EJB
 	GestionEventoService gestionEventoService;
 	GestionItrService gestionItrService;
+	GestionUsuarioService gestionUsuarioService;
 	
 	private Integer id;
 	private String modalidad;
 	private boolean modoEdicion = false;
 	
-	private EventoDTO eventoDTO;
+	private EventoDTO eventoDTOseleccionado;
 	
 	private ItrDTO itrDTOSeleccionado;
 	private Integer itrDTOSeleccionadoId;
-
-
+ 
+	private List<TutorDTO> listaDeTutoresDisponibles;
+	private List<TutorDTO> listaDeTutoresAsignados;
+	private DualListModel<TutorDTO> tutores;
+	 
 	public GestionEventoBean() {
 		System.out.println("INICIALIZANDO GestionEventoBean");
-	
+		itrDTOSeleccionado = new ItrDTO();
+		gestionItrService= new GestionItrService();
+		gestionUsuarioService = new GestionUsuarioService();
+		eventoDTOseleccionado = new EventoDTO();
+		//Cargando listado de tutores disponibles
+		listaDeTutoresAsignados = new ArrayList<TutorDTO>();
+		listaDeTutoresDisponibles = new ArrayList<TutorDTO>();
+		listaDeTutoresDisponibles= gestionUsuarioService.listadoDeTutoresActivos();
+		
+        List<TutorDTO> tutoresTarget = new ArrayList<TutorDTO>();
+        setTutores(new DualListModel<TutorDTO>(listaDeTutoresDisponibles, tutoresTarget));
+    
+		
 	}
 
 	public void preRenderViewListener() {
 		System.out.println("INICIALIZANDO GestionEventoBean preRenderViewListener");
 		if (id != null) {
-			//			reclamoSeleccionado = gestionReclamoService.fromReclamo(ejbReclamoRemoto.buscarReclamoPorId(id));
+//			eventoDTOseleccionado = gestionEventoService.obtenerEvento(id);
 		} else {
-//			reclamoSeleccionado = new ReclamoDTO();
-//			reclamoSeleccionado.setEventoId(new EventoDTO());
-//			reclamoSeleccionado.setFecha(new Date(System.currentTimeMillis()));
+			eventoDTOseleccionado = new EventoDTO();
+
 		}
 		if (modalidad.contentEquals("view")) {
 			modoEdicion = false;
@@ -123,7 +143,7 @@ public class GestionEventoBean implements Serializable {
 //		}
 		
 		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "click en gestion rol.", ""));
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "click en gestion evento sin implementar.", ""));
 		return "";
 	}
 
@@ -135,12 +155,18 @@ public class GestionEventoBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 	    }else {
 	    itrDTOSeleccionado = gestionItrService.obtenerITRSeleccionado(nuevoValor);
-	    this.eventoDTO.setItrDTO(itrDTOSeleccionado);
+	    this.eventoDTOseleccionado.setItrDTO(itrDTOSeleccionado);
 
 	    }
 	}
 
-
+	public void asignarTutores() {
+		listaDeTutoresAsignados = new ArrayList<TutorDTO>();
+		listaDeTutoresAsignados.addAll(this.tutores.getTarget());
+		
+    }
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -165,12 +191,12 @@ public class GestionEventoBean implements Serializable {
 		this.modoEdicion = modoEdicion;
 	}
 
-	public EventoDTO getEventoDTO() {
-		return eventoDTO;
+	public EventoDTO getEventoDTOseleccionado() {
+		return eventoDTOseleccionado;
 	}
 
-	public void setEventoDTO(EventoDTO eventoDTO) {
-		this.eventoDTO = eventoDTO;
+	public void setEventoDTOseleccionado(EventoDTO eventoDTOseleccionado) {
+		this.eventoDTOseleccionado = eventoDTOseleccionado;
 	}
 
 	public Integer getItrDTOSeleccionadoId() {
@@ -188,5 +214,29 @@ public class GestionEventoBean implements Serializable {
 
 	public void setItrDTOSeleccionado(ItrDTO itrDTOSeleccionado) {
 		this.itrDTOSeleccionado = itrDTOSeleccionado;
+	}
+
+	public List<TutorDTO> getListaDeTutoresDisponibles() {
+		return listaDeTutoresDisponibles;
+	}
+
+	public void setListaDeTutoresDisponibles(List<TutorDTO> listaDeTutoresDisponibles) {
+		this.listaDeTutoresDisponibles = listaDeTutoresDisponibles;
+	}
+
+	public DualListModel<TutorDTO> getTutores() {
+		return tutores;
+	}
+
+	public void setTutores(DualListModel<TutorDTO> tutores) {
+		this.tutores = tutores;
+	}
+
+	public List<TutorDTO> getListaDeTutoresAsignados() {
+		return listaDeTutoresAsignados;
+	}
+
+	public void setListaDeTutoresAsignados(List<TutorDTO> listaDeTutoresAsignados) {
+		this.listaDeTutoresAsignados = listaDeTutoresAsignados;
 	}
 }
