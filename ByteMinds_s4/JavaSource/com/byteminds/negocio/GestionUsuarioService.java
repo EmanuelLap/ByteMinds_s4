@@ -260,4 +260,20 @@ public class GestionUsuarioService implements Serializable {
 		Usuario e = ejbRemoto.modificarUsuario(toUsuario(usuarioSeleccionado));
 	}
 
+	
+	public UsuarioDTO login (String username ,String password) {
+			Usuario user = null;
+			try {
+				
+				user = ejbRemoto.login(username, password);
+				if(user!=null && user.getId()!=null) {
+					return fromUsuario(user);
+				}
+				
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			return null;
+		}
 }
+
