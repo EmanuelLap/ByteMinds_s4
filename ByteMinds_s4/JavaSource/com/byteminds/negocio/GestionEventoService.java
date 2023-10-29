@@ -2,6 +2,7 @@ package com.byteminds.negocio;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,13 +26,14 @@ public class GestionEventoService implements Serializable {
 	private GestionItrService gITR;
 	private GestionTipoEstadoEventoService gTEE;
 	private GestionTutorResponsableEventoService gTRE;
+	private GestionUsuarioService gUS;
 
 	public GestionEventoService() {
 		ejbRemoto = new EJBUsuarioRemoto();
 		gITR = new GestionItrService();
 		gTEE = new GestionTipoEstadoEventoService();
 		gTRE = new GestionTutorResponsableEventoService();
-		
+		gUS = new GestionUsuarioService();
 	}
 
 	public EventoDTO fromEvento (Evento evento) {
@@ -104,5 +106,50 @@ public class GestionEventoService implements Serializable {
 		
 		
 	}
+	
+	public List<EventoDTO> listarEventosTutor(UsuarioDTO tutor) {
+		
+		List<EventoDTO> listadoEventosDTO = new ArrayList<EventoDTO>();
+		List<Evento> listadoEventosEntity = new ArrayList<Evento>();
+		
+		listadoEventosEntity=ejbRemoto.listarEventosTutor(gUS.toUsuario(tutor));
+		
+		for(Evento ev : listadoEventosEntity) {
+			listadoEventosDTO.add(fromEvento(ev));
+		}
+		
+		 return listadoEventosDTO;
+
+	}
+	
+	public List<EventoDTO> listarEventosDTO() {
+		List<EventoDTO> listadoEventosDTO = new ArrayList<EventoDTO>();
+		List<Evento> listadoEventosEntity = new ArrayList<Evento>();
+		listadoEventosEntity.addAll(ejbRemoto.listarEventos());
+		
+		for(Evento ev : listadoEventosEntity) {
+			listadoEventosDTO.add(fromEvento(ev));
+		}
+		
+		 return listadoEventosDTO;
+
+	}
+	
+	public List<EventoDTO> buscarEventosPor(String id, String titulo,String localizacion,
+			String modalidad,String tipoEvento,String itrNombre,
+			Date inicioInicio, Date finInicio,
+			Date inicioFin, Date finFin,
+			Boolean activo) {
+		List<EventoDTO> listadoEventosDTO = new ArrayList<EventoDTO>();
+		List<Evento> listadoEventosEntity = new ArrayList<Evento>();
+		listadoEventosEntity.addAll(ejbRemoto.buscarEventosPor(id, titulo, localizacion, modalidad, tipoEvento, itrNombre, inicioInicio, finInicio, inicioFin, finFin, activo));
+		for(Evento ev : listadoEventosEntity) {
+			listadoEventosDTO.add(fromEvento(ev));
+		}
+		
+		 return listadoEventosDTO;
+
+	}
+	
 	
 }

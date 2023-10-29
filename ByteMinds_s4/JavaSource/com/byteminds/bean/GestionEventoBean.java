@@ -68,7 +68,7 @@ public class GestionEventoBean implements Serializable {
 	public void preRenderViewListener() {
 		System.out.println("INICIALIZANDO GestionEventoBean preRenderViewListener");
 		if (id != null) {
-//			eventoDTOseleccionado = gestionEventoService.obtenerEvento(id);
+			eventoDTOseleccionado = gestionEventoService.obtenerEvento(id);
 		} else {
 			eventoDTOseleccionado = new EventoDTO();
 

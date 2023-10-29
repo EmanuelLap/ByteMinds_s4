@@ -30,7 +30,7 @@
 			<p:messages id="messages" showDetail="true" closable="true">
 				<p:autoUpdate />
 			</p:messages>
-			<h:button outcome="/" value="Volver" />
+			<h:button outcome="/index.xhtml" value="Volver" />
 			
 			<h:commandButton id="idModificar" value="Modificar"
 				rendered="#{!gestionEventoBean.modoEdicion}">
@@ -102,15 +102,15 @@
 			
 
 
-				<p:outputLabel value="ITRCombo" />
-				<p:selectOneMenu id="itrListaDeITRparaUsuario"	value="#{gestionEventoBean.itrDTOSeleccionadoId}">
-				<f:selectItem itemLabel="Seleccione Itr" itemValue="-1"/>
-					<f:selectItems value="#{combosBean.comboItrSelectItem}" />
-					<p:ajax process="@this" partialSubmit="true"
-						listener="#{gestionEventoBean.actualizarITRSeleccionado}" />
+<!-- 				<p:outputLabel value="ITRCombo" /> -->
+<!-- 				<p:selectOneMenu id="itrListaDeITRparaEvento"	value="#{gestionEventoBean.itrDTOSeleccionadoId}"> -->
+<!-- 				<f:selectItem itemLabel="Seleccione Itr" itemValue="-1"/> -->
+<!-- 					<f:selectItems value="#{combosBean.comboItrSelectItem}" /> -->
+<!-- 					<p:ajax process="@this" partialSubmit="true" -->
+<!-- 						listener="#{gestionEventoBean.actualizarITRSeleccionado}" /> -->
 						
-				</p:selectOneMenu>
-				<p:message for="itrListaDeITRparaUsuario" style="color:red" />
+<!-- 				</p:selectOneMenu> -->
+<!-- 				<p:message for="itrListaDeITRparaEvento" style="color:red" /> -->
 
 			
 					
@@ -119,21 +119,23 @@
 						disabled="#{!gestionEventoBean.modoEdicion}"
 						value="#{gestionEventoBean.eventoDTOseleccionado.bajaLogica}" />
 					<p:message for="activoEvento" style="color:red" />
-
+</p:panelGrid>
+<p:panelGrid columns="3">
 				<p:pickList value="#{gestionEventoBean.tutores}" var="tut"
 					itemLabel="#{tut.nombres} #{tut.apellidos} #{tut.itr.nombre}" itemValue="#{tut}"
 					converter="tutorConverter">
-					<p:ajax event="transfer" update=":idDatosEvento:display" />
+<!-- 					<p:ajax event="transfer" update=":idDatosEvento:display" /> -->
 					<f:facet name="sourceCaption">Tutores Disponibles</f:facet>
 					<f:facet name="targetCaption">Tutores Asignados</f:facet>
 				</p:pickList>
-
+				<p:spacer width="1" height="1" />
+				<p:spacer width="1" height="1" />
 				<p:commandButton value="Asignar Tutores" partialSubmit="true"
 					action="#{gestionEventoBean.asignarTutores}" update="tutoresAsignadosList">
 <!-- 					<f:ajax/> -->
 					</p:commandButton>
 
-			
+				
 				<p:outputLabel value="Tutores Asignados" />
 				<p:dataList id="tutoresAsignadosList" value="#{gestionEventoBean.listaDeTutoresAsignados}" var="tutorNombre">
         			#{tutorNombre.nombres} #{tutorNombre.apellidos} - #{tutorNombre.itr.nombre} 

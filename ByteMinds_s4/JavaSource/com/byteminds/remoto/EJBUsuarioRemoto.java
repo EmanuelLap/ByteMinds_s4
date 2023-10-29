@@ -347,9 +347,9 @@ public class EJBUsuarioRemoto {
 
 	}
 	
-	public List<Estudiante> listarEstudiantesConvocados() {
+	public List<Estudiante> listarEstudiantesConvocadosEvento(Integer eventoID) {
 		try {
-			Evento evento = eventoBeanRemote.obtenerEvento(1);
+			Evento evento = eventoBeanRemote.obtenerEvento(eventoID);
 			System.out.println("Evento: " + evento);
 			return eventoBeanRemote.obtenerEstudiantesConvocados(evento);
 		} catch (Exception e) {

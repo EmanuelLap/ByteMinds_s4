@@ -7,12 +7,12 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="title">
-		<c:set var="title" value="Gestion de Usuarios" scope="request" />
+		<c:set var="title" value="Gestion de Eventos" scope="request" />
 	</ui:define>
 
 	<ui:define name="content">
 		<h:form id="formBuscar" >
-			<h:link value="Nuevo usuario" outcome="DatosUsuario.xhtml">
+			<h:link value="Nuevo Evento" outcome="datosEvento.xhtml">
 				<f:param name="id" value="" />
 				<f:param name="modalidad" value="insert" />
 			</h:link>
@@ -27,73 +27,56 @@
 				<p:autoUpdate />
 			</p:messages>
 			<h:panelGrid columns="2">
-				<p:outputLabel value="Nombre" />
-				<p:inputText id="nombreCrit"
-					value="#{gestionUsuarios.criterioNombre}" />
+				<p:outputLabel value="Titulo" />
+				<p:inputText id="tituloCrit"
+					value="#{gestionEnventosBean.criterioTitulo}" />
 
-				<p:outputLabel value="Apellidos" />
-				<p:inputText id="apellidoCrit"
-					value="#{gestionUsuarios.criterioApellido}" />
-
-				<p:outputLabel value="Documento" />
-				<p:inputText id="documentoCrit"
-					value="#{gestionUsuarios.criterioDocumento}" />
+				<p:outputLabel value="Tipo evento" />
+				<p:selectOneMenu id="tipoEventoCrit" value="#{gestionEnventosBean.criterioTipoEvento}"
+					effect="fold" editable="false">
+					<f:selectItem itemLabel="Seleccione Tipo Evento" itemValue="" />
+					<f:selectItems value="#{combosBean.comboTipoEvento}" />
+				</p:selectOneMenu>
+				<p:outputLabel value="Modalidad" />
+				<p:selectOneMenu id="modalidadCrit" value="#{gestionEnventosBean.criterioModalidadEvento}"
+					effect="fold" editable="false">
+					<f:selectItem itemLabel="Seleccione Modalidad" itemValue="" />
+					<f:selectItems value="#{combosBean.comboModalidad}" />
+				</p:selectOneMenu>
 
 				<p:outputLabel value="ITR" />
-				<p:selectOneMenu id="itrCrit" value="#{gestionUsuarios.criterioITR}"
+				<p:selectOneMenu id="itrCrit" value="#{gestionEnventosBean.criterioItrDTO}"
 					effect="fold" editable="false">
 					<f:selectItem itemLabel="Seleccione ITR" itemValue="" />
 					<f:selectItems value="#{combosBean.comboItr}" />
 				</p:selectOneMenu>
 
-				<p:outputLabel value="ROL" />
-				<p:selectOneMenu id="rolCrit" value="#{gestionUsuarios.criterioROL}"
-					effect="fold" editable="false">
-					<f:selectItem itemLabel="Selecione Rol" itemValue=""/>
-					<f:selectItems value="#{combosBean.comboRol}" />
-				</p:selectOneMenu>
+				<p:outputLabel value="Localizacion" />
+				<p:inputText id="localizacionCrit"
+					value="#{gestionEnventosBean.criterioLocalizacion}" />
 
 
-				<p:outputLabel value="Todos" />
-				<p:selectBooleanCheckbox id="todosCrit"
-					value="#{gestionUsuarios.criterioTodos}" itemLabel="Todos"
-					disabled="false">
-					<p:ajax event="change"
-						listener="#{gestionUsuarios.cambiarChecks()}" update="checkGroup" />
-				</p:selectBooleanCheckbox>
+				<p:outputLabel value="Fecha inicio entre" />
+				<p:calendar id="inicioEventoinicio"
+					value="#{gestionEnventosBean.criterioInicioInicio}" />
+					
+								<p:outputLabel value="Fecha inicio entre" />
+				<p:calendar id="inicioEventofin"
+					value="#{gestionEnventosBean.criterioInicioFin}" />
+					
+				<p:outputLabel value="Fecha fin entre" />
+				<p:calendar id="finEventoinicio"
+					value="#{gestionEnventosBean.criterioFinInicio}" />
+					
+								<p:outputLabel value="Fecha fin evento" />
+				<p:calendar id="finEventofin"
+					value="#{gestionEnventosBean.criterioFinFin}" />
+				
+
 
 			</h:panelGrid>
 
-			<h:panelGroup id="checkGroup">
-
-				<p:outputLabel value="Opciones:"
-					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" />
-
-				<p:selectBooleanCheckbox id="actCrit"
-					value="#{gestionUsuarios.criterioActivo}" itemLabel="Activo"
-					disabled="false"
-					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" />
-
-				<p:selectBooleanCheckbox id="noActCrit"
-					value="#{gestionUsuarios.criterioNoActivo}" itemLabel="No activo"
-					disabled="false"
-					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" />
-
-
-				<p:selectBooleanCheckbox id="valCrit"
-					value="#{gestionUsuarios.criterioValidado}" itemLabel="Validado"
-					disabled="false"
-					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" />
-
-				<p:selectBooleanCheckbox id="noValCrit"
-					value="#{gestionUsuarios.criterioNoValidado}"
-					itemLabel="No validado" disabled="false"
-					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" />
-
-
-			</h:panelGroup><br/>
-
-			<p:commandButton value="Buscar"	action="#{gestionUsuarios.seleccionarUsuarios}" update="tablaUsuarios">
+			<p:commandButton value="Buscar"	action="#{gestionEnventosBean.seleccionarEventos()}" update="tablaEventos">
 				<p:ajax onstart="PF('blockUIWidget').show()" oncomplete="PF('blockUIWidget').hide()" />
 			</p:commandButton>
 			
@@ -105,135 +88,97 @@
 		</h:form>
 
 		<h3>
-			<h:outputLabel value="Usuarios seleccionados" />
+			<h:outputLabel value="Eventos filtrados" />
 		</h3>
-		<p:dataTable id="tablaUsuarios"
-			value="#{gestionUsuarios.usuariosSeleccionados}" var="usuario"
+		<p:dataTable id="tablaEventos"
+			value="#{gestionEnventosBean.eventosSeleccionados}" var="evento"
 			styleClass="employeeTable" headerClass="employeeTableHeader">
 			<p:column>
 				<f:facet name="header">Acciones</f:facet>
-				<h:link value="Editar" outcome="DatosUsuario.xhtml">
-					<f:param name="id" value="#{usuario.id}" />
+				<h:link value="Editar" outcome="datosEvento.xhtml">
+					<f:param name="id" value="#{evento.id}" />
 					<f:param name="modalidad" value="edit" />
 				</h:link>
 			</p:column>
 
-			<p:column sortBy="#{usuario.documento}">
-				<f:facet name="header">Documento</f:facet>
-				#{usuario.documento}
+			<p:column sortBy="#{evento.id}">
+				<f:facet name="header">Id</f:facet>
+				#{evento.id}
 			</p:column>
 
-			<p:column sortBy="#{usuario.usuario}">
-				<f:facet name="header">Usuario</f:facet>
-				#{usuario.usuario}
+			<p:column sortBy="#{evento.titulo}">
+				<f:facet name="header">Titulo</f:facet>
+				#{evento.titulo}
 			</p:column>
 
-			<!-- 			<p:column sortBy="#{usuario.contrasenia}"> -->
-			<!-- 				<f:facet name="header">Contraseña</f:facet> -->
-			<!-- 				#{usuario.contrasenia} -->
-			<!-- 			</p:column> -->
-
-			<p:column sortBy="#{usuario.apellidos}">
-				<f:facet name="header">Apellidos</f:facet>
-				#{usuario.apellidos}
+			<p:column sortBy="#{evento.tipoEvento}">
+				<f:facet name="header">Tipo Evento</f:facet>
+				#{evento.tipoEvento}
 			</p:column>
 
-			<p:column sortBy="#{usuario.nombres}">
-				<f:facet name="header">Nombres</f:facet>
-				#{usuario.nombres}
+			<p:column sortBy="#{evento.modalidadEvento}">
+				<f:facet name="header">Modalidad</f:facet>
+				#{evento.modalidadEvento}
 			</p:column>
 
-			<!-- 			<p:column sortBy="#{usuario.fechaNacimiento}"> -->
-			<!-- 				<f:facet name="header">Fecha de Nacimiento</f:facet> -->
-			<!-- 				#{usuario.fechaNacimiento} -->
-			<!-- 			</p:column> -->
+			<p:column sortBy="#{evento.inicio}">
+				<f:facet name="header">Fecha de inicio</f:facet>
+				#{evento.inicio}
+			</p:column>
+			<p:column sortBy="#{evento.fin}">
+				<f:facet name="header">Fecha de fin</f:facet>
+				#{evento.fin}
+			</p:column>
 
-			<!-- 			<p:column sortBy="#{usuario.departamento}"> -->
-			<!-- 				<f:facet name="header">Departamento</f:facet> -->
-			<!-- 				#{usuario.departamento} -->
-			<!-- 			</p:column> -->
+			<p:column sortBy="#{evento.localizacion}">
+				<f:facet name="header">Localizacion</f:facet>
+				#{evento.localizacion}
+			</p:column>
 
-			<!-- 			<p:column sortBy="#{usuario.genero}"> -->
+			<!-- 			<p:column sortBy="#{evento.genero}"> -->
 			<!-- 				<f:facet name="header">Género</f:facet> -->
-			<!-- 				#{usuario.genero} -->
+			<!-- 				#{evento.genero} -->
 			<!-- 			</p:column> -->
 
-			<!-- 			<p:column sortBy="#{usuario.localidad}"> -->
+			<!-- 			<p:column sortBy="#{evento.localidad}"> -->
 			<!-- 				<f:facet name="header">Localidad</f:facet> -->
-			<!-- 				#{usuario.localidad} -->
+			<!-- 				#{evento.localidad} -->
 			<!-- 			</p:column> -->
 
-			<!-- 			<p:column sortBy="#{usuario.mail}"> -->
+			<!-- 			<p:column sortBy="#{evento.mail}"> -->
 			<!-- 				<f:facet name="header">Email</f:facet> -->
-			<!-- 				#{usuario.mail} -->
+			<!-- 				#{evento.mail} -->
 			<!-- 			</p:column> -->
 
-			<!-- 			<p:column sortBy="#{usuario.mailPersonal}"> -->
+			<!-- 			<p:column sortBy="#{evento.mailPersonal}"> -->
 			<!-- 				<f:facet name="header">Email Personal</f:facet> -->
-			<!-- 				#{usuario.mailPersonal} -->
+			<!-- 				#{evento.mailPersonal} -->
 			<!-- 			</p:column> -->
 
-			<p:column>
-				<f:facet name="header">Ver mas</f:facet>
-				<p:commandButton value="Ver mas" type="button"
-					onclick="PF('${usuario}').show();" />
 
-				<p:dialog header="Informacion de usuario" widgetVar="${usuario}"
-					showEffect="explode" hideEffect="bounce" height="200">
-
-					<h:outputLabel value="Contrasenia:${usuario.contrasenia}" />
-					<br />
-					<h:outputLabel
-						value="Fecha de nacimiento:${usuario.fechaNacimiento}" />
-					<br />
-					<h:outputLabel value="Genero:${usuario.genero}" />
-					<br />
-					<h:outputLabel value="Localidad:${usuario.localidad}" />
-					<br />
-					<h:outputLabel value="Mail:${usuario.mail}" />
-					<br />
-					<h:outputLabel value="Mail personal:${usuario.mailPersonal}" />
-					<br />
-					<h:outputLabel value="Teléfono:${usuario.telefono}" />
-				</p:dialog>
-			</p:column>
-
-
-			<!-- 			<p:column sortBy="#{usuario.telefono}"> -->
-			<!-- 				<f:facet name="header">Teléfono</f:facet> -->
-			<!-- 				#{usuario.telefono} -->
-			<!-- 			</p:column> -->
-
-			<p:column sortBy="#{usuario.itr.nombre}">
+			<p:column sortBy="#{evento.itrDTO.nombre}">
 				<f:facet name="header">ITR</f:facet>
-			#{usuario.itr.nombre}
+			#{evento.itrDTO.nombre}
 			</p:column>
 			
-				
-				
-				
-			<p:column sortBy="#{usuario.rol.nombre}">
-				<f:facet name="header">Rol</f:facet>
-				#{usuario.rol.nombre}
-			</p:column>
 
-			<p:column sortBy="#{usuario.activo}">
-				<f:facet name="header">Activo/Eliminado</f:facet>
-				<p:selectBooleanCheckbox value="#{usuario.activo}"
-					itemLabel="Activo" disabled="true" />
-				<p:selectBooleanCheckbox value="#{usuario.validado}"
-					itemLabel="Validado" disabled="true" />
-			</p:column>
-			<p:column>
-				<f:facet name="header">Desactivar</f:facet>
+<!-- 			<p:column sortBy="#{evento.activo}"> -->
+<!-- 				<f:facet name="header">Activo/Eliminado</f:facet> -->
+<!-- 				<p:selectBooleanCheckbox value="#{evento.activo}" -->
+<!-- 					itemLabel="Activo" disabled="true" /> -->
+<!-- 				<p:selectBooleanCheckbox value="#{evento.validado}" -->
+<!-- 					itemLabel="Validado" disabled="true" /> -->
+<!-- 			</p:column> -->
+<!-- 			<p:column> -->
+<!-- 				<f:facet name="header">Desactivar</f:facet> -->
 
-				<p:commandButton value="Desactivar"
-					actionListener="#{gestionUsuario.setUsuarioSeleccionado(usuario)}"
-					action="#{gestionUsuario.bajaLogicaUsuario}"
-					onclick="if(!confirm('¿Estás seguro de que quieres desactivar ${usuario.nombres}?')) return false;"
-					update=":tablaUsuarios" />
+<!-- 				<p:commandButton value="Desactivar" -->
+<!-- 					actionListener="#{gestionUsuario.setUsuarioSeleccionado(evento)}" -->
+<!-- 					action="#{gestionUsuario.bajaLogicaUsuario}" -->
+<!-- 					onclick="if(!confirm('¿Estás seguro de que quieres desactivar ${evento.nombres}?')) return false;" -->
+<!-- 					update=":tablaEventos" /> -->
 
-			</p:column>
+<!-- 			</p:column> -->
 		</p:dataTable>
 
 

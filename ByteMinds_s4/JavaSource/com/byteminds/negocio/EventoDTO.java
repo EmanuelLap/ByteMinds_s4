@@ -59,7 +59,7 @@ public class EventoDTO {
 //		this.fin = new Date(System.currentTimeMillis());
 //		this.localizacion = "";
 //		this.bajaLogica = false;
-//		this.itrDTO = null;
+//		this.itrDTO = new ItrDTO();
 //		this.tipoEstadoEventoDTO = new TipoEstadoEventoDTO();
 	}
 

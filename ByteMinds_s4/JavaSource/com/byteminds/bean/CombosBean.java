@@ -41,6 +41,10 @@ public class CombosBean implements Serializable {
 	private List<SelectItem> comboTipoTutorSelectItem;
 	private List<SelectItem> comboTipoAreaSelectItem;
 	private List<String> comboRol;
+	private List<SelectItem> comboModalidad;
+	private List<SelectItem> comboTipoEvento;
+
+	
 	private GestionItrService gITRS;
 	private GestionRolService gROLS;
 	private GestionTipoAreaService gTAS;
@@ -58,6 +62,8 @@ public class CombosBean implements Serializable {
 		ejbRemoto = new EJBUsuarioRemoto();
 		comboItr = new ArrayList<String>();
 		comboRol = new ArrayList<String>();
+		comboModalidad = new ArrayList<SelectItem>();
+		comboTipoEvento = new ArrayList<SelectItem>();
 		comboItrSelectItem= new ArrayList<SelectItem>();
 		comboROLSelectItem= new ArrayList<SelectItem>();
 		comboTipoTutorSelectItem= new ArrayList<SelectItem>();
@@ -66,8 +72,25 @@ public class CombosBean implements Serializable {
 		cargarROLCombos();
 		cargarTipoTutorCombo();
 		cargarTipoAreaCombo();
+		cargarModalidad();
+		cargarTipoEvento();
 	}
 
+	private void cargarTipoEvento() {
+		comboTipoEvento.add(new SelectItem("SIN_SELECCIONAR", ""));
+		comboTipoEvento.add(new SelectItem("JORNADA_PRESENCIAL", "Jornada presencial"));
+		comboTipoEvento.add(new SelectItem("PRUEBA_FINAL", "Prueba final"));
+		comboTipoEvento.add(new SelectItem("EXAMEN", "Examen"));
+		comboTipoEvento.add(new SelectItem("DEFENSA_PROYECTO", "Defensa de Proyecto"));
+		
+	}
+	private void cargarModalidad() {
+		comboModalidad.add(new SelectItem("SIN_SELECCIONAR", ""));
+		comboModalidad.add(new SelectItem("VIRTUAL", "Virtual"));
+		comboModalidad.add(new SelectItem("PRESENCIAL", "Presencial"));
+		comboModalidad.add(new SelectItem("SEMI_PRESENCIAL", "Semipresencial"));
+	}
+	
 	private void cargarITRCombos() {
 		List<Itr> listItr = ejbRemoto.listarITR();
 
@@ -82,7 +105,7 @@ public class CombosBean implements Serializable {
 		List<TipoTutorTipo> listTTT = ejbRemoto.listarTipoTutorTipo();
 
 		for (TipoTutorTipo ttt : listTTT) {
-			this.comboItr.add(gTTT.fromTipoTutorTipo(ttt).getNombre());
+//			this.comboItr.add(gTTT.fromTipoTutorTipo(ttt).getNombre());
 			comboTipoTutorSelectItem.add(new SelectItem(gTTT.fromTipoTutorTipo(ttt).getId(),gTTT.fromTipoTutorTipo(ttt).getNombre()));
 
 		}
@@ -92,7 +115,7 @@ public class CombosBean implements Serializable {
 		List<TipoArea> listTA = ejbRemoto.listarTipoArea();
 
 		for (TipoArea ta : listTA) {
-			this.comboItr.add(gTAS.fromTipoArea(ta).getNombre());
+//			this.comboItr.add(gTAS.fromTipoArea(ta).getNombre());
 			comboTipoAreaSelectItem.add(new SelectItem(gTAS.fromTipoArea(ta).getId(),gTAS.fromTipoArea(ta).getNombre()));
 
 		}
@@ -104,7 +127,7 @@ public class CombosBean implements Serializable {
 		List<Rol> listROL = ejbRemoto.listarRoles();
 
 		for (Rol rolItem : listROL) {
-			this.comboRol.add(gROLS.fromRol(rolItem).getNombre());
+//			this.comboRol.add(gROLS.fromRol(rolItem).getNombre());
 			comboROLSelectItem.add(new SelectItem(gROLS.fromRol(rolItem).getId(),gROLS.fromRol(rolItem).getNombre()));
 		}
 
@@ -157,5 +180,20 @@ public class CombosBean implements Serializable {
 	public void setComboItrSelectItem(List<SelectItem> comboItrSelectItem) {
 		this.comboItrSelectItem = comboItrSelectItem;
 	}
-	
+
+	public List<SelectItem> getComboModalidad() {
+		return comboModalidad;
+	}
+
+	public void setComboModalidad(List<SelectItem> comboModalidad) {
+		this.comboModalidad = comboModalidad;
+	}
+
+	public List<SelectItem> getComboTipoEvento() {
+		return comboTipoEvento;
+	}
+
+	public void setComboTipoEvento(List<SelectItem> comboTipoEvento) {
+		this.comboTipoEvento = comboTipoEvento;
+	}
 }
