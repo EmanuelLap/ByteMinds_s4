@@ -8,11 +8,15 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 
 import com.byteminds.negocio.GestionItrService;
+import com.byteminds.negocio.GestionModalidadEventoService;
 import com.byteminds.negocio.GestionRolService;
 import com.byteminds.negocio.GestionTipoAreaService;
+import com.byteminds.negocio.GestionTipoEventoService;
 import com.byteminds.negocio.GestionTipoTutorService;
 import com.byteminds.negocio.ItrDTO;
+import com.byteminds.negocio.ModalidadEventoDTO;
 import com.byteminds.negocio.RolDTO;
+import com.byteminds.negocio.TipoEventoDTO;
 import com.byteminds.remoto.EJBUsuarioRemoto;
 
 import tecnofenix.entidades.Itr;
@@ -41,15 +45,19 @@ public class CombosBean implements Serializable {
 	private List<SelectItem> comboTipoTutorSelectItem;
 	private List<SelectItem> comboTipoAreaSelectItem;
 	private List<String> comboRol;
-	private List<SelectItem> comboModalidad;
-	private List<SelectItem> comboTipoEvento;
+	
+	private List<String> comboModalidad;
+	private List<SelectItem> comboModalidadSelectItem;
 
+	private List<String> comboTipoEvento;
+	private List<SelectItem> comboTipoEventoSelectItem;
 	
 	private GestionItrService gITRS;
 	private GestionRolService gROLS;
 	private GestionTipoAreaService gTAS;
 	private GestionTipoTutorService gTTT;
-	
+	private GestionTipoEventoService gTE;
+	private GestionModalidadEventoService gME;
 	
 	
 	
@@ -58,12 +66,16 @@ public class CombosBean implements Serializable {
 		gROLS = new GestionRolService();
 		gTAS = new GestionTipoAreaService();
 		gTTT = new GestionTipoTutorService();
+		gTE = new GestionTipoEventoService();
+		gME = new GestionModalidadEventoService();
 		
 		ejbRemoto = new EJBUsuarioRemoto();
 		comboItr = new ArrayList<String>();
 		comboRol = new ArrayList<String>();
-		comboModalidad = new ArrayList<SelectItem>();
-		comboTipoEvento = new ArrayList<SelectItem>();
+		comboModalidadSelectItem = new ArrayList<SelectItem>();
+		comboModalidad= new ArrayList<String>();
+		comboTipoEvento = new ArrayList<String>();
+		comboTipoEventoSelectItem= new ArrayList<SelectItem>();
 		comboItrSelectItem= new ArrayList<SelectItem>();
 		comboROLSelectItem= new ArrayList<SelectItem>();
 		comboTipoTutorSelectItem= new ArrayList<SelectItem>();
@@ -77,18 +89,26 @@ public class CombosBean implements Serializable {
 	}
 
 	private void cargarTipoEvento() {
-		comboTipoEvento.add(new SelectItem("SIN_SELECCIONAR", ""));
-		comboTipoEvento.add(new SelectItem("JORNADA_PRESENCIAL", "Jornada presencial"));
-		comboTipoEvento.add(new SelectItem("PRUEBA_FINAL", "Prueba final"));
-		comboTipoEvento.add(new SelectItem("EXAMEN", "Examen"));
-		comboTipoEvento.add(new SelectItem("DEFENSA_PROYECTO", "Defensa de Proyecto"));
 		
+		for (TipoEventoDTO te: gTE.listarTipoEventos()) {
+			comboTipoEvento.add(te.getNombre());
+			comboTipoEventoSelectItem.add(new SelectItem(te.getId(),te.getNombre()));
+			System.out.println("cargarTipoEvento cargarTipoEvento cargarTipoEvento "+te.getId()+" "+te.getNombre());
+		}
+			
 	}
 	private void cargarModalidad() {
-		comboModalidad.add(new SelectItem("SIN_SELECCIONAR", ""));
-		comboModalidad.add(new SelectItem("VIRTUAL", "Virtual"));
-		comboModalidad.add(new SelectItem("PRESENCIAL", "Presencial"));
-		comboModalidad.add(new SelectItem("SEMI_PRESENCIAL", "Semipresencial"));
+		
+		for (ModalidadEventoDTO me: gME.listarModalidaEventos()) {
+			comboModalidad.add(me.getNombre());
+			comboModalidadSelectItem.add(new SelectItem(me.getId(),me.getNombre()));
+			System.out.println("cargarModalidad cargarModalidad cargarModalidad "+me.getId()+" "+me.getNombre());
+		}
+//		
+//		comboModalidad.add(new SelectItem("", ""));
+//		comboModalidad.add(new SelectItem("VIRTUAL", "Virtual"));
+//		comboModalidad.add(new SelectItem("PRESENCIAL", "Presencial"));
+//		comboModalidad.add(new SelectItem("SEMI_PRESENCIAL", "Semipresencial"));
 	}
 	
 	private void cargarITRCombos() {
@@ -181,19 +201,34 @@ public class CombosBean implements Serializable {
 		this.comboItrSelectItem = comboItrSelectItem;
 	}
 
-	public List<SelectItem> getComboModalidad() {
+	public List<String> getComboModalidad() {
 		return comboModalidad;
 	}
 
-	public void setComboModalidad(List<SelectItem> comboModalidad) {
+	public void setComboModalidad(List<String> comboModalidad) {
 		this.comboModalidad = comboModalidad;
 	}
 
-	public List<SelectItem> getComboTipoEvento() {
+	public List<String> getComboTipoEvento() {
 		return comboTipoEvento;
 	}
 
-	public void setComboTipoEvento(List<SelectItem> comboTipoEvento) {
+	public void setComboTipoEvento(List<String> comboTipoEvento) {
 		this.comboTipoEvento = comboTipoEvento;
+	}
+
+	public List<SelectItem> getComboTipoEventoSelectItem() {
+		return comboTipoEventoSelectItem;
+	}
+
+	public void setComboTipoEventoSelectItem(List<SelectItem> comboTipoEventoSelectItem) {
+		this.comboTipoEventoSelectItem = comboTipoEventoSelectItem;
+	}
+	public List<SelectItem> getComboModalidadSelectItem() {
+		return comboModalidadSelectItem;
+	}
+
+	public void setComboModalidadSelectItem(List<SelectItem> comboModalidadSelectItem) {
+		this.comboModalidadSelectItem = comboModalidadSelectItem;
 	}
 }

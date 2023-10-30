@@ -35,13 +35,14 @@
 				<p:selectOneMenu id="tipoEventoCrit" value="#{gestionEnventosBean.criterioTipoEvento}"
 					effect="fold" editable="false">
 					<f:selectItem itemLabel="Seleccione Tipo Evento" itemValue="" />
-					<f:selectItems value="#{combosBean.comboTipoEvento}" />
+					<f:selectItems value="#{combosBean.comboTipoEventoSelectItem}" />
 				</p:selectOneMenu>
+				
 				<p:outputLabel value="Modalidad" />
 				<p:selectOneMenu id="modalidadCrit" value="#{gestionEnventosBean.criterioModalidadEvento}"
 					effect="fold" editable="false">
 					<f:selectItem itemLabel="Seleccione Modalidad" itemValue="" />
-					<f:selectItems value="#{combosBean.comboModalidad}" />
+					<f:selectItems value="#{combosBean.comboModalidadSelectItem}" />
 				</p:selectOneMenu>
 
 				<p:outputLabel value="ITR" />
@@ -113,12 +114,12 @@
 
 			<p:column sortBy="#{evento.tipoEvento}">
 				<f:facet name="header">Tipo Evento</f:facet>
-				#{evento.tipoEvento}
+				#{evento.tipoEvento.nombre}
 			</p:column>
 
 			<p:column sortBy="#{evento.modalidadEvento}">
 				<f:facet name="header">Modalidad</f:facet>
-				#{evento.modalidadEvento}
+				#{evento.modalidadEvento.nombre}
 			</p:column>
 
 			<p:column sortBy="#{evento.inicio}">

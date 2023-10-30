@@ -30,7 +30,7 @@
 			<p:messages id="messages" showDetail="true" closable="true">
 				<p:autoUpdate />
 			</p:messages>
-			<h:button outcome="/index.xhtml" value="Volver" />
+			<h:button outcome="/pages/eventos/listadoEventos.xhtml" value="Volver" />
 			
 			<h:commandButton id="idModificar" value="Modificar"
 				rendered="#{!gestionEventoBean.modoEdicion}">
@@ -60,22 +60,23 @@
 				<p:message for="eventoTitulo" style="color:red" />
 
 				<p:outputLabel value="Tipo de Evento" />
-				<p:selectOneMenu id="tipoEvento" value="#{gestionEventoBean.eventoDTOseleccionado.tipoEvento}">
-					<f:selectItem itemLabel="Sin Seleccionar" itemValue="" />
-					<f:selectItem itemLabel="Jornada presencial" itemValue="JORNADA_PRESENCIAL" />
-					<f:selectItem itemLabel="Prueba final" itemValue="PRUEBA_FINAL" />
-					<f:selectItem itemLabel="Examen" itemValue="EXAMEN" />
-					<f:selectItem itemLabel="Defensa de Proyecto" itemValue="DEFENSA_PROYECTO" />
+<!-- 				<p:outputLabel value="#{gestionEventoBean.eventoDTOseleccionado.tipoEvento}" /> -->
+<!-- 				<p:outputLabel value="#{gestionEventoBean.tipoEventoSeleccionadoId}" /> -->
+				<p:selectOneMenu id="tipoEvento" value="#{gestionEventoBean.tipoEventoSeleccionadoId}">
+					<f:selectItems value="#{combosBean.comboTipoEventoSelectItem}" />
+					<p:ajax process="@this" partialSubmit="true"
+						listener="#{gestionEventoBean.actualizarTipoEventoSeleccionado}" />
 				</p:selectOneMenu>
 				<p:message for="tipoEvento" style="color:red" />
 
 	
 				<p:outputLabel value="Modalidad" />
-				<p:selectOneMenu id="modalidadEvento" value="#{gestionEventoBean.eventoDTOseleccionado.tipoEvento}">
-					<f:selectItem itemLabel="Sin Seleccionar" itemValue="SIN_SELECCIONAR" />
-					<f:selectItem itemLabel="Virtual" itemValue="VIRTUAL" />
-					<f:selectItem itemLabel="Presencial" itemValue="PRESENCIAL" />
-					<f:selectItem itemLabel="Semipresencial" itemValue="SEMI_PRESENCIAL" />
+<!-- 				<p:outputLabel value="#{gestionEventoBean.eventoDTOseleccionado.modalidadEvento}" /> -->
+				
+				<p:selectOneMenu id="modalidadEvento" value="#{gestionEventoBean.modalidadEventoSeleccionadoId}">
+					<f:selectItems value="#{combosBean.comboModalidadSelectItem}" />
+					<p:ajax process="@this" partialSubmit="true"
+						listener="#{gestionEventoBean.actualizarModalidadEventoSeleccionado}" />
 				</p:selectOneMenu>
 				<p:message for="modalidadEvento" style="color:red" />
 				
@@ -102,15 +103,15 @@
 			
 
 
-<!-- 				<p:outputLabel value="ITRCombo" /> -->
-<!-- 				<p:selectOneMenu id="itrListaDeITRparaEvento"	value="#{gestionEventoBean.itrDTOSeleccionadoId}"> -->
-<!-- 				<f:selectItem itemLabel="Seleccione Itr" itemValue="-1"/> -->
-<!-- 					<f:selectItems value="#{combosBean.comboItrSelectItem}" /> -->
-<!-- 					<p:ajax process="@this" partialSubmit="true" -->
-<!-- 						listener="#{gestionEventoBean.actualizarITRSeleccionado}" /> -->
+				<p:outputLabel value="ITRCombo" />
+				<p:selectOneMenu id="itrListaDeITRparaEvento"	value="#{gestionEventoBean.itrDTOSeleccionadoId}">
+				<f:selectItem itemLabel="Seleccione Itr" itemValue="-1"/>
+					<f:selectItems value="#{combosBean.comboItrSelectItem}" />
+					<p:ajax process="@this" partialSubmit="true"
+						listener="#{gestionEventoBean.actualizarITRSeleccionado}" />
 						
-<!-- 				</p:selectOneMenu> -->
-<!-- 				<p:message for="itrListaDeITRparaEvento" style="color:red" /> -->
+				</p:selectOneMenu>
+				<p:message for="itrListaDeITRparaEvento" style="color:red" />
 
 			
 					
@@ -120,6 +121,7 @@
 						value="#{gestionEventoBean.eventoDTOseleccionado.bajaLogica}" />
 					<p:message for="activoEvento" style="color:red" />
 </p:panelGrid>
+
 <p:panelGrid columns="3">
 				<p:pickList value="#{gestionEventoBean.tutores}" var="tut"
 					itemLabel="#{tut.nombres} #{tut.apellidos} #{tut.itr.nombre}" itemValue="#{tut}"
@@ -132,7 +134,6 @@
 				<p:spacer width="1" height="1" />
 				<p:commandButton value="Asignar Tutores" partialSubmit="true"
 					action="#{gestionEventoBean.asignarTutores}" update="tutoresAsignadosList">
-<!-- 					<f:ajax/> -->
 					</p:commandButton>
 
 				
@@ -140,6 +141,9 @@
 				<p:dataList id="tutoresAsignadosList" value="#{gestionEventoBean.listaDeTutoresAsignados}" var="tutorNombre">
         			#{tutorNombre.nombres} #{tutorNombre.apellidos} - #{tutorNombre.itr.nombre} 
    				 </p:dataList>
+   				 	<p:commandButton value="Borrar Tutores asignados" partialSubmit="true"
+					action="#{gestionEventoBean.cargarListaDeTutoresDisponibles}" update="tutoresAsignadosList">
+					</p:commandButton>
 
 			</p:panelGrid>
 

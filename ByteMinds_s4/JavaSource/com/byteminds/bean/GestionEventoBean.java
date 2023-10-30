@@ -17,9 +17,12 @@ import org.primefaces.model.DualListModel;
 import com.byteminds.negocio.EventoDTO;
 import com.byteminds.negocio.GestionEventoService;
 import com.byteminds.negocio.GestionItrService;
+import com.byteminds.negocio.GestionModalidadEventoService;
+import com.byteminds.negocio.GestionTipoEventoService;
 import com.byteminds.negocio.GestionUsuarioService;
 import com.byteminds.negocio.ItrDTO;
 import com.byteminds.negocio.TutorDTO;
+import com.byteminds.negocio.TutorResponsableEventoDTO;
 
 
 
@@ -33,6 +36,8 @@ public class GestionEventoBean implements Serializable {
 	@EJB
 	GestionEventoService gestionEventoService;
 	GestionItrService gestionItrService;
+	GestionTipoEventoService gTE;
+	GestionModalidadEventoService gME;
 	GestionUsuarioService gestionUsuarioService;
 	
 	private Integer id;
@@ -40,9 +45,12 @@ public class GestionEventoBean implements Serializable {
 	private boolean modoEdicion = false;
 	
 	private EventoDTO eventoDTOseleccionado;
+	private Integer tipoEventoSeleccionadoId;
+	private Integer modalidadEventoSeleccionadoId;
 	
 	private ItrDTO itrDTOSeleccionado;
 	private Integer itrDTOSeleccionadoId;
+	
  
 	private List<TutorDTO> listaDeTutoresDisponibles;
 	private List<TutorDTO> listaDeTutoresAsignados;
@@ -52,23 +60,27 @@ public class GestionEventoBean implements Serializable {
 		System.out.println("INICIALIZANDO GestionEventoBean");
 		itrDTOSeleccionado = new ItrDTO();
 		gestionItrService= new GestionItrService();
+		gTE = new GestionTipoEventoService();
+		gME= new GestionModalidadEventoService();
 		gestionUsuarioService = new GestionUsuarioService();
 		eventoDTOseleccionado = new EventoDTO();
 		//Cargando listado de tutores disponibles
-		listaDeTutoresAsignados = new ArrayList<TutorDTO>();
-		listaDeTutoresDisponibles = new ArrayList<TutorDTO>();
-		listaDeTutoresDisponibles= gestionUsuarioService.listadoDeTutoresActivos();
-		
-        List<TutorDTO> tutoresTarget = new ArrayList<TutorDTO>();
-        setTutores(new DualListModel<TutorDTO>(listaDeTutoresDisponibles, tutoresTarget));
+		cargarListaDeTutoresDisponibles();
+
     
 		
 	}
 
 	public void preRenderViewListener() {
 		System.out.println("INICIALIZANDO GestionEventoBean preRenderViewListener");
+		if (!FacesContext.getCurrentInstance().isPostback()) {
 		if (id != null) {
 			eventoDTOseleccionado = gestionEventoService.obtenerEvento(id);
+			this.itrDTOSeleccionadoId = eventoDTOseleccionado.getItrDTO().getId();
+			this.tipoEventoSeleccionadoId = eventoDTOseleccionado.getTipoEvento().getId();
+			this.modalidadEventoSeleccionadoId = eventoDTOseleccionado.getModalidadEvento().getId();
+			cargarListaDeTutoresDisponibles();
+			cargarTutores();
 		} else {
 			eventoDTOseleccionado = new EventoDTO();
 
@@ -87,8 +99,28 @@ public class GestionEventoBean implements Serializable {
 			modalidad = "view";
 
 		}
+		}
 	}
-
+	public String cargarTutores() {
+		this.listaDeTutoresAsignados.clear();
+		if(!eventoDTOseleccionado.getTutorResponsableEventoDTOCollection().isEmpty()) {
+			for(TutorResponsableEventoDTO tutor:  eventoDTOseleccionado.getTutorResponsableEventoDTOCollection()) {
+				this.listaDeTutoresAsignados.add(tutor.getTutorId());
+			}
+		}
+		 return "";
+	}
+public String cargarListaDeTutoresDisponibles() {
+	System.out.println("APRETANDO BOTON cargarListaDeTutoresDisponibles");
+	listaDeTutoresAsignados = new ArrayList<TutorDTO>();
+	listaDeTutoresAsignados.clear();
+	listaDeTutoresDisponibles = new ArrayList<TutorDTO>();
+	listaDeTutoresDisponibles.clear();
+	listaDeTutoresDisponibles= gestionUsuarioService.listadoDeTutoresActivos();
+    List<TutorDTO> tutoresTarget = new ArrayList<TutorDTO>();
+    setTutores(new DualListModel<TutorDTO>(listaDeTutoresDisponibles, tutoresTarget));
+    return "";
+}
 	public String salvarCambios() {
 
 //		if (reclamoSeleccionado.getId() == null) {
@@ -160,8 +192,31 @@ public class GestionEventoBean implements Serializable {
 	    }
 	}
 
+	public void actualizarTipoEventoSeleccionado(AjaxBehaviorEvent event) {
+	    Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
+	    if(nuevoValor == -1) {
+	    	FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar un Tipo evento valido",	"");
+			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+	    }else {
+	    
+	    this.eventoDTOseleccionado.setTipoEvento(gTE.obtenerTipoEvento(nuevoValor));
+
+	    }
+	}
+	public void actualizarModalidadEventoSeleccionado(AjaxBehaviorEvent event) {
+	    Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
+	    if(nuevoValor == -1) {
+	    	FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar un Tipo evento valido",	"");
+			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+	    }else {
+	    
+	    this.eventoDTOseleccionado.setModalidadEvento(gME.obtenerModalidadEvento(nuevoValor));
+
+	    }
+	}
+	
 	public void asignarTutores() {
-		listaDeTutoresAsignados = new ArrayList<TutorDTO>();
+		System.out.println("APRETANDO BOTON asignarTutores");
 		listaDeTutoresAsignados.addAll(this.tutores.getTarget());
 		
     }
@@ -239,4 +294,21 @@ public class GestionEventoBean implements Serializable {
 	public void setListaDeTutoresAsignados(List<TutorDTO> listaDeTutoresAsignados) {
 		this.listaDeTutoresAsignados = listaDeTutoresAsignados;
 	}
+
+	public Integer getTipoEventoSeleccionadoId() {
+		return tipoEventoSeleccionadoId;
+	}
+
+	public void setTipoEventoSeleccionadoId(Integer tipoEventoSeleccionadoId) {
+		this.tipoEventoSeleccionadoId = tipoEventoSeleccionadoId;
+	}
+
+	public Integer getModalidadEventoSeleccionadoId() {
+		return modalidadEventoSeleccionadoId;
+	}
+
+	public void setModalidadEventoSeleccionadoId(Integer modalidadEventoSeleccionadoId) {
+		modalidadEventoSeleccionadoId = modalidadEventoSeleccionadoId;
+	}
+	
 }

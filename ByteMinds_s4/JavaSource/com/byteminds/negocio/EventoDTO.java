@@ -14,12 +14,12 @@ public class EventoDTO {
 
 //    @Enumerated(EnumType.STRING)
 	@NotNull
-	private String tipoEvento;
+	private TipoEventoDTO tipoEvento;
 //	SIN_SELECCIONAR(""),JORNADA_PRESENCIAL("Jornada presencial"), PRUEBA_FINAL("Prueba final"), EXAMEN("Examen"), DEFENSA_PROYECTO("Defensa de Proyecto");
 	
 //    @Enumerated(EnumType.STRING)
 	@NotNull
-	private String modalidadEvento;
+	private ModalidadEventoDTO modalidadEvento;
 //	SIN_SELECCIONAR(""),VIRTUAL("Virtual"), PRESENCIAL("Presencial"), SEMI_PRESENCIAL("Semipresencial");
 //    @Basic(optional = false)
 	@NotNull
@@ -63,7 +63,7 @@ public class EventoDTO {
 //		this.tipoEstadoEventoDTO = new TipoEstadoEventoDTO();
 	}
 
-public EventoDTO(Integer id, @NotNull String titulo, @NotNull String tipoEvento, @NotNull String modalidadEvento,
+public EventoDTO(Integer id, @NotNull String titulo, @NotNull TipoEventoDTO tipoEvento, @NotNull ModalidadEventoDTO modalidadEvento,
 		@NotNull Date inicio, Date fin, String localizacion, Boolean bajaLogica, ItrDTO itr,
 		TipoEstadoEventoDTO tipoEstadoEvento) {
 	super();
@@ -95,19 +95,19 @@ public void setTitulo(String titulo) {
 	this.titulo = titulo;
 }
 
-public String getTipoEvento() {
+public TipoEventoDTO getTipoEvento() {
 	return tipoEvento;
 }
 
-public void setTipoEvento(String tipoEvento) {
+public void setTipoEvento(TipoEventoDTO tipoEvento) {
 	this.tipoEvento = tipoEvento;
 }
 
-public String getModalidadEvento() {
+public ModalidadEventoDTO getModalidadEvento() {
 	return modalidadEvento;
 }
 
-public void setModalidadEvento(String modalidadEvento) {
+public void setModalidadEvento(ModalidadEventoDTO modalidadEvento) {
 	this.modalidadEvento = modalidadEvento;
 }
 

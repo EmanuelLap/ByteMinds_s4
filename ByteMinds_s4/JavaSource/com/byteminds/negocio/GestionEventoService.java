@@ -27,6 +27,8 @@ public class GestionEventoService implements Serializable {
 	private GestionTipoEstadoEventoService gTEE;
 	private GestionTutorResponsableEventoService gTRE;
 	private GestionUsuarioService gUS;
+	private GestionTipoEventoService gTE;
+	private GestionModalidadEventoService gME;
 
 	public GestionEventoService() {
 		ejbRemoto = new EJBUsuarioRemoto();
@@ -34,6 +36,8 @@ public class GestionEventoService implements Serializable {
 		gTEE = new GestionTipoEstadoEventoService();
 		gTRE = new GestionTutorResponsableEventoService();
 		gUS = new GestionUsuarioService();
+		gTE = new GestionTipoEventoService();
+		gME = new GestionModalidadEventoService();
 	}
 
 	public EventoDTO fromEvento (Evento evento) {
@@ -63,9 +67,9 @@ public class GestionEventoService implements Serializable {
 		eventoDTO.setItrDTO(gITR.fromITR(evento.getItr()));
 		eventoDTO.setLocalizacion(evento.getLocalizacion());
 		
-		eventoDTO.setModalidadEvento(evento.getModalidad().getModalidad());
+		eventoDTO.setModalidadEvento(gME.fromModalidadEvento(evento.getModalidad()));
 		eventoDTO.setTipoEstadoEventoDTO(gTEE.fromTipoEstadoEvento(evento.getTipoEstadoEvento()));
-		eventoDTO.setTipoEvento(evento.getTipo().getTipo());
+		eventoDTO.setTipoEvento(gTE.fromTipoEvento(evento.getTipo()));
 		
 		
 		return eventoDTO;
@@ -83,9 +87,9 @@ public class GestionEventoService implements Serializable {
 		evento.setItr(gITR.toITR(eventoDTO.getItrDTO()));
 		evento.setLocalizacion(eventoDTO.getLocalizacion());
 
-		evento.setModalidad(ModalidadEvento.fromString(eventoDTO.getModalidadEvento()));
+		evento.setModalidad(gME.toModalidadEvento(eventoDTO.getModalidadEvento()));
 		evento.setTipoEstadoEvento(gTEE.toTipoEstadoEvento(eventoDTO.getTipoEstadoEvento()));
-		evento.setTipo(TipoEvento.fromString(eventoDTO.getTipoEvento()));
+		evento.setTipo(gTE.toTipoEvento(eventoDTO.getTipoEvento()));
 		
 		
 

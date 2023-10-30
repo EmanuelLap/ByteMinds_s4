@@ -448,7 +448,23 @@ public class EJBUsuarioRemoto {
 		return eventoNew;
 	}
 	
+	public List<TipoEvento> listarTipoEvento() {
+		List<TipoEvento> list = new ArrayList<TipoEvento>();
+		
+		list= eventoBeanRemote.listarTipoEvento();
+		
+		
+		return list;
+	}
 	
+	public List<ModalidadEvento> listarModalidadEvento() {
+		List<ModalidadEvento> list = new ArrayList<ModalidadEvento>();
+		
+		list= eventoBeanRemote.listarModalidadEvento();
+		
+		
+		return list;
+	}
 
 	/*
 	 * METODOS ANALISTA REMOTOS FIN
