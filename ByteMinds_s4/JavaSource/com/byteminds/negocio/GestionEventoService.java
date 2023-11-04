@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import com.byteminds.exception.PersistenciaException;
 import com.byteminds.remoto.EJBUsuarioRemoto;
 
 import tecnofenix.entidades.Evento;
@@ -155,5 +156,14 @@ public class GestionEventoService implements Serializable {
 
 	}
 	
+	public EventoDTO agregarEvento(EventoDTO eventoSeleccionado)throws PersistenciaException {
+		Evento evento = ejbRemoto.crearEvento(toEventoEntidad(eventoSeleccionado));
+		
+		return fromEvento(evento);
+	}
+	public EventoDTO actualizarEvento(EventoDTO eventoSeleccionado)throws PersistenciaException  {
+		Evento evento=ejbRemoto.modificarEvento(toEventoEntidad(eventoSeleccionado));
+		return fromEvento(evento);
+	}
 	
 }

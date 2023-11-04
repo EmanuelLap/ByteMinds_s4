@@ -19,6 +19,7 @@ import com.byteminds.negocio.GestionReclamoService;
 import com.byteminds.negocio.GestionUsuarioService;
 import com.byteminds.negocio.ReclamoDTO;
 import com.byteminds.negocio.TutorResponsableEventoDTO;
+import com.byteminds.negocio.UsuarioDTO;
 import com.byteminds.negocio.EstudianteDTO;
 import com.byteminds.negocio.EventoDTO;
 import com.byteminds.negocio.GestionEventoService;
@@ -35,7 +36,9 @@ public class GestionReclamoBean implements Serializable {
 
 	@EJB
 	GestionReclamoService gestionReclamoService;
+	@EJB
 	GestionUsuarioService gestionUsuarioService;
+
 	
 	private EJBUsuarioRemoto ejbReclamoRemoto;
 
@@ -55,7 +58,7 @@ public class GestionReclamoBean implements Serializable {
 
 	private Integer idEventoSeleccionado;
 
-
+	private UsuarioDTO usuarioLogeado;
 	private boolean modoEdicion = false;
 
 
@@ -77,7 +80,7 @@ public class GestionReclamoBean implements Serializable {
 		if(idEstudianteDTO!= null) {
 			
 //			estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.fromUsuario(ejbReclamoRemoto.buscarUsuarioPor("ESTUDIANTE", "123", "", "", "", "", "", "", "", "", null, null, null, "", "", null, null).get(0));
-			estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.buscarUsuario(123);
+			estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.buscarUsuario(123);//TODO: cambiar por idEstudianteDTO
 			
 		}
 		if (id != null) {
@@ -272,4 +275,13 @@ public class GestionReclamoBean implements Serializable {
 	public void setEstudianteQueReclamaDTO(EstudianteDTO estudianteQueReclamaDTO) {
 		this.estudianteQueReclamaDTO = estudianteQueReclamaDTO;
 	}
+
+	public UsuarioDTO getUsuarioLogeado() {
+		return usuarioLogeado;
+	}
+
+	public void setUsuarioLogeado(UsuarioDTO usuarioLogeado) {
+		this.usuarioLogeado = usuarioLogeado;
+	}
+	
 }

@@ -1,37 +1,39 @@
 <ui:composition template="/layout/layout.xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:p="http://primefaces.org/ui">
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="title">
-		<c:set var="title" value="Datos Evento" scope="request" />
-	</ui:define>
+    <ui:define name="title">
+        <c:set var="title" value="Datos Evento" scope="request" />
+    </ui:define>
 
-	<ui:define name="content">
-	<style>
-	.ui-picklist-list {
-    max-height: 300px; /* o cualquier valor que consideres adecuado */
-    overflow-y: auto !important;
-}
-	</style>
-	
-	<f:metadata>
-			<f:viewParam name="id" value="#{gestionEventoBean.id}" />
-			<f:viewParam name="modalidad" value="#{gestionEventoBean.modalidad}" />
-			
-			<f:event type="preRenderView"
-				listener="#{gestionEventoBean.preRenderViewListener}" />
-		</f:metadata>
-	
-		<h:form id="idDatosEvento">
+    <ui:define name="content">
+        <style>
+            .grid-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr; /* tres columnas de igual tamaño */
+                gap: 10px; /* espacio entre las columnas */
+            }
+            .grid-item {
+                /* estilos para los elementos dentro de las columnas si es necesario */
+            }
+            /* Estilos adicionales para asegurar que el contenido sea independiente */
+            .scrollable-content {
+                overflow-y: auto;
+                max-height: 500px; /* ajusta según sea necesario */
+            }
+        </style>
 
+        <h:form id="idDatosEvento">
+            <!-- Mensajes, botones y otros elementos si es necesario -->
 			<p:messages id="messages" showDetail="true" closable="true">
 				<p:autoUpdate />
 			</p:messages>
-			<h:button outcome="/pages/eventos/listadoEventos.xhtml" value="Volver" />
-			
+			<h:button outcome="/pages/eventos/listadoEventos.xhtml"
+				value="Volver" />
+
 			<h:commandButton id="idModificar" value="Modificar"
 				rendered="#{!gestionEventoBean.modoEdicion}">
 				<f:param name="id" value="${gestionEventoBean.id}" />
@@ -44,115 +46,175 @@
 				<f:param name="id" value="${gestionEventoBean.id}" />
 				<f:param name="modalidad" value="update" />
 			</h:commandButton>
-
-
-			<p:panelGrid columns="3">
-
-				<p:outputLabel value="ID" />
-				<p:inputText id="id" disabled="true"
-					value="#{gestionEventoBean.eventoDTOseleccionado.id}" />
-				<p:message for="id" style="color:red" />
-
-				<p:outputLabel value="Titulo" />
-				<p:inputText id="eventoTitulo"
-					disabled="#{!gestionEventoBean.modoEdicion}"
-					value="#{gestionEventoBean.eventoDTOseleccionado.titulo}" />
-				<p:message for="eventoTitulo" style="color:red" />
-
-				<p:outputLabel value="Tipo de Evento" />
-<!-- 				<p:outputLabel value="#{gestionEventoBean.eventoDTOseleccionado.tipoEvento}" /> -->
-<!-- 				<p:outputLabel value="#{gestionEventoBean.tipoEventoSeleccionadoId}" /> -->
-				<p:selectOneMenu id="tipoEvento" value="#{gestionEventoBean.tipoEventoSeleccionadoId}">
-					<f:selectItems value="#{combosBean.comboTipoEventoSelectItem}" />
-					<p:ajax process="@this" partialSubmit="true"
-						listener="#{gestionEventoBean.actualizarTipoEventoSeleccionado}" />
-				</p:selectOneMenu>
-				<p:message for="tipoEvento" style="color:red" />
-
-	
-				<p:outputLabel value="Modalidad" />
-<!-- 				<p:outputLabel value="#{gestionEventoBean.eventoDTOseleccionado.modalidadEvento}" /> -->
-				
-				<p:selectOneMenu id="modalidadEvento" value="#{gestionEventoBean.modalidadEventoSeleccionadoId}">
-					<f:selectItems value="#{combosBean.comboModalidadSelectItem}" />
-					<p:ajax process="@this" partialSubmit="true"
-						listener="#{gestionEventoBean.actualizarModalidadEventoSeleccionado}" />
-				</p:selectOneMenu>
-				<p:message for="modalidadEvento" style="color:red" />
-				
-				<p:outputLabel value="Inicio" />
-				<p:calendar id="inicioEvento"
-					disabled="#{!gestionEventoBean.modoEdicion}"
-					value="#{gestionEventoBean.eventoDTOseleccionado.inicio}" />
-				<p:message for="inicioEvento" style="color:red" />
-				
-				
-				<p:outputLabel value="Fin" />
-				<p:calendar id="finEvento"
-					disabled="#{!gestionEventoBean.modoEdicion}"
-					value="#{gestionEventoBean.eventoDTOseleccionado.fin}" />
-				<p:message for="inicioEvento" style="color:red" />
-
-				<p:outputLabel value="Localizacion" />
-				<p:inputText id="localizacionEvento"
-					disabled="#{!gestionEventoBean.modoEdicion}"
-					value="#{gestionEventoBean.eventoDTOseleccionado.localizacion}" />
-				<p:message for="localizacionEvento" style="color:red" />
-
-				
 			
+            <div class="grid-container">
+                <!-- Primer div para los datos del evento -->
+                <div class="grid-item scrollable-content">
+                    <p:panelGrid columns="3">
+                        <!-- Componentes del panel de datos del evento -->
+						<p:outputLabel value="ID" />
+						<p:inputText id="id" disabled="true"
+							value="#{gestionEventoBean.eventoDTOseleccionado.id}" />
+						<p:message for="id" style="color:red" />
+
+						<p:outputLabel value="Titulo" />
+						<p:inputText id="eventoTitulo"
+							disabled="#{!gestionEventoBean.modoEdicion}"
+							value="#{gestionEventoBean.eventoDTOseleccionado.titulo}" />
+						<p:message for="eventoTitulo" style="color:red" />
+
+						<p:outputLabel value="Tipo de Evento" />
+						<!-- 				<p:outputLabel value="#{gestionEventoBean.eventoDTOseleccionado.tipoEvento}" /> -->
+						<!-- 				<p:outputLabel value="#{gestionEventoBean.tipoEventoSeleccionadoId}" /> -->
+						<p:selectOneMenu id="tipoEvento"
+							value="#{gestionEventoBean.tipoEventoSeleccionadoId}">
+							<f:selectItems value="#{combosBean.comboTipoEventoSelectItem}" />
+							<p:ajax process="@this" partialSubmit="true"
+								listener="#{gestionEventoBean.actualizarTipoEventoSeleccionado}" />
+						</p:selectOneMenu>
+						<p:message for="tipoEvento" style="color:red" />
 
 
-				<p:outputLabel value="ITRCombo" />
-				<p:selectOneMenu id="itrListaDeITRparaEvento"	value="#{gestionEventoBean.itrDTOSeleccionadoId}">
-				<f:selectItem itemLabel="Seleccione Itr" itemValue="-1"/>
-					<f:selectItems value="#{combosBean.comboItrSelectItem}" />
-					<p:ajax process="@this" partialSubmit="true"
-						listener="#{gestionEventoBean.actualizarITRSeleccionado}" />
+						<p:outputLabel value="Modalidad" />
+						<!-- 				<p:outputLabel value="#{gestionEventoBean.eventoDTOseleccionado.modalidadEvento}" /> -->
+
+						<p:selectOneMenu id="modalidadEvento"
+							value="#{gestionEventoBean.modalidadEventoSeleccionadoId}">
+							<f:selectItems value="#{combosBean.comboModalidadSelectItem}" />
+							<p:ajax process="@this" partialSubmit="true"
+								listener="#{gestionEventoBean.actualizarModalidadEventoSeleccionado}" />
+						</p:selectOneMenu>
+						<p:message for="modalidadEvento" style="color:red" />
+
+						<p:outputLabel value="Inicio" />
+						<p:calendar id="inicioEvento"
+							disabled="#{!gestionEventoBean.modoEdicion}"
+							value="#{gestionEventoBean.eventoDTOseleccionado.inicio}" />
+						<p:message for="inicioEvento" style="color:red" />
+
+
+						<p:outputLabel value="Fin" />
+						<p:calendar id="finEvento"
+							disabled="#{!gestionEventoBean.modoEdicion}"
+							value="#{gestionEventoBean.eventoDTOseleccionado.fin}" />
+						<p:message for="inicioEvento" style="color:red" />
+
+						<p:outputLabel value="Localizacion" />
+						<p:inputText id="localizacionEvento"
+							disabled="#{!gestionEventoBean.modoEdicion}"
+							value="#{gestionEventoBean.eventoDTOseleccionado.localizacion}" />
+						<p:message for="localizacionEvento" style="color:red" />
+
+
+
+
+
+						<p:outputLabel value="ITRCombo" />
+						<p:selectOneMenu id="itrListaDeITRparaEvento"
+							value="#{gestionEventoBean.itrDTOSeleccionadoId}">
+							<f:selectItem itemLabel="Seleccione Itr" itemValue="-1" />
+							<f:selectItems value="#{combosBean.comboItrSelectItem}" />
+							<p:ajax process="@this" partialSubmit="true"
+								listener="#{gestionEventoBean.actualizarITRSeleccionado}" />
+
+						</p:selectOneMenu>
+						<p:message for="itrListaDeITRparaEvento" style="color:red" />
+
+
+
+						<p:outputLabel value="Activo" />
+						<p:selectBooleanCheckbox id="activoEvento"
+							disabled="#{!gestionEventoBean.modoEdicion}"
+							value="#{gestionEventoBean.eventoDTOseleccionado.bajaLogica}" />
+						<p:message for="activoEvento" style="color:red" />
+
 						
-				</p:selectOneMenu>
-				<p:message for="itrListaDeITRparaEvento" style="color:red" />
+						
+                    </p:panelGrid>
+                </div>
 
-			
+                <!-- Segundo div para las tablas -->
+                <div class="grid-item scrollable-content">
+                    <!-- Tabla de tutores asignados -->
 					
-					<p:outputLabel value="Activo" />
-					<p:selectBooleanCheckbox id="activoEvento"
-						disabled="#{!gestionEventoBean.modoEdicion}"
-						value="#{gestionEventoBean.eventoDTOseleccionado.bajaLogica}" />
-					<p:message for="activoEvento" style="color:red" />
-</p:panelGrid>
+					
 
-<p:panelGrid columns="3">
-				<p:pickList value="#{gestionEventoBean.tutores}" var="tut"
-					itemLabel="#{tut.nombres} #{tut.apellidos} #{tut.itr.nombre}" itemValue="#{tut}"
-					converter="tutorConverter">
-<!-- 					<p:ajax event="transfer" update=":idDatosEvento:display" /> -->
-					<f:facet name="sourceCaption">Tutores Disponibles</f:facet>
-					<f:facet name="targetCaption">Tutores Asignados</f:facet>
-				</p:pickList>
-				<p:spacer width="1" height="1" />
-				<p:spacer width="1" height="1" />
-				<p:commandButton value="Asignar Tutores" partialSubmit="true"
-					action="#{gestionEventoBean.asignarTutores}" update="tutoresAsignadosList">
-					</p:commandButton>
+						<h2>Tutores Asignados</h2>
+						<p:dataTable id="tablaTUTORESASIGNADOS"
+							value="#{gestionEventoBean.eventoDTOseleccionado.tutorResponsableEventoDTOCollection}"
+							var="tREC">
+							<p:column>
+								<f:facet name="header">Id</f:facet>
+							#{tREC.tutorId.id}
+						</p:column>
+										<p:column>
+											<f:facet name="header">Nombres</f:facet>
+							#{tREC.tutorId.nombres}
+						</p:column>
+										<p:column>
+											<f:facet name="header">Apellidos</f:facet>
+							#{tREC.tutorId.apellidos}
+						</p:column>
 
-				
-				<p:outputLabel value="Tutores Asignados" />
-				<p:dataList id="tutoresAsignadosList" value="#{gestionEventoBean.listaDeTutoresAsignados}" var="tutorNombre">
-        			#{tutorNombre.nombres} #{tutorNombre.apellidos} - #{tutorNombre.itr.nombre} 
-   				 </p:dataList>
-   				 	<p:commandButton value="Borrar Tutores asignados" partialSubmit="true"
-					action="#{gestionEventoBean.cargarListaDeTutoresDisponibles}" update="tutoresAsignadosList">
-					</p:commandButton>
+							<p:column>
+								<f:facet name="header">Eliminar</f:facet>
 
-			</p:panelGrid>
+								<p:commandButton value="Eliminar"
+									action="#{gestionEventoBean.eliminarDeLista(tREC)}"
+									update="tablaTUTORESASIGNADOS" />
+							</p:column>
 
-		</h:form>
+						</p:dataTable>
+                </div>
 
+                <!-- Tercer div para las otras tablas o contenido -->
+                <div  class="grid-item scrollable-content">
+                    <!-- Tabla de tutores disponibles y otros contenidos -->
+                   
+                   <p:commandButton id="btnEditarTutores" value="Editar tutores" partialSubmit="true"
+                     action="#{gestionEventoBean.editarTutorex}" update="@form" oncomplete="toggleVisibility('tablaTutores')"
+                     rendered="#{not gestionEventoBean.editarTutores}" />
+<!-- onclick="PF('allTutoTable').loadChunk(0, true);" -->
+					 <!-- Tabla de tutores -->
+					 
+					 <p:dataTable id="tablaTutores" var="allTuto" 
+					              value="#{gestionEventoBean.listaDeTutoresDisponibles}"
+					              widgetVar="allTutoTable"  style="display: none;"
+					              filteredValue="#{gestionEventoBean.listaDeTutoresFiltrados}">
+							<!--         <p:column selectionMode="multiple" style="width:16px;text-align:center"/> -->
+							<p:column headerText="Nombre" filterBy="#{allTuto.nombres}"
+								filterMatchMode="contains">
+								<h:outputText value="#{allTuto.nombres}" />
+							</p:column>
+							<p:column headerText="Apellido" filterBy="#{allTuto.apellidos}"
+								filterMatchMode="contains">
+								<h:outputText value="#{allTuto.apellidos}" />
+							</p:column>
 
+							<p:column headerText="ITR" filterBy="#{allTuto.itr.nombre}"
+								filterMatchMode="contains">
+								<h:outputText value="#{allTuto.itr.nombre}" />
+							</p:column>
+						</p:dataTable>
 
+						<p:commandButton id="btnConfirmarTutos" value="Confirmar Selección" rendered="#{gestionEventoBean.editarTutores}"
+							actionListener="#{gestionEventoBean.confirmarSeleccion}"
+							partialSubmit="true" update="tablaTUTORESASIGNADOS" />
+							
+                </div>
+            </div>
 
-
-
-	</ui:define>
+            <!-- Resto del formulario si es necesario -->
+        </h:form>
+        <script type="text/javascript">
+function toggleVisibility(divId) {
+    var div = document.getElementById(divId);
+    if (div.style.display === 'none') {
+        div.style.display = 'block'; // Hace el div visible
+    } else {
+        div.style.display = 'none'; // Hace el div invisible
+    }
+}
+</script>
+    </ui:define>
 </ui:composition>

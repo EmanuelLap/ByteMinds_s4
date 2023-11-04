@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 public class EventoDTO {
 
 	private Integer id;
@@ -44,6 +46,7 @@ public class EventoDTO {
 //    
 //    private Collection<Constancia> constanciaCollection;
 //    
+	@JsonManagedReference
     private Collection<TutorResponsableEventoDTO> tutorResponsableEventoDTOCollection;
 //    
 //    private Collection<GestionEventoAnalista> gestionEventoAnalistaCollection;

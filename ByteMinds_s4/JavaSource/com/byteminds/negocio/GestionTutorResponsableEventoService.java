@@ -61,4 +61,28 @@ public class GestionTutorResponsableEventoService implements Serializable {
 	}
 
 
+	public List<TutorResponsableEventoDTO> allTutorRespEventoDTO(Integer eventoId) {
+		List<TutorResponsableEventoDTO> listTutorREDTO = new ArrayList<TutorResponsableEventoDTO>();
+		List<TutorResponsableEvento> listTutorRE = new ArrayList<TutorResponsableEvento>();
+		
+		listTutorRE= ejbRemoto.obtenerTutoresDeEvento(eventoId);
+		for(TutorResponsableEvento tut:listTutorRE) {
+			listTutorREDTO.add(fromTutorResponsableEvento(tut));
+		}
+		return listTutorREDTO;
+	}
+	
+	public TutorResponsableEventoDTO agregarTutorRespEvento(TutorResponsableEventoDTO tutorRE) {
+		TutorResponsableEvento tut = new TutorResponsableEvento();
+		
+		tut= ejbRemoto.asignarTutorAEvento(toTutorResponsableEvento(tutorRE));
+		
+		return fromTutorResponsableEvento(tut);
+	}
+	
+	public void borrarTutorResponsableEvento(TutorResponsableEventoDTO tutorRE) {
+		if(tutorRE != null && tutorRE.getId()!=null)
+		ejbRemoto.borrarTutorResponsableEvento(toTutorResponsableEvento(tutorRE));
+		
+	}	
 }

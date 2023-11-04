@@ -68,7 +68,7 @@
     			<f:param name="modalidad" value="insert" />
     			</p:menuitem>
                 <p:menuitem value="Editar evento" outcome="/pages/eventos/datosEvento.xhtml">
-                <f:param name="id" value="#{loginBean.userioLogeado.id}" />
+<!--                 <f:param name="id" value="#{loginBean.userioLogeado.id}" /> -->
     			<f:param name="modalidad" value="edit" />
     			</p:menuitem>
     
@@ -80,7 +80,8 @@
             	<f:param name="idEstudianteDTO" value="#{loginBean.userioLogeado.id}" />
             </p:menuitem>
             	
-            <p:menuitem value="Listado de reclamos" outcome="/pages/reclamos/altaReclamo.xhtml"  />
+            <p:menuitem value="Listado de reclamos" outcome="/pages/reclamos/listadoReclamos.xhtml" />
+            	
             
             <p:menuitem value="Modificacion de reclamos"   outcome="/pages/reclamos/altaReclamo.xhtml" >
             	<f:param name="id" value="" />

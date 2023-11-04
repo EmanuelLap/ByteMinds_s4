@@ -12,11 +12,14 @@
 
 	<ui:define name="content">
 		<h:form id="formBuscar" >
-			<h:link value="Nuevo Evento" outcome="datosEvento.xhtml">
-				<f:param name="id" value="" />
-				<f:param name="modalidad" value="insert" />
-			</h:link>
-
+<!-- 			<h:link value="Nuevo Evento" outcome="datosEvento.xhtml" > -->
+<!-- 				<f:param name="id" value="" /> -->
+<!-- 				<f:param name="modalidad" value="insert" /> -->
+<!-- 			</h:link> -->
+   <h:commandLink value="Nuevo Evento" action="#{gestionEventoBean.inicializar}">
+        <f:setPropertyActionListener target="#{gestionEventoBean.id}" value="" />
+        <f:setPropertyActionListener target="#{gestionEventoBean.modalidad}" value="insert" />
+    </h:commandLink>
 
 			<h3>
 				<h:outputLabel value="Criterios de Seleccion" />
@@ -78,12 +81,12 @@
 			</h:panelGrid>
 
 			<p:commandButton value="Buscar"	action="#{gestionEnventosBean.seleccionarEventos()}" update="tablaEventos">
-				<p:ajax onstart="PF('blockUIWidget').show()" oncomplete="PF('blockUIWidget').hide()" />
+				<p:ajax onstart="PF('blockUIWidget').show()" onsuccess="PF('blockUIWidget').hide()" />
 			</p:commandButton>
 			
  <p:blockUI block="formBuscar" widgetVar="blockUIWidget">
         <!-- Puedes personalizar el mensaje que se muestra mientras se está procesando la solicitud -->
-        <p:outputLabel value="Cargando..."></p:outputLabel>
+        <p:outputLabel value="Procesando solicitud..."></p:outputLabel>
     </p:blockUI>
     
 		</h:form>
@@ -96,10 +99,19 @@
 			styleClass="employeeTable" headerClass="employeeTableHeader">
 			<p:column>
 				<f:facet name="header">Acciones</f:facet>
-				<h:link value="Editar" outcome="datosEvento.xhtml">
-					<f:param name="id" value="#{evento.id}" />
-					<f:param name="modalidad" value="edit" />
-				</h:link>
+<!-- 				<h:link value="Editar" outcome="datosEvento.xhtml"> -->
+<!-- 					<f:param name="id" value="#{evento.id}" /> -->
+<!-- 					<f:param name="modalidad" value="edit" /> -->
+<!-- 				</h:link> -->
+				<h:form>
+					<h:commandLink value="Editar"
+						action="#{gestionEventoBean.inicializar}">
+						<f:setPropertyActionListener target="#{gestionEventoBean.id}"
+							value="#{evento.id}" />
+						<f:setPropertyActionListener
+							target="#{gestionEventoBean.modalidad}" value="update" />
+					</h:commandLink>
+				</h:form>
 			</p:column>
 
 			<p:column sortBy="#{evento.id}">
