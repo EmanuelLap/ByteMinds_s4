@@ -21,7 +21,7 @@ import java.util.List;
 @Path("/reclamos")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ReclamoService {
+public class UsuarioService {
 	
 	    GestionReclamoService gestionReclamoService = new GestionReclamoService();
 
@@ -81,6 +81,27 @@ public class ReclamoService {
 			}
 	        return Response.status(Response.Status.CREATED).entity(reclamo).build();
 	    }
+//	    @POST
+//	    @Path("/agregarForm")
+//	    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+//	    public Response addReclamoForm(@FormParam("titulo") String titulo, @FormParam("detalle") String detalle) {
+//	        if (titulo == null || detalle == null) {
+//	            return Response.status(Response.Status.BAD_REQUEST).entity("Título y detalle son campos obligatorios").build();
+//	        }
+//	        
+//	        ReclamoDTO reclamo = new ReclamoDTO();
+//	        reclamo.setTitulo(titulo);
+//	        reclamo.setDetalle(detalle);
+//	        reclamo.setFecha(new Date(System.currentTimeMillis()));
+//	        
+//	        try {
+//				gestionReclamoService.agregarReclamo(reclamo);
+//			} catch (PersistenciaException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//	        return Response.status(Response.Status.CREATED).entity(reclamo).build();
+//	    }
 
 	    @GET
 	    @Path("/listar")

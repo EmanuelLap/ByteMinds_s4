@@ -347,8 +347,22 @@ public class GestionUsuarioBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 			return false;
 		}
-		
-		
+		if(this.usuarioSeleccionado.getContrasenia() == null) {
+		    FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe Ingresar contraseña", "");
+		    FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+		    return false;
+		} else {
+		    String password = this.usuarioSeleccionado.getContrasenia();
+		    // Validación de la contraseña con una expresión regular que incluye los requisitos mencionados.
+		    String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$";
+		    
+		    if(!password.matches(passwordPattern)) {
+		        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, 
+		            "La contraseña no cumple con los requisitos: debe tener entre 8 y 20 caracteres, incluir números, mayúsculas, minúsculas y caracteres especiales.", "");
+		        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+		        return false;
+		    }
+		}
 		
 		return true;
 	}

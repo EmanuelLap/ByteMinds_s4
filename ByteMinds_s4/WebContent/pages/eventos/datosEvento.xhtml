@@ -170,7 +170,8 @@
                 <!-- Tercer div para las otras tablas o contenido -->
                 <div  class="grid-item scrollable-content">
                     <!-- Tabla de tutores disponibles y otros contenidos -->
-                   
+                   <p:commandButton value="Seleccionar Tutores" action="/pages/tutResEvent/tutorResponsableEventoFragmento.xhtml" />
+                  
                    <p:commandButton id="btnEditarTutores" value="Editar tutores" partialSubmit="true"
                      action="#{gestionEventoBean.editarTutorex}" update="@form" oncomplete="toggleVisibility('tablaTutores')"
                      rendered="#{not gestionEventoBean.editarTutores}" />

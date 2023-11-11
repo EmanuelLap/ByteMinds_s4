@@ -68,6 +68,7 @@ public class GestionEventoBean implements Serializable {
 	private List<TutorDTO> listaDeTutoresDisponibles;
 	private List<TutorDTO> listaDeTutoresAsignados;
 	
+	private List<TutorDTO> listaTutoresSeleccionados;
 	
 	private List<TutorDTO> listaDeTutoresFiltrados;
 	
@@ -95,6 +96,7 @@ public class GestionEventoBean implements Serializable {
 		listaDeTutoresDisponibles = new ArrayList<TutorDTO>();
 		listaDeTutoresAsignados = new ArrayList<TutorDTO>();
 		listaDeTutoresFiltrados= new ArrayList<TutorDTO>();
+		listaTutoresSeleccionados=new ArrayList<TutorDTO>();
 		eventoDTOseleccionado = new EventoDTO();
 		this.editarTutores=false;	
 //		tutores =new DualListModel<TutorDTO>(listaDeTutoresDisponibles,listaDeTutoresAsignados);
@@ -148,6 +150,8 @@ public class GestionEventoBean implements Serializable {
 		listaDeTutoresAsignados.clear();
 		listaDeTutoresDisponibles = new ArrayList<TutorDTO>();
 		listaDeTutoresDisponibles.clear();
+		listaTutoresSeleccionados =  new ArrayList<TutorDTO>();
+		listaTutoresSeleccionados.clear();
 		listaDeTutoresAEliminar = new ArrayList<TutorDTO>();
 		listaDeTutoresAEliminar.clear();
 		listaDeTutoresDisponibles = gestionUsuarioService.listadoDeTutoresActivos();
@@ -319,7 +323,23 @@ public class GestionEventoBean implements Serializable {
 			return "";
 		}
 	
-	
+		public String seleccionTutor(Object tutor) {
+			System.out.println("editarTutorex222222222222");
+			this.listaTutoresSeleccionados.add((TutorDTO)tutor);
+			System.out.println("editarTutorex22222222222244444444444");
+			return "";
+		}
+		
+		
+		
+	public List<TutorDTO> getListaTutoresSeleccionados() {
+			return listaTutoresSeleccionados;
+		}
+
+		public void setListaTutoresSeleccionados(List<TutorDTO> listaTutoresSeleccionados) {
+			this.listaTutoresSeleccionados = listaTutoresSeleccionados;
+		}
+
 	public Integer getId() {
 		return id;
 	}
