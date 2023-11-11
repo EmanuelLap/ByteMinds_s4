@@ -4,13 +4,13 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.byteminds.bean.GestionReclamoBean;
+import com.byteminds.bean.GestionUsuarioBean;
 import com.byteminds.exception.PersistenciaException;
 import com.byteminds.negocio.EstudianteDTO;
 import com.byteminds.negocio.GestionEventoService;
-import com.byteminds.negocio.GestionReclamoService;
 import com.byteminds.negocio.GestionUsuarioService;
-import com.byteminds.negocio.ReclamoDTO;
+import com.byteminds.negocio.GestionUsuarioService;
+import com.byteminds.negocio.UsuarioDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,104 +18,95 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Path("/reclamos")
+@Path("/usuarios")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class UsuarioService {
 	
-	    GestionReclamoService gestionReclamoService = new GestionReclamoService();
+	    GestionUsuarioService gestionUsuarioService = new GestionUsuarioService();
 
 	    @POST
 	    @Path("/agregarJson")
 	    @Consumes(MediaType.APPLICATION_JSON)
-	    public Response crearReclamo(ReclamoDTO reclamo) {
+	    public Response crearUsuario(UsuarioDTO usuario) {
 	    	System.out.println("Ejecutando servicio rest agregarJson!");
-	        if (reclamo.getTitulo() == null || reclamo.getDetalle() == null) {
-	            return Response.status(Response.Status.BAD_REQUEST).entity("Título y detalle son campos obligatorios").build();
+	        if (usuario.getNombres() == null || usuario.getApellidos() == null
+	        		|| usuario.getDocumento() == null || usuario.getUsuario() == null
+	        		 || usuario.getContrasenia() == null  || usuario.getUsuario() == null) {
+	            return Response.status(Response.Status.BAD_REQUEST).entity("Campos obligatorios requeridos para continuar").build();
 	        }
 	        
 	        try {
-				gestionReclamoService.agregarReclamo(reclamo);
+				gestionUsuarioService.agregarUsuario(usuario);
 			} catch (PersistenciaException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	        return Response.status(Response.Status.CREATED).entity(reclamo).build();
+	        return Response.status(Response.Status.CREATED).entity(usuario).build();
 	    }
 	    
 	    
 	    @POST
-	    @Path("/modificarReclamoJson")
+	    @Path("/modificarUsuarioJson")
 	    @Consumes(MediaType.APPLICATION_JSON)
-	    public Response modificarReclamo(ReclamoDTO reclamo) {
-	    	System.out.println("Ejecutando servicio rest modificar Reclamo!");
-	        if (reclamo.getTitulo() == null || reclamo.getDetalle() == null) {
-	            return Response.status(Response.Status.BAD_REQUEST).entity("Título y detalle son campos obligatorios").build();
+	    public Response modificarUsuario(UsuarioDTO usuario) {
+	    	System.out.println("Ejecutando servicio rest modificar Usuario!");
+	        if (usuario.getNombres() == null || usuario.getApellidos() == null
+	        		|| usuario.getDocumento() == null || usuario.getUsuario() == null
+	        		 || usuario.getContrasenia() == null  || usuario.getUsuario() == null) {
+	            return Response.status(Response.Status.BAD_REQUEST).entity("Campos obligatorios requeridos para continuar").build();
 	        }
 	        
 	        try {
-				gestionReclamoService.actualizarReclamo(reclamo);
+				gestionUsuarioService.actualizarUsuario(usuario);
 			} catch (PersistenciaException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	        return Response.status(Response.Status.CREATED).entity(reclamo).build();
+	        return Response.status(Response.Status.CREATED).entity(usuario).build();
 	    }
 
 	    
 	    @POST
-	    @Path("/eliminarReclamoJson")
+	    @Path("/eliminarUsuarioJson")
 	    @Consumes(MediaType.APPLICATION_JSON)
-	    public Response eliminarReclamo(ReclamoDTO reclamo) {
-	    	System.out.println("Ejecutando servicio rest eliminar Reclamo!");
-	        if (reclamo.getTitulo() == null || reclamo.getDetalle() == null) {
-	            return Response.status(Response.Status.BAD_REQUEST).entity("Título y detalle son campos obligatorios").build();
+	    public Response eliminarUsuario(UsuarioDTO usuario) {
+	    	System.out.println("Ejecutando servicio rest eliminar Usuario!");
+	        if (usuario.getNombres() == null || usuario.getApellidos() == null
+	        		|| usuario.getDocumento() == null || usuario.getUsuario() == null
+	        		 || usuario.getContrasenia() == null  || usuario.getUsuario() == null) {
+	            return Response.status(Response.Status.BAD_REQUEST).entity("Campos obligatorios requeridos para continuar").build();
 	        }
-	        
 	        try {
-	        	reclamo.setActivo(false);
-				gestionReclamoService.actualizarReclamo(reclamo);
+	        	usuario.setActivo(false);
+				gestionUsuarioService.actualizarUsuario(usuario);
 			} catch (PersistenciaException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	        return Response.status(Response.Status.CREATED).entity(reclamo).build();
+	        return Response.status(Response.Status.CREATED).entity(usuario).build();
 	    }
-//	    @POST
-//	    @Path("/agregarForm")
-//	    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-//	    public Response addReclamoForm(@FormParam("titulo") String titulo, @FormParam("detalle") String detalle) {
-//	        if (titulo == null || detalle == null) {
-//	            return Response.status(Response.Status.BAD_REQUEST).entity("Título y detalle son campos obligatorios").build();
-//	        }
-//	        
-//	        ReclamoDTO reclamo = new ReclamoDTO();
-//	        reclamo.setTitulo(titulo);
-//	        reclamo.setDetalle(detalle);
-//	        reclamo.setFecha(new Date(System.currentTimeMillis()));
-//	        
-//	        try {
-//				gestionReclamoService.agregarReclamo(reclamo);
-//			} catch (PersistenciaException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//	        return Response.status(Response.Status.CREATED).entity(reclamo).build();
-//	    }
+
 
 	    @GET
 	    @Path("/listar")
-	    public String listReclamos() {
-	    	System.out.println("Ingresando al servicio rest a mandar lista de reclamos");
-	    	List<ReclamoDTO> listaDeReclamos =gestionReclamoService.listarReclamos();
-	    	if(listaDeReclamos == null || listaDeReclamos.isEmpty()) {
-	    		System.out.println("Lista de reclamos vacia");
-	    		listaDeReclamos = new ArrayList<ReclamoDTO>();
+	    public String listUsuarios() {
+	    	System.out.println("Ingresando al servicio rest a mandar lista de usuarios");
+	    	List<UsuarioDTO> listaDeUsuarios = null;
+			try {
+				listaDeUsuarios = gestionUsuarioService.seleccionarUsuarios();
+			} catch (PersistenciaException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	if(listaDeUsuarios == null || listaDeUsuarios.isEmpty()) {
+	    		System.out.println("Lista de usuarios vacia");
+	    		listaDeUsuarios = new ArrayList<UsuarioDTO>();
 	    	}
 	    	ObjectMapper mapper = new ObjectMapper();
 			String json = "";
 			try {
-				json = mapper.writeValueAsString(listaDeReclamos);
+				json = mapper.writeValueAsString(listaDeUsuarios);
 			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -128,21 +119,16 @@ public class UsuarioService {
 	    public String obtenerEjemplo() {
 			GestionEventoService gES = new GestionEventoService();
 			GestionUsuarioService gUS = new GestionUsuarioService();
-			ReclamoDTO reclamo = new ReclamoDTO();
-			// Configura los valores del reclamo como desees
-			reclamo.setId(1);
-			reclamo.setTitulo("Ejemplo1");
-			reclamo.setDetalle("Detalle1");
-			reclamo.setEventoId(gES.obtenerEvento(2));
-			reclamo.setEstudianteId((EstudianteDTO)gUS.buscarUsuario(117));
-			reclamo.setCreditos(10);
-			reclamo.setFecha(new Date(System.currentTimeMillis()));
-			reclamo.setActivo(true);
+			UsuarioDTO usuario ;
+			// Configura los valores del usuario como desees
+			
+			usuario=gestionUsuarioService.buscarUsuario(1);
+			
 			
 			ObjectMapper mapper = new ObjectMapper();
 			String json = "";
 			try {
-				json = mapper.writeValueAsString(reclamo);
+				json = mapper.writeValueAsString(usuario);
 			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -22,7 +22,7 @@
             <h:outputText value="#{allTuto.itr.nombre}" />
         </p:column>
         <p:column headerText="Accion">
-           <p:commandButton value="Seleccionar" action="#{gestionEventoBean.seleccionTutor(allTuto)}" partialSubmit="true"/>
+           <p:commandButton value="Seleccionar" action="#{gestionEventoBean.seleccionTutor(allTuto)}" partialSubmit="true" update="@form"/>
         </p:column>
     </p:dataTable>
     
