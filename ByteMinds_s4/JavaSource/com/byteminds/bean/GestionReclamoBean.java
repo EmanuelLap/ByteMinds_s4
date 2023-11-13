@@ -75,16 +75,27 @@ public class GestionReclamoBean implements Serializable {
 		reclamoSeleccionado.setFecha(new Date(System.currentTimeMillis()));
 	}
 
-	public void preRenderViewListener() {
-		System.out.println("INICIALIZANDO GestionReclamoBean preRenderViewListener");
+	public String inicializar() {
+		System.out.println("INICIALIZANDO GestionReclamoBean inicializar");
+		ejbReclamoRemoto = new EJBUsuarioRemoto();
+		gestEventService = new GestionEventoService();
+		estudianteQueReclamaDTO = new EstudianteDTO();
+		gestionUsuarioService = new GestionUsuarioService();
+		cargarComboEventosDisponibles();
+		idEventoSeleccionado=0;
+		reclamoSeleccionado = new ReclamoDTO();
+		reclamoSeleccionado.setEventoId(new EventoDTO());
+		reclamoSeleccionado.setFecha(new Date(System.currentTimeMillis()));
 		if(idEstudianteDTO!= null) {
 			
 //			estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.fromUsuario(ejbReclamoRemoto.buscarUsuarioPor("ESTUDIANTE", "123", "", "", "", "", "", "", "", "", null, null, null, "", "", null, null).get(0));
 			estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.buscarUsuario(123);//TODO: cambiar por idEstudianteDTO
 			
 		}
-		if (id != null) {
-			//			reclamoSeleccionado = gestionReclamoService.fromReclamo(ejbReclamoRemoto.buscarReclamoPorId(id));
+		if (id != null ) {
+						reclamoSeleccionado = gestionReclamoService.fromReclamo(ejbReclamoRemoto.buscarReclamoPorId(id));
+						this.idEventoSeleccionado = reclamoSeleccionado.getEventoId().getId();
+						
 		} else {
 //			reclamoSeleccionado = new ReclamoDTO();
 //			reclamoSeleccionado.setEventoId(new EventoDTO());
@@ -104,6 +115,8 @@ public class GestionReclamoBean implements Serializable {
 			modalidad = "view";
 
 		}
+		
+		return "/pages/reclamos/altaReclamo.xhtml";
 	}
 
 	public String salvarCambios() {

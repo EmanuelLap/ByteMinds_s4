@@ -7,16 +7,19 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="title">
-		<c:set var="title" value="Gestion de reclamos, listado reclamos" scope="request" />
+		<c:set var="title" value="Gestion de reclamos, listado reclamos"
+			scope="request" />
 	</ui:define>
 
 	<ui:define name="content">
-		<h:form id="formBuscar" >
-			<h:link value="Nuevo reclamo" outcome="altaReclamo.xhtml">
-				<f:param name="id" value="" />
-				<f:param name="modalidad" value="insert" />
-			</h:link>
-
+		<h:form id="formBuscar">
+		
+		
+			<h:commandLink value="Nuevo reclamo"
+				action="#{gestionReclamo.inicializar}">
+				<f:setPropertyActionListener target="#{gestionReclamo.id}" value="" />
+				<f:setPropertyActionListener target="#{gestionReclamo.modalidad}" value="insert" />
+			</h:commandLink>
 
 			<h3>
 				<h:outputLabel value="Criterios de Seleccion" />
@@ -38,7 +41,7 @@
 				<p:outputLabel value="Fecha" />
 				<p:calendar id="reclamoFecha" disabled="true"
 					value="#{gestionReclamosBean.criterioFecha}" />
-						
+
 				<p:outputLabel value="Evento - Actividad" />
 				<p:inputText id="eventoActividadCrit"
 					value="#{gestionReclamosBean.criterioEventoActividad}" />
@@ -60,89 +63,101 @@
 				<p:inputText id="creditosCrit"
 					value="#{gestionReclamosBean.criterioCreditos}" />
 				<!-- 				<p:outputLabel value="ITR" /> -->
-<!-- 				<p:selectOneMenu id="itrCrit" value="#{gestionUsuarios.criterioITR}" -->
-<!-- 					effect="fold" editable="false"> -->
-<!-- 					<f:selectItem itemLabel="Seleccione ITR" itemValue="" /> -->
-<!-- 					<f:selectItems value="#{combosBean.comboItr}" /> -->
-<!-- 				</p:selectOneMenu> -->
+				<!-- 				<p:selectOneMenu id="itrCrit" value="#{gestionUsuarios.criterioITR}" -->
+				<!-- 					effect="fold" editable="false"> -->
+				<!-- 					<f:selectItem itemLabel="Seleccione ITR" itemValue="" /> -->
+				<!-- 					<f:selectItems value="#{combosBean.comboItr}" /> -->
+				<!-- 				</p:selectOneMenu> -->
 
-<!-- 				<p:outputLabel value="ROL" /> -->
-<!-- 				<p:selectOneMenu id="rolCrit" value="#{gestionUsuarios.criterioROL}" -->
-<!-- 					effect="fold" editable="false"> -->
-<!-- 					<f:selectItem itemLabel="Selecione Rol" itemValue=""/> -->
-<!-- 					<f:selectItems value="#{combosBean.comboRol}" /> -->
-<!-- 				</p:selectOneMenu> -->
+				<!-- 				<p:outputLabel value="ROL" /> -->
+				<!-- 				<p:selectOneMenu id="rolCrit" value="#{gestionUsuarios.criterioROL}" -->
+				<!-- 					effect="fold" editable="false"> -->
+				<!-- 					<f:selectItem itemLabel="Selecione Rol" itemValue=""/> -->
+				<!-- 					<f:selectItems value="#{combosBean.comboRol}" /> -->
+				<!-- 				</p:selectOneMenu> -->
 
 
-<!-- 				<p:outputLabel value="Todos" /> -->
-<!-- 				<p:selectBooleanCheckbox id="todosCrit" -->
-<!-- 					value="#{gestionUsuarios.criterioTodos}" itemLabel="Todos" -->
-<!-- 					disabled="false"> -->
-<!-- 					<p:ajax event="change" -->
-<!-- 						listener="#{gestionUsuarios.cambiarChecks()}" update="checkGroup" /> -->
-<!-- 				</p:selectBooleanCheckbox> -->
+				<!-- 				<p:outputLabel value="Todos" /> -->
+				<!-- 				<p:selectBooleanCheckbox id="todosCrit" -->
+				<!-- 					value="#{gestionUsuarios.criterioTodos}" itemLabel="Todos" -->
+				<!-- 					disabled="false"> -->
+				<!-- 					<p:ajax event="change" -->
+				<!-- 						listener="#{gestionUsuarios.cambiarChecks()}" update="checkGroup" /> -->
+				<!-- 				</p:selectBooleanCheckbox> -->
 
 			</h:panelGrid>
 
-<!-- 			<h:panelGroup id="checkGroup"> -->
+			<!-- 			<h:panelGroup id="checkGroup"> -->
 
-<!-- 				<p:outputLabel value="Opciones:" -->
-<!-- 					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" /> -->
+			<!-- 				<p:outputLabel value="Opciones:" -->
+			<!-- 					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" /> -->
 
-<!-- 				<p:selectBooleanCheckbox id="actCrit" -->
-<!-- 					value="#{gestionUsuarios.criterioActivo}" itemLabel="Activo" -->
-<!-- 					disabled="false" -->
-<!-- 					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" /> -->
+			<!-- 				<p:selectBooleanCheckbox id="actCrit" -->
+			<!-- 					value="#{gestionUsuarios.criterioActivo}" itemLabel="Activo" -->
+			<!-- 					disabled="false" -->
+			<!-- 					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" /> -->
 
-<!-- 				<p:selectBooleanCheckbox id="noActCrit" -->
-<!-- 					value="#{gestionUsuarios.criterioNoActivo}" itemLabel="No activo" -->
-<!-- 					disabled="false" -->
-<!-- 					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" /> -->
-
-
-<!-- 				<p:selectBooleanCheckbox id="valCrit" -->
-<!-- 					value="#{gestionUsuarios.criterioValidado}" itemLabel="Validado" -->
-<!-- 					disabled="false" -->
-<!-- 					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" /> -->
-
-<!-- 				<p:selectBooleanCheckbox id="noValCrit" -->
-<!-- 					value="#{gestionUsuarios.criterioNoValidado}" -->
-<!-- 					itemLabel="No validado" disabled="false" -->
-<!-- 					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" /> -->
+			<!-- 				<p:selectBooleanCheckbox id="noActCrit" -->
+			<!-- 					value="#{gestionUsuarios.criterioNoActivo}" itemLabel="No activo" -->
+			<!-- 					disabled="false" -->
+			<!-- 					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" /> -->
 
 
-<!-- 			</h:panelGroup><br/> -->
+			<!-- 				<p:selectBooleanCheckbox id="valCrit" -->
+			<!-- 					value="#{gestionUsuarios.criterioValidado}" itemLabel="Validado" -->
+			<!-- 					disabled="false" -->
+			<!-- 					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" /> -->
 
-			<p:commandButton value="Buscar"	action="#{gestionReclamosBean.seleccionarEventos()}" update="tablaReclamos">
-				<p:ajax onstart="PF('blockUIWidget').show()" oncomplete="PF('blockUIWidget').hide()" />
+			<!-- 				<p:selectBooleanCheckbox id="noValCrit" -->
+			<!-- 					value="#{gestionUsuarios.criterioNoValidado}" -->
+			<!-- 					itemLabel="No validado" disabled="false" -->
+			<!-- 					styleClass="#{gestionUsuarios.criterioTodos ? 'hidden' : ''}" /> -->
+
+
+			<!-- 			</h:panelGroup><br/> -->
+
+			<p:commandButton value="Buscar"
+				action="#{gestionReclamosBean.seleccionarEventos()}"
+				update="tablaReclamos">
+				<p:ajax onstart="PF('blockUIWidget').show()"
+					oncomplete="PF('blockUIWidget').hide()" />
+
 			</p:commandButton>
-			
- <p:blockUI block="formBuscar" widgetVar="blockUIWidget">
-        <!-- Puedes personalizar el mensaje que se muestra mientras se está procesando la solicitud -->
-        <p:outputLabel value="Buscando reclamos..."></p:outputLabel>
-    </p:blockUI>
-    
+
+			<p:blockUI block="formBuscar" widgetVar="blockUIWidget">
+				<!-- Puedes personalizar el mensaje que se muestra mientras se está procesando la solicitud -->
+				<p:outputLabel value="Buscando reclamos..."></p:outputLabel>
+			</p:blockUI>
+
 		</h:form>
 
 		<h3>
 			<h:outputLabel value="Reclamos seleccionados" />
 		</h3>
 		<p:dataTable id="tablaReclamos"
-			value="#{gestionReclamosBean.listadoDeReclamosFiltrados}" var="reclamo"
-			styleClass="employeeTable" headerClass="employeeTableHeader">
+			value="#{gestionReclamosBean.listadoDeReclamosFiltrados}"
+			var="reclamo" styleClass="employeeTable"
+			headerClass="employeeTableHeader">
+
 			<p:column>
 				<f:facet name="header">Acciones</f:facet>
-				<h:link value="Editar" outcome="DatosUsuario.xhtml">
-					<f:param name="id" value="#{reclamo.id}" />
-					<f:param name="modalidad" value="edit" />
-				</h:link>
+			<h:form>
+				<h:commandLink value="Editar Reclamo"
+					action="#{gestionReclamo.inicializar}">
+					<f:setPropertyActionListener target="#{gestionReclamo.id}" value="#{reclamo.id}" />
+					<f:setPropertyActionListener target="#{gestionReclamo.modalidad}" value="update" />
+				</h:commandLink>
+				</h:form>
 			</p:column>
-
+			<p:column sortBy="#{reclamo.id}">
+				<f:facet name="header">Id</f:facet>
+				#{reclamo.id}
+			</p:column>
 			<p:column sortBy="#{reclamo.titulo}">
 				<f:facet name="header">Titulo</f:facet>
 				#{reclamo.titulo}
 			</p:column>
-			
+
 			<p:column sortBy="#{reclamo.detalle}">
 				<f:facet name="header">Descripcion detalle</f:facet>
 				#{reclamo.detalle}
@@ -152,46 +167,56 @@
 				<f:facet name="header">Fecha de reclamo</f:facet>
 				#{reclamo.fecha}
 			</p:column>
-			
+
 			<p:column sortBy="#{reclamo.eventoId.titulo}">
 				<f:facet name="header">Titulo Evento</f:facet>
 				#{reclamo.eventoId.titulo}
 			</p:column>
-			
+
 			<p:column sortBy="#{reclamo.eventoId.inicio}">
 				<f:facet name="header">Fecha de evento</f:facet>
 				#{reclamo.eventoId.inicio}
 			</p:column>
-			<p:column >
-				<f:facet name="header">Docentes</f:facet>
-				#{reclamo.eventoId.tutorResponsableEventoDTOCollection.toArray()}
+			<!-- 			<p:column > -->
+			<!-- 				<f:facet name="header">Docentes</f:facet> -->
+			<!-- 				#{reclamo.eventoId.tutorResponsableEventoDTOCollection} -->
+			<!-- 			</p:column> -->
+			<p:column>
+				<f:facet name="header">Ver Docentes</f:facet>
+				<p:commandButton value="Ver mas" type="button"
+					onclick="PF('${reclamo}').show();" />
+
+				<p:dialog header="Informacion de docentes de evento reclamado"
+					widgetVar="${reclamo}" showEffect="explode" hideEffect="bounce"
+					height="200">
+
+					<p:selectOneListbox style="width:400px;">
+						<f:selectItems
+							value="#{reclamo.eventoId.tutorResponsableEventoDTOCollection}" />
+					</p:selectOneListbox>
+				</p:dialog>
 			</p:column>
-			
 			<p:column sortBy="#{reclamo.semestre}">
 				<f:facet name="header">Semestre</f:facet>
 				#{reclamo.semestre}
 			</p:column>
-			
-			
+
+
 			<p:column sortBy="#{reclamo.creditos}">
 				<f:facet name="header">Creditos</f:facet>
 				#{reclamo.creditos}
 			</p:column>
-<!-- 			<p:column> -->
-<!-- 				<f:facet name="header">Desactivar</f:facet> -->
+			<!-- 			<p:column> -->
+			<!-- 				<f:facet name="header">Desactivar</f:facet> -->
 
-<!-- 				<p:commandButton value="Desactivar" -->
-<!-- 					actionListener="#{gestionUsuario.setUsuarioSeleccionado(reclamo)}" -->
-<!-- 					action="#{gestionUsuario.bajaLogicaUsuario}" -->
-<!-- 					onclick="if(!confirm('¿Estás seguro de que quieres desactivar ${reclamo.nombres}?')) return false;" -->
-<!-- 					update=":tablaUsuarios" /> -->
+			<!-- 				<p:commandButton value="Desactivar" -->
+			<!-- 					actionListener="#{gestionUsuario.setUsuarioSeleccionado(reclamo)}" -->
+			<!-- 					action="#{gestionUsuario.bajaLogicaUsuario}" -->
+			<!-- 					onclick="if(!confirm('¿Estás seguro de que quieres desactivar ${reclamo.nombres}?')) return false;" -->
+			<!-- 					update=":tablaUsuarios" /> -->
 
-<!-- 			</p:column> -->
+			<!-- 			</p:column> -->
 		</p:dataTable>
-
-
-
-
 
 
 	</ui:define>

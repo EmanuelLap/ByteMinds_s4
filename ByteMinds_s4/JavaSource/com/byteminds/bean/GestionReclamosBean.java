@@ -62,7 +62,7 @@ public class GestionReclamosBean implements Serializable{
 	
 	// ********Acciones****************************
 	public String seleccionarEventos() throws PersistenciaException {
-		
+		listadoDeReclamosFiltrados.clear();
 		 // Verificar si los criterios son nulos y asignar valores predeterminados si es necesario
 	    if (criterioTitulo == null) {
 	        criterioTitulo = "";

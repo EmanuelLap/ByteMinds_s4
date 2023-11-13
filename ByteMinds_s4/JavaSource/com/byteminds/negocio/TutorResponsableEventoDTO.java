@@ -47,5 +47,8 @@ public class TutorResponsableEventoDTO {
 	public void setEventoId(Integer eventoId) {
 		this.eventoId = eventoId;
 	}
-	
+	 @Override
+	    public String toString() {
+	        return "Tutor: " + this.getTutorId().getNombres() + " " + this.getTutorId().getApellidos()+ " ITR: " + this.getTutorId().getItr().getNombre(); 
+	    }
 }

@@ -34,10 +34,10 @@
 			<h:button outcome="/pages/eventos/listadoEventos.xhtml"
 				value="Volver" />
 
-			<h:commandButton id="idModificar" value="Modificar"
+			<h:commandButton id="idModificar" value="Crear evento"
 				rendered="#{!gestionEventoBean.modoEdicion}">
 				<f:param name="id" value="${gestionEventoBean.id}" />
-				<f:param name="modalidad" value="update" />
+				<f:param name="modalidad" value="insert" />
 
 			</h:commandButton>
 			<h:commandButton value="Salvar cambios"
@@ -52,13 +52,13 @@
                 <div class="grid-item scrollable-content">
                     <p:panelGrid columns="3">
                         <!-- Componentes del panel de datos del evento -->
-						<p:outputLabel value="ID" />
+						<p:outputLabel value="ID" rendered="#{!gestionEventoBean.modoEdicion}"/>
 						<p:inputText id="id" disabled="true"
 							value="#{gestionEventoBean.eventoDTOseleccionado.id}" />
 						<p:message for="id" style="color:red" />
 
 						<p:outputLabel value="Titulo" />
-						<p:inputText id="eventoTitulo"
+						<p:inputText id="eventoTitulo" rendered="#{!gestionEventoBean.modoEdicion}"
 							disabled="#{!gestionEventoBean.modoEdicion}"
 							value="#{gestionEventoBean.eventoDTOseleccionado.titulo}" />
 						<p:message for="eventoTitulo" style="color:red" />
@@ -68,6 +68,7 @@
 						<!-- 				<p:outputLabel value="#{gestionEventoBean.tipoEventoSeleccionadoId}" /> -->
 						<p:selectOneMenu id="tipoEvento"
 							value="#{gestionEventoBean.tipoEventoSeleccionadoId}">
+							<f:selectItem itemLabel="Seleccione Tipo evento" itemValue="-1" />
 							<f:selectItems value="#{combosBean.comboTipoEventoSelectItem}" />
 							<p:ajax process="@this" partialSubmit="true"
 								listener="#{gestionEventoBean.actualizarTipoEventoSeleccionado}" />
@@ -80,6 +81,7 @@
 
 						<p:selectOneMenu id="modalidadEvento"
 							value="#{gestionEventoBean.modalidadEventoSeleccionadoId}">
+							<f:selectItem itemLabel="Seleccione Modalidad" itemValue="-1" />
 							<f:selectItems value="#{combosBean.comboModalidadSelectItem}" />
 							<p:ajax process="@this" partialSubmit="true"
 								listener="#{gestionEventoBean.actualizarModalidadEventoSeleccionado}" />
@@ -170,16 +172,17 @@
                 <!-- Tercer div para las otras tablas o contenido -->
                 <div  class="grid-item scrollable-content">
                     <!-- Tabla de tutores disponibles y otros contenidos -->
-                   <p:commandButton value="Seleccionar Tutores" action="/pages/tutResEvent/tutorResponsableEventoFragmento.xhtml" />
+                   <p:commandButton value="Seleccionar/Editar Tutores" action="#{gestionEventoBean.editarTutorex}" />
                   
-                   <p:commandButton id="btnEditarTutores" value="Editar tutores" partialSubmit="true"
-                     action="#{gestionEventoBean.editarTutorex}" update="@form" oncomplete="toggleVisibility('tablaTutores')"
-                     rendered="#{not gestionEventoBean.editarTutores}" />
+<!--                    <p:commandButton id="btnEditarTutores" value="Editar tutores" partialSubmit="true" -->
+<!--                      action="#{gestionEventoBean.editarTutorex}" update="@form" oncomplete="toggleVisibility('tablaTutores')" -->
+<!--                      rendered="#{not gestionEventoBean.editarTutores}" /> -->
 <!-- onclick="PF('allTutoTable').loadChunk(0, true);" -->
 					 <!-- Tabla de tutores -->
 					 
 					 <p:dataTable id="tablaTutores" var="allTuto" 
-					              value="#{gestionEventoBean.listaDeTutoresDisponibles}"
+					              value="#{gestionEventoBean.listaDeTutoresDisponibles}" 
+					              
 					              widgetVar="allTutoTable"  style="display: none;"
 					              filteredValue="#{gestionEventoBean.listaDeTutoresFiltrados}">
 							<!--         <p:column selectionMode="multiple" style="width:16px;text-align:center"/> -->
@@ -198,24 +201,24 @@
 							</p:column>
 						</p:dataTable>
 
-						<p:commandButton id="btnConfirmarTutos" value="Confirmar Selección" rendered="#{gestionEventoBean.editarTutores}"
-							actionListener="#{gestionEventoBean.confirmarSeleccion}"
-							partialSubmit="true" update="tablaTUTORESASIGNADOS" />
+<!-- 						<p:commandButton id="btnConfirmarTutos" value="Confirmar Selección" rendered="#{gestionEventoBean.editarTutores}" -->
+<!-- 							actionListener="#{gestionEventoBean.confirmarSeleccion}" -->
+<!-- 							partialSubmit="true" update="tablaTUTORESASIGNADOS" /> -->
 							
                 </div>
             </div>
 
             <!-- Resto del formulario si es necesario -->
         </h:form>
-        <script type="text/javascript">
-function toggleVisibility(divId) {
-    var div = document.getElementById(divId);
-    if (div.style.display === 'none') {
-        div.style.display = 'block'; // Hace el div visible
-    } else {
-        div.style.display = 'none'; // Hace el div invisible
-    }
-}
-</script>
+<!--         <script type="text/javascript"> -->
+<!-- // function toggleVisibility(divId) { -->
+<!-- //     var div = document.getElementById(divId); -->
+<!-- //     if (div.style.display === 'none') { -->
+<!-- //         div.style.display = 'block'; // Hace el div visible -->
+<!-- //     } else { -->
+<!-- //         div.style.display = 'none'; // Hace el div invisible -->
+<!-- //     } -->
+<!-- // } -->
+<!-- </script> -->
     </ui:define>
 </ui:composition>

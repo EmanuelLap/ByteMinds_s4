@@ -75,9 +75,11 @@
             </p:submenu>
             
              <p:submenu label="Reclamos" icon="ui-icon-document">
-            <p:menuitem value="Alta de reclamos"   outcome="/pages/reclamos/altaReclamo.xhtml">
-            	<f:param name="modalidad" value="insert" />
-            	<f:param name="idEstudianteDTO" value="#{loginBean.userioLogeado.id}" />
+            <p:menuitem value="Alta de reclamos"  action="#{gestionReclamo.inicializar}" outcome="/pages/reclamos/altaReclamo.xhtml">
+<!--             	<f:param name="modalidad" value="insert" /> -->
+<!--             	<f:param name="idEstudianteDTO" value="#{loginBean.userioLogeado.id}" /> -->
+				<f:setPropertyActionListener target="#{gestionReclamo.id}" value="#{null}" />
+				<f:setPropertyActionListener target="#{gestionReclamo.modalidad}" value="insert" />
             </p:menuitem>
             	
             <p:menuitem value="Listado de reclamos" outcome="/pages/reclamos/listadoReclamos.xhtml" />

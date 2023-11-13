@@ -76,6 +76,10 @@ public class GestionEventoBean implements Serializable {
 
 
 	private List<TutorDTO> listaDeTutoresAEliminar;
+	
+	private List<TutorResponsableEventoDTO> listaDeTutorREAEliminar;
+	
+	
 //	private DualListModel<TutorDTO> tutores ;
 	
 	
@@ -98,7 +102,9 @@ public class GestionEventoBean implements Serializable {
 		listaDeTutoresFiltrados= new ArrayList<TutorDTO>();
 		listaTutoresSeleccionados=new ArrayList<TutorDTO>();
 		eventoDTOseleccionado = new EventoDTO();
-		this.editarTutores=false;	
+		listaDeTutorREAEliminar = new ArrayList<TutorResponsableEventoDTO>();
+		this.editarTutores=false;
+		cargarListaDeTutoresDisponibles();
 //		tutores =new DualListModel<TutorDTO>(listaDeTutoresDisponibles,listaDeTutoresAsignados);
 		
 //		 if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -108,10 +114,14 @@ public class GestionEventoBean implements Serializable {
 			this.tipoEventoSeleccionadoId = eventoDTOseleccionado.getTipoEvento().getId();
 			this.modalidadEventoSeleccionadoId = eventoDTOseleccionado.getModalidadEvento().getId();
 			
-			cargarListaDeTutoresDisponibles();
+			
 			
 		} else {
 			eventoDTOseleccionado = new EventoDTO();
+			eventoDTOseleccionado.setItrDTO(new ItrDTO());
+			this.itrDTOSeleccionadoId =-1;
+			this.tipoEventoSeleccionadoId =-1;
+			this.modalidadEventoSeleccionadoId = -1;
 		}
 		if (modalidad.contentEquals("view")) {
 			modoEdicion = false;
@@ -155,6 +165,7 @@ public class GestionEventoBean implements Serializable {
 		listaDeTutoresAEliminar = new ArrayList<TutorDTO>();
 		listaDeTutoresAEliminar.clear();
 		listaDeTutoresDisponibles = gestionUsuarioService.listadoDeTutoresActivos();
+		listaDeTutoresFiltrados = listaDeTutoresDisponibles;
 		cargarTutores();
 		
 	}
@@ -194,6 +205,9 @@ public class GestionEventoBean implements Serializable {
 
 			try {
 
+					for(TutorResponsableEventoDTO tre : this.listaDeTutorREAEliminar) {
+						gTRES.borrarTutorResponsableEvento(tre);
+					}
 				gestionEventoService.actualizarEvento(eventoDTOseleccionado);
 
 				FacesContext.getCurrentInstance().addMessage(null,
@@ -260,12 +274,13 @@ public class GestionEventoBean implements Serializable {
 	public void eliminarDeLista(TutorResponsableEventoDTO tRE) {
 		if (eventoDTOseleccionado.getTutorResponsableEventoDTOCollection().contains(tRE)) {
 			eventoDTOseleccionado.getTutorResponsableEventoDTOCollection().remove(tRE);
+			this.listaDeTutorREAEliminar.add(tRE);
 		}
 	}
 	public void confirmarSeleccion(){
-		this.editarTutores=false;
-		if(!this.listaDeTutoresFiltrados.isEmpty()) {
-			for (TutorDTO tut : this.listaDeTutoresFiltrados) {
+	
+		if(!this.listaTutoresSeleccionados.isEmpty()) {
+			for (TutorDTO tut : this.listaTutoresSeleccionados) {
 				Boolean agregar = true;
 				for (TutorResponsableEventoDTO tutRE : eventoDTOseleccionado.getTutorResponsableEventoDTOCollection()) {
 					if (tutRE.getTutorId().getId()== tut.getId()) {
@@ -284,12 +299,7 @@ public class GestionEventoBean implements Serializable {
 			}	
 		}
 	}
-//	public void asignarTutores() {
-//		System.out.println("APRETANDO BOTON asignarTutores");
-//		listaDeTutoresAsignados.clear();
-//		listaDeTutoresAsignados.addAll(this.tutores.getTarget());
-//
-//	}
+
 	
 
 	 public void onTransfer(TransferEvent event) {
@@ -318,9 +328,11 @@ public class GestionEventoBean implements Serializable {
 		}
 		public String editarTutorex() {
 			System.out.println("editarTutorex "+this.editarTutores);
-			this.editarTutores=true;
+			listaTutoresSeleccionados.clear();
+			listaTutoresSeleccionados.addAll(this.listaDeTutoresAsignados);
+				
 			System.out.println("editarTutorexFIN "+this.editarTutores);
-			return "";
+			return "/pages/tutResEvent/tutorResponsableEventoFragmento.xhtml";
 		}
 	
 		public String seleccionTutor(Object tutor) {
@@ -330,7 +342,51 @@ public class GestionEventoBean implements Serializable {
 			return "";
 		}
 		
+		public String intercambiarListas() {
+			
+			this.listaDeTutoresAsignados.clear();
+			this.listaDeTutoresAsignados.addAll(listaTutoresSeleccionados);
+			this.confirmarSeleccion();
+			
+			return "/pages/eventos/datosEvento.xhtml";
+		}
 		
+		
+		
+		public Boolean validarDatos() {
+			
+			if(this.eventoDTOseleccionado.getTitulo()==null) {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe ingresar un titulo ",	"");
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				return false;
+			}
+			
+			if(this.eventoDTOseleccionado.getItrDTO()==null ||this.eventoDTOseleccionado.getItrDTO().getId()==null) {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar un ITR ",	"");
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				return false;
+			}
+			
+			if(this.eventoDTOseleccionado.getModalidadEvento()==null) {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar una modalidad ",	"");
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				return false;
+			}
+			
+			if(this.eventoDTOseleccionado.getTipoEstadoEvento()==null) {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar una estado para el evento ",	"");
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				return false;
+			}
+			
+			if(this.eventoDTOseleccionado.getTutorResponsableEventoDTOCollection().isEmpty()) {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar el/los tutores del evento ",	"");
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				return false;
+			}
+			
+			return true;
+		}
 		
 	public List<TutorDTO> getListaTutoresSeleccionados() {
 			return listaTutoresSeleccionados;
@@ -482,4 +538,14 @@ public class GestionEventoBean implements Serializable {
 	public void setEditarTutores(boolean editarTutores) {
 		this.editarTutores = editarTutores;
 	}
+
+	public List<TutorResponsableEventoDTO> getListaDeTutorREAEliminar() {
+		return listaDeTutorREAEliminar;
+	}
+
+	public void setListaDeTutorREAEliminar(List<TutorResponsableEventoDTO> listaDeTutorREAEliminar) {
+		this.listaDeTutorREAEliminar = listaDeTutorREAEliminar;
+	}
+	
+	
 }

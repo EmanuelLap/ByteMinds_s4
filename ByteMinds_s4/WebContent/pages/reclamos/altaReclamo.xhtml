@@ -11,13 +11,13 @@
 	</ui:define>
 
 	<ui:define name="content">
-		<f:metadata>
-			<f:viewParam name="modalidad" value="#{gestionReclamo.modalidad}" />
-			<f:viewParam name="idEstudianteDTO" value="#{gestionReclamo.idEstudianteDTO}" />
+<!-- 		<f:metadata> -->
+<!-- 			<f:viewParam name="modalidad" value="#{gestionReclamo.modalidad}" /> -->
+<!-- 			<f:viewParam name="idEstudianteDTO" value="#{gestionReclamo.idEstudianteDTO}" /> -->
 			
-			<f:event type="preRenderView"
-				listener="#{gestionReclamo.preRenderViewListener}" />
-		</f:metadata>
+<!-- 			<f:event type="preRenderView" -->
+<!-- 				listener="#{gestionReclamo.inicializar()}" /> -->
+<!-- 		</f:metadata> -->
 
 		<h:form id="idDatosReclamos">
 			<p:messages id="messages" showDetail="true" closable="true">
@@ -34,12 +34,19 @@
 			<!-- 				<f:param name="modalidad" value="update" /> -->
 			<!-- 			</h:commandButton> -->
 
-						<h:commandButton value="Generar reclamo"
-							rendered="#{gestionReclamo.modoEdicion}" update=":form"
+						<h:commandButton value="Modificar"
+							rendered="#{!gestionReclamo.modoEdicion}" update=":form"
 							action="#{gestionReclamo.salvarCambios}">
 							<f:param name="id" value="${gestionReclamo.id}" />
 							<f:param name="modalidad" value="update" />
 						</h:commandButton>
+						<h:commandButton value="Generar reclamo"
+							rendered="#{gestionReclamo.modoEdicion}" update=":form"
+							action="#{gestionReclamo.salvarCambios}">
+							<f:param name="id" value="${gestionReclamo.id}" />
+							<f:param name="modalidad" value="insert" />
+						</h:commandButton>
+						
 
 			<p:panelGrid columns="3">
 				<p:outputLabel value="Titulo de reclamo" />

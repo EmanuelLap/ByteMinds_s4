@@ -17,7 +17,7 @@
 <!-- 				<f:param name="modalidad" value="insert" /> -->
 <!-- 			</h:link> -->
    <h:commandLink value="Nuevo Evento" action="#{gestionEventoBean.inicializar}">
-        <f:setPropertyActionListener target="#{gestionEventoBean.id}" value="" />
+        <f:setPropertyActionListener target="#{gestionEventoBean.id}" value="#{null}" />
         <f:setPropertyActionListener target="#{gestionEventoBean.modalidad}" value="insert" />
     </h:commandLink>
 
