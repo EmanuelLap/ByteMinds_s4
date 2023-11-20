@@ -11,20 +11,20 @@ public class EventoDTO {
 
 	private Integer id;
 
-	@NotNull
+	@NotNull(message = "El titulo no puede ser vacio")
 	private String titulo;
 
 //    @Enumerated(EnumType.STRING)
-	@NotNull
+	@NotNull(message = "Seleccione el tipo de evento")
 	private TipoEventoDTO tipoEvento;
 //	SIN_SELECCIONAR(""),JORNADA_PRESENCIAL("Jornada presencial"), PRUEBA_FINAL("Prueba final"), EXAMEN("Examen"), DEFENSA_PROYECTO("Defensa de Proyecto");
 	
 //    @Enumerated(EnumType.STRING)
-	@NotNull
+	@NotNull(message = "Seleccione la modalidad")
 	private ModalidadEventoDTO modalidadEvento;
 //	SIN_SELECCIONAR(""),VIRTUAL("Virtual"), PRESENCIAL("Presencial"), SEMI_PRESENCIAL("Semipresencial");
 //    @Basic(optional = false)
-	@NotNull
+	@NotNull (message = "Seleccione la fecha de inicio del evento")
 	private Date inicio;
 
 	private Date fin;

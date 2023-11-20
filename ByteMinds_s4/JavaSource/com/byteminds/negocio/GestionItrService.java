@@ -70,6 +70,17 @@ public class GestionItrService implements Serializable {
 		System.out.println("ITRDTO DEVUELTO ="+itrDTO.toString());
 		return itrDTO;
 	}
+	public List<ItrDTO> listarITRs() {
+		List<Itr> listIRT = new ArrayList<Itr>();
+		List<ItrDTO> listIRTDTO =new ArrayList<ItrDTO>();
+		listIRT=ejbRemoto.listarITR();
+		
+		for(Itr itr : listIRT) {			
+			listIRTDTO.add(fromITR(itr));	
+		}
+	
+		return listIRTDTO;
+	}
 
 	
 }

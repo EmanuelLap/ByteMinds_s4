@@ -44,17 +44,20 @@ public class GestionItrBean implements Serializable {
 
 	public GestionItrBean() {
 		System.out.println("INICIALIZANDO GestionITRBean");
+		gestionItrService = new GestionItrService();
 		idItrSeleccionado=0;
+		inicializar();
 	}
 
-	public void preRenderViewListener() {
+	public String inicializar() {
 		System.out.println("INICIALIZANDO GestionITRBean preRenderViewListener");
+		listITRDTO.addAll(gestionItrService.listarITRs());
+		
 		if (id != null) {
-			//			reclamoSeleccionado = gestionReclamoService.fromReclamo(ejbReclamoRemoto.buscarReclamoPorId(id));
+						itrDTOSeleccionado = gestionItrService.obtenerITRSeleccionado(id);
 		} else {
-//			reclamoSeleccionado = new ReclamoDTO();
-//			reclamoSeleccionado.setEventoId(new EventoDTO());
-//			reclamoSeleccionado.setFecha(new Date(System.currentTimeMillis()));
+			itrDTOSeleccionado = new ItrDTO();
+
 		}
 		if (modalidad.contentEquals("view")) {
 			modoEdicion = false;
@@ -70,6 +73,8 @@ public class GestionItrBean implements Serializable {
 			modalidad = "view";
 
 		}
+		
+		return "/pages/itr/gestionITR?faces-redirect=true";
 	}
 
 	public String salvarCambios() {

@@ -41,8 +41,8 @@
 
 			</h:commandButton>
 			<h:commandButton value="Salvar cambios"
-				rendered="#{gestionEventoBean.modoEdicion}" update=":form"
-				action="#{gestionEventoBean.salvarCambios}">
+				rendered="#{gestionEventoBean.modoEdicion}" update=":form" 
+				action="#{gestionEventoBean.salvarCambios}" >
 				<f:param name="id" value="${gestionEventoBean.id}" />
 				<f:param name="modalidad" value="update" />
 			</h:commandButton>
@@ -53,12 +53,12 @@
                     <p:panelGrid columns="3">
                         <!-- Componentes del panel de datos del evento -->
 						<p:outputLabel value="ID" rendered="#{!gestionEventoBean.modoEdicion}"/>
-						<p:inputText id="id" disabled="true"
+						<p:inputText id="id" disabled="true" rendered="#{!gestionEventoBean.modoEdicion}"
 							value="#{gestionEventoBean.eventoDTOseleccionado.id}" />
 						<p:message for="id" style="color:red" />
 
 						<p:outputLabel value="Titulo" />
-						<p:inputText id="eventoTitulo" rendered="#{!gestionEventoBean.modoEdicion}"
+						<p:inputText id="eventoTitulo" 
 							disabled="#{!gestionEventoBean.modoEdicion}"
 							value="#{gestionEventoBean.eventoDTOseleccionado.titulo}" />
 						<p:message for="eventoTitulo" style="color:red" />
@@ -122,6 +122,17 @@
 						</p:selectOneMenu>
 						<p:message for="itrListaDeITRparaEvento" style="color:red" />
 
+						<p:outputLabel value="TipoEstadoEventoCombo" />
+						<p:selectOneMenu id="tipoEstadoEvento"
+							value="#{gestionEventoBean.tipoEstadoEventoSeleccionadoId}">
+							<f:selectItem itemLabel="Seleccione estado del evento"	itemValue="-1" />
+							<f:selectItems	value="#{combosBean.comboTipoEstadoEventoSelectItem}" />
+							<p:ajax process="@this" partialSubmit="true"
+								listener="#{gestionEventoBean.actualizarEstadoDelEventoSeleccionado}" />
+
+						</p:selectOneMenu>
+
+						<p:message for="tipoEstadoEvento" style="color:red" />
 
 
 						<p:outputLabel value="Activo" />
@@ -138,8 +149,6 @@
                 <!-- Segundo div para las tablas -->
                 <div class="grid-item scrollable-content">
                     <!-- Tabla de tutores asignados -->
-					
-					
 
 						<h2>Tutores Asignados</h2>
 						<p:dataTable id="tablaTUTORESASIGNADOS"
@@ -167,58 +176,15 @@
 							</p:column>
 
 						</p:dataTable>
+						<p:separator/>
+						 <p:commandButton value="Seleccionar/Editar Tutores" action="#{gestionEventoBean.editarTutorex}" immediate="true"/>
                 </div>
 
-                <!-- Tercer div para las otras tablas o contenido -->
-                <div  class="grid-item scrollable-content">
-                    <!-- Tabla de tutores disponibles y otros contenidos -->
-                   <p:commandButton value="Seleccionar/Editar Tutores" action="#{gestionEventoBean.editarTutorex}" />
-                  
-<!--                    <p:commandButton id="btnEditarTutores" value="Editar tutores" partialSubmit="true" -->
-<!--                      action="#{gestionEventoBean.editarTutorex}" update="@form" oncomplete="toggleVisibility('tablaTutores')" -->
-<!--                      rendered="#{not gestionEventoBean.editarTutores}" /> -->
-<!-- onclick="PF('allTutoTable').loadChunk(0, true);" -->
-					 <!-- Tabla de tutores -->
-					 
-					 <p:dataTable id="tablaTutores" var="allTuto" 
-					              value="#{gestionEventoBean.listaDeTutoresDisponibles}" 
-					              
-					              widgetVar="allTutoTable"  style="display: none;"
-					              filteredValue="#{gestionEventoBean.listaDeTutoresFiltrados}">
-							<!--         <p:column selectionMode="multiple" style="width:16px;text-align:center"/> -->
-							<p:column headerText="Nombre" filterBy="#{allTuto.nombres}"
-								filterMatchMode="contains">
-								<h:outputText value="#{allTuto.nombres}" />
-							</p:column>
-							<p:column headerText="Apellido" filterBy="#{allTuto.apellidos}"
-								filterMatchMode="contains">
-								<h:outputText value="#{allTuto.apellidos}" />
-							</p:column>
-
-							<p:column headerText="ITR" filterBy="#{allTuto.itr.nombre}"
-								filterMatchMode="contains">
-								<h:outputText value="#{allTuto.itr.nombre}" />
-							</p:column>
-						</p:dataTable>
-
-<!-- 						<p:commandButton id="btnConfirmarTutos" value="Confirmar Selección" rendered="#{gestionEventoBean.editarTutores}" -->
-<!-- 							actionListener="#{gestionEventoBean.confirmarSeleccion}" -->
-<!-- 							partialSubmit="true" update="tablaTUTORESASIGNADOS" /> -->
-							
-                </div>
+              
             </div>
 
-            <!-- Resto del formulario si es necesario -->
+           
         </h:form>
-<!--         <script type="text/javascript"> -->
-<!-- // function toggleVisibility(divId) { -->
-<!-- //     var div = document.getElementById(divId); -->
-<!-- //     if (div.style.display === 'none') { -->
-<!-- //         div.style.display = 'block'; // Hace el div visible -->
-<!-- //     } else { -->
-<!-- //         div.style.display = 'none'; // Hace el div invisible -->
-<!-- //     } -->
-<!-- // } -->
-<!-- </script> -->
+
     </ui:define>
 </ui:composition>

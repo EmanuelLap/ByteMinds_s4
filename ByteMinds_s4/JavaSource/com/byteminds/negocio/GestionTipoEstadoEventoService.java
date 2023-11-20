@@ -1,11 +1,20 @@
 package com.byteminds.negocio;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.faces.model.SelectItem;
 
 import com.byteminds.remoto.EJBUsuarioRemoto;
 
+import tecnofenix.entidades.TipoArea;
 import tecnofenix.entidades.TipoEstadoEvento;
 
+@Stateless
+@LocalBean
 public class GestionTipoEstadoEventoService implements Serializable {
 
 	/**
@@ -50,5 +59,14 @@ public class GestionTipoEstadoEventoService implements Serializable {
 		return tee;
 	}
 	
-
+	
+	public List<TipoEstadoEventoDTO> listarTipoEstadoEvento() {
+		List<TipoEstadoEvento> listTEE = ejbRemoto.listarTipoEstadoEvento();
+		List<TipoEstadoEventoDTO> listTEEDTO= new ArrayList<TipoEstadoEventoDTO>();	
+		
+		for (TipoEstadoEvento tEE : listTEE) {
+			listTEEDTO.add(fromTipoEstadoEvento(tEE));
+		}
+		return listTEEDTO;
+	}
 }

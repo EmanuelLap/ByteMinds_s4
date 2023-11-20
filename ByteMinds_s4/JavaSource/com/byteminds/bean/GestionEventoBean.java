@@ -24,10 +24,12 @@ import com.byteminds.negocio.EventoDTO;
 import com.byteminds.negocio.GestionEventoService;
 import com.byteminds.negocio.GestionItrService;
 import com.byteminds.negocio.GestionModalidadEventoService;
+import com.byteminds.negocio.GestionTipoEstadoEventoService;
 import com.byteminds.negocio.GestionTipoEventoService;
 import com.byteminds.negocio.GestionTutorResponsableEventoService;
 import com.byteminds.negocio.GestionUsuarioService;
 import com.byteminds.negocio.ItrDTO;
+import com.byteminds.negocio.TipoEstadoEventoDTO;
 import com.byteminds.negocio.TutorDTO;
 import com.byteminds.negocio.TutorResponsableEventoDTO;
 import com.byteminds.utils.ExceptionsTools;
@@ -53,7 +55,9 @@ public class GestionEventoBean implements Serializable {
 	GestionModalidadEventoService gME;
 	@EJB
 	GestionUsuarioService gestionUsuarioService;
-
+	@EJB
+	GestionTipoEstadoEventoService gestionTipoEstadoEventoService;
+	
 	private Integer id;
 	private String modalidad;
 	private boolean modoEdicion = false;
@@ -61,7 +65,10 @@ public class GestionEventoBean implements Serializable {
 	private EventoDTO eventoDTOseleccionado;
 	private Integer tipoEventoSeleccionadoId;
 	private Integer modalidadEventoSeleccionadoId;
-
+	
+	private TipoEstadoEventoDTO teeDTOSeleccionado;
+	private Integer tipoEstadoEventoSeleccionadoId;
+	
 	private ItrDTO itrDTOSeleccionado;
 	private Integer itrDTOSeleccionadoId;
 
@@ -91,7 +98,7 @@ public class GestionEventoBean implements Serializable {
 	
 	public GestionEventoBean() {
 		System.out.println("INICIALIZANDO GestionEventoBean");
-
+		
 	}
 
 	public String inicializar() {
@@ -113,7 +120,7 @@ public class GestionEventoBean implements Serializable {
 			this.itrDTOSeleccionadoId = eventoDTOseleccionado.getItrDTO().getId();
 			this.tipoEventoSeleccionadoId = eventoDTOseleccionado.getTipoEvento().getId();
 			this.modalidadEventoSeleccionadoId = eventoDTOseleccionado.getModalidadEvento().getId();
-			
+			this.tipoEstadoEventoSeleccionadoId = eventoDTOseleccionado.getTipoEstadoEvento().getId();
 			
 			
 		} else {
@@ -123,6 +130,7 @@ public class GestionEventoBean implements Serializable {
 			this.tipoEventoSeleccionadoId =-1;
 			this.modalidadEventoSeleccionadoId = -1;
 		}
+		System.out.println("modalidad "+modalidad + " modo edicion "+modoEdicion);
 		if (modalidad.contentEquals("view")) {
 			modoEdicion = false;
 		} else if (modalidad.contentEquals("update")) {
@@ -137,13 +145,15 @@ public class GestionEventoBean implements Serializable {
 			modalidad = "view";
 
 		}
+		System.out.println(" luego como esta todo? modalidad "+modalidad + " modo edicion "+modoEdicion);
 //		}
-		return "datosEvento.xhtml";
+		return "/pages/eventos/datosEvento?faces-redirect=true";
 	}
 
 	public void cargarTutores() {
 //		this.listaDeTutoresAsignados.clear();
-		if (!eventoDTOseleccionado.getTutorResponsableEventoDTOCollection().isEmpty()) {
+		
+		if (eventoDTOseleccionado.getTutorResponsableEventoDTOCollection() != null && !eventoDTOseleccionado.getTutorResponsableEventoDTOCollection().isEmpty()) {
 			for (TutorResponsableEventoDTO tutor : eventoDTOseleccionado.getTutorResponsableEventoDTOCollection()) {
 				this.listaDeTutoresAsignados.add(tutor.getTutorId());	
 			}
@@ -171,7 +181,7 @@ public class GestionEventoBean implements Serializable {
 	}
 
 	public String salvarCambios() {
-
+		if(validarDatos()) {
 		if (eventoDTOseleccionado.getId() == null) {
 
 			EventoDTO nuevoEventoDTO;
@@ -227,6 +237,7 @@ public class GestionEventoBean implements Serializable {
 				e.printStackTrace();
 			}
 		}
+		}
 
 //		FacesContext.getCurrentInstance().addMessage(null,
 //				new FacesMessage(FacesMessage.SEVERITY_INFO, "click en gestion evento sin implementar.", ""));
@@ -244,7 +255,21 @@ public class GestionEventoBean implements Serializable {
 
 		}
 	}
+	
+	
+	public void actualizarEstadoDelEventoSeleccionado(AjaxBehaviorEvent event) {
+		Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
+		if (nuevoValor == -1) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar el estado del evento valido", "");
+			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+		} else {
+			teeDTOSeleccionado = gestionTipoEstadoEventoService.obtenerTipoEstadoEventoDTO(nuevoValor);
+			this.eventoDTOseleccionado.setTipoEstadoEventoDTO(teeDTOSeleccionado);
 
+		}
+	}
+	
+	
 	public void actualizarTipoEventoSeleccionado(AjaxBehaviorEvent event) {
 		Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
 		if (nuevoValor == -1) {
@@ -282,12 +307,16 @@ public class GestionEventoBean implements Serializable {
 		if(!this.listaTutoresSeleccionados.isEmpty()) {
 			for (TutorDTO tut : this.listaTutoresSeleccionados) {
 				Boolean agregar = true;
+				if(eventoDTOseleccionado.getTutorResponsableEventoDTOCollection() !=null) {
 				for (TutorResponsableEventoDTO tutRE : eventoDTOseleccionado.getTutorResponsableEventoDTOCollection()) {
 					if (tutRE.getTutorId().getId()== tut.getId()) {
 						agregar = false;
 						System.out.println("EL tutor" + tut.getNombres() + " " + tut.getApellidos()
 								+ "  ya se encuentra en la lista no se agregara");
 					}
+				}
+				}else {
+					eventoDTOseleccionado.setTutorResponsableEventoDTOCollection(new ArrayList<TutorResponsableEventoDTO>());
 				}
 				if (agregar) {
 					TutorResponsableEventoDTO tutResEvent = new TutorResponsableEventoDTO();
@@ -483,7 +512,15 @@ public class GestionEventoBean implements Serializable {
 	public void setModalidadEventoSeleccionadoId(Integer modalidadEventoSeleccionadoId) {
 		this.modalidadEventoSeleccionadoId = modalidadEventoSeleccionadoId;
 	}
+	
+	public Integer getTipoEstadoEventoSeleccionadoId() {
+		return tipoEstadoEventoSeleccionadoId;
+	}
 
+	public void setTipoEstadoEventoSeleccionadoId(Integer tipoEstadoEventoSeleccionadoId) {
+		this.tipoEstadoEventoSeleccionadoId = tipoEstadoEventoSeleccionadoId;
+	}
+	
 	public List<TutorDTO> getListaDeTutoresAEliminar() {
 		return listaDeTutoresAEliminar;
 	}
@@ -546,6 +583,13 @@ public class GestionEventoBean implements Serializable {
 	public void setListaDeTutorREAEliminar(List<TutorResponsableEventoDTO> listaDeTutorREAEliminar) {
 		this.listaDeTutorREAEliminar = listaDeTutorREAEliminar;
 	}
-	
+	public TipoEstadoEventoDTO getTeeDTOSeleccionado() {
+		return teeDTOSeleccionado;
+	}
+
+	public void setTeeDTOSeleccionado(TipoEstadoEventoDTO teeDTOSeleccionado) {
+		this.teeDTOSeleccionado = teeDTOSeleccionado;
+	}
+
 	
 }
