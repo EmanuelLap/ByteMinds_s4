@@ -59,8 +59,10 @@
 
 						<p:outputLabel value="Titulo" />
 						<p:inputText id="eventoTitulo" 
-							disabled="#{!gestionEventoBean.modoEdicion}"
-							value="#{gestionEventoBean.eventoDTOseleccionado.titulo}" />
+							disabled="#{!gestionEventoBean.modoEdicion}" 
+							value="#{gestionEventoBean.eventoDTOseleccionado.titulo}" partialSubmit="true" >
+							<p:ajax process="@this" partialSubmit="true"/>
+							</p:inputText>
 						<p:message for="eventoTitulo" style="color:red" />
 
 						<p:outputLabel value="Tipo de Evento" />
@@ -90,21 +92,27 @@
 
 						<p:outputLabel value="Inicio" />
 						<p:calendar id="inicioEvento"
-							disabled="#{!gestionEventoBean.modoEdicion}"
-							value="#{gestionEventoBean.eventoDTOseleccionado.inicio}" />
+							disabled="#{!gestionEventoBean.modoEdicion}" partialSubmit="true"
+							value="#{gestionEventoBean.eventoDTOseleccionado.inicio}">
+							<p:ajax process="@this" partialSubmit="true"/>
+							</p:calendar>
 						<p:message for="inicioEvento" style="color:red" />
 
 
 						<p:outputLabel value="Fin" />
 						<p:calendar id="finEvento"
-							disabled="#{!gestionEventoBean.modoEdicion}"
-							value="#{gestionEventoBean.eventoDTOseleccionado.fin}" />
+							disabled="#{!gestionEventoBean.modoEdicion}" partialSubmit="true"
+							value="#{gestionEventoBean.eventoDTOseleccionado.fin}" >
+							<p:ajax process="@this" partialSubmit="true"/>
+							</p:calendar>
 						<p:message for="inicioEvento" style="color:red" />
 
 						<p:outputLabel value="Localizacion" />
 						<p:inputText id="localizacionEvento"
-							disabled="#{!gestionEventoBean.modoEdicion}"
-							value="#{gestionEventoBean.eventoDTOseleccionado.localizacion}" />
+							disabled="#{!gestionEventoBean.modoEdicion}" partialSubmit="true"
+							value="#{gestionEventoBean.eventoDTOseleccionado.localizacion}" >
+							<p:ajax process="@this" partialSubmit="true"/>
+							</p:inputText>
 						<p:message for="localizacionEvento" style="color:red" />
 
 
@@ -122,7 +130,7 @@
 						</p:selectOneMenu>
 						<p:message for="itrListaDeITRparaEvento" style="color:red" />
 
-						<p:outputLabel value="TipoEstadoEventoCombo" />
+						<p:outputLabel value="Estado del evento" />
 						<p:selectOneMenu id="tipoEstadoEvento"
 							value="#{gestionEventoBean.tipoEstadoEventoSeleccionadoId}">
 							<f:selectItem itemLabel="Seleccione estado del evento"	itemValue="-1" />
@@ -137,8 +145,10 @@
 
 						<p:outputLabel value="Activo" />
 						<p:selectBooleanCheckbox id="activoEvento"
-							disabled="#{!gestionEventoBean.modoEdicion}"
-							value="#{gestionEventoBean.eventoDTOseleccionado.bajaLogica}" />
+							disabled="#{!gestionEventoBean.modoEdicion}" partialSubmit="true"
+							value="#{gestionEventoBean.eventoDTOseleccionado.bajaLogica}" >
+							<p:ajax process="@this" partialSubmit="true"/>
+							</p:selectBooleanCheckbox>
 						<p:message for="activoEvento" style="color:red" />
 
 						

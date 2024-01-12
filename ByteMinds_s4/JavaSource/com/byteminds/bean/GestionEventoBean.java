@@ -151,17 +151,11 @@ public class GestionEventoBean implements Serializable {
 	}
 
 	public void cargarTutores() {
-//		this.listaDeTutoresAsignados.clear();
-		
 		if (eventoDTOseleccionado.getTutorResponsableEventoDTOCollection() != null && !eventoDTOseleccionado.getTutorResponsableEventoDTOCollection().isEmpty()) {
 			for (TutorResponsableEventoDTO tutor : eventoDTOseleccionado.getTutorResponsableEventoDTOCollection()) {
 				this.listaDeTutoresAsignados.add(tutor.getTutorId());	
 			}
-			
-//			listaDeTutoresDisponibles.removeAll(listaDeTutoresAsignados);
-			
 		}
-//		setTutores(new DualListModel<TutorDTO>(listaDeTutoresDisponibles, listaDeTutoresAsignados));
 	}
 
 	public void cargarListaDeTutoresDisponibles() {
@@ -186,7 +180,7 @@ public class GestionEventoBean implements Serializable {
 
 			EventoDTO nuevoEventoDTO;
 			try {
-
+//				eventoDTOseleccionado.setTipoEstadoEventoDTO(null);
 				nuevoEventoDTO = gestionEventoService.agregarEvento(eventoDTOseleccionado);
 				this.id = nuevoEventoDTO.getId();
 
@@ -264,6 +258,7 @@ public class GestionEventoBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 		} else {
 			teeDTOSeleccionado = gestionTipoEstadoEventoService.obtenerTipoEstadoEventoDTO(nuevoValor);
+			if(this.eventoDTOseleccionado ==null)this.eventoDTOseleccionado= new EventoDTO();
 			this.eventoDTOseleccionado.setTipoEstadoEventoDTO(teeDTOSeleccionado);
 
 		}
@@ -361,13 +356,13 @@ public class GestionEventoBean implements Serializable {
 			listaTutoresSeleccionados.addAll(this.listaDeTutoresAsignados);
 				
 			System.out.println("editarTutorexFIN "+this.editarTutores);
-			return "/pages/tutResEvent/tutorResponsableEventoFragmento.xhtml";
+			return "/pages/tutResEvent/tutorResponsableEventoFragmento?faces-redirect=true";
 		}
 	
 		public String seleccionTutor(Object tutor) {
-			System.out.println("editarTutorex222222222222");
+			System.out.println("editarTutore_________public String seleccionTutor(Object tutor) ");
 			this.listaTutoresSeleccionados.add((TutorDTO)tutor);
-			System.out.println("editarTutorex22222222222244444444444");
+			System.out.println("editarTutore_________public String seleccionTutor(Object tutor) ");
 			return "";
 		}
 		
@@ -377,7 +372,7 @@ public class GestionEventoBean implements Serializable {
 			this.listaDeTutoresAsignados.addAll(listaTutoresSeleccionados);
 			this.confirmarSeleccion();
 			
-			return "/pages/eventos/datosEvento.xhtml";
+			return "/pages/eventos/datosEvento?faces-redirect=true";
 		}
 		
 		

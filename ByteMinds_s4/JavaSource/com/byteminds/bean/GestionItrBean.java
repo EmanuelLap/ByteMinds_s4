@@ -6,14 +6,18 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIOutput;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import com.byteminds.negocio.ItrDTO;
+import com.byteminds.exception.PersistenciaException;
 import com.byteminds.negocio.GestionItrService;
 import com.byteminds.remoto.EJBUsuarioRemoto;
+import com.byteminds.utils.ExceptionsTools;
 
 
 @Named(value = "gestionItrBean") // JEE8
@@ -46,6 +50,7 @@ public class GestionItrBean implements Serializable {
 		System.out.println("INICIALIZANDO GestionITRBean");
 		gestionItrService = new GestionItrService();
 		idItrSeleccionado=0;
+		id=null;
 		inicializar();
 	}
 
@@ -59,16 +64,23 @@ public class GestionItrBean implements Serializable {
 			itrDTOSeleccionado = new ItrDTO();
 
 		}
-		if (modalidad.contentEquals("view")) {
-			modoEdicion = false;
-		} else if (modalidad.contentEquals("update")) {
-			modoEdicion = true;
-		} else if (modalidad.contentEquals("insert")) {
-			modoEdicion = true;
-		} else if (modalidad.contentEquals("edit")) {
-			modoEdicion = true;
+		if(modalidad!=null) {
+			if (modalidad.contentEquals("view")) {
+				modoEdicion = false;
+			} else if (modalidad.contentEquals("update")) {
+				modoEdicion = true;
+			} else if (modalidad.contentEquals("insert")) {
+				modoEdicion = true;
+			} else if (modalidad.contentEquals("edit")) {
+				modoEdicion = true;
+			} else {
+	
+				modoEdicion = false;
+				modalidad = "view";
+	
+			}
 		} else {
-
+			
 			modoEdicion = false;
 			modalidad = "view";
 
@@ -78,57 +90,59 @@ public class GestionItrBean implements Serializable {
 	}
 
 	public String salvarCambios() {
+		if(validarITR()) {
 
-//		if (reclamoSeleccionado.getId() == null) {
-//
-//
-//			ReclamoDTO nuevoReclamoDTO;
-//			try {
-//				nuevoReclamoDTO = gestionReclamoService.agregarReclamo(reclamoSeleccionado);
-//				this.id = nuevoReclamoDTO.getId();
-//
-//				// mensaje de actualizacion correcta
-//				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha agregado un nuevo reclamo",	"");
-//				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-//
-//				this.modalidad = "view";
-//
-//			} catch (PersistenciaException e) {
-//
-//				Throwable rootException = ExceptionsTools.getCause(e);
-//				String msg1 = e.getMessage();
-//				String msg2 = ExceptionsTools.formatedMsg(rootException);
-//				// mensaje de actualizacion correcta
-//				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
-//				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-//
-//				this.modalidad = "update";
-//
-//				e.printStackTrace();
-//			}
-//
-//		} else if (modalidad.equals("update")) {
-//
-//			try {
-//				gestionReclamoService.agregarReclamo(reclamoSeleccionado);
-//
-//				FacesContext.getCurrentInstance().addMessage(null,
-//						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el reclamo.", ""));
-//
-//			} catch (PersistenciaException e) {
-//
-//				Throwable rootException = ExceptionsTools.getCause(e);
-//				String msg1 = e.getMessage();
-//				String msg2 = ExceptionsTools.formatedMsg(e.getCause());
-//				// mensaje de actualizacion correcta
-//				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
-//				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-//
-//				this.modalidad = "update";
-//
-//				e.printStackTrace();
-//			}
-//		}
+		if (itrDTOSeleccionado.getId() == null) {
+
+
+			ItrDTO nuevoITRDTO;
+			try {
+				nuevoITRDTO = gestionItrService.agregarITR(itrDTOSeleccionado);
+				this.id = nuevoITRDTO.getId();
+
+				// mensaje de actualizacion correcta
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha agregado un nuevo ITR",	"");
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+
+				this.modalidad = "view";
+
+			} catch (Exception e) {
+
+				Throwable rootException = ExceptionsTools.getCause(e);
+				String msg1 = e.getMessage();
+				String msg2 = ExceptionsTools.formatedMsg(rootException);
+				// mensaje de actualizacion correcta
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+
+				this.modalidad = "update";
+
+				e.printStackTrace();
+			}
+
+		} else if (modalidad.equals("update")) {
+
+			try {
+				gestionItrService.modificarITR(itrDTOSeleccionado);
+
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el reclamo.", ""));
+
+			} catch (Exception e) {
+
+				Throwable rootException = ExceptionsTools.getCause(e);
+				String msg1 = e.getMessage();
+				String msg2 = ExceptionsTools.formatedMsg(e.getCause());
+				// mensaje de actualizacion correcta
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+
+				this.modalidad = "update";
+
+				e.printStackTrace();
+			}
+		}
+		}
 		return "";
 	}
 
@@ -156,6 +170,32 @@ public class GestionItrBean implements Serializable {
 	}
 
 	
+	public boolean validarITR() {
+		if(this.itrDTOSeleccionado==null) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "El ITR no puede ser null ",	"");
+			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+			return false;
+		}
+		if(this.itrDTOSeleccionado.getNombre()==null) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe ingresar un nombre para el ITR ",	"");
+			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+			return false;
+		}
+		
+		if(this.itrDTOSeleccionado.getDepartamento()==null) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe ingresar un departamento para el ITR ",	"");
+			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+			return false;
+		}
+		
+		return true;
+	}
+	
+	
+	
+	public void seleccionarITR(ItrDTO itrDto) {
+		itrDTOSeleccionado = itrDto;
+	}
 
 	public Integer getId() {
 		return id;

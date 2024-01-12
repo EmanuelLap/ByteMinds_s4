@@ -82,5 +82,24 @@ public class GestionItrService implements Serializable {
 		return listIRTDTO;
 	}
 
+	public ItrDTO agregarITR(ItrDTO itrDTO){
+		
+		Itr itr = new Itr();
+		itr = toITR(itrDTO);
+		itr=ejbRemoto.crearITR(itr);
+		
+		return fromITR(itr);
+		
+	}
+	public ItrDTO modificarITR(ItrDTO itrDTO){
+		
+		Itr itr = new Itr();
+		itr = toITR(itrDTO);
+		itr=ejbRemoto.editarITR(itr);
+		
+		return fromITR(itr);
+		
+	}
 	
-}
+	
+	}

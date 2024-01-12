@@ -41,13 +41,13 @@
 							value="#{itr.activo}" />
                     </p:column>
                     <p:column headerText="Accion">
-                        <p:commandButton value="Editar" action="#{gestionItrBean.seleccionarITR(itr)}" partialSubmit="true" update="@form"/>
+                        <p:commandButton value="Editar" action="#{gestionItrBean.seleccionarITR(itr)}" partialSubmit="true" update="@form" />
                     </p:column>
                 </p:dataTable>
             </div>
 
             <div class="grid-item">
-                
+                <h2>Itr seleccionado/nuevo</h2>
                 <p:outputLabel id="itrNombreLbl" value="Nombre"/>
                 <p:inputText id="itrNombreInput" value="#{gestionItrBean.itrDTOSeleccionado.nombre}"/>
                 <p:message for="itrNombreInput" style="color:red" />

@@ -66,7 +66,7 @@
                 <p:menuitem value="Nuevo evento" action="#{gestionEventoBean.inicializar}" partialSubmit="true">
 <!--                  <f:param name="id" value="null" /> outcome="/pages/eventos/datosEvento.xhtml" -->
 <!--     			<f:param name="modalidad" value="insert" /> -->
-    			  <f:setPropertyActionListener target="#{gestionEventoBean.id}" value="#{null}" />
+    			    <f:setPropertyActionListener target="#{gestionEventoBean.id}" value="#{null}" />
         			<f:setPropertyActionListener target="#{gestionEventoBean.modalidad}" value="insert" />
     			</p:menuitem>
                 <p:menuitem value="Editar evento" outcome="/pages/eventos/datosEvento.xhtml">
@@ -100,7 +100,14 @@
             <p:menuitem value="Mantenimiento de lista aux"   outcome="/pages/reclamos/altaReclamo.xhtml" />
         </p:submenu>
  		<p:submenu label="Gestion" icon="ui-icon-document">
- 		<p:menuitem value="Administrar ITRS"   action="#{gestionItrBean.inicializar}" partialSubmit="true" />
+	 		<p:menuitem value="Alta ITRS"   action="#{gestionItrBean.inicializar}" partialSubmit="true" >
+	 		  			<f:setPropertyActionListener target="#{gestionItrBean.id}" value="#{null}" />
+	        			<f:setPropertyActionListener target="#{gestionItrBean.modalidad}" value="insert" />
+	 		</p:menuitem>
+	 		<p:menuitem value="Editar ITRS"   action="#{gestionItrBean.inicializar}" partialSubmit="true" >
+	 		  			<f:setPropertyActionListener target="#{gestionItrBean.id}" value="#{null}" />
+	        			<f:setPropertyActionListener target="#{gestionItrBean.modalidad}" value="update" />
+	 		</p:menuitem>
  		</p:submenu>
                   
                    <p:menuitem value="Cerrar sesión"  action="#{loginBean.logout}" >
