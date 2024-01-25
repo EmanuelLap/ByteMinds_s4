@@ -10,6 +10,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import com.byteminds.exception.PersistenciaException;
+import com.byteminds.negocio.mobile.ReclamoDTOMobile;
 import com.byteminds.remoto.EJBUsuarioRemoto;
 
 import tecnofenix.entidades.AccionReclamo;
@@ -79,7 +80,6 @@ public class GestionReclamoService implements Serializable {
 		reclamoEntidad.setEventoId(gEvento.toEventoEntidad(reclamoDTO.getEventoId()));
 		reclamoEntidad.setFecha(reclamoDTO.getFecha());
 		reclamoEntidad.setId(reclamoDTO.getId());
-		reclamoEntidad.setDetalle(reclamoDTO.getDetalle());
 		reclamoEntidad.setActivo(reclamoDTO.getActivo());
 		
 		
@@ -113,4 +113,89 @@ public class GestionReclamoService implements Serializable {
 		return reclamosDTOlist;
 	}
 
+	public ReclamoDTO agregarReclamoMobile(ReclamoDTOMobile reclamoDTOMobile)throws PersistenciaException {
+		
+		ReclamoDTO reclamoDeMobile = new ReclamoDTO();
+		EventoDTO eventoDTO = new EventoDTO();
+		
+		eventoDTO=gEvento.obtenerEvento(reclamoDTOMobile.getEventoId());
+		reclamoDeMobile.setEventoId(eventoDTO);
+		
+		EstudianteDTO estudianteDTO = new EstudianteDTO();
+		
+		estudianteDTO = (EstudianteDTO)gUS.buscarUsuario(reclamoDTOMobile.getEstudianteId());
+		reclamoDeMobile.setEstudianteId(estudianteDTO);
+		
+		if (reclamoDTOMobile.getCreditos() != null) {
+		    reclamoDeMobile.setCreditos(reclamoDTOMobile.getCreditos());
+		}
+
+		if (reclamoDTOMobile.getSemestre() != null) {
+		    reclamoDeMobile.setSemestre(reclamoDTOMobile.getSemestre());
+		}
+
+		if (reclamoDTOMobile.getTitulo() != null) {
+		    reclamoDeMobile.setTitulo(reclamoDTOMobile.getTitulo());
+		}
+
+		if (reclamoDTOMobile.getDetalle() != null) {
+		    reclamoDeMobile.setDetalle(reclamoDTOMobile.getDetalle());
+		}
+
+		if (reclamoDTOMobile.getFecha() != null) {
+		    reclamoDeMobile.setFecha(reclamoDTOMobile.getFecha());
+		}
+		reclamoDeMobile.setActivo(reclamoDTOMobile.getActivo());
+
+		
+		Reclamo reclamo =ejbRemoto.crearReclamo(toReclamoEntidad(reclamoDeMobile));
+		return fromReclamo(reclamo);
+	}
+	
+	public ReclamoDTO actualizarReclamoMobile(ReclamoDTOMobile reclamoDTOMobile)throws PersistenciaException {
+		
+		if(reclamoDTOMobile.getId() !=null) {
+		ReclamoDTO reclamoDeMobile = buscarReclamo(reclamoDTOMobile.getId());
+		EventoDTO eventoDTO = new EventoDTO();
+		
+		eventoDTO=gEvento.obtenerEvento(reclamoDTOMobile.getEventoId());
+		reclamoDeMobile.setEventoId(eventoDTO);
+		
+		EstudianteDTO estudianteDTO = new EstudianteDTO();
+		
+		estudianteDTO = (EstudianteDTO)gUS.buscarUsuario(reclamoDTOMobile.getEstudianteId());
+		reclamoDeMobile.setEstudianteId(estudianteDTO);
+
+		if (reclamoDTOMobile.getCreditos() != null) {
+		    reclamoDeMobile.setCreditos(reclamoDTOMobile.getCreditos());
+		}
+
+		if (reclamoDTOMobile.getSemestre() != null) {
+		    reclamoDeMobile.setSemestre(reclamoDTOMobile.getSemestre());
+		}
+
+		if (reclamoDTOMobile.getTitulo() != null) {
+		    reclamoDeMobile.setTitulo(reclamoDTOMobile.getTitulo());
+		}
+
+		if (reclamoDTOMobile.getDetalle() != null) {
+		    reclamoDeMobile.setDetalle(reclamoDTOMobile.getDetalle());
+		}
+
+		if (reclamoDTOMobile.getFecha() != null) {
+		    reclamoDeMobile.setFecha(reclamoDTOMobile.getFecha());
+		}
+		reclamoDeMobile.setActivo(reclamoDTOMobile.getActivo());
+		
+		
+		Reclamo reclamo =ejbRemoto.modificarReclamo(toReclamoEntidad(reclamoDeMobile));
+		
+		return fromReclamo(reclamo);
+		
+		}else {
+			return null;
+			}
+	}
+	
+	
 }

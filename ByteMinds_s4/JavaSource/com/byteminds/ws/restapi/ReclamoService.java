@@ -11,6 +11,7 @@ import com.byteminds.negocio.GestionEventoService;
 import com.byteminds.negocio.GestionReclamoService;
 import com.byteminds.negocio.GestionUsuarioService;
 import com.byteminds.negocio.ReclamoDTO;
+import com.byteminds.negocio.mobile.ReclamoDTOMobile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -43,6 +44,23 @@ public class ReclamoService {
 	        return Response.status(Response.Status.CREATED).entity(reclamo).build();
 	    }
 	    
+	    @POST
+	    @Path("/agregarJsonMobile")
+	    @Consumes(MediaType.APPLICATION_JSON)
+	    public Response crearReclamo(ReclamoDTOMobile reclamo) {
+	    	System.out.println("Ejecutando servicio rest agregarJson! Mobile");
+	        if (reclamo.getTitulo() == null || reclamo.getDetalle() == null) {
+	            return Response.status(Response.Status.BAD_REQUEST).entity("Título y detalle son campos obligatorios").build();
+	        }
+	        
+	        try {
+				gestionReclamoService.agregarReclamoMobile(reclamo);
+			} catch (PersistenciaException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        return Response.status(Response.Status.CREATED).entity(reclamo).build();
+	    }
 	    
 	    @POST
 	    @Path("/modificarReclamoJson")
@@ -61,7 +79,24 @@ public class ReclamoService {
 			}
 	        return Response.status(Response.Status.CREATED).entity(reclamo).build();
 	    }
-
+	    
+	    @POST
+	    @Path("/modificarReclamoJsonMobile")
+	    @Consumes(MediaType.APPLICATION_JSON)
+	    public Response modificarReclamoMobile(ReclamoDTOMobile reclamo) {
+	    	System.out.println("Ejecutando servicio rest modificar Reclamo Mobile!");
+	        if (reclamo.getTitulo() == null || reclamo.getDetalle() == null) {
+	            return Response.status(Response.Status.BAD_REQUEST).entity("Título y detalle son campos obligatorios").build();
+	        }
+	        
+	        try {
+				gestionReclamoService.actualizarReclamoMobile(reclamo);
+			} catch (PersistenciaException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        return Response.status(Response.Status.CREATED).entity(reclamo).build();
+	    }
 	    
 	    @POST
 	    @Path("/eliminarReclamoJson")
@@ -114,6 +149,32 @@ public class ReclamoService {
 			reclamo.setDetalle("Detalle1");
 			reclamo.setEventoId(gES.obtenerEvento(2));
 			reclamo.setEstudianteId((EstudianteDTO)gUS.buscarUsuario(117));
+			reclamo.setCreditos(10);
+			reclamo.setFecha(new Date(System.currentTimeMillis()));
+			reclamo.setActivo(true);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			String json = "";
+			try {
+				json = mapper.writeValueAsString(reclamo);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(json);
+	        return json;
+	    }
+	    
+	    @GET
+	    @Path("/obtenerEjemploJsonMobile")
+	    public String obtenerEjemploMobile() {
+			ReclamoDTOMobile reclamo = new ReclamoDTOMobile();
+			// Configura los valores del reclamo como desees
+			reclamo.setId(1);
+			reclamo.setTitulo("Ejemplo1");
+			reclamo.setDetalle("Detalle1");
+			reclamo.setEventoId(2);
+			reclamo.setEstudianteId(117);
 			reclamo.setCreditos(10);
 			reclamo.setFecha(new Date(System.currentTimeMillis()));
 			reclamo.setActivo(true);
