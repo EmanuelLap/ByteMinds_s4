@@ -138,6 +138,26 @@ public class ReclamoService {
 	    }
 	    
 	    @GET
+	    @Path("/listarMobile")
+	    public String listReclamosMobile() {
+	    	System.out.println("Ingresando al servicio rest a mandar lista de reclamos");
+	    	List<ReclamoDTOMobile> listaDeReclamos =gestionReclamoService.listarReclamosMobile();
+	    	if(listaDeReclamos == null || listaDeReclamos.isEmpty()) {
+	    		System.out.println("Lista de reclamos vacia");
+	    		listaDeReclamos = new ArrayList<ReclamoDTOMobile>();
+	    	}
+	    	ObjectMapper mapper = new ObjectMapper();
+			String json = "";
+			try {
+				json = mapper.writeValueAsString(listaDeReclamos);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        return json;
+	    }
+	    
+	    @GET
 	    @Path("/obtenerEjemploJson")
 	    public String obtenerEjemplo() {
 			GestionEventoService gES = new GestionEventoService();

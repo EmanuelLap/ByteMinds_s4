@@ -10,6 +10,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import com.byteminds.exception.PersistenciaException;
+import com.byteminds.negocio.mobile.EventoDTOMobile;
 import com.byteminds.remoto.EJBUsuarioRemoto;
 
 import tecnofenix.entidades.Evento;
@@ -163,6 +164,91 @@ public class GestionEventoService implements Serializable {
 	}
 	public EventoDTO actualizarEvento(EventoDTO eventoSeleccionado)throws PersistenciaException  {
 		Evento evento=ejbRemoto.modificarEvento(toEventoEntidad(eventoSeleccionado));
+		return fromEvento(evento);
+	}
+	
+	
+	
+	public EventoDTO agregarEventoMobile(EventoDTOMobile eventoSeleccionado)throws PersistenciaException {
+		Evento evento = new Evento();
+		
+		evento.setId(eventoSeleccionado.getId());
+		evento.setTitulo(eventoSeleccionado.getTitulo());
+		
+		evento.setBajaLogica(eventoSeleccionado.getBajaLogica());
+		evento.setInicio(eventoSeleccionado.getInicio());
+		evento.setFin(eventoSeleccionado.getFin());
+	
+		evento.setItr(gITR.toITR(gITR.obtenerITRSeleccionado(eventoSeleccionado.getItrDTO())));
+	
+		evento.setLocalizacion(eventoSeleccionado.getLocalizacion());
+
+		
+		evento.setModalidad(gME.toModalidadEvento(gME.obtenerModalidadEvento(eventoSeleccionado.getModalidadEvento()) ));
+		evento.setTipoEstadoEvento(gTEE.toTipoEstadoEvento(gTEE.obtenerTipoEstadoEventoDTO(eventoSeleccionado.getTipoEstadoEvento())));
+		evento.setTipo(gTE.toTipoEvento(gTE.obtenerTipoEvento(eventoSeleccionado.getTipoEvento())));
+		
+		
+
+		List<TutorResponsableEvento> listaDeTutores = new ArrayList<TutorResponsableEvento>();
+		if(eventoSeleccionado.getTutorResponsableEventoDTOCollection() != null || !eventoSeleccionado.getTutorResponsableEventoDTOCollection().isEmpty()) {
+			for(Integer treDTO: eventoSeleccionado.getTutorResponsableEventoDTOCollection()) {
+				TutorResponsableEventoDTO treNew = new TutorResponsableEventoDTO();
+				treNew.setEventoId(null);
+				treNew.setId(null);
+				treNew.setTutorId((TutorDTO)gUS.buscarUsuario(treDTO));
+				listaDeTutores.add(gTRE.toTutorResponsableEvento(gTRE.agregarTutorRespEvento(treNew)));
+			}
+		}
+		
+		evento.setTutorResponsableEventoCollection(listaDeTutores);
+		Evento eventoResult = ejbRemoto.crearEvento(evento);
+		
+		return fromEvento(eventoResult);
+	}
+	
+	
+	public EventoDTO actualizarEventoMobile(EventoDTOMobile eventoSeleccionado)throws PersistenciaException  {
+		
+	Evento evento = new Evento();
+		
+		evento.setId(eventoSeleccionado.getId());
+		evento.setTitulo(eventoSeleccionado.getTitulo());
+		
+		evento.setBajaLogica(eventoSeleccionado.getBajaLogica());
+		evento.setInicio(eventoSeleccionado.getInicio());
+		evento.setFin(eventoSeleccionado.getFin());
+	
+		evento.setItr(gITR.toITR(gITR.obtenerITRSeleccionado(eventoSeleccionado.getItrDTO())));
+	
+		evento.setLocalizacion(eventoSeleccionado.getLocalizacion());
+
+		
+		evento.setModalidad(gME.toModalidadEvento(gME.obtenerModalidadEvento(eventoSeleccionado.getModalidadEvento()) ));
+		evento.setTipoEstadoEvento(gTEE.toTipoEstadoEvento(gTEE.obtenerTipoEstadoEventoDTO(eventoSeleccionado.getTipoEstadoEvento())));
+		evento.setTipo(gTE.toTipoEvento(gTE.obtenerTipoEvento(eventoSeleccionado.getTipoEvento())));
+		
+//		TODO:
+//		obtener tutores responsables
+//		recorrerlos y buscar si estan los que vienen
+//		si al terminar tengo alguno que no esta en la lista que vino, lo elimino de la coleccion,
+//		si al terminar hay alguno mas agregarlo
+//		mandar a actualizar evento
+		
+		List<TutorResponsableEvento> listaDeTutores = new ArrayList<TutorResponsableEvento>();
+		if(eventoSeleccionado.getTutorResponsableEventoDTOCollection() != null || !eventoSeleccionado.getTutorResponsableEventoDTOCollection().isEmpty()) {
+			for(Integer treDTO: eventoSeleccionado.getTutorResponsableEventoDTOCollection()) {
+				TutorResponsableEventoDTO treNew = new TutorResponsableEventoDTO();
+				treNew.setEventoId(eventoSeleccionado.getId());
+				treNew.setId(null);
+				treNew.setTutorId((TutorDTO)gUS.buscarUsuario(treDTO));
+				listaDeTutores.add(gTRE.toTutorResponsableEvento(gTRE.agregarTutorRespEvento(treNew)));
+			}
+		}
+		
+		evento.setTutorResponsableEventoCollection(listaDeTutores);
+
+//		Evento evento=ejbRemoto.modificarEvento(toEventoEntidad(eventoSeleccionado));
 		return fromEvento(evento);
 	}
 	

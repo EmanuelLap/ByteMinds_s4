@@ -85,4 +85,5 @@ public class GestionTutorResponsableEventoService implements Serializable {
 		ejbRemoto.borrarTutorResponsableEvento(toTutorResponsableEvento(tutorRE));
 		
 	}	
+
 }
