@@ -182,6 +182,25 @@ public class EventoService {
 	    }
 	    
 	    @GET
+	    @Path("/obtenerEventoById")
+	    public String obtenerEventoById(@QueryParam("id") int id) {
+			GestionEventoService gES = new GestionEventoService();
+			System.out.println("Ingresando al servicio rest obtenerEventoById");
+			System.out.println("Integer :" +id);
+			EventoDTO eventoDTO =gES.obtenerEvento(id);
+			ObjectMapper mapper = new ObjectMapper();
+			String json = "";
+			try {
+				json = mapper.writeValueAsString(eventoDTO);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(json);
+	        return json;
+	    }
+	    
+	    @GET
 	    @Path("/obtenerEjemploJson")
 	    public String obtenerEjemplo() {
 			GestionEventoService gES = new GestionEventoService();

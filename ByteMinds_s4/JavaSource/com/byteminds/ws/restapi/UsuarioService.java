@@ -115,6 +115,32 @@ public class UsuarioService {
 	    }
 	    
 	    @GET
+	    @Path("/obtenerUsuarioById")
+	    public String obtenerUsuarioById(@QueryParam("id") int id) {
+			GestionEventoService gES = new GestionEventoService();
+			GestionUsuarioService gUS = new GestionUsuarioService();
+			System.out.println("Ingresando al servicio rest obtenerUsuarioById");
+			System.out.println("Integer :" +id);
+			UsuarioDTO usuario ;
+			// Configura los valores del usuario como desees
+			
+			usuario=gestionUsuarioService.buscarUsuario(id);
+			
+			
+			ObjectMapper mapper = new ObjectMapper();
+			String json = "";
+			try {
+				json = mapper.writeValueAsString(usuario);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(json);
+	        return json;
+	    }
+	    
+	    
+	    @GET
 	    @Path("/obtenerEjemploJson")
 	    public String obtenerEjemplo() {
 			GestionEventoService gES = new GestionEventoService();
