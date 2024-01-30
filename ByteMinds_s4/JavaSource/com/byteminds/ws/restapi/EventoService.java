@@ -165,10 +165,10 @@ public class EventoService {
 	    @Path("/listarMobile")//TODO: cambiar metodo para pasar la clase para mobile
 	    public String listEventosMobile() {
 	    	System.out.println("Ingresando al servicio rest a mandar lista de eventos");
-	    	List<EventoDTO> listaDeEventos =gestionEventoService.listarEventosDTO();
+	    	List<EventoDTOMobile> listaDeEventos =gestionEventoService.listarEventosDTOMobile();
 	    	if(listaDeEventos == null || listaDeEventos.isEmpty()) {
 	    		System.out.println("Lista de eventos vacia");
-	    		listaDeEventos = new ArrayList<EventoDTO>();
+	    		listaDeEventos = new ArrayList<EventoDTOMobile>();
 	    	}
 	    	ObjectMapper mapper = new ObjectMapper();
 			String json = "";

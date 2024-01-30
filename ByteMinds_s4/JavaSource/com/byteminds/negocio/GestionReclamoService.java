@@ -218,6 +218,11 @@ public class GestionReclamoService implements Serializable {
 
 		reclamoDTOMobile.setEstudianteId(reclamoDTO.getEstudianteId().getId());
 		
+		if (reclamoDTO.getId() != null) {
+			reclamoDTOMobile.setId(reclamoDTO.getId());
+		}
+		
+		
 		if (reclamoDTO.getCreditos() != null) {
 			reclamoDTOMobile.setCreditos(reclamoDTO.getCreditos());
 		}

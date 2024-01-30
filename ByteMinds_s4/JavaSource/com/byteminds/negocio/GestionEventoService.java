@@ -141,6 +141,48 @@ public class GestionEventoService implements Serializable {
 
 	}
 	
+	
+	public List<EventoDTOMobile> listarEventosDTOMobile() {
+		List<EventoDTOMobile> listadoEventosDTO = new ArrayList<EventoDTOMobile>();
+		List<Evento> listadoEventosEntity = new ArrayList<Evento>();
+		listadoEventosEntity.addAll(ejbRemoto.listarEventos());
+		
+		for(Evento ev : listadoEventosEntity) {
+			EventoDTOMobile eventoDTO = new EventoDTOMobile();
+			eventoDTO.setId(ev.getId());
+			eventoDTO.setTitulo(ev.getTitulo());
+			
+			eventoDTO.setBajaLogica(ev.getBajaLogica());
+			eventoDTO.setInicio(ev.getInicio());
+			eventoDTO.setFin(ev.getFin());
+			
+			try {
+
+				ev.setTutorResponsableEventoCollection(ejbRemoto.obtenerTutoresDeEvento(ev.getId()));
+			if(ev.getTutorResponsableEventoCollection() != null || !ev.getTutorResponsableEventoCollection().isEmpty()) {
+				for(TutorResponsableEvento tre: ev.getTutorResponsableEventoCollection()) {
+					eventoDTO.getTutorResponsableEventoDTOCollection().add(tre.getTutorId().getId());
+				}
+			}
+			} catch ( Exception e) {
+				System.out.println("Error al intentar traer la lista de tutores del evento!");
+			}
+			
+			eventoDTO.setItrDTO(ev.getItr().getId());
+			eventoDTO.setLocalizacion(ev.getLocalizacion());
+			
+			eventoDTO.setModalidadEvento(ev.getModalidad().getId());
+			eventoDTO.setTipoEstadoEventoDTO(ev.getTipoEstadoEvento().getId());
+			eventoDTO.setTipoEvento(ev.getTipo().getId());
+			
+			listadoEventosDTO.add(eventoDTO);
+		}
+		
+		 return listadoEventosDTO;
+
+	}
+	
+	
 	public List<EventoDTO> buscarEventosPor(String id, String titulo,String localizacion,
 			String modalidad,String tipoEvento,String itrNombre,
 			Date inicioInicio, Date finInicio,
@@ -235,14 +277,24 @@ public class GestionEventoService implements Serializable {
 //		si al terminar hay alguno mas agregarlo
 //		mandar a actualizar evento
 		
+		List<TutorResponsableEventoDTO > listaDeTutoresREDTO = new ArrayList<TutorResponsableEventoDTO>();
+		listaDeTutoresREDTO=gTRE.allTutorRespEventoDTO(eventoSeleccionado.getId());
+		
+		List<TutorDTO > listaDeTutoresDTOMemoria = new ArrayList<TutorDTO>();
+		for(Integer tutDTO: eventoSeleccionado.getTutorResponsableEventoDTOCollection()) {
+			TutorDTO tutorDTOTmp = new TutorDTO();
+			
+			tutorDTOTmp =(TutorDTO)gUS.buscarUsuario(tutDTO);
+		
+			listaDeTutoresDTOMemoria.add(tutorDTOTmp);
+		}
+		
+		sincronizarListas(listaDeTutoresREDTO, listaDeTutoresDTOMemoria);
+
 		List<TutorResponsableEvento> listaDeTutores = new ArrayList<TutorResponsableEvento>();
-		if(eventoSeleccionado.getTutorResponsableEventoDTOCollection() != null || !eventoSeleccionado.getTutorResponsableEventoDTOCollection().isEmpty()) {
-			for(Integer treDTO: eventoSeleccionado.getTutorResponsableEventoDTOCollection()) {
-				TutorResponsableEventoDTO treNew = new TutorResponsableEventoDTO();
-				treNew.setEventoId(eventoSeleccionado.getId());
-				treNew.setId(null);
-				treNew.setTutorId((TutorDTO)gUS.buscarUsuario(treDTO));
-				listaDeTutores.add(gTRE.toTutorResponsableEvento(gTRE.agregarTutorRespEvento(treNew)));
+		if(listaDeTutoresREDTO != null || !listaDeTutoresREDTO.isEmpty()) {
+			for(TutorResponsableEventoDTO treDTO: listaDeTutoresREDTO) {
+				listaDeTutores.add(gTRE.toTutorResponsableEvento(treDTO));
 			}
 		}
 		
@@ -251,5 +303,48 @@ public class GestionEventoService implements Serializable {
 //		Evento evento=ejbRemoto.modificarEvento(toEventoEntidad(eventoSeleccionado));
 		return fromEvento(evento);
 	}
+	
+	
+    public static void sincronizarListas(List<TutorResponsableEventoDTO> listaPersistida, List<TutorDTO> listaMemoria) {
+        // Verificar y agregar nuevos tutores a la lista persistida
+        for (TutorDTO tutorMemoria : listaMemoria) {
+            if (!existeTutorEnListaPersistida(tutorMemoria, listaPersistida)) {
+                // El tutor de la lista de memoria no está en la lista persistida, agregarlo
+                TutorResponsableEventoDTO nuevoTutorDTO = new TutorResponsableEventoDTO();
+                nuevoTutorDTO.setTutorId(tutorMemoria);
+                listaPersistida.add(nuevoTutorDTO);
+            }
+        }
+
+        // Eliminar tutores de la lista persistida que no están en la lista de memoria
+        Iterator<TutorResponsableEventoDTO> iterator = listaPersistida.iterator();
+        while (iterator.hasNext()) {
+            TutorResponsableEventoDTO tutorPersistido = iterator.next();
+            TutorDTO tutorDTO = tutorPersistido.getTutorId();
+            if (!existeTutorEnListaMemoria(tutorDTO, listaMemoria)) {
+                // El tutor de la lista persistida no está en la lista de memoria, eliminarlo
+                iterator.remove();
+            }
+        }
+    }
+
+    private static boolean existeTutorEnListaPersistida(TutorDTO tutor, List<TutorResponsableEventoDTO> listaPersistida) {
+        for (TutorResponsableEventoDTO tutorPersistido : listaPersistida) {
+            if (tutorPersistido.getTutorId().equals(tutor)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean existeTutorEnListaMemoria(TutorDTO tutor, List<TutorDTO> listaMemoria) {
+        for (TutorDTO tutorMemoria : listaMemoria) {
+            if (tutorMemoria.equals(tutor)) {
+                return true;
+            }
+        }
+        return false;
+    }
+	
 	
 }
