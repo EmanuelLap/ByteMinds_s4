@@ -6,9 +6,11 @@ import javax.ws.rs.core.Response;
 
 import com.byteminds.bean.GestionUsuarioBean;
 import com.byteminds.exception.PersistenciaException;
+import com.byteminds.negocio.AnalistaDTO;
 import com.byteminds.negocio.EstudianteDTO;
 import com.byteminds.negocio.GestionEventoService;
 import com.byteminds.negocio.GestionUsuarioService;
+import com.byteminds.negocio.TutorDTO;
 import com.byteminds.negocio.GestionUsuarioService;
 import com.byteminds.negocio.UsuarioDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -162,5 +164,72 @@ public class UsuarioService {
 			System.out.println(json);
 	        return json;
 	    }
+	    
+	    
+	    
+	    @POST
+	    @Path("/agregarTutorJson")
+	    @Consumes(MediaType.APPLICATION_JSON)
+	    public Response crearUsuarioTutor(TutorDTO usuario) {
+	    	System.out.println("Ejecutando servicio rest agregarJson!");
+	        if (usuario.getNombres() == null || usuario.getApellidos() == null
+	        		|| usuario.getDocumento() == null || usuario.getUsuario() == null
+	        		 || usuario.getContrasenia() == null  || usuario.getUsuario() == null) {
+	            return Response.status(Response.Status.BAD_REQUEST).entity("Campos obligatorios requeridos para continuar").build();
+	        }
+	        
+	        try {
+				gestionUsuarioService.agregarUsuario(usuario);
+			} catch (PersistenciaException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        return Response.status(Response.Status.CREATED).entity(usuario).build();
+	    }
+	    
+	    
+	    @POST
+	    @Path("/agregarEstudianteJson")
+	    @Consumes(MediaType.APPLICATION_JSON)
+	    public Response crearUsuarioEstudiante(EstudianteDTO usuario) {
+	    	System.out.println("Ejecutando servicio rest agregarJson!");
+	        if (usuario.getNombres() == null || usuario.getApellidos() == null
+	        		|| usuario.getDocumento() == null || usuario.getUsuario() == null
+	        		 || usuario.getContrasenia() == null  || usuario.getUsuario() == null) {
+	            return Response.status(Response.Status.BAD_REQUEST).entity("Campos obligatorios requeridos para continuar").build();
+	        }
+	        
+	        try {
+				gestionUsuarioService.agregarUsuario(usuario);
+			} catch (PersistenciaException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        return Response.status(Response.Status.CREATED).entity(usuario).build();
+	    }
+	    
+	    
+	    @POST
+	    @Path("/agregarAnalistaJson")
+	    @Consumes(MediaType.APPLICATION_JSON)
+	    public Response crearUsuarioAnalista(AnalistaDTO usuario) {
+	    	System.out.println("Ejecutando servicio rest agregarJson!");
+	        if (usuario.getNombres() == null || usuario.getApellidos() == null
+	        		|| usuario.getDocumento() == null || usuario.getUsuario() == null
+	        		 || usuario.getContrasenia() == null  || usuario.getUsuario() == null) {
+	            return Response.status(Response.Status.BAD_REQUEST).entity("Campos obligatorios requeridos para continuar").build();
+	        }
+	        
+	        try {
+				gestionUsuarioService.agregarUsuario(usuario);
+			} catch (PersistenciaException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        return Response.status(Response.Status.CREATED).entity(usuario).build();
+	    }
+	    
+	    
+	    
 	}
 
