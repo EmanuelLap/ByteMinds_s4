@@ -11,6 +11,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import com.byteminds.exception.PersistenciaException;
+import com.byteminds.remoto.EJBUsuarioRemoto;
 
 import tecnofenix.entidades.Analista;
 import tecnofenix.entidades.Estudiante;
@@ -29,8 +30,12 @@ public class GestionTipoAreaService implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-
+	private EJBUsuarioRemoto ejbRemoto;
+	
+	public GestionTipoAreaService() {
+		ejbRemoto = new EJBUsuarioRemoto();
+	}
+	
 	public TipoAreaDTO fromTipoArea(TipoArea tipoArea) {
 		TipoAreaDTO tipoAreaDTO = new TipoAreaDTO();
 		
@@ -59,11 +64,21 @@ public class GestionTipoAreaService implements Serializable {
 	// servicios para capa de Presentacion
 
 public TipoAreaDTO obtenerTipoAreaPorId(Integer id) {
-
+	
 	
 	return null;
 }
 
-
+public List<TipoAreaDTO> listarTipoArea() {
+	
+	List<TipoArea> tipoArea = ejbRemoto.listarTipoArea();
+	List<TipoAreaDTO> tipoAreaDTO =new ArrayList<TipoAreaDTO>();
+	
+	for(TipoArea taTemp: tipoArea) {
+		tipoAreaDTO.add(fromTipoArea(taTemp));
+	}
+	
+	return tipoAreaDTO;
+}
 
 }

@@ -60,5 +60,17 @@ public class GestionTipoTutorService implements Serializable {
 		
 		return fromTipoTutorTipo(listTTT.get(0));
 	}
+	
+	public List<TipoTutorDTO> listarTipoTutorDTO() {
+		List<TipoTutorTipo> listTTT=new ArrayList<TipoTutorTipo>();
+		List<TipoTutorDTO> listTTTDTO=new ArrayList<TipoTutorDTO>();
+		
+		listTTT=ejbRemoto.listarTipoTutorTipo();
+		for(TipoTutorTipo ttt: listTTT) {
+			listTTTDTO.add(fromTipoTutorTipo(ttt));
+		}
+		
+		return listTTTDTO;
+	}
 
 }

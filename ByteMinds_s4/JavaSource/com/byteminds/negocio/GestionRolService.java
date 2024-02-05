@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import com.byteminds.remoto.EJBUsuarioRemoto;
 import tecnofenix.entidades.Funcionalidad;
 import tecnofenix.entidades.Rol;
+import tecnofenix.entidades.TipoTutorTipo;
 
 @Stateless
 @LocalBean
@@ -81,4 +82,17 @@ public class GestionRolService implements Serializable {
 		return fromRol(rol);
 	}
 
+	
+
+	public List<RolDTO> listarRolDTO() {
+		List<Rol> roles=new ArrayList<Rol>();
+		List<RolDTO> rolesDTO=new ArrayList<RolDTO>();
+		
+		roles=ejbRemoto.listarRoles();
+		for(Rol ttt: roles) {
+			rolesDTO.add(fromRol(ttt));
+		}
+		
+		return rolesDTO;
+	}
 }
