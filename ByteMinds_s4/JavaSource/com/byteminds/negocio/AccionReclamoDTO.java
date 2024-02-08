@@ -15,7 +15,7 @@ public class AccionReclamoDTO {
     private Integer id;
 
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 250)
     private String detalle;
   
     @NotNull
@@ -27,6 +27,7 @@ public class AccionReclamoDTO {
 
     private AnalistaDTO analistaId;
 
+    private Boolean activo;
     
     public AccionReclamoDTO() {
 		
@@ -90,6 +91,14 @@ public class AccionReclamoDTO {
 
 	public void setAnalistaId(AnalistaDTO analistaId) {
 		this.analistaId = analistaId;
+	}
+
+	public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
 	}
     
     

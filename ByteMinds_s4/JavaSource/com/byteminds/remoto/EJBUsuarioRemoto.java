@@ -1006,4 +1006,51 @@ public class EJBUsuarioRemoto {
 		/*
 		 * METODOS RECLAMOS REMOTOS FIN
 		 */
+		
+		
+		/**
+		 * METoDOS ACCION RECLAMO INICIO
+		 */
+		public AccionReclamo crearAccionReclamo(AccionReclamo acReclamo) {
+			AccionReclamo acReclamoNew = new AccionReclamo();
+			try {
+				
+				acReclamoNew=accionReclamoBeanRemote.crearAccionReclamo(acReclamo);
+			} catch (ServiciosException e) {
+				System.out.println("Error al crear la AccionReclamo: " + e.getMessage());
+				e.printStackTrace();
+				acReclamoNew = null;
+			}
+			return acReclamoNew;
+		}
+		
+		public AccionReclamo modificarAccionReclamo(AccionReclamo acReclamo) {
+			AccionReclamo acReclamoNew = new AccionReclamo();
+			try {
+				
+				acReclamoNew=accionReclamoBeanRemote.modificarAccionReclamo(acReclamo);
+			} catch (ServiciosException e) {
+				System.out.println("Error al modificar la AccionReclamo: " + e.getMessage());
+				e.printStackTrace();
+				acReclamoNew = null;
+			}
+			return acReclamoNew;
+		}
+		
+		public List<AccionReclamo> listAllAccionReclamoByReclamo(Integer acReclamoID) {
+			List<AccionReclamo> acReclamoNew = new ArrayList<AccionReclamo>();
+			try {
+				
+				acReclamoNew=accionReclamoBeanRemote.listAllAccionReclamoByReclamo(acReclamoID);
+			} catch (ServiciosException e) {
+				System.out.println("Error al modificar la AccionReclamo: " + e.getMessage());
+				e.printStackTrace();
+				acReclamoNew = null;
+			}
+			return acReclamoNew;
+		}
+		/**
+		 * METoDOS ACCION RECLAMO FIN
+		 */
+		
 }

@@ -69,10 +69,19 @@
     			    <f:setPropertyActionListener target="#{gestionEventoBean.id}" value="#{null}" />
         			<f:setPropertyActionListener target="#{gestionEventoBean.modalidad}" value="insert" />
     			</p:menuitem>
-                <p:menuitem value="Editar evento" outcome="/pages/eventos/datosEvento.xhtml">
+<!--                 <p:menuitem value="Editar evento" outcome="/pages/eventos/datosEvento.xhtml"> -->
 <!--                 <f:param name="id" value="#{loginBean.userioLogeado.id}" /> -->
-    			<f:param name="modalidad" value="edit" />
+<!--     			<f:param name="modalidad" value="edit" /> -->
+<!--     			</p:menuitem> -->
+    			 <p:menuitem value="Convocados a evento" outcome="/pages/eventos/convocados/convocadosAEventos.xhtml">
+<!--                 <f:param name="id" value="#{loginBean.userioLogeado.id}" /> -->
+<!--     			<f:param name="modalidad" value="edit" /> -->
     			</p:menuitem>
+    			<p:menuitem value="Asistencia a evento" outcome="/pages/eventos/asistenciaycalificaciones/asistenciaycalificaciones.xhtml">
+<!--                 <f:param name="id" value="#{loginBean.userioLogeado.id}" /> -->
+<!--     			<f:param name="modalidad" value="edit" /> -->
+    			</p:menuitem>
+    			
     
             </p:submenu>
             
@@ -87,24 +96,24 @@
             <p:menuitem value="Listado de reclamos" outcome="/pages/reclamos/listadoReclamos.xhtml" />
             	
             
-            <p:menuitem value="Modificacion de reclamos"   outcome="/pages/reclamos/altaReclamo.xhtml" >
-            	<f:param name="id" value="" />
-    			<f:param name="modalidad" value="update" />
-            </p:menuitem>
-            <p:menuitem value="Registro de acciones"   outcome="/pages/reclamos/altaReclamo.xhtml" />
-            <p:menuitem value="Modificacion de estado"   outcome="/pages/reclamos/altaReclamo.xhtml" >
+<!--             <p:menuitem value="Modificacion de reclamos"   outcome="/pages/reclamos/altaReclamo.xhtml" > -->
+<!--             	<f:param name="id" value="" /> -->
+<!--     			<f:param name="modalidad" value="update" /> -->
+<!--             </p:menuitem> -->
+            <p:menuitem value="Registro de acciones"   outcome="/pages/reclamos/registroaccionreclamo.xhtml" />
+            <p:menuitem value="Modificacion de estado"   outcome="/pages/reclamos/modificarestadoreclamo.xhtml" >
             		<f:param name="id" value="" />
     				<f:param name="modalidad" value="insert" />
             </p:menuitem>
-            <p:menuitem value="Baja de reclamo"   outcome="/pages/reclamos/altaReclamo.xhtml" />
-            <p:menuitem value="Mantenimiento de lista aux"   outcome="/pages/reclamos/altaReclamo.xhtml" />
+<!--             <p:menuitem value="Baja de reclamo"   outcome="/pages/reclamos/altaReclamo.xhtml" /> -->
+<!--             <p:menuitem value="Mantenimiento de lista aux"   outcome="/pages/reclamos/altaReclamo.xhtml" /> -->
         </p:submenu>
  		<p:submenu label="Gestion" icon="ui-icon-document">
-	 		<p:menuitem value="Alta ITRS"   action="#{gestionItrBean.inicializar}" partialSubmit="true" >
+	 		<p:menuitem value="Alta ITRS"   action="#{gestionItrBean.inicializar}" outcome="/pages/itr/gestionITR.xhtml">
 	 		  			<f:setPropertyActionListener target="#{gestionItrBean.id}" value="#{null}" />
 	        			<f:setPropertyActionListener target="#{gestionItrBean.modalidad}" value="insert" />
 	 		</p:menuitem>
-	 		<p:menuitem value="Editar ITRS"   action="#{gestionItrBean.inicializar}" partialSubmit="true" >
+	 		<p:menuitem value="Listado ITRS"   action="#{gestionItrBean.inicializar}" outcome="/pages/itr/listadoITR.xhtml" >
 	 		  			<f:setPropertyActionListener target="#{gestionItrBean.id}" value="#{null}" />
 	        			<f:setPropertyActionListener target="#{gestionItrBean.modalidad}" value="update" />
 	 		</p:menuitem>

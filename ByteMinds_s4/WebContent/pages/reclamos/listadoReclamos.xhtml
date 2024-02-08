@@ -150,8 +150,14 @@
 				</h:form>
 			</p:column>
 			<p:column sortBy="#{reclamo.id}">
-				<f:facet name="header">Id</f:facet>
+				<f:facet name="header">ID</f:facet>
 				#{reclamo.id}
+			</p:column>
+			
+			<p:column sortBy="#{reclamo.estudianteId}">
+				<f:facet name="header">Estudiante</f:facet>
+				#{reclamo.estudianteId.nombres} #{reclamo.estudianteId.apellidos} 
+				#{reclamo.estudianteId.documento}
 			</p:column>
 			<p:column sortBy="#{reclamo.titulo}">
 				<f:facet name="header">Titulo</f:facet>
@@ -215,7 +221,15 @@
 			<!-- 					onclick="if(!confirm('¿Estás seguro de que quieres desactivar ${reclamo.nombres}?')) return false;" -->
 			<!-- 					update=":tablaUsuarios" /> -->
 
-			<!-- 			</p:column> -->
+<!-- 		</p:column> -->
+
+			<p:column>
+			<f:facet name="header">Registro Accion</f:facet>
+
+			<p:commandButton value="Accion"
+				action="#{gestionAccionReclamoBean.inicializarAccionReclamo(reclamo)}" immediate="true"/>
+
+		</p:column>
 		</p:dataTable>
 
 

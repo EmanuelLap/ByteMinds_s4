@@ -56,6 +56,7 @@ public class GestionItrBean implements Serializable {
 
 	public String inicializar() {
 		System.out.println("INICIALIZANDO GestionITRBean preRenderViewListener");
+		listITRDTO.clear();
 		listITRDTO.addAll(gestionItrService.listarITRs());
 		
 		if (id != null) {
