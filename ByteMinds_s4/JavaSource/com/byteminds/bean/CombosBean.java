@@ -12,12 +12,14 @@ import com.byteminds.negocio.GestionModalidadEventoService;
 import com.byteminds.negocio.GestionRolService;
 import com.byteminds.negocio.GestionTipoAreaService;
 import com.byteminds.negocio.GestionTipoEstadoEventoService;
+import com.byteminds.negocio.GestionTipoEstadoReclamoService;
 import com.byteminds.negocio.GestionTipoEventoService;
 import com.byteminds.negocio.GestionTipoTutorService;
 import com.byteminds.negocio.ItrDTO;
 import com.byteminds.negocio.ModalidadEventoDTO;
 import com.byteminds.negocio.RolDTO;
 import com.byteminds.negocio.TipoEstadoEventoDTO;
+import com.byteminds.negocio.TipoEstadoReclamoDTO;
 import com.byteminds.negocio.TipoEventoDTO;
 import com.byteminds.remoto.EJBUsuarioRemoto;
 
@@ -56,6 +58,8 @@ public class CombosBean implements Serializable {
 	
 	private List<SelectItem> comboTipoEstadoEventoSelectItem;
 	
+	private List<SelectItem> comboTipoEstadoReclamoSelectItem;
+	
 	private GestionItrService gITRS;
 	private GestionRolService gROLS;
 	private GestionTipoAreaService gTAS;
@@ -63,7 +67,7 @@ public class CombosBean implements Serializable {
 	private GestionTipoEventoService gTE;
 	private GestionModalidadEventoService gME;
 	private GestionTipoEstadoEventoService gTipoEstadoEvento;
-	
+	private GestionTipoEstadoReclamoService gTipoEstadoReclamo;
 	
 	
 	public CombosBean() {
@@ -74,6 +78,7 @@ public class CombosBean implements Serializable {
 		gTE = new GestionTipoEventoService();
 		gME = new GestionModalidadEventoService();
 		gTipoEstadoEvento = new GestionTipoEstadoEventoService();
+		gTipoEstadoReclamo = new GestionTipoEstadoReclamoService();
 		
 		ejbRemoto = new EJBUsuarioRemoto();
 		comboItr = new ArrayList<String>();
@@ -87,6 +92,7 @@ public class CombosBean implements Serializable {
 		comboTipoTutorSelectItem= new ArrayList<SelectItem>();
 		comboTipoAreaSelectItem= new ArrayList<SelectItem>();
 		comboTipoEstadoEventoSelectItem = new ArrayList<SelectItem>();
+		comboTipoEstadoReclamoSelectItem  = new ArrayList<SelectItem>();
 		
 		cargarITRCombos();
 		cargarROLCombos();
@@ -95,6 +101,7 @@ public class CombosBean implements Serializable {
 		cargarModalidad();
 		cargarTipoEvento();
 		cargarTipoEstadoEvento();
+		cargarTipoEstadoReclamo();
 	}
 
 	private void cargarTipoEvento() {
@@ -113,6 +120,15 @@ public class CombosBean implements Serializable {
 		
 		for (TipoEstadoEventoDTO teeDTO : listTEEDTO) {
 				comboTipoEstadoEventoSelectItem.add(new SelectItem(teeDTO.getId(),teeDTO.getNombre()));
+		}
+			
+	}
+	private void cargarTipoEstadoReclamo() {
+		List<TipoEstadoReclamoDTO> listTERDTO= new ArrayList<TipoEstadoReclamoDTO>();	
+		listTERDTO.addAll(gTipoEstadoReclamo.listarTipoEstadoReclamo());
+		
+		for (TipoEstadoReclamoDTO terDTO : listTERDTO) {
+				comboTipoEstadoReclamoSelectItem.add(new SelectItem(terDTO.getId(),terDTO.getNombre()));
 		}
 			
 	}
@@ -261,5 +277,11 @@ public class CombosBean implements Serializable {
 		this.comboTipoEstadoEventoSelectItem = comboTipoEstadoEventoSelectItem;
 	}
 	
-	
+	public List<SelectItem> getComboTipoEstadoReclamoSelectItem() {
+		return comboTipoEstadoReclamoSelectItem;
+	}
+
+	public void setComboTipoEstadoReclamoSelectItem(List<SelectItem> comboTipoEstadoReclamoSelectItem) {
+		this.comboTipoEstadoReclamoSelectItem = comboTipoEstadoReclamoSelectItem;
+	}
 }

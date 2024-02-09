@@ -40,8 +40,8 @@ public class GestionAccionReclamoBean implements Serializable{
 	private ReclamoDTO reclamoSeleccionado;
 	private List<AccionReclamoDTO> accionReclamoList;
 	private AccionReclamoDTO accionReclamoSeleccionado;
-	
-	
+	private String detalle;
+	private AccionReclamoDTO actionReclamoToEdit;
 	
 	public GestionAccionReclamoBean() {
 		reclamoSeleccionado = new ReclamoDTO();
@@ -53,7 +53,7 @@ public class GestionAccionReclamoBean implements Serializable{
 	public String inicializarAccionReclamo(ReclamoDTO reclamo) {
 		System.out.println("Reclamo accion para TODO");
 		this.reclamoSeleccionado = reclamo;
-		
+		this.detalle ="";
 		accionReclamoList.clear();
 		accionReclamoSeleccionado = new AccionReclamoDTO();
 		accionReclamoSeleccionado.setFecha(new Date(System.currentTimeMillis()));
@@ -71,8 +71,9 @@ public class GestionAccionReclamoBean implements Serializable{
 	
 	public String guardarAccionReclamo() {
 		System.out.println("TODO: guardarAccionReclamo");
-		System.out.println("accionReclamoSeleccionado.getDetalle() " +accionReclamoSeleccionado.getDetalle());
-		if(accionReclamoSeleccionado.getDetalle()!= null && accionReclamoSeleccionado.getDetalle()!= "" ) {
+		System.out.println("this.detalle  " +this.detalle );
+		if(this.detalle != null && this.detalle != "" ) {
+			accionReclamoSeleccionado.setDetalle(detalle);
 			accionReclamoSeleccionado.setActivo(true);
 			AccionReclamoDTO acRec= gAR.agregarAccionAReclamoDTO(accionReclamoSeleccionado);
 			accionReclamoList.add(acRec);
@@ -82,16 +83,27 @@ public class GestionAccionReclamoBean implements Serializable{
 			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "No se pudo agregar la accion sobre reclamo",	"");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 		}
-		
+		this.detalle ="";
 		return "";
 	}
 	
-	public String validarAccionReclamo() {
-		System.out.println("TODO: validarAccionReclamo");
+	public String volver() {
+		System.out.println("TODO: volver");
+		return "/pages/reclamos/listadoReclamos.xhtml";//pages/reclamos/listadoReclamos.xhtml
+	}
+	public String editarAccionReclamo() {
+		System.out.println("TODO: editarAccionReclamo");
+		
+		gAR.modificarAccionAReclamoDTO(actionReclamoToEdit);
+		FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el detalle de accion reclamo",	"");
+		FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+		accionReclamoList.clear();
+		accionReclamoList.addAll(gAR.listarAccionAReclamoDTO(actionReclamoToEdit.getReclamoId().getId()));
 		return "";
 	}
-	public String editarAccionReclamo(AccionReclamoDTO aRDTO) {
-		System.out.println("TODO: editarAccionReclamo");
+	public String eliminarAccionReclamo(AccionReclamoDTO aRDTO) {
+		System.out.println("TODO: eliminarAccionReclamo");
+		
 		return "";
 	}
 	public void setReclamoSeleccionado(ReclamoDTO reclamoSeleccionado) {
@@ -120,6 +132,26 @@ public class GestionAccionReclamoBean implements Serializable{
 
 	public void setAccionReclamoSeleccionado(AccionReclamoDTO accionReclamoSeleccionado) {
 		this.accionReclamoSeleccionado = accionReclamoSeleccionado;
+	}
+
+
+	public String getDetalle() {
+		return detalle;
+	}
+
+
+	public void setDetalle(String detalle) {
+		this.detalle = detalle;
+	}
+
+
+	public AccionReclamoDTO getActionReclamoToEdit() {
+		return actionReclamoToEdit;
+	}
+
+
+	public void setActionReclamoToEdit(AccionReclamoDTO actionReclamoToEdit) {
+		this.actionReclamoToEdit = actionReclamoToEdit;
 	}
 	
 }

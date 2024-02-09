@@ -839,6 +839,65 @@ public class EJBUsuarioRemoto {
 		/*
 		 * METODOS TipoEstadoEvento REMOTOS  FIN
 		 */
+		
+		/*
+		 * METODOS TipoEstadoReclamo REMOTOS 
+		 */
+		public TipoEstadoReclamo crearTipoEstadoReclamo(TipoEstadoReclamo tEE) {
+			TipoEstadoReclamo tEEDevueto = new TipoEstadoReclamo();
+			try {
+				tEEDevueto = reclamoBeanRemote.crearTipoEstadoReclamo(tEE);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return tEEDevueto;
+
+		}
+		public TipoEstadoReclamo editarTipoEstadoReclamo(TipoEstadoReclamo tEE) {
+			TipoEstadoReclamo tEEDevueto = new TipoEstadoReclamo();
+			try {
+				tEEDevueto = reclamoBeanRemote.editarTipoEstadoReclamo(tEE);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return tEEDevueto;
+
+		}
+		
+	
+
+		public List<TipoEstadoReclamo> listarTipoEstadoReclamo() {
+			List<TipoEstadoReclamo> lista = new ArrayList<TipoEstadoReclamo>();
+			try {
+				lista = reclamoBeanRemote.listarTipoEstadoReclamo();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return lista;
+
+		}
+		public List<TipoEstadoReclamo> buscarTipoEstadoReclamoPor(String id, String nombre) {
+			List<TipoEstadoReclamo> lista = new ArrayList<TipoEstadoReclamo>();
+			try {
+				lista = reclamoBeanRemote.buscarTipoEstadoReclamoPor(id,nombre);
+			} catch (Exception e) {
+				// TODO Auto-generated catch blocks
+				e.printStackTrace();
+			}
+			return lista;
+			
+		}
+		
+		/*
+		 * METODOS TipoEstadoReclamo REMOTOS  FIN
+		 */
+		/*
+		
+		
+		
 		/*
 		 * METODOS TipoTutorTipo REMOTOS
 		 */

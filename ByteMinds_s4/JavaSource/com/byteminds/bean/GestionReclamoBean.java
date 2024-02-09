@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.byteminds.exception.PersistenciaException;
@@ -20,6 +21,7 @@ import com.byteminds.negocio.GestionUsuarioService;
 import com.byteminds.negocio.ReclamoDTO;
 import com.byteminds.negocio.TutorResponsableEventoDTO;
 import com.byteminds.negocio.UsuarioDTO;
+import com.byteminds.negocio.AnalistaDTO;
 import com.byteminds.negocio.EstudianteDTO;
 import com.byteminds.negocio.EventoDTO;
 import com.byteminds.negocio.GestionEventoService;
@@ -38,7 +40,8 @@ public class GestionReclamoBean implements Serializable {
 	GestionReclamoService gestionReclamoService;
 	@EJB
 	GestionUsuarioService gestionUsuarioService;
-
+	@Inject
+    LoginBean loginBean = new LoginBean();
 	
 	private EJBUsuarioRemoto ejbReclamoRemoto;
 
@@ -89,8 +92,11 @@ public class GestionReclamoBean implements Serializable {
 		if(idEstudianteDTO!= null) {
 			
 //			estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.fromUsuario(ejbReclamoRemoto.buscarUsuarioPor("ESTUDIANTE", "123", "", "", "", "", "", "", "", "", null, null, null, "", "", null, null).get(0));
-			estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.buscarUsuario(123);//TODO: cambiar por idEstudianteDTO
-			
+			if(loginBean.getUserioLogeado().getUTipo().equals("ESTUDIANTE")) {
+				estudianteQueReclamaDTO=(EstudianteDTO)loginBean.getUserioLogeado();
+			}else {
+				estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.buscarUsuario(123);//TODO: cambiar por idEstudianteDTO
+			}
 		}
 		if (id != null ) {
 						reclamoSeleccionado = gestionReclamoService.fromReclamo(ejbReclamoRemoto.buscarReclamoPorId(id));

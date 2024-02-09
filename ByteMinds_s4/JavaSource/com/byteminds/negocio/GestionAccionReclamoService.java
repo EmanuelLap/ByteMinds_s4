@@ -72,7 +72,11 @@ public class GestionAccionReclamoService implements Serializable {
 		
 		return fromAccionReclamoEntidad(accionReclamo);
 	}
-	
+	public AccionReclamoDTO modificarAccionAReclamoDTO(AccionReclamoDTO acRec) {
+		AccionReclamo accionReclamo = ejbRemoto.modificarAccionReclamo(toAccionReclamoEntidad(acRec));
+		
+		return fromAccionReclamoEntidad(accionReclamo);
+	}
 	
 	public List<AccionReclamoDTO> listarAccionAReclamoDTO(Integer reclamoID) {
 		List<AccionReclamo> list = ejbRemoto.listAllAccionReclamoByReclamo(reclamoID);

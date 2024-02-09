@@ -23,25 +23,11 @@
 			<p:messages id="messages" showDetail="true" closable="true">
 				<p:autoUpdate />
 			</p:messages>
-			<h:commandButton id="idVolverAccionReclamo" immediate="true" value="Volver"
-				action="/listadoReclamos">
+			<h:commandLink id="idVolverAccionReclamo"  value="Volver"
+				action="#{gestionAccionReclamoBean.volver}">
 				<f:ajax />
-			</h:commandButton>
-
-
-<!-- 						<h:commandButton value="Modificar" -->
-<!-- 							rendered="#{!gestionAccionReclamoBean.modoEdicion}" update=":form" -->
-<!-- 							action="#{gestionAccionReclamoBean.salvarCambios}"> -->
-<!-- 							<f:param name="id" value="${gestionAccionReclamoBean.id}" /> -->
-<!-- 							<f:param name="modalidad" value="update" /> -->
-<!-- 						</h:commandButton> -->
-<!-- 						<h:commandButton value="Generar reclamo" -->
-<!-- 							rendered="#{gestionAccionReclamoBean.modoEdicion}" update=":form" -->
-<!-- 							action="#{gestionAccionReclamoBean.salvarCambios}"> -->
-<!-- 							<f:param name="id" value="${gestionAccionReclamoBean.id}" /> -->
-<!-- 							<f:param name="modalidad" value="insert" /> -->
-<!-- 						</h:commandButton> -->
-						
+			</h:commandLink>
+					
 <div class="grid-container">
 			<p:panelGrid columns="2">
 			
@@ -111,9 +97,12 @@
 					<p:outputLabel value="#{actionReclamo.id}" />
 				</p:column>
 				<p:column>
-					<f:facet name="header">Detalle</f:facet>
-					<p:outputLabel value="#{actionReclamo.detalle}"/>
-				</p:column>
+			 		<f:facet name="header">Detalle</f:facet>
+			        <p:commandLink value="#{actionReclamo.detalle}"
+			                       oncomplete="PF('editDialog').show()" update="editDialogForm">
+			            <f:setPropertyActionListener target="#{gestionAccionReclamoBean.actionReclamoToEdit}" value="#{actionReclamo}" />
+			        </p:commandLink>
+		        </p:column>
 				<p:column>
 					<f:facet name="header">Fecha</f:facet>
 					<h:outputLabel value="#{actionReclamo.fecha}">
@@ -125,6 +114,7 @@
 					<p:outputLabel value="#{actionReclamo.analistaId.nombres} #{actionReclamo.analistaId.apellidos}"/>
 				</p:column>
 				</p:dataTable>
+
 			</p:panelGrid>
 			
 	</div>		
@@ -134,8 +124,8 @@
 			<p:panelGrid  columns="2">
 			
 				<p:outputLabel value="Detalle" />
-				<p:inputText id="acReDetalle"
-						value="#{gestionAccionReclamoBean.accionReclamoSeleccionado.detalle}" required="true" immediate="true" />
+				<p:inputTextarea id="acReDetalle"
+						value="#{gestionAccionReclamoBean.detalle}" />
 						
 				<p:outputLabel value="Fecha" />
 				<p:outputLabel id="acReFecha"
@@ -146,9 +136,20 @@
 				<h:commandButton   id="idAccionReclamoGuardar" value="Guardar"
 				action="#{gestionAccionReclamoBean.guardarAccionReclamo()}"/>
 			</p:panelGrid>
-			
-			
-			
+
 		</h:form>
+		
+				<p:dialog id="editDialog" widgetVar="editDialog"  resizable="false">
+				    <h:form id="editDialogForm">
+				        <h2>Editar Detalle</h2>
+				        <p:inputText value="#{gestionAccionReclamoBean.actionReclamoToEdit.detalle}" />
+				
+				        <p:commandButton value="Guardar"
+				                         action="#{gestionAccionReclamoBean.editarAccionReclamo}"
+				                         update="editDialogForm :accionReclamos:tablaAccionReclamos "
+				                         oncomplete="PF('editDialog').hide(); document.getElementById('guardarButton').disabled = false;"
+				                         onclick="this.disabled = true;"  />
+				    </h:form>
+				</p:dialog>
      </ui:define>
 </ui:composition>
