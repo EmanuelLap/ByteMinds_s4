@@ -106,7 +106,9 @@ public class GestionItrBean implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 
 				this.modalidad = "view";
-
+				listITRDTO.clear();
+				listITRDTO.addAll(gestionItrService.listarITRs());
+				itrDTOSeleccionado = new ItrDTO();
 			} catch (Exception e) {
 
 				Throwable rootException = ExceptionsTools.getCause(e);
@@ -121,14 +123,16 @@ public class GestionItrBean implements Serializable {
 				e.printStackTrace();
 			}
 
-		} else if (modalidad.equals("update")) {
+		} else {
 
 			try {
 				gestionItrService.modificarITR(itrDTOSeleccionado);
 
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el reclamo.", ""));
-
+				listITRDTO.clear();
+				listITRDTO.addAll(gestionItrService.listarITRs());
+				itrDTOSeleccionado = new ItrDTO();
 			} catch (Exception e) {
 
 				Throwable rootException = ExceptionsTools.getCause(e);
@@ -172,11 +176,11 @@ public class GestionItrBean implements Serializable {
 
 	
 	public boolean validarITR() {
-		if(this.itrDTOSeleccionado==null) {
-			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "El ITR no puede ser null ",	"");
-			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-			return false;
-		}
+//		if(this.itrDTOSeleccionado==null) {
+//			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "El ITR no puede ser null ",	"");
+//			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+//			return false;
+//		}
 		if(this.itrDTOSeleccionado.getNombre()==null) {
 			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe ingresar un nombre para el ITR ",	"");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);

@@ -69,6 +69,18 @@ public class GestionAccionReclamoBean implements Serializable{
 		return "/pages/reclamos/registroaccionreclamo?faces-redirect=true";
 	}
 	
+	
+	public String inicializarAccionReclamoEstudiante(ReclamoDTO reclamo) {
+		System.out.println("Reclamo accion para TODO");
+		this.reclamoSeleccionado = reclamo;
+		accionReclamoList.clear();
+		//traer lista de acciones sobre este reclamo mismo
+		accionReclamoList.addAll(gAR.listarAccionAReclamoDTO(reclamo.getId()));
+		
+		
+		return "/pages/reclamos/registroaccionreclamoestudiante?faces-redirect=true";
+	}
+	
 	public String guardarAccionReclamo() {
 		System.out.println("TODO: guardarAccionReclamo");
 		System.out.println("this.detalle  " +this.detalle );

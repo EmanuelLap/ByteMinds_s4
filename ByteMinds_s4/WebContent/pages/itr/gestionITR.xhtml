@@ -23,8 +23,12 @@
                 /* Estilos adicionales para las tablas si son necesarios */
             }
         </style>
-
-        <h:form id="itrSeleccionarID" class="grid-container">
+        
+        <p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+<div class="grid-container">
+        <h:form id="itrSeleccionarID" >
             <div class="grid-item">
                 <p:dataTable var="itr" value="#{gestionItrBean.listITRDTO}" style="height:400px;overflow-y: auto;"
                     widgetVar="allTutoTable"  > 
@@ -37,33 +41,42 @@
                         <h:outputText value="#{itr.departamento}" />
                     </p:column>
                     <p:column headerText="Activo" filterBy="#{itr.activo}" filterMatchMode="contains">
-                        <p:selectBooleanCheckbox id="activoITR"
+                        <p:selectBooleanCheckbox id="activoITR" disabled="true"
 							value="#{itr.activo}" />
                     </p:column>
                     <p:column headerText="Accion">
-                        <p:commandButton value="Editar" action="#{gestionItrBean.seleccionarITR(itr)}" partialSubmit="true" update="@form" />
+                        <p:commandButton value="Editar"  partialSubmit="true" update=":formITRSolo:panelGrup2">
+                        <f:setPropertyActionListener target="#{gestionItrBean.itrDTOSeleccionado}" value="#{itr}"/>
+                        </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </div>
 
-            <div class="grid-item">
-                <h2>Itr seleccionado/nuevo</h2>
-                <p:outputLabel id="itrNombreLbl" value="Nombre"/>
-                <p:inputText id="itrNombreInput" value="#{gestionItrBean.itrDTOSeleccionado.nombre}"/>
-                <p:message for="itrNombreInput" style="color:red" />
-                <p:separator/>
-                <p:outputLabel id="itrDepartamentoLbl" value="Departamento"/>
-                <p:inputText id="itrDepartamentoInput" value="#{gestionItrBean.itrDTOSeleccionado.departamento}"/>
-                <p:message for="itrDepartamentoInput" style="color:red" />
-                <p:separator/>
-                <p:outputLabel id="itrActivoLbl" value="Activo"/>
-                <p:selectBooleanCheckbox  id="itrActivoSelectBolean" value="#{gestionItrBean.itrDTOSeleccionado.activo}"/>
-                <p:message for="itrActivoSelectBolean" style="color:red" />
-                <p:separator/>
-                 <p:commandButton value="Guardar" action="#{gestionItrBean.salvarCambios()}" />
-            </div>
+           
 
            
         </h:form>
+         <div class="grid-item">
+         <h:form id="formITRSolo">
+	            	<h:panelGroup id="panelGrup2">
+				          	 <h2>Itr seleccionado/nuevo</h2>
+				             <p:outputLabel id="itrNombreLbl" value="Nombre"/>
+				             <p:inputText id="itrNombreInput" value="#{gestionItrBean.itrDTOSeleccionado.nombre}"/>
+				             <p:message for="itrNombreInput" style="color:red" />
+				             <p:separator/>
+				             <p:outputLabel id="itrDepartamentoLbl" value="Departamento"/>
+				             <p:inputText id="itrDepartamentoInput" value="#{gestionItrBean.itrDTOSeleccionado.departamento}"/>
+				             <p:message for="itrDepartamentoInput" style="color:red" />
+				             <p:separator/>
+				             <p:outputLabel id="itrActivoLbl" value="Activo"/>
+				             <p:selectBooleanCheckbox  id="itrActivoSelectBolean" value="#{gestionItrBean.itrDTOSeleccionado.activo}"/>
+				             <p:message for="itrActivoSelectBolean" style="color:red" />
+				             <p:separator/>
+				             <p:commandButton value="Guardar" action="#{gestionItrBean.salvarCambios()}"  update="formITRSolo itrSeleccionarID"/>
+	            	
+	            	</h:panelGroup>
+        </h:form>
+        </div>
+ </div>
     </ui:define>
 </ui:composition>

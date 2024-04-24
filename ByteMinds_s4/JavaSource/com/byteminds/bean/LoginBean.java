@@ -13,7 +13,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
+import com.byteminds.negocio.AnalistaDTO;
+import com.byteminds.negocio.EstudianteDTO;
 import com.byteminds.negocio.GestionUsuarioService;
+import com.byteminds.negocio.TutorDTO;
 import com.byteminds.negocio.UsuarioDTO;
 import com.byteminds.remoto.EJBUsuarioRemoto;
 import com.byteminds.utils.AuthService;
@@ -58,7 +61,7 @@ public class LoginBean implements Serializable {
 			System.out.println("TOKEN: " + token);
 //			System.out.println("SecretKey key: " + key.toString());
 			
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido " + username, username);
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido " +" ["+ userioLogeado.getUTipo()+"] " + userioLogeado.getNombres()+" "+userioLogeado.getApellidos() , username);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 
@@ -93,7 +96,17 @@ public class LoginBean implements Serializable {
 		return user;
 	}
 
-	
+	public boolean esTutor() {
+		return this.userioLogeado instanceof TutorDTO;
+	}
+
+	public boolean esEstudiante() {
+		return this.userioLogeado instanceof EstudianteDTO;
+	}
+
+	public boolean esAnalista() {
+		return this.userioLogeado instanceof AnalistaDTO;
+	}
 	
 	public String getUsername() {
 		return username;

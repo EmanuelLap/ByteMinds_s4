@@ -78,4 +78,18 @@ public class GestionTipoEstadoReclamoService implements Serializable {
 		return fromTipoEstadoReclamo(terTemp);
 	}
 	
+	
+//	public TipoEstadoReclamoDTO obtenerTipoEstadoReclamoDTO(String id) {
+//		TipoEstadoReclamo terTemp = new TipoEstadoReclamo();
+//		List<TipoEstadoReclamo> list = new ArrayList<TipoEstadoReclamo>();
+//		if(id!=null || id!="") {	
+//			list=ejbRemoto.buscarTipoEstadoReclamoPor(id, "");
+//			if(!list.isEmpty()) {
+//				terTemp=list.get(0);	
+//			}
+//			
+//		}
+//	
+//		return fromTipoEstadoReclamo(terTemp);
+//	}
 }

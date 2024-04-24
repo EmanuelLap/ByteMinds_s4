@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="/layout/layout.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">
+		<c:set var="title" value="Gestion de reclamos, listado reclamos"
+			scope="request" />
+	</ui:define>
+
+	<ui:define name="content">
+		<p:messages id="messages" showDetail="true" closable="true">
+		<p:autoUpdate />
+	</p:messages>
+		<h:form id="formBuscar">
+		
+			<p:commandButton value="Buscar"
+				action="#{gestionReclamosBean.seleccionarEventosEstudiante()}"
+				update="tablaReclamos">
+				<p:ajax onstart="PF('blockUIWidget').show()"
+					oncomplete="PF('blockUIWidget').hide()" />
+
+			</p:commandButton>
+
+			<p:blockUI block="formBuscar" widgetVar="blockUIWidget">
+				<p:outputLabel value="Buscando reclamos..."></p:outputLabel>
+			</p:blockUI>
+
+		</h:form>
+
+		<h3>
+			<h:outputLabel value="Reclamos seleccionados" />
+		</h3>
+		<p:dataTable id="tablaReclamos"
+			value="#{gestionReclamosBean.listadoDeReclamosFiltrados}"
+			var="reclamo" styleClass="employeeTable"
+			headerClass="employeeTableHeader">
+
+			<p:column>
+				<f:facet name="header">Acciones</f:facet>
+			<h:form>
+				<h:commandLink value="Editar Reclamo"
+					action="#{gestionReclamo.inicializar}">
+					<f:setPropertyActionListener target="#{gestionReclamo.id}" value="#{reclamo.id}" />
+					<f:setPropertyActionListener target="#{gestionReclamo.modalidad}" value="update" />
+				</h:commandLink>
+				</h:form>
+			</p:column>
+<!-- 			<p:column sortBy="#{reclamo.id}"> -->
+<!-- 				<f:facet name="header">ID</f:facet> -->
+<!-- 				#{reclamo.id} -->
+<!-- 			</p:column> -->
+			
+			<p:column sortBy="#{reclamo.estadoReclamoId}">
+				<f:facet name="header">Estado</f:facet>
+				#{reclamo.estadoReclamoId.nombre}
+			</p:column>
+			
+			<p:column sortBy="#{reclamo.estudianteId}">
+				<f:facet name="header">Estudiante</f:facet>
+				#{reclamo.estudianteId.nombres} #{reclamo.estudianteId.apellidos} 
+				#{reclamo.estudianteId.documento}
+			</p:column>
+			<p:column sortBy="#{reclamo.titulo}">
+				<f:facet name="header">Titulo</f:facet>
+				#{reclamo.titulo}
+			</p:column>
+
+			<p:column sortBy="#{reclamo.detalle}">
+				<f:facet name="header">Descripcion detalle</f:facet>
+				#{reclamo.detalle}
+			</p:column>
+
+			<p:column sortBy="#{reclamo.fecha}">
+				<f:facet name="header">Fecha de reclamo</f:facet>
+				#{reclamo.fecha}
+			</p:column>
+
+			<p:column sortBy="#{reclamo.eventoId.titulo}">
+				<f:facet name="header">Titulo Evento</f:facet>
+				#{reclamo.eventoId.titulo}
+			</p:column>
+
+			<p:column sortBy="#{reclamo.eventoId.inicio}">
+				<f:facet name="header">Fecha de evento</f:facet>
+				#{reclamo.eventoId.inicio}
+			</p:column>
+			<!-- 			<p:column > -->
+			<!-- 				<f:facet name="header">Docentes</f:facet> -->
+			<!-- 				#{reclamo.eventoId.tutorResponsableEventoDTOCollection} -->
+			<!-- 			</p:column> -->
+			<p:column>
+				<f:facet name="header">Ver Docentes</f:facet>
+				<p:commandButton value="Ver mas" type="button"
+					onclick="PF('${reclamo}').show();" />
+
+				<p:dialog header="Informacion de docentes de evento reclamado"
+					widgetVar="${reclamo}" showEffect="explode" hideEffect="bounce"
+					height="200">
+
+					<p:selectOneListbox style="width:400px;">
+						<f:selectItems
+							value="#{reclamo.eventoId.tutorResponsableEventoDTOCollection}" />
+					</p:selectOneListbox>
+				</p:dialog>
+			</p:column>
+			<p:column sortBy="#{reclamo.semestre}">
+				<f:facet name="header">Semestre</f:facet>
+				#{reclamo.semestre}
+			</p:column>
+
+
+			<p:column sortBy="#{reclamo.creditos}">
+				<f:facet name="header">Creditos</f:facet>
+				#{reclamo.creditos}
+			</p:column>
+			<!-- 			<p:column> -->
+			<!-- 				<f:facet name="header">Desactivar</f:facet> -->
+
+			<!-- 				<p:commandButton value="Desactivar" -->
+			<!-- 					actionListener="#{gestionUsuario.setUsuarioSeleccionado(reclamo)}" -->
+			<!-- 					action="#{gestionUsuario.bajaLogicaUsuario}" -->
+			<!-- 					onclick="if(!confirm('¿Estás seguro de que quieres desactivar ${reclamo.nombres}?')) return false;" -->
+			<!-- 					update=":tablaUsuarios" /> -->
+
+<!-- 		</p:column> -->
+
+			<p:column>
+			<f:facet name="header">Registro de Acciones</f:facet>
+
+			<p:commandButton value="Ver acciones"
+				action="#{gestionAccionReclamoBean.inicializarAccionReclamoEstudiante(reclamo)}" />
+
+		</p:column>
+		</p:dataTable>
+
+
+	<p:dialog id="editDialog" widgetVar="editDialog"  resizable="false">
+				    <h:form id="editDialogForm">
+				        <h2>Editar estado reclamo</h2>
+				        
+						<p:selectOneMenu id="tipoEstadoCrit" value="#{gestionReclamo.idTipoEstado}"
+							effect="fold" editable="false">
+							<f:selectItem itemLabel="Selecione Estado" itemValue=""/>
+							<f:selectItems value="#{combosBean.comboTipoEstadoReclamoSelectItem}" />
+						</p:selectOneMenu>
+				        <p:commandButton value="Guardar" id="guardarButton"
+				                         action="#{gestionReclamo.guardarEstadoReclamo()}"
+				                         update="editDialogForm tablaReclamos"
+				                         oncomplete=" PF('editDialog').hide();"/>
+				    </h:form>
+				</p:dialog>
+
+	</ui:define>
+
+</ui:composition>

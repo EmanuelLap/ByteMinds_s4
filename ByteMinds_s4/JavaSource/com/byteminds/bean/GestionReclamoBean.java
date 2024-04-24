@@ -17,8 +17,10 @@ import javax.inject.Named;
 
 import com.byteminds.exception.PersistenciaException;
 import com.byteminds.negocio.GestionReclamoService;
+import com.byteminds.negocio.GestionTipoEstadoReclamoService;
 import com.byteminds.negocio.GestionUsuarioService;
 import com.byteminds.negocio.ReclamoDTO;
+import com.byteminds.negocio.TipoEstadoReclamoDTO;
 import com.byteminds.negocio.TutorResponsableEventoDTO;
 import com.byteminds.negocio.UsuarioDTO;
 import com.byteminds.negocio.AnalistaDTO;
@@ -40,6 +42,8 @@ public class GestionReclamoBean implements Serializable {
 	GestionReclamoService gestionReclamoService;
 	@EJB
 	GestionUsuarioService gestionUsuarioService;
+	@EJB
+	GestionTipoEstadoReclamoService gestionTipoEstadoReclamoService;
 	@Inject
     LoginBean loginBean = new LoginBean();
 	
@@ -54,6 +58,10 @@ public class GestionReclamoBean implements Serializable {
 	
 
 	private ReclamoDTO reclamoSeleccionado;
+	
+	private ReclamoDTO reclamoToEditEstado;
+	private Integer idTipoEstado;
+	
 	private List<EventoDTO> listEventosDTO = new ArrayList<EventoDTO>();
 	private EventoDTO eventoSeleccionado = new EventoDTO();
 
@@ -73,9 +81,11 @@ public class GestionReclamoBean implements Serializable {
 		gestionUsuarioService = new GestionUsuarioService();
 		cargarComboEventosDisponibles();
 		idEventoSeleccionado=0;
+		idTipoEstado=0;
 		reclamoSeleccionado = new ReclamoDTO();
 		reclamoSeleccionado.setEventoId(new EventoDTO());
 		reclamoSeleccionado.setFecha(new Date(System.currentTimeMillis()));
+		reclamoToEditEstado = new ReclamoDTO();
 	}
 
 	public String inicializar() {
@@ -126,7 +136,7 @@ public class GestionReclamoBean implements Serializable {
 	}
 
 	public String salvarCambios() {
-
+		if(validarDatos()) {
 		if (reclamoSeleccionado.getId() == null) {
 
 
@@ -159,7 +169,7 @@ public class GestionReclamoBean implements Serializable {
 		} else if (modalidad.equals("update")) {
 
 			try {
-				gestionReclamoService.agregarReclamo(reclamoSeleccionado);
+				gestionReclamoService.actualizarReclamo(reclamoSeleccionado);
 
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el reclamo.", ""));
@@ -178,9 +188,47 @@ public class GestionReclamoBean implements Serializable {
 				e.printStackTrace();
 			}
 		}
+		}
 		return "";
 	}
 
+	
+	
+	public Boolean validarDatos() {
+		if(this.reclamoSeleccionado.getTitulo()=="") return false;
+		if(this.reclamoSeleccionado.getDetalle()=="") return false;
+				
+		return true;
+	}
+	
+	public String guardarEstadoReclamo() {
+		try {
+			System.out.println("INGRESANDO A guardarEstadoReclamo");
+			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-");
+			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-");
+			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-");
+			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-");
+			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-");
+			if(reclamoToEditEstado != null || idTipoEstado > 0) {
+			TipoEstadoReclamoDTO tERDTO = null;
+			tERDTO=gestionTipoEstadoReclamoService.obtenerTipoEstadoReclamoDTO(idTipoEstado);
+			System.out.println("tERDTO"+tERDTO.toString());
+			reclamoToEditEstado.setEstadoReclamoId(tERDTO);
+			reclamoToEditEstado.setFechaEstadoReclamo(new Date(System.currentTimeMillis()));
+			gestionReclamoService.actualizarReclamo(reclamoToEditEstado);
+			
+			FacesContext.getCurrentInstance().addMessage(null,
+			new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el estado del reclamo.", ""));
+			reclamoToEditEstado= null;
+			idTipoEstado=0;
+			}
+		} catch (PersistenciaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
 	private void cargarComboEventosDisponibles(){
 		List<Evento> listEventos = new ArrayList<Evento>();
 		listEventos = ejbReclamoRemoto.listarEventos();
@@ -301,6 +349,22 @@ public class GestionReclamoBean implements Serializable {
 
 	public void setUsuarioLogeado(UsuarioDTO usuarioLogeado) {
 		this.usuarioLogeado = usuarioLogeado;
+	}
+
+	public ReclamoDTO getReclamoToEditEstado() {
+		return reclamoToEditEstado;
+	}
+
+	public void setReclamoToEditEstado(ReclamoDTO reclamoToEditEstado) {
+		this.reclamoToEditEstado = reclamoToEditEstado;
+	}
+
+	public Integer getIdTipoEstado() {
+		return idTipoEstado;
+	}
+
+	public void setIdTipoEstado(Integer idTipoEstado) {
+		this.idTipoEstado = idTipoEstado;
 	}
 	
 }

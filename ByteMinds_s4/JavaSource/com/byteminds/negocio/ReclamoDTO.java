@@ -30,12 +30,17 @@ public class ReclamoDTO {
 	    
 	    private EstudianteDTO estudianteId;
 	    
+	   
 	    private Integer creditos;
 	    
 	    private Integer semestre;
 	    
 	    private Boolean activo;
 
+	    private TipoEstadoReclamoDTO estadoReclamoId;
+	    
+	    private Date fechaEstadoReclamo;
+	    
 		public ReclamoDTO() {
 			super();
 					
@@ -126,4 +131,23 @@ public class ReclamoDTO {
 		public void setActivo(Boolean activo) {
 			this.activo = activo;
 		}
+
+		public TipoEstadoReclamoDTO getEstadoReclamoId() {
+			return estadoReclamoId;
+		}
+
+		public void setEstadoReclamoId(TipoEstadoReclamoDTO estadoReclamoId) {
+			this.estadoReclamoId = estadoReclamoId;
+		}
+
+		public Date getFechaEstadoReclamo() {
+			return fechaEstadoReclamo;
+		}
+
+		public void setFechaEstadoReclamo(Date fechaEstadoReclamo) {
+			this.fechaEstadoReclamo = fechaEstadoReclamo;
+		}
+		
+		
+		
 }

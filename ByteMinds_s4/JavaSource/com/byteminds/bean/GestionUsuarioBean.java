@@ -265,11 +265,24 @@ public class GestionUsuarioBean implements Serializable {
 		if (contrasenia.equals(usuarioSeleccionado.getContrasenia())) {
 
 			if (nuevaContrasenia.equals(nuevaContraseniaConfirmar) && !nuevaContrasenia.equals("")) {
-
-				this.salvarCambios();
-				message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se cambio la contraseña ", "");
-				FacesContext.getCurrentInstance().addMessage(null, message);
-				FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+				
+				 String password = nuevaContrasenia;
+				    // Validación de la contraseña con una expresión regular que incluye los requisitos mencionados.
+				    String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$";
+				    
+				    if(!password.matches(passwordPattern)) {
+				    	message = new FacesMessage(FacesMessage.SEVERITY_WARN, 
+				            "La contraseña no cumple con los requisitos: debe tener entre 8 y 20 caracteres, incluir números, mayúsculas, minúsculas y caracteres especiales.", "");
+				        FacesContext.getCurrentInstance().addMessage(null, message);
+				        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+				        
+				    }else {
+					usuarioSeleccionado.setContrasenia(nuevaContrasenia);
+					this.salvarCambios();
+					message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se cambio la contraseña ", "");
+					FacesContext.getCurrentInstance().addMessage(null, message);
+					FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+				    }
 			} else {
 				message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Las contraseñas no coinciden", "");
 				FacesContext.getCurrentInstance().addMessage(null, message);

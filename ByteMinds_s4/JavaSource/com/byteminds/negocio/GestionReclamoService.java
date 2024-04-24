@@ -27,13 +27,14 @@ public class GestionReclamoService implements Serializable {
 	private GestionUsuarioService gUS;
 	private GestionAccionReclamoService gAR;
 	private GestionEventoService gEvento;
-	
+	private GestionTipoEstadoReclamoService gTERS;
 	
 	public GestionReclamoService() {
 		ejbRemoto = new EJBUsuarioRemoto();
 		gUS= new GestionUsuarioService();
 //		gAR = new GestionAccionReclamoService();
 		gEvento = new GestionEventoService();
+		gTERS= new GestionTipoEstadoReclamoService();
 	}
 
 	
@@ -57,7 +58,12 @@ public class GestionReclamoService implements Serializable {
 		reclamoDTO.setCreditos(reclamoEntidad.getCreditos());
 		reclamoDTO.setSemestre(reclamoEntidad.getSemestre());
 		reclamoDTO.setActivo(reclamoEntidad.getActivo());
-		
+		if(reclamoEntidad.getEstadoReclamoId() !=null) {
+		reclamoDTO.setEstadoReclamoId(gTERS.fromTipoEstadoReclamo(reclamoEntidad.getEstadoReclamoId()));
+		}
+		if(reclamoEntidad.getFechaEstadoReclamo()!=null) {
+		reclamoDTO.setFechaEstadoReclamo(reclamoEntidad.getFechaEstadoReclamo());
+		}
 		return reclamoDTO;
 	}
 	
@@ -81,8 +87,12 @@ public class GestionReclamoService implements Serializable {
 		reclamoEntidad.setFecha(reclamoDTO.getFecha());
 		reclamoEntidad.setId(reclamoDTO.getId());
 		reclamoEntidad.setActivo(reclamoDTO.getActivo());
-		
-		
+		if(reclamoDTO.getEstadoReclamoId()!=null) {
+			reclamoEntidad.setEstadoReclamoId(gTERS.toTipoEstadoReclamo(reclamoDTO.getEstadoReclamoId()));
+		}
+		if(reclamoDTO.getFechaEstadoReclamo()!=null) {
+			reclamoEntidad.setFechaEstadoReclamo(reclamoDTO.getFechaEstadoReclamo());
+		}
 		return reclamoEntidad;
 	}
 	
@@ -92,6 +102,7 @@ public class GestionReclamoService implements Serializable {
 	}
 
 	public ReclamoDTO actualizarReclamo(ReclamoDTO reclamoDTO)throws PersistenciaException {
+		System.out.println("public ReclamoDTO actualizarReclamo(ReclamoDTO reclamoDTO)throws PersistenciaException ");
 		Reclamo reclamo =ejbRemoto.modificarReclamo(toReclamoEntidad(reclamoDTO));
 		return fromReclamo(reclamo);
 	}
@@ -100,7 +111,17 @@ public class GestionReclamoService implements Serializable {
 		Reclamo e = ejbRemoto.buscarReclamoPorId(id);
 		return fromReclamo(e);
 	}
-	
+	public List<ReclamoDTO> buscarReclamosEstudiante(Integer estudianteId) {
+
+		List<Reclamo> reclamosList = ejbRemoto.buscarReclamosEstudiante(estudianteId);
+		List<ReclamoDTO> reclamosDTOlist = new ArrayList<ReclamoDTO>();
+		
+		for(Reclamo rec: reclamosList) {
+			reclamosDTOlist.add(this.fromReclamo(rec));
+		}
+		
+		return reclamosDTOlist;
+	}
 	
 	public List<ReclamoDTO> listarReclamos() {
 		List<Reclamo> reclamosList = ejbRemoto.listarReclamos();

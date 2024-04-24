@@ -1024,6 +1024,11 @@ public class EJBUsuarioRemoto {
 			
 			return (Reclamo) reclamoBeanRemote.obtenerReclamoPorAtributo(id);
 		}
+		public List<Reclamo> buscarReclamosEstudiante(Integer id) throws UsuarioNoEncontradoException {
+			List<Reclamo> listaReclamosEstudiante = new ArrayList<Reclamo>();
+			listaReclamosEstudiante = reclamoBeanRemote.buscarReclamosEstudiante(id);
+			return listaReclamosEstudiante;
+		}
 		
 		public Reclamo buscarReclamoPorId(Integer id) throws UsuarioNoEncontradoException {
 			

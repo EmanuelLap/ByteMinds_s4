@@ -55,7 +55,7 @@ public class GestionEnventosBean implements Serializable{
 	
 	private String criterioLocalizacion;
 	
-	private Boolean criterioBajaLogica;
+	private Boolean criterioActivo =false;
 	
 	private String criterioItrDTO;
 	
@@ -108,13 +108,14 @@ public class GestionEnventosBean implements Serializable{
 	    if (criterioFinFin == null) {
 	        // Manejar el caso en el que criterioFinFin sea nulo
 	    }
-	    if (criterioBajaLogica == null) {
+	    if (criterioActivo == null) {
 	        // Manejar el caso en el que criterioBajaLogica sea nulo
+	    	
 	    }
 		
 		eventosSeleccionados=gestionEventoService.buscarEventosPor("",criterioTitulo,criterioLocalizacion,
 				criterioModalidadEvento,criterioTipoEvento,criterioItrDTO
-				,criterioInicioInicio,criterioFinInicio,criterioFinInicio,criterioFinFin,criterioBajaLogica);
+				,criterioInicioInicio,criterioFinInicio,criterioFinInicio,criterioFinFin,criterioActivo);
 
 		return "";
 	}
@@ -205,12 +206,12 @@ public class GestionEnventosBean implements Serializable{
 		this.criterioLocalizacion = criterioLocalizacion;
 	}
 
-	public Boolean getCriterioBajaLogica() {
-		return criterioBajaLogica;
+	public Boolean getCriterioActivo() {
+		return criterioActivo;
 	}
 
-	public void setCriterioBajaLogica(Boolean criterioBajaLogica) {
-		this.criterioBajaLogica = criterioBajaLogica;
+	public void setCriterioActivo(Boolean criterioBajaLogica) {
+		this.criterioActivo = criterioBajaLogica;
 	}
 
 	public String getCriterioItrDTO() {

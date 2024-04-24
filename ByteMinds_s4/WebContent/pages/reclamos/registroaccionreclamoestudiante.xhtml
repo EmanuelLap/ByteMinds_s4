@@ -1,0 +1,124 @@
+<ui:composition template="/layout/layout.xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui">
+
+	 <ui:define name="title">
+        <c:set var="title" value="Registro accion sobre reclamo" scope="request" />
+    </ui:define>
+
+    <ui:define name="content">
+     <style>
+            .grid-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* dos columnas de igual tamaño */
+                gap: 10px; /* espacio entre las columnas */
+            }
+        </style>
+ 
+    
+    <h:form id="accionReclamos">
+			<p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+			<h:commandLink id="idVolverAccionReclamo"  value="Volver"
+				action="#{gestionAccionReclamoBean.volver}">
+				<f:ajax />
+			</h:commandLink>
+					
+<div class="grid-container">
+			<p:panelGrid columns="2">
+			
+				<p:outputLabel value="Usuario Reclamante" />
+				<p:outputLabel id="reclamoUsuario" 
+					value="#{gestionAccionReclamoBean.reclamoSeleccionado.estudianteId.nombres}
+					 #{gestionAccionReclamoBean.reclamoSeleccionado.estudianteId.apellidos}" />
+			<p:outputLabel value="Documento" />
+				<p:outputLabel id="reclamoDocumento" 
+					value="#{gestionAccionReclamoBean.reclamoSeleccionado.estudianteId.documento}" />
+			
+				<p:outputLabel value="Titulo de reclamo" />
+				<p:outputLabel id="reclamoTitulo" 
+					value="#{gestionAccionReclamoBean.reclamoSeleccionado.titulo}" />
+
+				<p:outputLabel value="Descripcion" />
+				<p:outputLabel id="reclamoDescripcion"
+					value="#{gestionAccionReclamoBean.reclamoSeleccionado.detalle}" />
+				
+
+				<p:outputLabel value="Fecha" />
+				<p:outputLabel id="reclamoFecha"
+				               value="#{gestionAccionReclamoBean.reclamoSeleccionado.fecha}">
+				    <f:convertDateTime pattern="dd-MM-yyyy" />
+				</p:outputLabel>
+
+
+				<p:outputLabel value="Evento / Actividad" />
+				<p:outputLabel id="reclamoEventoList"
+					value="#{gestionAccionReclamoBean.reclamoSeleccionado.eventoId.titulo}"/>
+				
+
+				<p:outputLabel value="Fecha de evento" />
+				<p:outputLabel id="fechaEvento"
+					value="#{gestionAccionReclamoBean.reclamoSeleccionado.eventoId.inicio}">
+				 <f:convertDateTime pattern="dd-MM-yyyy" />
+				</p:outputLabel>
+
+				<p:outputLabel value="Docente" />
+				<p:dataList id="reclamoEventoDocente" value="#{gestionAccionReclamoBean.reclamoSeleccionado.eventoId.tutorResponsableEventoDTOCollection}" var="tutorNombre">
+        			#{tutorNombre.tutorId.nombres} #{tutorNombre.tutorId.apellidos}
+   				 </p:dataList>
+
+
+				<p:outputLabel value="Semestre" />
+				<p:outputLabel id="reclamoSemestre"
+					value="#{gestionAccionReclamoBean.reclamoSeleccionado.semestre}" />
+
+
+				<p:outputLabel value="Creditos" />
+				<p:outputLabel id="reclamoCreditos"
+					value="#{gestionAccionReclamoBean.reclamoSeleccionado.creditos}" />
+
+
+
+			</p:panelGrid>
+			
+			<p:panelGrid columns="1">
+				<h2>Acciones sobre reclamo:</h2>
+				<p:dataTable id="tablaAccionReclamos"
+				value="#{gestionAccionReclamoBean.accionReclamoList}"
+				var="actionReclamo" styleClass="employeeTable"
+				headerClass="employeeTableHeader">
+	
+<!-- 				<p:column> -->
+<!-- 					<f:facet name="header">Id</f:facet> -->
+<!-- 					<p:outputLabel value="#{actionReclamo.id}" /> -->
+<!-- 				</p:column> -->
+				<p:column>
+			 		<f:facet name="header">Detalle</f:facet>
+			        <p:outputLabel value="#{actionReclamo.detalle}"/>
+			                   
+		        </p:column>
+				<p:column>
+					<f:facet name="header">Fecha</f:facet>
+					<h:outputLabel value="#{actionReclamo.fecha}">
+					<f:convertDateTime pattern="dd-MM-yyyy" />
+					</h:outputLabel>
+				</p:column>
+				<p:column>
+					<f:facet name="header">Analista que atiende reclamo</f:facet>
+					<p:outputLabel value="#{actionReclamo.analistaId.nombres} #{actionReclamo.analistaId.apellidos}"/>
+				</p:column>
+				</p:dataTable>
+
+			</p:panelGrid>
+			
+	</div>		
+	
+
+		</h:form>
+		
+     </ui:define>
+</ui:composition>

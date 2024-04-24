@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
@@ -32,7 +33,9 @@ public class GestionReclamosBean implements Serializable{
 	
 	@EJB
 	GestionReclamoService gestionReclamoService;
-
+	
+	@Inject
+    LoginBean loginBean = new LoginBean();
 //	@Inject
 //	PersistenciaBean persistenciaBean;
 	/**
@@ -51,6 +54,8 @@ public class GestionReclamosBean implements Serializable{
 	private String criterioDocente;
 	private String criterioSemestre;
 	private String criterioCreditos;
+	private String criterioTipoEstado;
+	
 	
 	private List<ReclamoDTO> listadoDeReclamosFiltrados;
 
@@ -89,14 +94,21 @@ public class GestionReclamosBean implements Serializable{
 	    if (criterioFechaEvento == null) {
 	        // Manejar el caso en el que criterioFinFin sea nulo
 	    }
-	    
+	    if(criterioTipoEstado==null) {
+	    	criterioTipoEstado="";
+	    }
 		
 	    listadoDeReclamosFiltrados=gestionReclamoService.listarReclamos();
 
 		return "";
 	}
-	
+	public String seleccionarEventosEstudiante() throws PersistenciaException {
+		listadoDeReclamosFiltrados.clear();
+		listadoDeReclamosFiltrados=gestionReclamoService.buscarReclamosEstudiante(loginBean.getUserioLogeado().getId());
 
+		return "";
+		
+	}
 
 	public String verDatosReclamo() {
 		//Navegamos a datos reclamo
@@ -179,6 +191,14 @@ public class GestionReclamosBean implements Serializable{
 
 	public void setListadoDeReclamosFiltrados(List<ReclamoDTO> listadoDeReclamosFiltrados) {
 		this.listadoDeReclamosFiltrados = listadoDeReclamosFiltrados;
+	}
+
+	public String getCriterioTipoEstado() {
+		return criterioTipoEstado;
+	}
+
+	public void setCriterioTipoEstado(String criterioTipoEstado) {
+		this.criterioTipoEstado = criterioTipoEstado;
 	}
 	
 	

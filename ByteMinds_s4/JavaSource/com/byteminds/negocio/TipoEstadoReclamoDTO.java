@@ -57,6 +57,13 @@ public TipoEstadoReclamoDTO(Integer id, @NotNull String nombre, Boolean activo) 
 	public void setActivo(Boolean activo) {
 		this.activo = activo;
 	}
+
+
+
+	@Override
+	public String toString() {
+		return "TipoEstadoReclamoDTO [id=" + id + ", nombre=" + nombre + ", activo=" + activo + "]";
+	}
     
     
 }
