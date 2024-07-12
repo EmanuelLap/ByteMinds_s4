@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+
+	<h:form id="listadoConvocadosForm">
+
+		<h:outputText value="Listado de Convocados" />
+
+		<p:dataTable id="tablaConvocados"
+			value="#{gestionConvocatoriaAsistenciaEventoEstudianteBean.listaDeConvocadosDTO}"
+			var="convocado" styleClass="ui-datatable"
+			headerClass="ui-datatable-th"
+			rowStyleClass="ui-datatable-odd,ui-datatable-even">
+
+			<p:column>
+			<outputText value="#{convocado.estudianteDTO.nombres}" />
+			
+			</p:column>
+			<p:column>
+			 <outputText value="#{convocado.estudianteDTO.apellidos}" />
+			</p:column>
+			<p:column>
+			<outputText value="#{convocado.estudianteDTO.documento}" />
+			</p:column>
+
+
+		</p:dataTable>
+
+	</h:form>
+</h:body>
+</html>

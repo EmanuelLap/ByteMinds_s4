@@ -48,7 +48,25 @@
 						</h:commandButton>
 						
 
-			<p:panelGrid columns="3">
+			<p:panelGrid columns="4">
+
+				<p:outputLabel value="Usuario reclamante" />
+
+				<h:panelGroup id="reclamoUsuarioReclamantePanelTrue"
+					rendered="#{gestionReclamo.estudianteQueReclamaDTO ne null}">
+					<p:outputLabel id="reclamoUsuarioReclamante"
+						value="#{gestionReclamo.estudianteQueReclamaDTO.nombres} #{gestionReclamo.estudianteQueReclamaDTO.apellidos}"
+						style="color:green" />
+				</h:panelGroup>
+
+				<h:panelGroup id="reclamoUsuarioReclamantePanelFalse"
+					rendered="#{gestionReclamo.estudianteQueReclamaDTO ne null and gestionReclamo.estudianteQueReclamaDTO.id eq null}">
+					<p:outputLabel id="reclamoUsuarioReclamante2" value="Sin cargar" style="color:red" />
+				</h:panelGroup>
+
+				<p:message for="reclamoUsuarioReclamante" style="color:red" />
+	</p:panelGrid>
+<p:panelGrid columns="3">
 				<p:outputLabel value="Titulo de reclamo" />
 				<p:inputText id="reclamoTitulo" disabled="false"
 					value="#{gestionReclamo.reclamoSeleccionado.titulo}" />
@@ -78,6 +96,7 @@
 					value="#{gestionReclamo.idEventoSeleccionado}"
 					valueChangeListener="#{gestionReclamo.actualizarEventoSeleccionado}"
 					onchange="submit()">
+					
 					<f:selectItems value="#{gestionReclamo.listaDeEventosDTO}" />	
 				</p:selectOneMenu>
 				<p:message for="reclamoEventoList" style="color:red" />
@@ -111,9 +130,21 @@
 					value="#{gestionReclamo.reclamoSeleccionado.creditos}" />
 				<p:message for="reclamoCreditos" style="color:red" />
 
-
+<h:panelGroup id="reclamoAsignarUsuarioPanel" rendered="#{loginBean.esAnalista()}">
+				<p:outputLabel value="Asignar usuario" />
+			<p:commandButton value="Asignar Usuario" style=""
+			                       oncomplete="PF('buscarUsuarioDialog').show()" update="buscarUsuarioDialog">
+			           
+			        </p:commandButton>
+</h:panelGroup>
 			</p:panelGrid>
 		</h:form>
+		
+		
+			<p:dialog id="buscarUsuarioDialog" widgetVar="buscarUsuarioDialog"  resizable="true" style="width: 1000px;">
+<!-- 				  incluir fragmento buscarUsuarioPopUp.xhtml -->
+				<ui:include src="/pages/reclamos/buscarUsuarioPopUp.xhtml" />
+				</p:dialog>
 	</ui:define>
 </ui:composition>
 

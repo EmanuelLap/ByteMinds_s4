@@ -226,7 +226,8 @@ public abstract class UsuarioDTO  {
     public void setValidado(boolean validado) {
         this.validado = validado;
     }
-        
+
+       
         
         
 }

@@ -75,9 +75,8 @@
 
 			<p:commandButton value="Buscar"
 				action="#{gestionReclamosBean.seleccionarEventos()}"
-				update="tablaReclamos">
-				<p:ajax onstart="PF('blockUIWidget').show()"
-					oncomplete="PF('blockUIWidget').hide()" />
+				update="tablaReclamos" oncomplete="PF('blockUIWidget').hide();">
+				<p:ajax onstart="PF('blockUIWidget').show()" />
 
 			</p:commandButton>
 

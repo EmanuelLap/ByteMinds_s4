@@ -9,7 +9,7 @@
    	<div style="background-color: #809fff;padding: 12px">
 		<span
 			style="color: white; font-size: 180%; font-family: Arial; margin: 20px">
-			Sistema de Gestion de Usuarios ByteMinds</span>
+			Sistema de Gestion de UTEC </span>
 
 	</div>
    	
@@ -17,7 +17,7 @@
     <p:growl id="messages2"/>
      <p:menubar>
  		
-        <p:submenu label="Gestion de Usuarios" icon="ui-icon-document">
+        <p:submenu label="Gestion de Usuarios" icon="ui-icon-document" rendered="#{loginBean.esAnalista() or loginBean.esTutor()}">
             <p:menuitem value="Seleccion de usuario"   outcome="/pages/Usuarios.xhtml" />
             <p:menuitem value="Alta de usuario estudiante" outcome="/pages/DatosUsuario.xhtml"  >
             	<f:param name="id" value="" />
@@ -58,7 +58,7 @@
             
             
             <!-- Nuevo submenu para eventos -->
-            <p:submenu label="Eventos" icon="ui-icon-user">
+            <p:submenu label="Eventos" icon="ui-icon-user" rendered="#{loginBean.esAnalista() or loginBean.esTutor()}">
                 <p:menuitem value="Listar Eventos" outcome="/pages/eventos/listadoEventos.xhtml">
                 <f:param name="id" value="#{loginBean.userioLogeado.id}" />
     			<f:param name="modalidad" value="view" />
@@ -85,7 +85,8 @@
     
             </p:submenu>
             
-             <p:submenu label="Reclamos" icon="ui-icon-document">
+<!--             Sub menu para Reclamos -->
+             <p:submenu label="Reclamos" icon="ui-icon-document" >
             <p:menuitem value="Alta de reclamos"  action="#{gestionReclamo.inicializar}" partialSubmit="true">
 <!--             	<f:param name="modalidad" value="insert" /> -->
 <!--             	<f:param name="idEstudianteDTO" value="#{loginBean.userioLogeado.id}" /> -->
@@ -107,7 +108,9 @@
 <!--             <p:menuitem value="Baja de reclamo"   outcome="/pages/reclamos/altaReclamo.xhtml" /> -->
 <!--             <p:menuitem value="Mantenimiento de lista aux"   outcome="/pages/reclamos/altaReclamo.xhtml" /> -->
         </p:submenu>
- 		<p:submenu label="Gestion" icon="ui-icon-document">
+        
+<!--         submenu para Itrs -->
+ 		<p:submenu label="Gestion" icon="ui-icon-document" rendered="#{loginBean.esAnalista()}">
 	 		<p:menuitem value="Gestion ITRS"   action="#{gestionItrBean.inicializar}" outcome="/pages/itr/gestionITR.xhtml">
 	 		  			<f:setPropertyActionListener target="#{gestionItrBean.id}" value="#{null}" />
 	        			<f:setPropertyActionListener target="#{gestionItrBean.modalidad}" value="insert" />

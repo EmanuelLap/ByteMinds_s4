@@ -84,8 +84,8 @@
 
 			</h:panelGrid>
 
-			<p:commandButton value="Buscar"	action="#{gestionEnventosBean.seleccionarEventos()}" update="tablaEventos">
-				<p:ajax onstart="PF('blockUIWidget').show()" onsuccess="PF('blockUIWidget').hide()" />
+			<p:commandButton value="Buscar"	action="#{gestionEnventosBean.seleccionarEventos()}" update="tablaEventos" oncomplete="PF('blockUIWidget').hide();">
+				<p:ajax onstart="PF('blockUIWidget').show()"  />
 			</p:commandButton>
 			
  <p:blockUI block="formBuscar" widgetVar="blockUIWidget">
@@ -101,6 +101,7 @@
 		<p:dataTable id="tablaEventos"
 			value="#{gestionEnventosBean.eventosSeleccionados}" var="evento"
 			styleClass="employeeTable" headerClass="employeeTableHeader">
+
 			<p:column>
 				<f:facet name="header">Acciones</f:facet>
 <!-- 				<h:link value="Editar" outcome="datosEvento.xhtml"> -->

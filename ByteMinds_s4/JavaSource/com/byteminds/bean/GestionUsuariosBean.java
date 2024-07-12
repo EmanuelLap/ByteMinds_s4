@@ -60,6 +60,9 @@ public class GestionUsuariosBean implements Serializable{
 	private List<UsuarioDTO> usuariosSeleccionados;
 	private UsuarioDTO usuarioSeleccionado;
 	
+	
+	private List<UsuarioDTO> usuariosSelecConvocadosEvento;
+	
 	public GestionUsuariosBean() {
 		super();
 		criterioNombre="";
@@ -85,9 +88,22 @@ public class GestionUsuariosBean implements Serializable{
 		return "";
 	}
 	
+	public String seleccionarUsuariosEstudiantes() throws PersistenciaException {
+		System.out.println("seleccionarUsuariosEstudiantes() ");
+		System.out.println("Criterio documento: "+criterioDocumento);
+		System.out.println("Criterio nombre: "+criterioNombre);
+		System.out.println("Criterio apellido: "+criterioApellido);
+		usuariosSeleccionados=gestionUsuarioService.seleccionarUsuarios("ESTUDIANTE", "", "", String.valueOf(criterioDocumento), criterioNombre,criterioApellido,
+				"", "", criterioITR, "", criterioValidado, criterioActivo, criterioTodos, "", 
+				"", criterioNoValidado, criterioNoActivo);
+//		String tipo, String id ,String depto,String doc,String nombre,String apellido
+//		,String mail,String usuario,String itrNombre,String generacion, Boolean validado ,Boolean activo,Boolean todos,String localidad
+//		,String telefono,Boolean noValidados ,Boolean noActivos){
+		return "";
+	}
 	
 	public String verDatosUsuario() {
-		//Navegamos a datos empleado
+		//Navegamos a datos DatosUsuario	
 		return "DatosUsuario";
 	}
 	
@@ -199,6 +215,14 @@ public class GestionUsuariosBean implements Serializable{
 
 	public void setUsuarioSeleccionado(UsuarioDTO usuarioSeleccionado) {
 		this.usuarioSeleccionado = usuarioSeleccionado;
+	}
+
+	public List<UsuarioDTO> getUsuariosSelecConvocadosEvento() {
+		return usuariosSelecConvocadosEvento;
+	}
+
+	public void setUsuariosSelecConvocadosEvento(List<UsuarioDTO> usuariosSelecConvocadosEvento) {
+		this.usuariosSelecConvocadosEvento = usuariosSelecConvocadosEvento;
 	}
 	
 	

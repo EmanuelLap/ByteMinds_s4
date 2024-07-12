@@ -1,19 +1,202 @@
 <ui:composition template="/layout/layout.xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:p="http://primefaces.org/ui">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
 
-	 <ui:define name="title">
-        <c:set var="title" value="Asistencia a eventos" scope="request" />
-    </ui:define>
+	<ui:define name="title">
+		<c:set var="title" value="Asistencia y calificaciones a eventos" scope="request" />
+	</ui:define>
 
-    <ui:define name="content">
-    
-    <h1>Asistencia a eventos</h1>
-    
-    
-    
-     </ui:define>
+	<ui:define name="content">
+
+		<h1>Asistencia y calificaciones a eventos</h1>
+		
+		<h:form id="convocadosAEventosForm">
+			<p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+			<div class="containerDiv">
+
+				<div class="bottomDiv">
+					<!--filtro eventos -->
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Titulo" />
+						<p:inputText id="tituloCrit"
+							value="#{gestionEnventosBean.criterioTitulo}" />
+
+						<p:outputLabel value="Tipo evento" />
+						<p:selectOneMenu id="tipoEventoCrit"
+							value="#{gestionEnventosBean.criterioTipoEvento}" effect="fold"
+							editable="false">
+							<f:selectItem itemLabel="Seleccione Tipo Evento" itemValue="" />
+							<f:selectItems value="#{combosBean.comboTipoEventoSelectItem}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Modalidad" />
+						<p:selectOneMenu id="modalidadCrit"
+							value="#{gestionEnventosBean.criterioModalidadEvento}"
+							effect="fold" editable="false">
+							<f:selectItem itemLabel="Seleccione Modalidad" itemValue="" />
+							<f:selectItems value="#{combosBean.comboModalidadSelectItem}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="ITR" />
+						<p:selectOneMenu id="itrCrit"
+							value="#{gestionEnventosBean.criterioItrDTO}" effect="fold"
+							editable="false">
+							<f:selectItem itemLabel="Seleccione ITR" itemValue="" />
+							<f:selectItems value="#{combosBean.comboItr}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Localizacion" />
+						<p:inputText id="localizacionCrit"
+							value="#{gestionEnventosBean.criterioLocalizacion}" />
+
+					</h:panelGrid>
+
+					<p:commandButton value="Buscar"
+						action="#{gestionEnventosBean.seleccionarEventos()}"
+						update="tablaEventos,eventoSeleccionadoId" oncomplete="PF('blockUIWidget').hide();">
+						<p:ajax onstart="PF('blockUIWidget').show()" />
+					</p:commandButton>
+					
+					<!-- Label para mostrar el ID seleccionado -->
+					<h:panelGrid columns="2"
+						rendered="#{gestionEnventosBean.eventoSeleccionado != null }">
+						<p:outputLabel value="Evento Seleccionado" />
+						<p:outputLabel id="eventoSeleccionadoId"
+							value="#{gestionEnventosBean.eventoSeleccionado.id } - #{gestionEnventosBean.eventoSeleccionado.titulo}" />
+					</h:panelGrid>
+					
+
+					<!-- Tabla eventos -->
+					<p:dataTable id="tablaEventos"
+						value="#{gestionEnventosBean.eventosSeleccionados}" var="evento"
+						paginator="true" rows="6"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="6"
+						 >
+
+
+						<p:column sortBy="#{evento.titulo}">
+							<f:facet name="header">Titulo</f:facet>
+							<h:outputText value="#{evento.titulo}" />
+						</p:column>
+
+						<p:column sortBy="#{evento.tipoEvento}">
+							<f:facet name="header">Tipo Evento</f:facet>
+							<h:outputText value="#{evento.tipoEvento.nombre}" />
+						</p:column>
+
+						<p:column sortBy="#{evento.modalidadEvento}">
+							<f:facet name="header">Modalidad</f:facet>
+							<h:outputText value="#{evento.modalidadEvento.nombre}" />
+						</p:column>
+
+						<p:column sortBy="#{evento.inicio}">
+							<f:facet name="header">Fecha de inicio</f:facet>
+							<h:outputText value="#{evento.inicio}">
+			                    <f:convertDateTime pattern="dd/MM/yyyy" />
+			                </h:outputText>
+						</p:column>
+						<p:column sortBy="#{evento.fin}">
+							<f:facet name="header">Fecha de fin</f:facet>
+							<h:outputText value="#{evento.fin}">
+			                    <f:convertDateTime pattern="dd/MM/yyyy" />
+			                </h:outputText>
+						</p:column>
+
+						<p:column sortBy="#{evento.localizacion}">
+							<f:facet name="header">Localizacion</f:facet>
+							<h:outputText value="#{evento.localizacion}" /> 
+						</p:column>
+
+						<p:column sortBy="#{evento.itrDTO.nombre}">
+							<f:facet name="header">ITR</f:facet>
+							<h:outputText value="#{evento.itrDTO.nombre}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">Seleccionar Evento</f:facet>
+							<p:commandButton  action="#{gestionEnventosBean.seleccionarEvento(evento)}" 
+							icon="ui-icon-check"
+							oncomplete="PF('blockUIWidget').hide();"
+							update=":convocadosAEventosForm:eventoSeleccionadoId , :convocadosAEventosForm:convocatoriaEventoId ,:convocadosAEventosForm:tablaConvocados">
+							<p:ajax onstart="PF('blockUIWidget').show()" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+
+
+				</div>
+
+				<div class="bottomDiv">
+
+					<h2>Convocados a evento 
+						<p:outputLabel id="convocatoriaEventoId"
+							value="#{gestionConvocatoriaAsistenciaEventoEstudianteBean.eventoSeleccionado.titulo}" />
+							</h2>
+
+					
+					<p:dataTable id="tablaConvocados"
+								value="#{gestionConvocatoriaAsistenciaEventoEstudianteBean.listaDeConvocadosDTO}" var="convocado" >
+
+						<p:column >
+									<f:facet name="header">Documento</f:facet>
+									<h:outputText value="#{convocado.estudianteDTO.documento}" />
+								</p:column>
+
+								<p:column >
+									<f:facet name="header">Apellidos</f:facet>
+									<h:outputText value="#{convocado.estudianteDTO.apellidos}" />
+								</p:column>
+
+								<p:column >
+									<f:facet name="header">Nombres</f:facet>
+									<h:outputText value="#{convocado.estudianteDTO.nombres}" />
+								</p:column>
+
+								<p:column >
+									<f:facet name="header">ITR</f:facet>
+									<h:outputText value="#{convocado.estudianteDTO.itr.nombre}" />
+								</p:column>
+
+						<p:column headerText="Asistencia">
+
+							<p:selectOneMenu value="#{convocado.registroAsistencia}">
+								<f:selectItems value="#{gestionConvocatoriaAsistenciaEventoEstudianteBean.registroAsistenciaValues}" />
+							</p:selectOneMenu>
+
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">Calificacion</f:facet>
+							<p:selectOneMenu value="#{convocado.calificacion}">
+								<f:selectItems value="#{gestionConvocatoriaAsistenciaEventoEstudianteBean.calificaciones}" />
+							</p:selectOneMenu>
+						</p:column>
+
+					</p:dataTable>
+					
+					<p:commandButton value="Guardar" onclick="return confirm('¿Desea confirmar la convocatoria?');" 
+					action="#{gestionConvocatoriaAsistenciaEventoEstudianteBean.guardarAsistemciaConvocatoria()}" 
+					update=":convocadosAEventosForm:tablaConvocados" style="float: right;margin-top: 30px"
+					oncomplete="PF('blockUIWidget').hide();">
+								<p:ajax onstart="PF('blockUIWidget').show()" />
+							</p:commandButton>
+							
+				</div>
+				
+				
+				
+			</div>
+				<p:blockUI block="convocadosAEventosForm"
+					widgetVar="blockUIWidget">
+					<!--Puedes personalizar el mensaje que se muestra mientras se está procesando la solicitud -->
+					<p:outputLabel value="Por favor espere mientras procesamos su solicitud..."></p:outputLabel>
+				</p:blockUI>
+		</h:form>
+			</ui:define>
 </ui:composition>

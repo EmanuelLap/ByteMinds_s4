@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
@@ -30,6 +31,8 @@ public class GestionEnventosBean implements Serializable{
 	@EJB
 	GestionEventoService gestionEventoService;
 
+	@Inject
+	GestionConvocatoriaAsistenciaEventoEstudianteBean gestionConvocatoriaAsistenciaEventoEstudianteBean;
 //	@Inject
 //	PersistenciaBean persistenciaBean;
 	/**
@@ -67,17 +70,18 @@ public class GestionEnventosBean implements Serializable{
 	
 
 	private List<EventoDTO> eventosSeleccionados;
-	private EventoDTO eventoSeleccionado;
+	private EventoDTO eventoSeleccionado=new EventoDTO();
 	
 	public GestionEnventosBean() {
 		super();
 		//TODO: INICIALIZAMOS Los filtros de eventos para que esten en vacios
 		gestionEventoService = new GestionEventoService();
+		eventoSeleccionado = new EventoDTO();
 	}
 	
 	// ********Acciones****************************
 	public String seleccionarEventos() throws PersistenciaException {
-		
+		this.eventoSeleccionado= new EventoDTO();
 		 // Verificar si los criterios son nulos y asignar valores predeterminados si es necesario
 	    if (criterioTitulo == null) {
 	        criterioTitulo = "";
@@ -138,7 +142,23 @@ public class GestionEnventosBean implements Serializable{
 //		
 //	}
 	
-	
+	public String onEventoSelecionado() {
+	    // Lógica a ejecutar al seleccionar una fila
+	    System.out.println("Fila seleccionada: " + eventoSeleccionado.getTitulo());
+	    System.out.println("IN gestionConvocatoriaAsistenciaEventoEstudianteBean");
+	    gestionConvocatoriaAsistenciaEventoEstudianteBean.setearEvento(eventoSeleccionado);
+	    System.out.println("OUT gestionConvocatoriaAsistenciaEventoEstudianteBean");
+	    return "";
+	}
+	public String seleccionarEvento(EventoDTO evento) {
+	    // Lógica a ejecutar al seleccionar una fila
+		eventoSeleccionado = evento;
+	    System.out.println("Fila seleccionada: " + eventoSeleccionado.getTitulo());
+	    System.out.println("IN gestionConvocatoriaAsistenciaEventoEstudianteBean");
+	    gestionConvocatoriaAsistenciaEventoEstudianteBean.setearEvento(eventoSeleccionado);
+	    System.out.println("OUT gestionConvocatoriaAsistenciaEventoEstudianteBean");
+	    return "";
+	}
 	// ******** Getters & Setters****************************
 	
 

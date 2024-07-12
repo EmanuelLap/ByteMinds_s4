@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<h:form id="formPopUp"  class="popupUsuario">
+	<h:panelGrid columns="2">
+				<p:outputLabel value="Nombre" />
+				<p:inputText id="nombreCrit" 
+					value="#{gestionUsuarios.criterioNombre}"  />
+
+				<p:outputLabel value="Apellidos" />
+				<p:inputText id="apellidoCrit"
+					value="#{gestionUsuarios.criterioApellido}"  />
+
+				<p:outputLabel value="Documento" />
+				<p:inputText id="documentoCrit"
+					value="#{gestionUsuarios.criterioDocumento}"  />
+
+	</h:panelGrid>
+	
+	
+			<p:commandButton value="Buscar"	action="#{gestionUsuarios.seleccionarUsuariosEstudiantes()}" update="tablaUsuarios"/>
+				
+	
+	
+	<p:dataTable id="tablaUsuarios" paginator="true" rows="6"
+             value="#{gestionUsuarios.usuariosSeleccionados}" var="usuario"
+            
+             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+             rowsPerPageTemplate="6">
+			
+
+			<p:column sortBy="#{usuario.documento}">
+				<f:facet name="header">Documento</f:facet>
+				#{usuario.documento}
+			</p:column>
+
+			<p:column sortBy="#{usuario.usuario}">
+				<f:facet name="header">Usuario</f:facet>
+				#{usuario.usuario}
+			</p:column>
+
+	
+			<p:column sortBy="#{usuario.apellidos}">
+				<f:facet name="header">Apellidos</f:facet>
+				#{usuario.apellidos}
+			</p:column>
+
+			<p:column sortBy="#{usuario.nombres}">
+				<f:facet name="header">Nombres</f:facet>
+				#{usuario.nombres}
+			</p:column>	
+			
+				<p:column sortBy="#{usuario.nombres}">
+				<f:facet name="header">Seleccionar</f:facet>
+				 <p:commandButton value="Seleccionar" id="seleccionarUsuButton"
+				                         action="#{gestionReclamo.seleccionarUsuarioReclamo(usuario)}"
+				                         oncomplete="PF('buscarUsuarioDialog').hide();"
+				                         update="idDatosReclamos"
+				                         />
+			</p:column>
+
+	
+			
+		</p:dataTable>
+
+	</h:form>
+
+</h:body>
+</html>

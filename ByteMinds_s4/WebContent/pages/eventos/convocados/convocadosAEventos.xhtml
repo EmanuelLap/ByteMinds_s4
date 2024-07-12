@@ -1,80 +1,297 @@
 <ui:composition template="/layout/layout.xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:p="http://primefaces.org/ui">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
 
-	 <ui:define name="title">
-        <c:set var="title" value="Convocados a eventos" scope="request" />
-    </ui:define>
+	<ui:define name="title">
+		<c:set var="title" value="Convocados a eventos" scope="request" />
+	</ui:define>
 
-    <ui:define name="content">
-     <style>
-            .grid-container {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 20px;
-                max-height: 75vh;
-                overflow-y: auto;
-            }
+	<ui:define name="content">
 
-            .grid-item {
-                /* Estilos adicionales para las tablas si son necesarios */
-            }
-        </style>
-              <p:messages id="messages" showDetail="true" closable="true">
+		<h:form id="convocadosAEventosForm">
+			<p:messages id="messages" showDetail="true" closable="true">
 				<p:autoUpdate />
 			</p:messages>
-	<div class="grid-container">
-	
-        <h:form id="eventosForm" >
-            <div class="grid-item">
-                <p:dataTable var="estadoReclamo" value="#{gestionEstadoReclamoBean.listEstadosReclamo}" style="height:400px;overflow-y: auto;"
-                    widgetVar="allTutoTable"  > 
-                    <!-- Columnas de la primera tabla -->
-                    <p:column headerText="Id" filterBy="#{estadoReclamo.id}" filterMatchMode="contains">
-                        <h:outputText value="#{estadoReclamo.id}" />
-                    </p:column>
-                    <p:column headerText="Nombre" filterBy="#{estadoReclamo.nombre}" filterMatchMode="contains">
-                        <h:outputText value="#{estadoReclamo.nombre}" />
-                    </p:column>
+			<div class="containerDiv">
 
-                    <p:column headerText="Activo" filterBy="#{estadoReclamo.activo}" filterMatchMode="contains">
-                        <p:selectBooleanCheckbox id="activoEstadoReclamo"
-							value="#{estadoReclamo.activo}" />
-                    </p:column>
-                    <p:column headerText="Accion">
-                        <p:commandButton value="Editar"  partialSubmit="true" update=":formEstadoReclamoSolo:panelGrup2">
-                        <f:setPropertyActionListener target="#{gestionEstadoReclamoBean.estadosReclamoSeleccionado}" value="#{estadoReclamo}"/>
-                        </p:commandButton>
-                    </p:column>
-                </p:dataTable>
-            </div>
-			
-        </h:form>
-        <div class="grid-item">
-        <h:form id="formEstadoReclamoSolo">
-	            	<h:panelGroup id="panelGrup2">
-	                <h2>Estado reclamo seleccionado/nuevo</h2>
-	                <p:outputLabel id="estadoReclamoNombreLbl" value="Nombre"/>
-	                <p:inputText id="estadoReclamoNombreInput" value="#{gestionEstadoReclamoBean.estadosReclamoSeleccionado.nombre}"/>
-	                <p:message for="estadoReclamoNombreInput" style="color:red" />
-	                <p:separator/>
-	                
-	                <p:outputLabel id="estadoReclamoIDLbl" value="Id"/>
-	                <p:outputLabel id="estadoReclamoIDInput" value="#{gestionEstadoReclamoBean.estadosReclamoSeleccionado.id}"/>
-	                <p:separator/>
-	                
-	                <p:outputLabel id="estadoReclamoActivoLbl" value="Activo"/>
-	                <p:selectBooleanCheckbox  id="estadoReclamoActivoSelectBolean" value="#{gestionEstadoReclamoBean.estadosReclamoSeleccionado.activo}"/>
-	                <p:message for="estadoReclamoActivoSelectBolean" style="color:red" />
-	                <p:separator/>
-	                 <p:commandButton value="Guardar" action="#{gestionEstadoReclamoBean.guardar}" update="formEstadoReclamoSolo estadoReclamoForm" />
-	                 </h:panelGroup>
-	                 </h:form>
-	            </div>
-	  </div>
-    
-     </ui:define>
+				<div class="leftDiv">
+					<!--filtro eventos -->
+					<h:panelGrid columns="2">
+						<p:outputLabel value="Titulo" />
+						<p:inputText id="tituloCrit"
+							value="#{gestionEnventosBean.criterioTitulo}" />
+
+						<p:outputLabel value="Tipo evento" />
+						<p:selectOneMenu id="tipoEventoCrit"
+							value="#{gestionEnventosBean.criterioTipoEvento}" effect="fold"
+							editable="false">
+							<f:selectItem itemLabel="Seleccione Tipo Evento" itemValue="" />
+							<f:selectItems value="#{combosBean.comboTipoEventoSelectItem}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Modalidad" />
+						<p:selectOneMenu id="modalidadCrit"
+							value="#{gestionEnventosBean.criterioModalidadEvento}"
+							effect="fold" editable="false">
+							<f:selectItem itemLabel="Seleccione Modalidad" itemValue="" />
+							<f:selectItems value="#{combosBean.comboModalidadSelectItem}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="ITR" />
+						<p:selectOneMenu id="itrCrit"
+							value="#{gestionEnventosBean.criterioItrDTO}" effect="fold"
+							editable="false">
+							<f:selectItem itemLabel="Seleccione ITR" itemValue="" />
+							<f:selectItems value="#{combosBean.comboItr}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Localizacion" />
+						<p:inputText id="localizacionCrit"
+							value="#{gestionEnventosBean.criterioLocalizacion}" />
+
+					</h:panelGrid>
+
+					<p:commandButton value="Buscar"
+						action="#{gestionEnventosBean.seleccionarEventos()}"
+						update="tablaEventos,eventoSeleccionadoId" oncomplete="PF('blockUIWidget').hide();">
+						<p:ajax onstart="PF('blockUIWidget').show()" />
+					</p:commandButton>
+					
+					<!-- Label para mostrar el ID seleccionado -->
+					<h:panelGrid columns="2"
+						rendered="#{gestionEnventosBean.eventoSeleccionado != null }">
+						<p:outputLabel value="Evento Seleccionado" />
+						<p:outputLabel id="eventoSeleccionadoId"
+							value="#{gestionEnventosBean.eventoSeleccionado.id } - #{gestionEnventosBean.eventoSeleccionado.titulo}" />
+					</h:panelGrid>
+					
+<!-- 					<p:blockUI block="convocadosAEventosForm" widgetVar="blockUIWidget"> -->
+<!-- 						Puedes personalizar el mensaje que se muestra mientras se está procesando la solicitud -->
+<!-- 						<p:outputLabel value="Procesando solicitud..."></p:outputLabel> -->
+<!-- 					</p:blockUI> -->
+					
+					<!-- Tabla eventos -->
+					<p:dataTable id="tablaEventos"
+						value="#{gestionEnventosBean.eventosSeleccionados}" var="evento"
+						paginator="true" rows="6"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="6"
+						 >
+<!-- 						selection="#{gestionEnventosBean.eventoSeleccionado}" -->
+<!-- 						rowKey="#{evento.id}" selectionMode="single" -->
+<!-- 						<p:ajax event="rowSelect" listener="#{gestionEnventosBean.onEventoSelecionado}" update=":convocadosAEventosForm:eventoSeleccionadoId , :convocadosAEventosForm:convocatoriaEventoId ,:convocadosAEventosForm:tablaConvocados" /> -->
+						
+<!-- 						<p:column sortBy="#{evento.id}"> -->
+<!-- 							<f:facet name="header">Id</f:facet> -->
+<!-- 							<h:outputText value="#{evento.id}" /> -->
+<!-- 						</p:column> -->
+
+						<p:column sortBy="#{evento.titulo}">
+							<f:facet name="header">Titulo</f:facet>
+							<h:outputText value="#{evento.titulo}" />
+						</p:column>
+
+						<p:column sortBy="#{evento.tipoEvento}">
+							<f:facet name="header">Tipo Evento</f:facet>
+							<h:outputText value="#{evento.tipoEvento.nombre}" />
+						</p:column>
+
+						<p:column sortBy="#{evento.modalidadEvento}">
+							<f:facet name="header">Modalidad</f:facet>
+							<h:outputText value="#{evento.modalidadEvento.nombre}" />
+						</p:column>
+
+						<p:column sortBy="#{evento.inicio}">
+							<f:facet name="header">Fecha de inicio</f:facet>
+							<h:outputText value="#{evento.inicio}">
+			                    <f:convertDateTime pattern="dd/MM/yyyy" />
+			                </h:outputText>
+						</p:column>
+						<p:column sortBy="#{evento.fin}">
+							<f:facet name="header">Fecha de fin</f:facet>
+							<h:outputText value="#{evento.fin}">
+			                    <f:convertDateTime pattern="dd/MM/yyyy" />
+			                </h:outputText>
+						</p:column>
+
+						<p:column sortBy="#{evento.localizacion}">
+							<f:facet name="header">Localizacion</f:facet>
+							<h:outputText value="#{evento.localizacion}" /> 
+						</p:column>
+
+						<p:column sortBy="#{evento.itrDTO.nombre}">
+							<f:facet name="header">ITR</f:facet>
+							<h:outputText value="#{evento.itrDTO.nombre}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">Seleccionar Evento</f:facet>
+							<p:commandButton  action="#{gestionEnventosBean.seleccionarEvento(evento)}" 
+							icon="ui-icon-check"
+							oncomplete="PF('blockUIWidget').hide();"
+							update=":convocadosAEventosForm:eventoSeleccionadoId , :convocadosAEventosForm:convocatoriaEventoId ,:convocadosAEventosForm:tablaConvocados">
+							<p:ajax onstart="PF('blockUIWidget').show()" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+
+
+				</div>
+				<div class="rightDiv">
+
+					<!-- Listado de Estudiantes -->
+					<h3>
+						<h:outputLabel value="Busqueda y seleccion de usuarios" />
+					</h3>
+					<h:panelGrid columns="2">
+								<p:outputLabel value="Nombre" />
+								<p:inputText id="nombreCrit"
+									value="#{gestionUsuarios.criterioNombre}" />
+
+								<p:outputLabel value="Apellidos" />
+								<p:inputText id="apellidoCrit"
+									value="#{gestionUsuarios.criterioApellido}" />
+
+								<p:outputLabel value="Documento" />
+								<p:inputText id="documentoCrit"
+									value="#{gestionUsuarios.criterioDocumento}" />
+
+								<p:outputLabel value="ITR" />
+								<p:selectOneMenu id="itrCritUsuarios"
+									value="#{gestionUsuarios.criterioITR}" effect="fold"
+									editable="false">
+									<f:selectItem itemLabel="Seleccione ITR" itemValue="" />
+									<f:selectItems value="#{combosBean.comboItr}" />
+								</p:selectOneMenu>
+
+
+							<p:commandButton value="Buscar"
+								action="#{gestionUsuarios.seleccionarUsuariosEstudiantes()}"
+								update="tablaUsuarios" oncomplete="PF('blockUIWidget').hide();">
+								<p:ajax onstart="PF('blockUIWidget').show()" />
+							</p:commandButton>
+							
+							</h:panelGrid>
+
+
+							
+					<!-- Label para mostrar el ID seleccionado -->
+					<h:panelGrid columns="2"
+						rendered="#{!gestionUsuarios.usuariosSelecConvocadosEvento.isEmpty()}">
+						<p:outputLabel value="Usuarios seleccionados" />
+						<p:outputLabel id="usuariosSeleccionadosId"
+							value="#{gestionUsuarios.usuariosSelecConvocadosEvento}"/>
+					</h:panelGrid>
+					
+							<p:dataTable id="tablaUsuarios"
+								value="#{gestionUsuarios.usuariosSeleccionados}" var="usuario" 
+								paginator="true" rows="6"
+								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="6"
+								
+								 >
+<!-- 								 rowKey="#{usuario.id}" selectionMode="multiple" -->
+<!-- 						selection="#{gestionUsuarios.usuariosSelecConvocadosEvento}" -->
+
+
+<!-- 							<p:ajax event="rowSelect" update=":convocadosAEventosForm:usuariosSeleccionadosId" /> -->
+
+
+								<p:column sortBy="#{usuario.documento}">
+									<f:facet name="header">Documento</f:facet>
+									<h:outputText value="#{usuario.documento}" />
+								</p:column>
+
+								<p:column sortBy="#{usuario.apellidos}">
+									<f:facet name="header">Apellidos</f:facet>
+									<h:outputText value="#{usuario.apellidos}" />
+								</p:column>
+
+								<p:column sortBy="#{usuario.nombres}">
+									<f:facet name="header">Nombres</f:facet>
+									<h:outputText value="#{usuario.nombres}" />
+								</p:column>
+
+								<p:column sortBy="#{usuario.itr.nombre}">
+									<f:facet name="header">ITR</f:facet>
+								<h:outputText value="#{usuario.itr.nombre}" />
+								</p:column>
+								
+								<p:column>
+									<f:facet name="header">Agregar a evento</f:facet>
+									<p:commandButton value="agregar" action="#{gestionConvocatoriaAsistenciaEventoEstudianteBean.agregarAEvento(usuario)}" update=":convocadosAEventosForm:tablaConvocados" />
+								</p:column>
+							</p:dataTable>
+							
+<!-- 							<p:commandButton value="Agregar Seleccionados"  action="#{gestionConvocatoriaAsistenciaEventoEstudianteBean.agregarConvocados}" update=":convocadosAEventosForm:tablaConvocados" /> -->
+				</div>
+				
+				
+				
+				
+				<div class="bottomDiv">
+
+					<h2>Convocados a evento 
+<!-- 					<h:panelGrid columns="2" -->
+<!-- 						rendered="#{gestionConvocatoriaAsistenciaEventoEstudianteBean.eventoSeleccionado != null}"> -->
+<!-- 						<p:outputLabel value="Evento seleccionado" /> -->
+						<p:outputLabel id="convocatoriaEventoId"
+							value="#{gestionConvocatoriaAsistenciaEventoEstudianteBean.eventoSeleccionado.titulo}" />
+							</h2><!-- 					</h:panelGrid> -->
+					
+					<p:dataTable id="tablaConvocados"
+								value="#{gestionConvocatoriaAsistenciaEventoEstudianteBean.listaDeConvocadosDTO}" var="convocado" >
+
+						<p:column >
+									<f:facet name="header">Documento</f:facet>
+									<h:outputText value="#{convocado.estudianteDTO.documento}" />
+								</p:column>
+
+								<p:column >
+									<f:facet name="header">Apellidos</f:facet>
+									<h:outputText value="#{convocado.estudianteDTO.apellidos}" />
+								</p:column>
+
+								<p:column >
+									<f:facet name="header">Nombres</f:facet>
+									<h:outputText value="#{convocado.estudianteDTO.nombres}" />
+								</p:column>
+
+								<p:column >
+									<f:facet name="header">ITR</f:facet>
+									<h:outputText value="#{convocado.estudianteDTO.itr.nombre}" />
+								</p:column>
+								
+								<p:column >
+									<f:facet name="header">Quitar estudiante</f:facet>
+								
+									<p:commandButton value="Quitar" onclick="return confirm('¿Desea quitar este estudiante del evento?');" action="#{gestionConvocatoriaAsistenciaEventoEstudianteBean.quitarEstudiante(convocado.estudianteDTO)}" update=":convocadosAEventosForm:tablaConvocados"/>
+								</p:column>
+
+
+					</p:dataTable>
+					
+					<p:commandButton value="Confirmar convocatoria" onclick="return confirm('¿Desea confirmar la convocatoria?');" 
+					action="#{gestionConvocatoriaAsistenciaEventoEstudianteBean.guardarConvocatoria()}" 
+					update=":convocadosAEventosForm:tablaConvocados" style="float: right;margin-top: 30px"
+					oncomplete="PF('blockUIWidget').hide();">
+								<p:ajax onstart="PF('blockUIWidget').show()" />
+							</p:commandButton>
+							
+				</div>
+				
+				
+				
+			</div>
+				<p:blockUI block="convocadosAEventosForm"
+					widgetVar="blockUIWidget">
+					<!--Puedes personalizar el mensaje que se muestra mientras se está procesando la solicitud -->
+					<p:outputLabel value="Por favor espere mientras procesamos su solicitud..."></p:outputLabel>
+				</p:blockUI>
+		</h:form>
+
+	</ui:define>
 </ui:composition>

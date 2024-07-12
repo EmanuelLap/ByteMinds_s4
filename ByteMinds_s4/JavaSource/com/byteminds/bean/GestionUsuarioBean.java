@@ -1,5 +1,6 @@
 package com.byteminds.bean;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -379,6 +380,14 @@ public class GestionUsuarioBean implements Serializable {
 		
 		return true;
 	}
+	
+	  public String irACambiarContrasena() {
+	        return "/pages/CambiarContrasena.xhtml?id=" + usuarioSeleccionado.getId() + "&modalidad=edit&faces-redirect=true";
+	    }
+	
+	
+	
+	
 	
 //	
 //	public void validarMailInstitucional(String patron) {

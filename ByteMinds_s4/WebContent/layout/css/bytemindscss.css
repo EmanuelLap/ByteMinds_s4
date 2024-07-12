@@ -4,3 +4,219 @@
 	display: none;
 }
 
+
+
+.popupUsuario{
+	border-radius: 10px;
+	padding: 10px;
+	background-color: rgb(244, 247, 153);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	border-radius: 5px;
+	width: 1000px;
+	overflow-y: scroll;
+}
+
+body {
+	font-size: 70%;
+}
+.hidden {
+	display: none;
+}
+
+.ui-layout-container {
+	overflow: auto !important;
+}
+
+.ui-layout-north, .ui-layout-west, .ui-layout-south {
+ 	z-index: 100 !important; 
+}
+
+.ui-layout-south {
+	position: fixed !important;
+}
+
+.ui-layout-north .ui-layout-unit-content, .ui-layout-west,
+	.ui-layout-north, .ui-layout-center, .ui-panelgrid td, .ui-panelgrid tr
+	{
+	border: none !important;
+}
+
+.ui-layout-west .ui-layout-unit-content, .ui-layout-north,
+	.ui-widget-content, .ui-datatable * {
+	overflow: visible !important;
+}
+
+#pageContent {
+	width: 98% !important;
+	border: none;
+}
+
+table.padding_autocompletenew td {
+	padding-left: 0px;
+}
+
+#pageCenter #pageWest #pageSouth #pageNorth {
+	border: none;
+}
+
+.ui-panel-titlebar {
+	background-color: #4086BF;
+	color: #585454;
+}
+
+.ui-toolbar {
+	background-color: white;
+	border: none;
+}
+
+.ui-panel-titlebar {
+	color: white;
+	font-size: medium
+}
+
+/*
+.ui-widget-content {
+ border: none;
+}*/
+
+
+.containerDiv {
+    display: flex;
+    flex-wrap: wrap;
+    height: 100vh;
+}
+
+.leftDiv, .rightDiv, .bottomDiv {
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.leftDiv {
+/*    background-color: #f8b400;*/
+/*border:	2px solid black;*/
+    flex: 1 1 50%;
+}
+
+.rightDiv {
+/*    background-color: #4caf50;*/
+/*border:	2px solid black;*/
+
+    flex: 1 1 50%;
+}
+
+.bottomDiv {
+/*    background-color: #2196f3;*/
+/*border:	2px solid black;*/
+    width: 100%;
+}
+
+
+
+
+
+/*ESTILOS NUEVOS TABLAS*/
+
+/* Estilo general de la tabla */
+/*.ui-datatable {*/
+/*    width: 100%;*/
+/*    border-collapse: collapse;*/
+/*    font-family: 'Arial', sans-serif;*/
+/*    background-color: #f9f9f9;*/
+/*}*/
+
+/* Estilo del encabezado */
+/*.ui-datatable th {*/
+/*    background-color: #4CAF50;*/
+/*    color: white;*/
+/*    text-align: left;*/
+/*    padding: 8px;*/
+/*    font-weight: bold;*/
+/*    border-bottom: 2px solid #ddd;*/
+/*}*/
+
+/* Estilo de las celdas del cuerpo */
+/*.ui-datatable td {*/
+/*    padding: 8px;*/
+/*    border-bottom: 1px solid #ddd;*/
+/*}*/
+
+/* Estilo de las filas */
+/*.ui-datatable tr:nth-child(even) {*/
+/*    background-color: #f2f2f2;*/
+/*}*/
+
+/*.ui-datatable tr:hover {*/
+/*    background-color: #ddd;*/
+/*}*/
+
+/* Estilo del footer */
+/*.ui-datatable tfoot {*/
+/*    background-color: #f9f9f9;*/
+/*    color: #333;*/
+/*    text-align: left;*/
+/*    padding: 8px;*/
+/*    border-top: 2px solid #ddd;*/
+/*}*/
+
+/* Estilo de la paginación */
+/*.ui-paginator {*/
+/*    margin-top: 10px;*/
+/*    text-align: center;*/
+/*}*/
+
+/*.ui-paginator .ui-state-default {*/
+/*    background-color: #4CAF50;*/
+/*    color: white;*/
+/*    border: none;*/
+/*    padding: 5px 10px;*/
+/*    margin: 2px;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.ui-paginator .ui-state-active {*/
+/*    background-color: #45a049;*/
+/*}*/
+
+/*.ui-paginator .ui-state-hover {*/
+/*    background-color: #45a049;*/
+/*}*/
+
+/*.ui-paginator .ui-state-disabled {*/
+/*    background-color: #ddd;*/
+/*    color: #999;*/
+/*}*/
+
+/* Estilo de los filtros */
+/*.ui-datatable .ui-column-filter {*/
+/*    width: 100%;*/
+/*    padding: 5px;*/
+/*    box-sizing: border-box;*/
+/*    border: 1px solid #ddd;*/
+/*}*/
+
+/* Estilo de los mensajes */
+/*.ui-messages {*/
+/*    margin-bottom: 10px;*/
+/*}*/
+
+/*.ui-messages .ui-messages-info {*/
+/*    background-color: #e7f3fe;*/
+/*    border-color: #b3e5fc;*/
+/*    color: #31708f;*/
+/*    padding: 10px;*/
+/*    border-radius: 5px;*/
+/*}*/
+
+/* Estilo para botones dentro de la tabla */
+/*.ui-datatable .ui-button {*/
+/*    background-color: #4CAF50;*/
+/*    color: white;*/
+/*    border: none;*/
+/*    padding: 5px 10px;*/
+/*    margin: 2px;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.ui-datatable .ui-button:hover {*/
+/*    background-color: #45a049;*/
+/*}*/

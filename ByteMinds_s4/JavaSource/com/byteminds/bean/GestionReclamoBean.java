@@ -15,6 +15,8 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.PrimeFaces;
+
 import com.byteminds.exception.PersistenciaException;
 import com.byteminds.negocio.GestionReclamoService;
 import com.byteminds.negocio.GestionTipoEstadoReclamoService;
@@ -99,15 +101,18 @@ public class GestionReclamoBean implements Serializable {
 		reclamoSeleccionado = new ReclamoDTO();
 		reclamoSeleccionado.setEventoId(new EventoDTO());
 		reclamoSeleccionado.setFecha(new Date(System.currentTimeMillis()));
-		if(idEstudianteDTO!= null) {
+//		if(idEstudianteDTO!= null) {
 			
 //			estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.fromUsuario(ejbReclamoRemoto.buscarUsuarioPor("ESTUDIANTE", "123", "", "", "", "", "", "", "", "", null, null, null, "", "", null, null).get(0));
 			if(loginBean.getUserioLogeado().getUTipo().equals("ESTUDIANTE")) {
 				estudianteQueReclamaDTO=(EstudianteDTO)loginBean.getUserioLogeado();
-			}else {
-				estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.buscarUsuario(123);//TODO: cambiar por idEstudianteDTO
-			}
+//			}else {
+//				estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.buscarUsuario(idEstudianteDTO);//TODO: cambiar por idEstudianteDTO
+//			}
 		}
+			if(loginBean.getUserioLogeado().getUTipo().equals("ANALISTA")) {
+				
+			}
 		if (id != null ) {
 						reclamoSeleccionado = gestionReclamoService.fromReclamo(ejbReclamoRemoto.buscarReclamoPorId(id));
 						this.idEventoSeleccionado = reclamoSeleccionado.getEventoId().getId();
@@ -131,7 +136,7 @@ public class GestionReclamoBean implements Serializable {
 			modalidad = "view";
 
 		}
-		
+		 
 		return "/pages/reclamos/altaReclamo.xhtml";
 	}
 
@@ -197,7 +202,7 @@ public class GestionReclamoBean implements Serializable {
 	public Boolean validarDatos() {
 		if(this.reclamoSeleccionado.getTitulo()=="") return false;
 		if(this.reclamoSeleccionado.getDetalle()=="") return false;
-				
+		if(this.estudianteQueReclamaDTO !=null && this.estudianteQueReclamaDTO.getId()==null) return false;
 		return true;
 	}
 	
@@ -232,14 +237,20 @@ public class GestionReclamoBean implements Serializable {
 	private void cargarComboEventosDisponibles(){
 		List<Evento> listEventos = new ArrayList<Evento>();
 		listEventos = ejbReclamoRemoto.listarEventos();
-		listaDeEventosDTO = new ArrayList<>();
-
-		for(Evento e :listEventos) {
-			listEventosDTO.add(gestEventService.fromEvento(e));
-
-		}
-		for(EventoDTO e :listEventosDTO) {
-			listaDeEventosDTO.add(new SelectItem(e.getId(), e.toString()));	
+		if(listaDeEventosDTO != null && listaDeEventosDTO.size() ==listEventos.size()) {
+			//el tamaño es el mismo, no hay que hacer nada
+			PrimeFaces.current().ajax().update("idDatosReclamos");
+			System.out.println("Actualizando WEB-cargarComboEventosDisponibles");
+		}else {
+			listaDeEventosDTO = new ArrayList<>();
+	
+			for(Evento e :listEventos) {
+				listEventosDTO.add(gestEventService.fromEvento(e));
+	
+			}
+			for(EventoDTO e :listEventosDTO) {
+				listaDeEventosDTO.add(new SelectItem(e.getId(), e.toString()));	
+			}
 		}
 	}
 	
@@ -264,6 +275,13 @@ public class GestionReclamoBean implements Serializable {
 //	return"";
 	}
 
+	
+	public void seleccionarUsuarioReclamo(EstudianteDTO estudianteDTO) {
+		
+		estudianteQueReclamaDTO =estudianteDTO;
+//		idEstudianteDTO = estudianteDTO.getId();
+		
+	}
 
 	public List<EventoDTO> getListEventosDTO() {
 		return listEventosDTO;

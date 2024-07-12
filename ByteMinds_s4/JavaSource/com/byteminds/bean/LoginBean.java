@@ -46,7 +46,7 @@ public class LoginBean implements Serializable {
 		gUS = new GestionUsuarioService();
 	}
 
-	// This method should be modified to validate login against your database
+	// Este metodo debe retornar el token y mandar la redireccion al index
 	public String login() {
 		Usuario user = validateUsernamePassword();
 

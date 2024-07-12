@@ -19,6 +19,73 @@
 		</f:metadata>
 
 
+<h:form id="idEditarContrasenia">
+
+	<p:panelGrid columns="2">
+
+		<p:outputLabel value="Documento" />
+		<p:outputLabel id="documento" value="#{gestionUsuario.usuarioSeleccionado.documento}"  />
+
+		
+		<p:outputLabel value="Usuario" />
+		<p:outputLabel id="usuario"  value="#{gestionUsuario.usuarioSeleccionado.usuario}" />
+
+		
+<!-- 		<p:outputLabel value="Contraseña" /> -->
+<!-- 		<h:commandLink id="contrasenia" action="/pages/CambiarContrasena.xhtml"> -->
+<!-- 		    <f:param name="id" value="#{loginBean.userioLogeado.id}" /> -->
+<!-- 		    <f:param name="modalidad" value="edit" /> -->
+<!-- 		    <h:outputText value="**********" /> -->
+<!-- 		</h:commandLink> -->
+				
+		<p:outputLabel value="Contraseña" /> 
+		<h:commandLink value="**************" action="#{gestionUsuario.irACambiarContrasena()}" immediate="true" ajax="false"/>
+				
+		
+		
+		
+		<p:outputLabel value="Apellidos" />
+		<p:outputLabel id="apellidos"  value="#{gestionUsuario.usuarioSeleccionado.apellidos}"  />
+
+		
+		<p:outputLabel value="Nombres" />
+		<p:outputLabel id="nombres"  value="#{gestionUsuario.usuarioSeleccionado.nombres}"  />
+
+		
+		<p:outputLabel value="Fecha de Nacimiento" />
+		<p:calendar id="fechaNacimiento"  disabled="true" value="#{gestionUsuario.usuarioSeleccionado.fechaNacimiento}" />
+
+		
+		<p:outputLabel value="Departamento" />
+		<p:outputLabel id="departamento"  value="#{gestionUsuario.usuarioSeleccionado.departamento}" />
+
+		
+		<p:outputLabel value="Género" />
+		<p:outputLabel id="genero"  value="#{gestionUsuario.usuarioSeleccionado.genero}"  />
+
+		
+		<p:outputLabel value="Localidad" />
+		<p:outputLabel id="localidad"  value="#{gestionUsuario.usuarioSeleccionado.localidad}" />
+
+		
+		<p:outputLabel value="Email Personal" />
+		<p:outputLabel id="mailPersonal"  value="#{gestionUsuario.usuarioSeleccionado.mailPersonal}"  />
+
+		
+		<p:outputLabel value="Teléfono" />
+		<p:outputLabel id="telefono"  value="#{gestionUsuario.usuarioSeleccionado.telefono}"  />
+
+		
+		<p:outputLabel value="ITR" />
+		<p:outputLabel id="itr"  value="#{gestionUsuario.usuarioSeleccionado.itr.nombre}" />
+
+	
+		</p:panelGrid>
+		
+		</h:form>
+		<p:messages id="messages" showDetail="true" closable="true">
+        	<p:autoUpdate />
+    	</p:messages>
 	
 			 		 
 

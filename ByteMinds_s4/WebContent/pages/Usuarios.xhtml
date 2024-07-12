@@ -93,8 +93,8 @@
 
 			</h:panelGroup><br/>
 
-			<p:commandButton value="Buscar"	action="#{gestionUsuarios.seleccionarUsuarios}" update="tablaUsuarios">
-				<p:ajax onstart="PF('blockUIWidget').show()" oncomplete="PF('blockUIWidget').hide()" />
+			<p:commandButton value="Buscar"	action="#{gestionUsuarios.seleccionarUsuarios}" update="tablaUsuarios" oncomplete="PF('blockUIWidget').hide();">
+				<p:ajax onstart="PF('blockUIWidget').show()"  />
 			</p:commandButton>
 			
  <p:blockUI block="formBuscar" widgetVar="blockUIWidget">
@@ -109,7 +109,11 @@
 		</h3>
 		<p:dataTable id="tablaUsuarios"
 			value="#{gestionUsuarios.usuariosSeleccionados}" var="usuario"
-			styleClass="employeeTable" headerClass="employeeTableHeader">
+			styleClass="ui-datatable"
+			headerClass="ui-datatable-th"
+			rowStyleClass="ui-datatable-odd,ui-datatable-even"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+             rowsPerPageTemplate="6">
 			<p:column>
 				<f:facet name="header">Acciones</f:facet>
 				<h:link value="Editar" outcome="DatosUsuario.xhtml">

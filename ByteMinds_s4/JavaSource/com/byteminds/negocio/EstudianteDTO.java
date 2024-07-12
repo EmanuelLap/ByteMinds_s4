@@ -47,9 +47,8 @@ public class EstudianteDTO extends UsuarioDTO {
 
 	@Override
 	public String toString() {
-		return "EstudianteDTO [generacion=" + generacion + "]";
+		return "" + super.getDocumento() + "";
 	}
 
-	
-	
+
 }
