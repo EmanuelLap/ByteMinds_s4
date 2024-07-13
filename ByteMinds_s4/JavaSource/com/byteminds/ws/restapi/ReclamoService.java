@@ -185,6 +185,26 @@ public class ReclamoService {
 	        return json;
 	    }
 	    
+	    @POST
+	    @Path("/eliminarReclamoJsonMobile")
+	    @Consumes(MediaType.APPLICATION_JSON)
+	    public Response eliminarReclamo(ReclamoDTOMobile reclamo) {
+	    	System.out.println("Ejecutando servicio rest eliminar Reclamo Mobile!");
+	        if (reclamo.getTitulo() == null || reclamo.getDetalle() == null) {
+	            return Response.status(Response.Status.BAD_REQUEST).entity("Título y detalle son campos obligatorios").build();
+	        }
+	        
+	        try {
+	        	reclamo.setActivo(false);
+				gestionReclamoService.actualizarReclamoMobile(reclamo);
+			} catch (PersistenciaException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        return Response.status(Response.Status.CREATED).entity(reclamo).build();
+	    }
+	    
+	    
 	    @GET
 	    @Path("/obtenerEjemploJsonMobile")
 	    public String obtenerEjemploMobile() {
@@ -211,4 +231,3 @@ public class ReclamoService {
 	        return json;
 	    }
 	}
-
