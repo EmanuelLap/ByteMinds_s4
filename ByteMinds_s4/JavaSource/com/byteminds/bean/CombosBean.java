@@ -1,6 +1,7 @@
 package com.byteminds.bean;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
@@ -60,6 +61,8 @@ public class CombosBean implements Serializable {
 	
 	private List<SelectItem> comboTipoEstadoReclamoSelectItem;
 	
+	private List<String> listaDepartamentos;
+	
 	private GestionItrService gITRS;
 	private GestionRolService gROLS;
 	private GestionTipoAreaService gTAS;
@@ -93,6 +96,7 @@ public class CombosBean implements Serializable {
 		comboTipoAreaSelectItem= new ArrayList<SelectItem>();
 		comboTipoEstadoEventoSelectItem = new ArrayList<SelectItem>();
 		comboTipoEstadoReclamoSelectItem  = new ArrayList<SelectItem>();
+		listaDepartamentos = new ArrayList<String>();
 		
 		cargarITRCombos();
 		cargarROLCombos();
@@ -102,6 +106,7 @@ public class CombosBean implements Serializable {
 		cargarTipoEvento();
 		cargarTipoEstadoEvento();
 		cargarTipoEstadoReclamo();
+		cargarDepartamentosCombos();
 	}
 
 	private void cargarTipoEvento() {
@@ -185,11 +190,22 @@ public class CombosBean implements Serializable {
 
 		for (Rol rolItem : listROL) {
 //			this.comboRol.add(gROLS.fromRol(rolItem).getNombre());
-			comboROLSelectItem.add(new SelectItem(gROLS.fromRol(rolItem).getId(),gROLS.fromRol(rolItem).getNombre()));
+			comboROLSelectItem.add(new SelectItem(gROLS.fromRol(rolItem).getNombre(),gROLS.fromRol(rolItem).getNombre()));
 		}
 
 	}
 
+	
+	private void cargarDepartamentosCombos() {
+		 listaDepartamentos = Arrays.asList("Artigas", "Canelones", "Cerro Largo", "Colonia", 
+                 "Durazno", "Flores", "Florida", "Lavalleja", 
+                 "Maldonado", "Montevideo", "Paysandú", "Río Negro", 
+                 "Rivera", "Rocha", "Salto", "San José", 
+                 "Soriano", "Tacuarembó", "Treinta y Tres");
+
+	}
+	
+	
 	public List<String> getComboItr() {
 		return comboItr;
 	}
@@ -284,4 +300,13 @@ public class CombosBean implements Serializable {
 	public void setComboTipoEstadoReclamoSelectItem(List<SelectItem> comboTipoEstadoReclamoSelectItem) {
 		this.comboTipoEstadoReclamoSelectItem = comboTipoEstadoReclamoSelectItem;
 	}
+
+	public List<String> getListaDepartamentos() {
+		return listaDepartamentos;
+	}
+
+	public void setListaDepartamentos(List<String> listaDepartamentos) {
+		this.listaDepartamentos = listaDepartamentos;
+	}
+	
 }

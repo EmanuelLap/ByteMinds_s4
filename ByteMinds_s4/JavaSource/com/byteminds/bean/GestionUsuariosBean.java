@@ -79,7 +79,7 @@ public class GestionUsuariosBean implements Serializable{
 	
 	// ********Acciones****************************
 	public String seleccionarUsuarios() throws PersistenciaException {
-		usuariosSeleccionados=gestionUsuarioService.seleccionarUsuarios("", "", "", String.valueOf(criterioDocumento), criterioNombre,criterioApellido,
+		usuariosSeleccionados=gestionUsuarioService.seleccionarUsuarios(criterioROL, "", "", String.valueOf(criterioDocumento), criterioNombre,criterioApellido,
 				"", "", criterioITR, "", criterioValidado, criterioActivo, criterioTodos, "", 
 				"", criterioNoValidado, criterioNoActivo);
 //		String tipo, String id ,String depto,String doc,String nombre,String apellido

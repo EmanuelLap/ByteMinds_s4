@@ -31,6 +31,7 @@ public abstract class UsuarioDTO  {
 	@Length(min=2, max=50)
 	private String nombres;
 
+	@NotNull
 	private Date fechaNacimiento;
 
 	private String departamento;
@@ -42,6 +43,9 @@ public abstract class UsuarioDTO  {
 	private String mail;
 
 	private String mailPersonal;
+	
+	@NotNull
+	@Length(min=4, max=20)
 	private String telefono;
 	private ItrDTO itr;
 	private RolDTO rol;

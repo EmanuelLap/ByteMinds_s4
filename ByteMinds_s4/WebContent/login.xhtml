@@ -55,12 +55,13 @@
 				life="3000" />
 
 			<p:panel header="Login" style="text-align: center;">
+			
 				<h:outputLabel for="username" value="Username:" />
-				<p:inputText id="username" value="#{loginBean.username}"
-					required="true" />
+				<p:inputText id="username" value="#{loginBean.username}"/>
+					
 				<h:outputLabel for="password" value="Password:" />
-				<p:password id="password" value="#{loginBean.password}"
-					required="true" />
+				<p:password id="password" value="#{loginBean.password}"/>
+					
 				<div style="position: relative; text-align: center;">
 					<h:commandButton value="Login" action="#{loginBean.login}"
 						update="messagesLogin" />

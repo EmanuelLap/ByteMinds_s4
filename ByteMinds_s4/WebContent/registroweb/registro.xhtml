@@ -86,12 +86,21 @@
 						/>
 					<p:message for="fechaNacimiento" style="color:red" />
 
+<!-- 					<p:outputLabel value="Departamento" /> -->
+<!-- 					<p:inputText id="departamento" -->
+<!-- 						disabled="#{!gestionUsuario.modoEdicion}" -->
+<!-- 						value="#{gestionUsuario.usuarioSeleccionado.departamento}" /> -->
+<!-- 					<p:message for="departamento" style="color:red" /> -->
 					<p:outputLabel value="Departamento" />
-					<p:inputText id="departamento"
-						disabled="#{!gestionUsuario.modoEdicion}"
-						value="#{gestionUsuario.usuarioSeleccionado.departamento}" />
+					<p:selectOneMenu id="departamento" 
+					                 disabled="#{!gestionUsuario.modoEdicion}" 
+					                 value="#{gestionUsuario.usuarioSeleccionado.departamento}">
+					    <f:selectItem itemLabel="Seleccione un departamento" itemValue="" />
+					    <f:selectItems value="#{combosBean.listaDepartamentos}" var="departamento" 
+					                   itemLabel="#{departamento}" itemValue="#{departamento}" />
+					</p:selectOneMenu>
 					<p:message for="departamento" style="color:red" />
-
+					
 					<p:outputLabel value="Género" />
 					<p:selectOneMenu id="genero"
 						value="#{gestionUsuario.usuarioSeleccionado.genero}">

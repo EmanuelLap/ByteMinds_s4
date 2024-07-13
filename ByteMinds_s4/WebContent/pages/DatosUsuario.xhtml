@@ -20,7 +20,7 @@
 				listener="#{gestionUsuario.preRenderViewListener}" />
 		</f:metadata>
 	
-		<h:form id="idDatosUsuario">
+		<h:form id="idDatosUsuario" prependId="false">
 
 			<p:messages id="messages" showDetail="true" closable="true">
 				<p:autoUpdate />
@@ -36,7 +36,7 @@
 
 			</h:commandButton>
 			<h:commandButton value="Salvar cambios"
-				rendered="#{gestionUsuario.modoEdicion}" update=":form"
+				rendered="#{gestionUsuario.modoEdicion}" update=":formUsuario:mensajes" process="@this"
 				action="#{gestionUsuario.salvarCambios}">
 				<f:param name="id" value="${gestionUsuario.id}" />
 				<f:param name="modalidad" value="update" />
@@ -84,11 +84,20 @@
 					value="#{gestionUsuario.usuarioSeleccionado.fechaNacimiento}" />
 				<p:message for="fechaNacimiento" style="color:red" />
 
+<!-- 				<p:outputLabel value="Departamento" /> -->
+<!-- 				<p:inputText id="departamento" -->
+<!-- 					disabled="#{!gestionUsuario.modoEdicion}" -->
+<!-- 					value="#{gestionUsuario.usuarioSeleccionado.departamento}" /> -->
+<!-- 				<p:message for="departamento" style="color:red" /> -->
 				<p:outputLabel value="Departamento" />
-				<p:inputText id="departamento"
-					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.departamento}" />
-				<p:message for="departamento" style="color:red" />
+					<p:selectOneMenu id="departamento" 
+					                 disabled="#{!gestionUsuario.modoEdicion}" 
+					                 value="#{gestionUsuario.usuarioSeleccionado.departamento}">
+					    <f:selectItem itemLabel="Seleccione un departamento" itemValue="" />
+					    <f:selectItems value="#{combosBean.listaDepartamentos}" var="departamento" 
+					                   itemLabel="#{departamento}" itemValue="#{departamento}" />
+					</p:selectOneMenu>
+					<p:message for="departamento" style="color:red" />
 
 				<p:outputLabel value="Género" />
 				<p:selectOneMenu id="genero" value="#{gestionUsuario.usuarioSeleccionado.genero}">

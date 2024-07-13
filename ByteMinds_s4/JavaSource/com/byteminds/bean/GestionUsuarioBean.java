@@ -86,6 +86,9 @@ public class GestionUsuarioBean implements Serializable {
 		super();
 		gestionItrService= new GestionItrService();
 		gestionRolService = new GestionRolService();
+		gestionTipoTutorService= new GestionTipoTutorService();
+		gestionTipoAreaService= new GestionTipoAreaService();
+		
 		itrDTOSeleccionado = new ItrDTO();
 		rolDTOSeleccionado = new RolDTO();
 		 
@@ -112,19 +115,29 @@ public class GestionUsuarioBean implements Serializable {
 			usuarioSeleccionado = gestionUsuarioService.buscarUsuario(id);
 			this.itrDTOSeleccionadoId = usuarioSeleccionado.getItr().getId();
 			this.rolDTOSeleccionadoId= usuarioSeleccionado.getRol().getId();
+			if(esTutor()){
+				this.tipoAreaDTOSeleccionadoId = ((TutorDTO)(usuarioSeleccionado)).getTipoDTO().getId();
+				this.tipoTutorDTOSeleccionadoId = ((TutorDTO)(usuarioSeleccionado)).getAreaDTO().getId();
+			
+			}
 		} else {
-			if (u_tipo.contentEquals("ESTUDIANTE")) {
+			if (u_tipo.contentEquals("ESTUDIANTE") && usuarioSeleccionado == null) {
 				usuarioSeleccionado = new EstudianteDTO();
 			}
-			if (u_tipo.contentEquals("ANALISTA")) {
+			if (u_tipo.contentEquals("ANALISTA") && usuarioSeleccionado == null) {
 				usuarioSeleccionado = new AnalistaDTO();
 			}
-			if (u_tipo.contentEquals("TUTOR")) {
+			if (u_tipo.contentEquals("TUTOR") && usuarioSeleccionado == null) {
 				usuarioSeleccionado = new TutorDTO();
 			}
 			usuarioSeleccionado.setUTipo(u_tipo);
-			this.itrDTOSeleccionadoId=0;
-			this.rolDTOSeleccionadoId=0;
+			//Solo cargar cuando es nuevo
+			if(usuarioSeleccionado == null) {
+				this.itrDTOSeleccionadoId=0;
+				this.rolDTOSeleccionadoId=0;
+				this.tipoAreaDTOSeleccionadoId = 0;
+				this.tipoTutorDTOSeleccionadoId = 0;
+			}
 		}
 		if (modalidad.contentEquals("view")) {
 			modoEdicion = false;
@@ -153,11 +166,12 @@ public class GestionUsuarioBean implements Serializable {
 	public String salvarCambios() {
 
 		if (usuarioSeleccionado.getId() == null) {
-			usuarioSeleccionado.setActivo(true);
-			UsuarioDTO usuarioNuevo;
-			usuarioSeleccionado.setRol(rolDTOSeleccionado);
-			usuarioSeleccionado.setItr(itrDTOSeleccionado);
+				usuarioSeleccionado.setActivo(true);
+				usuarioSeleccionado.setValidado(false);
+//				usuarioSeleccionado.setRol(rolDTOSeleccionado);
+//				usuarioSeleccionado.setItr(itrDTOSeleccionado);
 			if(validarDatos()) {
+				
 			try {
 				System.out.println(usuarioSeleccionado.toString());
 				System.out.println("------------------------------------------");
@@ -178,7 +192,9 @@ public class GestionUsuarioBean implements Serializable {
 				System.out.println(usuarioSeleccionado.getMailPersonal());
 				System.out.println(usuarioSeleccionado.getValidado());
 				System.out.println("------------------------------------------");
+				UsuarioDTO usuarioNuevo;
 				usuarioNuevo = (UsuarioDTO) gestionUsuarioService.agregarUsuario(usuarioSeleccionado);
+				usuarioSeleccionado = null;
 				this.id = usuarioNuevo.getId();
 
 				// mensaje de actualizacion correcta
@@ -200,7 +216,7 @@ public class GestionUsuarioBean implements Serializable {
 
 				e.printStackTrace();
 			}
-			}
+			}return null;
 		} else if (modalidad.equals("update")) {
 
 			try {
@@ -377,6 +393,29 @@ public class GestionUsuarioBean implements Serializable {
 		        return false;
 		    }
 		}
+		
+		if(esEstudiante()) {
+			
+			if(((EstudianteDTO)this.usuarioSeleccionado).getGeneracion()== null) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar el año de la generacion", "");
+		    FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+		    return false;
+			}
+		}
+		
+		if (esTutor()) {
+			if (((TutorDTO) this.usuarioSeleccionado).getAreaDTO() == null) {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar el tipo de area", "");
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				return false;
+			}
+			if (((TutorDTO) this.usuarioSeleccionado).getTipoDTO() == null) {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar el tipo de tutor", "");
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				return false;
+			}
+		}
+		
 		
 		return true;
 	}
