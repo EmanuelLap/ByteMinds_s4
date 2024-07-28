@@ -209,99 +209,173 @@ public class GestionEventoService implements Serializable {
 		return fromEvento(evento);
 	}
 	
-	
-	
-	public EventoDTO agregarEventoMobile(EventoDTOMobile eventoSeleccionado)throws PersistenciaException {
-		Evento evento = new Evento();
+	public EventoDTO fromEventoDTOMobileToEventoDTO(EventoDTOMobile eventoDTOMobile) {
+		EventoDTO eventoDTO = new EventoDTO();
+		eventoDTO.setId(eventoDTOMobile.getId());
+		eventoDTO.setTitulo(eventoDTOMobile.getTitulo());
+		eventoDTO.setBajaLogica(eventoDTOMobile.getBajaLogica());
+		eventoDTO.setInicio(eventoDTOMobile.getInicio());
+		eventoDTO.setFin(eventoDTOMobile.getFin());
+		eventoDTO.setItrDTO(gITR.obtenerITRSeleccionado(eventoDTOMobile.getItrDTO()));
+		eventoDTO.setLocalizacion(eventoDTOMobile.getLocalizacion());
+		eventoDTO.setModalidadEvento(gME.obtenerModalidadEvento(eventoDTOMobile.getModalidadEvento()));
+		eventoDTO.setTipoEstadoEventoDTO(gTEE.obtenerTipoEstadoEventoDTO(eventoDTOMobile.getTipoEstadoEvento()));
+		eventoDTO.setTipoEvento(gTE.obtenerTipoEvento(eventoDTOMobile.getTipoEvento()));
+
+		eventoDTO.setTutorResponsableEventoDTOCollection(gTRE.allTutorRespEventoDTO(eventoDTO.getId()));
+		return eventoDTO;	
+	}
+	public EventoDTOMobile fromEventoDTOToEventoDTOMobile(EventoDTO eventoDTO) {
+		EventoDTOMobile eventoDTOMobile = new EventoDTOMobile();
+		eventoDTOMobile.setId(eventoDTO.getId());
+		eventoDTOMobile.setTitulo(eventoDTO.getTitulo());
+		eventoDTOMobile.setBajaLogica(eventoDTO.getBajaLogica());
+		eventoDTOMobile.setInicio(eventoDTO.getInicio());
+		eventoDTOMobile.setFin(eventoDTO.getFin());
+		eventoDTOMobile.setItrDTO(eventoDTO.getItrDTO().getId());
+		eventoDTOMobile.setLocalizacion(eventoDTO.getLocalizacion());
+		eventoDTOMobile.setModalidadEvento(eventoDTO.getModalidadEvento().getId());
+		eventoDTOMobile.setTipoEstadoEventoDTO(eventoDTO.getTipoEstadoEvento().getId());
+		eventoDTOMobile.setTipoEvento(eventoDTO.getTipoEvento().getId());
 		
-		evento.setId(eventoSeleccionado.getId());
-		evento.setTitulo(eventoSeleccionado.getTitulo());
+		ArrayList<Integer> tutorResponsableEventoDTOCollection = new ArrayList<Integer>();
+		for(TutorResponsableEventoDTO treDTO: eventoDTO.getTutorResponsableEventoDTOCollection()) {
+			tutorResponsableEventoDTOCollection.add(treDTO.getTutorId().getId());
+		}
 		
-		evento.setBajaLogica(eventoSeleccionado.getBajaLogica());
-		evento.setInicio(eventoSeleccionado.getInicio());
-		evento.setFin(eventoSeleccionado.getFin());
+		eventoDTOMobile.setTutorResponsableEventoDTOCollection(tutorResponsableEventoDTOCollection);
+		return eventoDTOMobile;	
+	}
+
 	
-		evento.setItr(gITR.toITR(gITR.obtenerITRSeleccionado(eventoSeleccionado.getItrDTO())));
+	public EventoDTOMobile agregarEventoMobile(EventoDTOMobile eventoSeleccionado)throws PersistenciaException {
+		System.out.println("ENTRANDO A AGREGAR EVENTO MOBILE");
+		EventoDTO eventoDTO = new EventoDTO();
+		
+		eventoDTO.setId(eventoSeleccionado.getId());
+		eventoDTO.setTitulo(eventoSeleccionado.getTitulo());
+		
+		eventoDTO.setBajaLogica(eventoSeleccionado.getBajaLogica());
+		eventoDTO.setInicio(eventoSeleccionado.getInicio());
+		eventoDTO.setFin(eventoSeleccionado.getFin());
 	
-		evento.setLocalizacion(eventoSeleccionado.getLocalizacion());
+		eventoDTO.setItrDTO(gITR.obtenerITRSeleccionado(eventoSeleccionado.getItrDTO()));
+	
+		eventoDTO.setLocalizacion(eventoSeleccionado.getLocalizacion());
 
 		
-		evento.setModalidad(gME.toModalidadEvento(gME.obtenerModalidadEvento(eventoSeleccionado.getModalidadEvento()) ));
-		evento.setTipoEstadoEvento(gTEE.toTipoEstadoEvento(gTEE.obtenerTipoEstadoEventoDTO(eventoSeleccionado.getTipoEstadoEvento())));
-		evento.setTipo(gTE.toTipoEvento(gTE.obtenerTipoEvento(eventoSeleccionado.getTipoEvento())));
+		eventoDTO.setModalidadEvento(gME.obtenerModalidadEvento(eventoSeleccionado.getModalidadEvento()) );
+		eventoDTO.setTipoEstadoEventoDTO(gTEE.obtenerTipoEstadoEventoDTO(eventoSeleccionado.getTipoEstadoEvento()));
+		eventoDTO.setTipoEvento(gTE.obtenerTipoEvento(eventoSeleccionado.getTipoEvento()));
 		
 		
-
-		List<TutorResponsableEvento> listaDeTutores = new ArrayList<TutorResponsableEvento>();
+		List<TutorResponsableEventoDTO> listaDeTutoresResponsablesDTO = new ArrayList<TutorResponsableEventoDTO>();
 		if(eventoSeleccionado.getTutorResponsableEventoDTOCollection() != null || !eventoSeleccionado.getTutorResponsableEventoDTOCollection().isEmpty()) {
 			for(Integer treDTO: eventoSeleccionado.getTutorResponsableEventoDTOCollection()) {
 				TutorResponsableEventoDTO treNew = new TutorResponsableEventoDTO();
-				treNew.setEventoId(null);
-				treNew.setId(null);
+				treNew.setEventoId(eventoSeleccionado.getId());
 				treNew.setTutorId((TutorDTO)gUS.buscarUsuario(treDTO));
-				listaDeTutores.add(gTRE.toTutorResponsableEvento(gTRE.agregarTutorRespEvento(treNew)));
+				listaDeTutoresResponsablesDTO.add(treNew);
 			}
 		}
 		
-		evento.setTutorResponsableEventoCollection(listaDeTutores);
-		Evento eventoResult = ejbRemoto.crearEvento(evento);
+		eventoDTO.setTutorResponsableEventoDTOCollection(listaDeTutoresResponsablesDTO);
+		Evento eventoResult = ejbRemoto.crearEvento(toEventoEntidad(eventoDTO));
+		EventoDTO eventDTOResult= fromEvento(eventoResult);
 		
-		return fromEvento(eventoResult);
+		return fromEventoDTOToEventoDTOMobile(eventDTOResult);
 	}
 	
 	
-	public EventoDTO actualizarEventoMobile(EventoDTOMobile eventoSeleccionado)throws PersistenciaException  {
+	public EventoDTOMobile actualizarEventoMobile(EventoDTOMobile eventoSeleccionado)throws PersistenciaException  {
 		
-	Evento evento = new Evento();
+//	Evento evento = new Evento();
+//		
+//		evento.setId(eventoSeleccionado.getId());
+//		evento.setTitulo(eventoSeleccionado.getTitulo());
+//		
+//		evento.setBajaLogica(eventoSeleccionado.getBajaLogica());
+//		evento.setInicio(eventoSeleccionado.getInicio());
+//		evento.setFin(eventoSeleccionado.getFin());
+//	
+//		evento.setItr(gITR.toITR(gITR.obtenerITRSeleccionado(eventoSeleccionado.getItrDTO())));
+//	
+//		evento.setLocalizacion(eventoSeleccionado.getLocalizacion());
+//
+//		
+//		evento.setModalidad(gME.toModalidadEvento(gME.obtenerModalidadEvento(eventoSeleccionado.getModalidadEvento()) ));
+//		evento.setTipoEstadoEvento(gTEE.toTipoEstadoEvento(gTEE.obtenerTipoEstadoEventoDTO(eventoSeleccionado.getTipoEstadoEvento())));
+//		evento.setTipo(gTE.toTipoEvento(gTE.obtenerTipoEvento(eventoSeleccionado.getTipoEvento())));
+//		
+////		TODO:
+////		obtener tutores responsables
+////		recorrerlos y buscar si estan los que vienen
+////		si al terminar tengo alguno que no esta en la lista que vino, lo elimino de la coleccion,
+////		si al terminar hay alguno mas agregarlo
+////		mandar a actualizar evento
+//		
+//		List<TutorResponsableEventoDTO > listaDeTutoresREDTO = new ArrayList<TutorResponsableEventoDTO>();
+//		listaDeTutoresREDTO=gTRE.allTutorRespEventoDTO(eventoSeleccionado.getId());
+//		
+//		List<TutorDTO > listaDeTutoresDTOMemoria = new ArrayList<TutorDTO>();
+//		for(Integer tutDTO: eventoSeleccionado.getTutorResponsableEventoDTOCollection()) {
+//			TutorDTO tutorDTOTmp = new TutorDTO();
+//			
+//			tutorDTOTmp =(TutorDTO)gUS.buscarUsuario(tutDTO);
+//		
+//			listaDeTutoresDTOMemoria.add(tutorDTOTmp);
+//		}
+//		
+//		sincronizarListas(listaDeTutoresREDTO, listaDeTutoresDTOMemoria);
+//
+//		List<TutorResponsableEvento> listaDeTutores = new ArrayList<TutorResponsableEvento>();
+//		if(listaDeTutoresREDTO != null || !listaDeTutoresREDTO.isEmpty()) {
+//			for(TutorResponsableEventoDTO treDTO: listaDeTutoresREDTO) {
+//				listaDeTutores.add(gTRE.toTutorResponsableEvento(treDTO));
+//			}
+//		}
+//		
+//		evento.setTutorResponsableEventoCollection(listaDeTutores);
+//
+////		Evento evento=ejbRemoto.modificarEvento(toEventoEntidad(eventoSeleccionado));
+////		return fromEvento(evento);
+//		return null;
 		
-		evento.setId(eventoSeleccionado.getId());
-		evento.setTitulo(eventoSeleccionado.getTitulo());
+		System.out.println("ENTRANDO A AGREGAR EVENTO MOBILE");
+		EventoDTO eventoDTO = new EventoDTO();
 		
-		evento.setBajaLogica(eventoSeleccionado.getBajaLogica());
-		evento.setInicio(eventoSeleccionado.getInicio());
-		evento.setFin(eventoSeleccionado.getFin());
+		eventoDTO.setId(eventoSeleccionado.getId());
+		eventoDTO.setTitulo(eventoSeleccionado.getTitulo());
+		
+		eventoDTO.setBajaLogica(eventoSeleccionado.getBajaLogica());
+		eventoDTO.setInicio(eventoSeleccionado.getInicio());
+		eventoDTO.setFin(eventoSeleccionado.getFin());
 	
-		evento.setItr(gITR.toITR(gITR.obtenerITRSeleccionado(eventoSeleccionado.getItrDTO())));
+		eventoDTO.setItrDTO(gITR.obtenerITRSeleccionado(eventoSeleccionado.getItrDTO()));
 	
-		evento.setLocalizacion(eventoSeleccionado.getLocalizacion());
+		eventoDTO.setLocalizacion(eventoSeleccionado.getLocalizacion());
 
 		
-		evento.setModalidad(gME.toModalidadEvento(gME.obtenerModalidadEvento(eventoSeleccionado.getModalidadEvento()) ));
-		evento.setTipoEstadoEvento(gTEE.toTipoEstadoEvento(gTEE.obtenerTipoEstadoEventoDTO(eventoSeleccionado.getTipoEstadoEvento())));
-		evento.setTipo(gTE.toTipoEvento(gTE.obtenerTipoEvento(eventoSeleccionado.getTipoEvento())));
+		eventoDTO.setModalidadEvento(gME.obtenerModalidadEvento(eventoSeleccionado.getModalidadEvento()) );
+		eventoDTO.setTipoEstadoEventoDTO(gTEE.obtenerTipoEstadoEventoDTO(eventoSeleccionado.getTipoEstadoEvento()));
+		eventoDTO.setTipoEvento(gTE.obtenerTipoEvento(eventoSeleccionado.getTipoEvento()));
 		
-//		TODO:
-//		obtener tutores responsables
-//		recorrerlos y buscar si estan los que vienen
-//		si al terminar tengo alguno que no esta en la lista que vino, lo elimino de la coleccion,
-//		si al terminar hay alguno mas agregarlo
-//		mandar a actualizar evento
 		
-		List<TutorResponsableEventoDTO > listaDeTutoresREDTO = new ArrayList<TutorResponsableEventoDTO>();
-		listaDeTutoresREDTO=gTRE.allTutorRespEventoDTO(eventoSeleccionado.getId());
-		
-		List<TutorDTO > listaDeTutoresDTOMemoria = new ArrayList<TutorDTO>();
-		for(Integer tutDTO: eventoSeleccionado.getTutorResponsableEventoDTOCollection()) {
-			TutorDTO tutorDTOTmp = new TutorDTO();
-			
-			tutorDTOTmp =(TutorDTO)gUS.buscarUsuario(tutDTO);
-		
-			listaDeTutoresDTOMemoria.add(tutorDTOTmp);
-		}
-		
-		sincronizarListas(listaDeTutoresREDTO, listaDeTutoresDTOMemoria);
-
-		List<TutorResponsableEvento> listaDeTutores = new ArrayList<TutorResponsableEvento>();
-		if(listaDeTutoresREDTO != null || !listaDeTutoresREDTO.isEmpty()) {
-			for(TutorResponsableEventoDTO treDTO: listaDeTutoresREDTO) {
-				listaDeTutores.add(gTRE.toTutorResponsableEvento(treDTO));
+		List<TutorResponsableEventoDTO> listaDeTutoresResponsablesDTO = new ArrayList<TutorResponsableEventoDTO>();
+		if(eventoSeleccionado.getTutorResponsableEventoDTOCollection() != null || !eventoSeleccionado.getTutorResponsableEventoDTOCollection().isEmpty()) {
+			for(Integer treDTO: eventoSeleccionado.getTutorResponsableEventoDTOCollection()) {
+				TutorResponsableEventoDTO treNew = new TutorResponsableEventoDTO();
+				treNew.setEventoId(eventoSeleccionado.getId());
+				treNew.setTutorId((TutorDTO)gUS.buscarUsuario(treDTO));
+				listaDeTutoresResponsablesDTO.add(treNew);
 			}
 		}
 		
-		evento.setTutorResponsableEventoCollection(listaDeTutores);
-
-//		Evento evento=ejbRemoto.modificarEvento(toEventoEntidad(eventoSeleccionado));
-		return fromEvento(evento);
+		eventoDTO.setTutorResponsableEventoDTOCollection(listaDeTutoresResponsablesDTO);
+		Evento eventoResult = ejbRemoto.modificarEvento(toEventoEntidad(eventoDTO));
+		EventoDTO eventDTOResult= fromEvento(eventoResult);
+		
+		return fromEventoDTOToEventoDTOMobile(eventDTOResult);
 	}
 	
 	

@@ -117,6 +117,36 @@ public class UsuarioService {
 	    }
 	    
 	    @GET
+	    @Path("/listarTutoresActivos")
+	    public String listUsuariosTutores() {
+	    	System.out.println("Ingresando al servicio rest a mandar lista de usuarios TUTORES");
+	    	List<TutorDTO> listaDeUsuariosTutores = null;
+	    	List<UsuarioDTO> listaDeUsuarios = null;
+			try {
+				listaDeUsuariosTutores = gestionUsuarioService.listadoDeTutoresActivos();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	if(listaDeUsuariosTutores == null || listaDeUsuariosTutores.isEmpty()) {
+	    		System.out.println("Lista de usuarios tutores vacia");
+	    		listaDeUsuariosTutores = new ArrayList<TutorDTO>();
+	    	}else {
+	    		listaDeUsuarios = new ArrayList<UsuarioDTO>();
+	    		listaDeUsuarios.addAll(listaDeUsuariosTutores);
+	    	}
+	    	ObjectMapper mapper = new ObjectMapper();
+			String json = "";
+			try {
+				json = mapper.writeValueAsString(listaDeUsuarios);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        return json;
+	    }
+	    
+	    @GET
 	    @Path("/obtenerUsuarioById")
 	    public String obtenerUsuarioById(@QueryParam("id") int id) {
 			GestionEventoService gES = new GestionEventoService();

@@ -1,0 +1,144 @@
+<ui:composition template="/layout/layout.xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui">
+
+	 <ui:define name="title">
+        <c:set var="title" value="Registro accion sobre justificacion" scope="request" />
+    </ui:define>
+
+    <ui:define name="content">
+     <style>
+            .grid-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* dos columnas de igual tamaño */
+                gap: 10px; /* espacio entre las columnas */
+            }
+        </style>
+ 
+    
+    <h:form id="accionJustificaciones">
+			<p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+			<h:commandLink id="idVolverAccionJustificacion"  value="Volver"
+				action="#{gestionAccionJustificacionBean.volver}">
+				<f:ajax />
+			</h:commandLink>
+					
+<div class="grid-container">
+			<p:panelGrid columns="2">
+			
+				<p:outputLabel value="Usuario Justificante" />
+				<p:outputLabel id="justificacionUsuario" 
+					value="#{gestionAccionJustificacionBean.justificacionSeleccionado.estudianteId.nombres}
+					 #{gestionAccionJustificacionBean.justificacionSeleccionado.estudianteId.apellidos}" />
+			<p:outputLabel value="Documento" />
+				<p:outputLabel id="justificacionDocumento" 
+					value="#{gestionAccionJustificacionBean.justificacionSeleccionado.estudianteId.documento}" />
+			
+<!-- 				<p:outputLabel value="Titulo de justificacion" /> -->
+<!-- 				<p:outputLabel id="justificacionTitulo"  -->
+<!-- 					value="#{gestionAccionJustificacionBean.justificacionSeleccionado.titulo}" /> -->
+
+				<p:outputLabel value="Descripcion" />
+				<p:outputLabel id="justificacionDescripcion"
+					value="#{gestionAccionJustificacionBean.justificacionSeleccionado.detalle}" />
+				
+
+				<p:outputLabel value="Fecha" />
+				<p:outputLabel id="justificacionFecha"
+				               value="#{gestionAccionJustificacionBean.justificacionSeleccionado.fecha}">
+				    <f:convertDateTime pattern="dd-MM-yyyy" />
+				</p:outputLabel>
+
+
+				<p:outputLabel value="Evento / Actividad" />
+				<p:outputLabel id="justificacionEventoList"
+					value="#{gestionAccionJustificacionBean.justificacionSeleccionado.eventoId.titulo}"/>
+				
+
+				<p:outputLabel value="Fecha de evento" />
+				<p:outputLabel id="fechaEvento"
+					value="#{gestionAccionJustificacionBean.justificacionSeleccionado.eventoId.inicio}">
+				 <f:convertDateTime pattern="dd-MM-yyyy" />
+				</p:outputLabel>
+
+				<p:outputLabel value="Docente" />
+				<p:dataList id="justificacionEventoDocente" value="#{gestionAccionJustificacionBean.justificacionSeleccionado.eventoId.tutorResponsableEventoDTOCollection}" var="tutorNombre">
+        			#{tutorNombre.tutorId.nombres} #{tutorNombre.tutorId.apellidos}
+   				 </p:dataList>
+
+
+			</p:panelGrid>
+			
+			<p:panelGrid columns="1">
+				<h2>Acciones sobre justificacion:</h2>
+				<p:dataTable id="tablaAccionJustificaciones"
+				value="#{gestionAccionJustificacionBean.accionJustificacionList}"
+				var="actionJustificacion" styleClass="employeeTable"
+				headerClass="employeeTableHeader">
+	
+				<p:column>
+					<f:facet name="header">Id</f:facet>
+					<p:outputLabel value="#{actionJustificacion.id}" />
+				</p:column>
+				<p:column>
+			 		<f:facet name="header">Detalle</f:facet>
+			        <p:commandLink value="#{actionJustificacion.detalle}"
+			                       oncomplete="PF('editDialog').show()" update="editDialogForm">
+			            <f:setPropertyActionListener target="#{gestionAccionJustificacionBean.actionJustificacionToEdit}" value="#{actionJustificacion}" />
+			        </p:commandLink>
+		        </p:column>
+				<p:column>
+					<f:facet name="header">Fecha</f:facet>
+					<h:outputLabel value="#{actionJustificacion.fecha}">
+					<f:convertDateTime pattern="dd-MM-yyyy" />
+					</h:outputLabel>
+				</p:column>
+				<p:column>
+					<f:facet name="header">Analista que atiende justificacion</f:facet>
+					<p:outputLabel value="#{actionJustificacion.analistaId.nombres} #{actionJustificacion.analistaId.apellidos}"/>
+				</p:column>
+				</p:dataTable>
+
+			</p:panelGrid>
+			
+	</div>		
+	
+	<h3 style="margin-top:0">Nueva accion sobre justificacion:</h3>
+<p:separator />
+			<p:panelGrid  columns="2">
+			
+				<p:outputLabel value="Detalle" />
+				<p:inputTextarea id="acReDetalle"
+						value="#{gestionAccionJustificacionBean.detalle}" />
+						
+				<p:outputLabel value="Fecha" />
+				<p:outputLabel id="acReFecha"
+						value="#{gestionAccionJustificacionBean.accionJustificacionSeleccionado.fecha}">
+				 <f:convertDateTime pattern="dd-MM-yyyy" />
+				</p:outputLabel>
+			
+				<h:commandButton   id="idAccionJustificacionGuardar" value="Guardar"
+				action="#{gestionAccionJustificacionBean.guardarAccionJustificacion()}"/>
+			</p:panelGrid>
+
+		</h:form>
+		
+				<p:dialog id="editDialog" widgetVar="editDialog"  resizable="false">
+				    <h:form id="editDialogForm">
+				        <h2>Editar Detalle</h2>
+				        <p:inputText value="#{gestionAccionJustificacionBean.actionJustificacionToEdit.detalle}" />
+				
+				        <p:commandButton value="Guardar"
+				                         action="#{gestionAccionJustificacionBean.editarAccionJustificacion()}"
+				                         update="editDialogForm :accionJustificaciones:tablaAccionJustificaciones "
+				                         oncomplete="PF('editDialog').hide(); document.getElementById('guardarButton').disabled = false;"
+				                         onclick="this.disabled = true;"  />
+				    </h:form>
+				</p:dialog>
+     </ui:define>
+</ui:composition>

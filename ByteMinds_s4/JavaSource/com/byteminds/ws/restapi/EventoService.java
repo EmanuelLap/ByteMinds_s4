@@ -57,14 +57,15 @@ public class EventoService {
 	        if (evento.getTitulo() == null || evento.getTipoEvento() == null|| evento.getModalidadEvento() == null|| evento.getInicio() == null) {
 	            return Response.status(Response.Status.BAD_REQUEST).entity("Título, TipoEvento,ModalidadEvento y inicioEvento son campos obligatorios").build();
 	        }
-	        
+	        EventoDTOMobile eventoMobile =null;
 	        try {
-				gestionEventoService.agregarEventoMobile(evento);
+	        	
+	        	eventoMobile=gestionEventoService.agregarEventoMobile(evento);
 			} catch (PersistenciaException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	        return Response.status(Response.Status.CREATED).entity(evento).build();
+	        return Response.status(Response.Status.CREATED).entity(eventoMobile).build();
 	    }
 	    
 	    @POST

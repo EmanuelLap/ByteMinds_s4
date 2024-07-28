@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/layout/layout.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">
+		<c:set var="title" value="Gestion de justificaciones, listados"
+			scope="request" />
+	</ui:define>
+
+	<ui:define name="content">
+		<p:messages id="messages" showDetail="true" closable="true">
+		<p:autoUpdate />
+	</p:messages>
+		<h:form id="formBuscar">
+		
+		
+			<h:commandLink value="Nuevo justificacion"
+				action="#{gestionJustificacion.inicializar}">
+				<f:setPropertyActionListener target="#{gestionJustificacion.id}" value="" />
+				<f:setPropertyActionListener target="#{gestionJustificacion.modalidad}" value="insert" />
+			</h:commandLink>
+
+			<h3>
+				<h:outputLabel value="Criterios de Seleccion" />
+			</h3>
+
+
+
+			<h:panelGrid columns="2">
+
+				<p:outputLabel value="Descripcion" />
+				<p:inputText id="descripcionCrit"
+					value="#{gestionJustificacionesBean.criterioDescripcion}" />
+
+				<p:outputLabel value="Fecha" />
+				<p:calendar id="reclamoFecha" disabled="true"
+					value="#{gestionJustificacionesBean.criterioFecha}" />
+
+				<p:outputLabel value="Evento - Actividad" />
+				<p:inputText id="eventoActividadCrit"
+					value="#{gestionJustificacionesBean.criterioEventoActividad}" />
+
+				<p:outputLabel value="Fecha Evento" />
+				<p:calendar id="reclamoFechaEvento" disabled="true"
+					value="#{gestionJustificacionesBean.criterioFechaEvento}" />
+
+
+				<p:outputLabel value="Docente" />
+				<p:inputText id="docenteCrit"
+					value="#{gestionJustificacionesBean.criterioDocente}" />
+					
+			<p:outputLabel value="Estado justificacion" />
+			<p:selectOneMenu id="tipoEstadoCrit" value="#{gestionJustificacionesBean.criterioTipoEstado}"
+				effect="fold" editable="false">
+				<f:selectItem itemLabel="Selecione Estado" itemValue=""/>
+				<f:selectItems value="#{combosBean.comboTipoEstadoJustificacionSelectItem}" />
+			</p:selectOneMenu>
+	
+			</h:panelGrid>
+
+			<p:commandButton value="Buscar"
+				action="#{gestionJustificacionesBean.seleccionarEventos()}"
+				update="tablaJustificaciones" oncomplete="PF('blockUIWidget').hide();">
+				<p:ajax onstart="PF('blockUIWidget').show()" />
+
+			</p:commandButton>
+
+			<p:blockUI block="formBuscar" widgetVar="blockUIWidget">
+				<p:outputLabel value="Procesando solicitud..."></p:outputLabel>
+			</p:blockUI>
+
+		</h:form>
+
+		<h3>
+			<h:outputLabel value="Justificaciones seleccionadas" />
+		</h3>
+		<p:dataTable id="tablaJustificaciones"
+			value="#{gestionJustificacionesBean.listadoDeJustificacionFiltrados}"
+			var="justificacion" styleClass="employeeTable"
+			headerClass="employeeTableHeader">
+
+			<p:column>
+				<f:facet name="header">Acciones</f:facet>
+			<h:form>
+				<h:commandLink value="Editar Justificacion"
+					action="#{gestionJustificacion.inicializar}">
+					<f:setPropertyActionListener target="#{gestionJustificacion.id}" value="#{justificacion.id}" />
+					<f:setPropertyActionListener target="#{gestionJustificacion.modalidad}" value="update" />
+				</h:commandLink>
+				</h:form>
+			</p:column>
+
+			
+			<p:column sortBy="#{justificacion.estadoJustificacionId}">
+				<f:facet name="header">Estado</f:facet>
+				#{justificacion.estadoJustificacionId.nombre}
+				 <p:commandButton value="Editar estado" style=""
+			                       oncomplete="PF('editDialog').show()" update="editDialogForm">
+			            <f:setPropertyActionListener target="#{gestionJustificacion.justificacionToEditEstado}" value="#{justificacion}" />
+			        </p:commandButton>
+			</p:column>
+			
+			<p:column sortBy="#{justificacion.estudianteId}">
+				<f:facet name="header">Estudiante</f:facet>
+				#{justificacion.estudianteId.nombres} #{justificacion.estudianteId.apellidos} 
+				#{justificacion.estudianteId.documento}
+			</p:column>
+
+			<p:column sortBy="#{justificacion.detalle}">
+				<f:facet name="header">Descripcion detalle</f:facet>
+				#{justificacion.detalle}
+			</p:column>
+
+			<p:column sortBy="#{justificacion.fecha}">
+				<f:facet name="header">Fecha de justificacion</f:facet>
+				#{justificacion.fecha}
+			</p:column>
+
+			<p:column sortBy="#{justificacion.eventoId.titulo}">
+				<f:facet name="header">Titulo Evento</f:facet>
+				#{justificacion.eventoId.titulo}
+			</p:column>
+
+			<p:column sortBy="#{justificacion.eventoId.inicio}">
+				<f:facet name="header">Fecha de evento</f:facet>
+				#{justificacion.eventoId.inicio}
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">Ver Docentes</f:facet>
+				<p:commandButton value="Ver mas" type="button"
+					onclick="PF('${justificacion}').show();" />
+
+				<p:dialog header="Informacion de docentes de evento reclamado"
+					widgetVar="${justificacion}" showEffect="explode" hideEffect="bounce"
+					height="200">
+
+					<p:selectOneListbox style="width:400px;">
+						<f:selectItems
+							value="#{justificacion.eventoId.tutorResponsableEventoDTOCollection}" />
+					</p:selectOneListbox>
+				</p:dialog>
+			</p:column>
+
+
+			<p:column>
+			<f:facet name="header">Registro Accion</f:facet>
+
+			<p:commandButton value="Accion"
+				action="#{gestionAccionJustificacionBean.inicializarAccionJustificacion(justificacion)}" />
+
+		</p:column>
+		</p:dataTable>
+
+
+	<p:dialog id="editDialog" widgetVar="editDialog"  resizable="false">
+				    <h:form id="editDialogForm">
+				        <h2>Editar estado justificacion</h2>
+				        
+						<p:selectOneMenu id="tipoEstadoCrit" value="#{gestionJustificacion.idTipoEstado}"
+							effect="fold" editable="false">
+							<f:selectItem itemLabel="Selecione Estado" itemValue=""/>
+							<f:selectItems value="#{combosBean.comboTipoEstadoJustificacionSelectItem}" />
+						</p:selectOneMenu>
+				        <p:commandButton value="Guardar" id="guardarButton"
+				                         action="#{gestionJustificacion.guardarEstadoJustificacion()}"
+				                         update="editDialogForm tablaJustificaciones"
+				                         oncomplete=" PF('editDialog').hide();"/>
+				    </h:form>
+				</p:dialog>
+
+	</ui:define>
+
+</ui:composition>

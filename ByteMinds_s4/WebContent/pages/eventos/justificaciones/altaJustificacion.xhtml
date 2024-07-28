@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="/layout/layout.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">
+		<c:set var="title" value="Datos del justificacion" scope="request" />
+	</ui:define>
+
+	<ui:define name="content">
+<!-- 		<f:metadata> -->
+<!-- 			<f:viewParam name="modalidad" value="#{gestionJustificacion.modalidad}" /> -->
+<!-- 			<f:viewParam name="idEstudianteDTO" value="#{gestionJustificacion.idEstudianteDTO}" /> -->
+			
+<!-- 			<f:event type="preRenderView" -->
+<!-- 				listener="#{gestionJustificacion.inicializar()}" /> -->
+<!-- 		</f:metadata> -->
+
+		<h:form id="idDatosJustificacion">
+			<p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+			<h:commandButton id="idVolverJustificacion" immediate="true" value="Volver"
+				action="/index">
+				<f:ajax />
+			</h:commandButton>
+
+			<!-- 			<h:commandButton id="idModificarJustificacion" value="Modificar" -->
+			<!-- 				rendered="#{!gestionJustificacion.modoEdicion}"> -->
+			<!-- 				<f:param name="id" value="${gestionJustificacion.id}" /> -->
+			<!-- 				<f:param name="modalidad" value="update" /> -->
+			<!-- 			</h:commandButton> -->
+
+						<h:commandButton value="Modificar"
+							rendered="#{!gestionJustificacion.modoEdicion}" update=":form"
+							action="#{gestionJustificacion.salvarCambios}">
+							<f:param name="id" value="${gestionJustificacion.id}" />
+							<f:param name="modalidad" value="update" />
+						</h:commandButton>
+						<h:commandButton value="Generar justificacion"
+							rendered="#{gestionJustificacion.modoEdicion}" update=":form"
+							action="#{gestionJustificacion.salvarCambios}">
+							<f:param name="id" value="${gestionJustificacion.id}" />
+							<f:param name="modalidad" value="insert" />
+						</h:commandButton>
+						
+
+			<p:panelGrid columns="4">
+
+				<p:outputLabel value="Usuario reclamante" />
+
+				<h:panelGroup id="justificacionUsuarioReclamantePanelTrue"
+					rendered="#{gestionJustificacion.estudianteQueReclamaDTO ne null}">
+					<p:outputLabel id="justificacionUsuarioReclamante"
+						value="#{gestionJustificacion.estudianteQueReclamaDTO.nombres} #{gestionJustificacion.estudianteQueReclamaDTO.apellidos}"
+						style="color:green" />
+				</h:panelGroup>
+
+				<h:panelGroup id="justificacionUsuarioReclamantePanelFalse"
+					rendered="#{gestionJustificacion.estudianteQueReclamaDTO ne null and gestionJustificacion.estudianteQueReclamaDTO.id eq null}">
+					<p:outputLabel id="justificacionUsuarioReclamante2" value="Sin cargar" style="color:red" />
+				</h:panelGroup>
+
+				<p:message for="justificacionUsuarioReclamante" style="color:red" />
+	</p:panelGrid>
+<p:panelGrid columns="3">
+
+
+				<p:outputLabel value="Descripcion" />
+				<p:inputTextarea id="justificacionDescripcion"
+					disabled="#{!gestionJustificacion.modoEdicion}"
+					value="#{gestionJustificacion.justificacionSeleccionado.detalle}" />
+				<p:message for="justificacionDescripcion" style="color:red" />
+
+				<p:outputLabel value="Fecha" />
+				<p:calendar id="justificacionFecha" disabled="true"
+					value="#{gestionJustificacion.justificacionSeleccionado.fecha}" />
+				<p:message for="justificacionFecha" style="color:red" />
+>
+
+				<p:outputLabel value="Evento / Actividad" />
+				<p:selectOneMenu id="justificacionEventoList"
+					value="#{gestionJustificacion.idEventoSeleccionado}"
+					valueChangeListener="#{gestionJustificacion.actualizarEventoSeleccionado}"
+					onchange="submit()">
+					
+					<f:selectItems value="#{gestionJustificacion.listaDeEventosDTO}" />	
+				</p:selectOneMenu>
+				<p:message for="justificacionEventoList" style="color:red" />
+
+				<p:outputLabel value="Fecha de evento" />
+				<!-- 													rendered="#{!gestionJustificacion.justificacionSeleccionado.eventoId eq null}"	 -->
+				<p:calendar id="fechaEvento" disabled="true"
+					value="#{gestionJustificacion.justificacionSeleccionado.eventoId.inicio}" />
+				<p:message for="fechaEvento" style="color:red" />
+
+				<p:outputLabel value="Docente" />
+				<p:dataList id="justificacionEventoDocente" value="#{gestionJustificacion.justificacionSeleccionado.eventoId.tutorResponsableEventoDTOCollection}" var="tutorNombre">
+        			#{tutorNombre.tutorId.nombres} #{tutorNombre.tutorId.apellidos}
+   				 </p:dataList>
+
+				<p:message for="justificacionEventoDocente" style="color:red" />
+
+
+
+<h:panelGroup id="justificacionAsignarUsuarioPanel" rendered="#{loginBean.esAnalista()}">
+				<p:outputLabel value="Asignar usuario" />
+			<p:commandButton value="Asignar Usuario" style=""
+			                       oncomplete="PF('buscarUsuarioDialog').show()" update="buscarUsuarioDialog">
+			           
+			        </p:commandButton>
+</h:panelGroup>
+			</p:panelGrid>
+		</h:form>
+		
+		
+			<p:dialog id="buscarUsuarioDialog" widgetVar="buscarUsuarioDialog"  resizable="true" style="width: 1000px;">
+<!-- 				  incluir fragmento buscarUsuarioPopUp.xhtml -->
+				<ui:include src="/pages/eventos/justificaciones/buscarUsuarioPopUp.xhtml" />
+				</p:dialog>
+	</ui:define>
+</ui:composition>
+

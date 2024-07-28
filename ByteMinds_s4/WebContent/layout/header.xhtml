@@ -84,8 +84,25 @@
     			
     
             </p:submenu>
-            
-<!--             Sub menu para Reclamos -->
+			<!--Sub menu para Justificaciones Estudiantes -->
+	
+             <p:submenu label="Justificaciones" icon="ui-icon-document" >
+            <p:menuitem value="Alta de Justificacion"  action="#{gestionJustificacion.inicializar}" partialSubmit="true">
+				<f:setPropertyActionListener target="#{gestionJustificacion.id}" value="#{null}" />
+				<f:setPropertyActionListener target="#{gestionJustificacion.modalidad}" value="insert" />
+            </p:menuitem>
+            	
+            <p:menuitem value="Listado de justificaciones" outcome="/pages/eventos/justificaciones/listadoJustificaciones.xhtml" rendered="#{loginBean.esAnalista()}"/>
+            <p:menuitem value="Listado de justificaciones Estudiante"   outcome="/pages/eventos/justificaciones/listadoJustificacionesEstudiante.xhtml" rendered="#{loginBean.esEstudiante()}"/>
+
+            <p:menuitem value="Registro de acciones"   outcome="/pages/eventos/justificaciones/listadoJustificaciones.xhtml" rendered="#{loginBean.esAnalista()}"/>
+
+            <p:menuitem value="Gestion de estados justificaciones" action="#{gestionEstadoJustificacionBean.inicializar}" partialSubmit="true"  rendered="#{loginBean.esAnalista()}"/>
+        </p:submenu>
+
+
+
+			<!--Sub menu para Reclamos -->
              <p:submenu label="Reclamos" icon="ui-icon-document" >
             <p:menuitem value="Alta de reclamos"  action="#{gestionReclamo.inicializar}" partialSubmit="true">
 <!--             	<f:param name="modalidad" value="insert" /> -->

@@ -1,13 +1,27 @@
 package com.byteminds.negocio;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+
 import javax.validation.constraints.Email;
 import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.Date;
 
-public abstract class UsuarioDTO  {
+
+@JsonTypeInfo(
+  use = JsonTypeInfo.Id.NAME, 
+  include = JsonTypeInfo.As.PROPERTY, 
+  property = "type"
+)
+@JsonSubTypes({ 
+	@JsonSubTypes.Type(value = TutorDTO.class, name = "TUTOR"),
+	@JsonSubTypes.Type(value = AnalistaDTO.class, name = "ANALISTA"),
+	@JsonSubTypes.Type(value = EstudianteDTO.class, name = "ESTUDIANTE")
+})
+public class UsuarioDTO  {
 
 	@NotNull
 	private Integer id;

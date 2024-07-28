@@ -18,11 +18,14 @@ import javax.inject.Named;
 import org.primefaces.PrimeFaces;
 
 import com.byteminds.exception.PersistenciaException;
-import com.byteminds.negocio.GestionReclamoService;
-import com.byteminds.negocio.GestionTipoEstadoReclamoService;
+import com.byteminds.negocio.GestionJustificacionService;
+import com.byteminds.negocio.GestionTipoEstadoJustificacionService;
+import com.byteminds.negocio.GestionTipoEstadoJustificacionService;
 import com.byteminds.negocio.GestionUsuarioService;
-import com.byteminds.negocio.ReclamoDTO;
-import com.byteminds.negocio.TipoEstadoReclamoDTO;
+import com.byteminds.negocio.JustificacionDTO;
+import com.byteminds.negocio.JustificacionDTO;
+import com.byteminds.negocio.TipoEstadoJustificacionDTO;
+import com.byteminds.negocio.TipoEstadoJustificacionDTO;
 import com.byteminds.negocio.TutorResponsableEventoDTO;
 import com.byteminds.negocio.UsuarioDTO;
 import com.byteminds.negocio.AnalistaDTO;
@@ -34,22 +37,22 @@ import com.byteminds.utils.ExceptionsTools;
 
 import tecnofenix.entidades.Evento;
 
-@Named(value = "gestionReclamo") // JEE8
+@Named(value = "gestionJustificacion") // JEE8
 @SessionScoped // JEE8
-public class GestionReclamoBean implements Serializable {
+public class GestionJustificacionBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@EJB
-	GestionReclamoService gestionReclamoService;
+	GestionJustificacionService gestionJustificacionService;
 	@EJB
 	GestionUsuarioService gestionUsuarioService;
 	@EJB
-	GestionTipoEstadoReclamoService gestionTipoEstadoReclamoService;
+	GestionTipoEstadoJustificacionService gestionTipoEstadoJustificacionService;
 	@Inject
     LoginBean loginBean = new LoginBean();
 	
-	private EJBUsuarioRemoto ejbReclamoRemoto;
+	private EJBUsuarioRemoto ejbJustificacionRemoto;
 
 	private GestionEventoService gestEventService;
 	private Integer id;
@@ -59,9 +62,9 @@ public class GestionReclamoBean implements Serializable {
 	private Integer idEstudianteDTO;
 	
 
-	private ReclamoDTO reclamoSeleccionado;
+	private JustificacionDTO justificacionSeleccionado;
 	
-	private ReclamoDTO reclamoToEditEstado;
+	private JustificacionDTO justificacionToEditEstado;
 	private Integer idTipoEstado;
 	
 	private List<EventoDTO> listEventosDTO = new ArrayList<EventoDTO>();
@@ -75,35 +78,35 @@ public class GestionReclamoBean implements Serializable {
 	private boolean modoEdicion = false;
 
 
-	public GestionReclamoBean() {
-		System.out.println("INICIALIZANDO GestionReclamoBean");
-		ejbReclamoRemoto = new EJBUsuarioRemoto();
+	public GestionJustificacionBean() {
+		System.out.println("INICIALIZANDO GestionJustificacionBean");
+		ejbJustificacionRemoto = new EJBUsuarioRemoto();
 		gestEventService = new GestionEventoService();
 		estudianteQueReclamaDTO = new EstudianteDTO();
 		gestionUsuarioService = new GestionUsuarioService();
 		cargarComboEventosDisponibles();
 		idEventoSeleccionado=0;
 		idTipoEstado=0;
-		reclamoSeleccionado = new ReclamoDTO();
-		reclamoSeleccionado.setEventoId(new EventoDTO());
-		reclamoSeleccionado.setFecha(new Date(System.currentTimeMillis()));
-		reclamoToEditEstado = new ReclamoDTO();
+		justificacionSeleccionado = new JustificacionDTO();
+		justificacionSeleccionado.setEventoId(new EventoDTO());
+		justificacionSeleccionado.setFecha(new Date(System.currentTimeMillis()));
+		justificacionToEditEstado = new JustificacionDTO();
 	}
 
 	public String inicializar() {
-		System.out.println("INICIALIZANDO GestionReclamoBean inicializar");
-		ejbReclamoRemoto = new EJBUsuarioRemoto();
+		System.out.println("INICIALIZANDO GestionJustificacionBean inicializar");
+		ejbJustificacionRemoto = new EJBUsuarioRemoto();
 		gestEventService = new GestionEventoService();
 		estudianteQueReclamaDTO = new EstudianteDTO();
 		gestionUsuarioService = new GestionUsuarioService();
 		cargarComboEventosDisponibles();
 		idEventoSeleccionado=0;
-		reclamoSeleccionado = new ReclamoDTO();
-		reclamoSeleccionado.setEventoId(new EventoDTO());
-		reclamoSeleccionado.setFecha(new Date(System.currentTimeMillis()));
+		justificacionSeleccionado = new JustificacionDTO();
+		justificacionSeleccionado.setEventoId(new EventoDTO());
+		justificacionSeleccionado.setFecha(new Date(System.currentTimeMillis()));
 //		if(idEstudianteDTO!= null) {
 			
-//			estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.fromUsuario(ejbReclamoRemoto.buscarUsuarioPor("ESTUDIANTE", "123", "", "", "", "", "", "", "", "", null, null, null, "", "", null, null).get(0));
+//			estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.fromUsuario(ejbJustificacionRemoto.buscarUsuarioPor("ESTUDIANTE", "123", "", "", "", "", "", "", "", "", null, null, null, "", "", null, null).get(0));
 			if(loginBean.getUserioLogeado().getUTipo().equals("ESTUDIANTE")) {
 				estudianteQueReclamaDTO=(EstudianteDTO)loginBean.getUserioLogeado();
 //			}else {
@@ -114,13 +117,14 @@ public class GestionReclamoBean implements Serializable {
 				
 			}
 		if (id != null ) {
-						reclamoSeleccionado = gestionReclamoService.fromReclamo(ejbReclamoRemoto.buscarReclamoPorId(id));
-						this.idEventoSeleccionado = reclamoSeleccionado.getEventoId().getId();
+						justificacionSeleccionado = gestionJustificacionService.fromJustificacion(ejbJustificacionRemoto.buscarJustificacionPorId(id));
+						this.idEventoSeleccionado = justificacionSeleccionado.getEventoId().getId();
+						estudianteQueReclamaDTO = justificacionSeleccionado.getEstudianteId();
 						
 		} else {
-//			reclamoSeleccionado = new ReclamoDTO();
-//			reclamoSeleccionado.setEventoId(new EventoDTO());
-//			reclamoSeleccionado.setFecha(new Date(System.currentTimeMillis()));
+//			justificacionSeleccionado = new JustificacionDTO();
+//			justificacionSeleccionado.setEventoId(new EventoDTO());
+//			justificacionSeleccionado.setFecha(new Date(System.currentTimeMillis()));
 		}
 		if (modalidad.contentEquals("view")) {
 			modoEdicion = false;
@@ -137,22 +141,22 @@ public class GestionReclamoBean implements Serializable {
 
 		}
 		 
-		return "/pages/reclamos/altaReclamo.xhtml";
+		return "/pages/eventos/justificaciones/altaJustificacion.xhtml";
 	}
 
 	public String salvarCambios() {
 		if(validarDatos()) {
-		if (reclamoSeleccionado.getId() == null) {
+		if (justificacionSeleccionado.getId() == null) {
 
 
-			ReclamoDTO nuevoReclamoDTO;
+			JustificacionDTO nuevoJustificacionDTO;
 			try {
-				reclamoSeleccionado.setEstudianteId(estudianteQueReclamaDTO);
-				nuevoReclamoDTO = gestionReclamoService.agregarReclamo(reclamoSeleccionado);
-				this.id = nuevoReclamoDTO.getId();
+				justificacionSeleccionado.setEstudianteId(estudianteQueReclamaDTO);
+				nuevoJustificacionDTO = gestionJustificacionService.agregarJustificacion(justificacionSeleccionado);
+				this.id = nuevoJustificacionDTO.getId();
 
 				// mensaje de actualizacion correcta
-				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha agregado un nuevo reclamo",	"");
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha agregado un nuevo justificacion",	"");
 				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 
 				this.modalidad = "view";
@@ -174,10 +178,10 @@ public class GestionReclamoBean implements Serializable {
 		} else if (modalidad.equals("update")) {
 
 			try {
-				gestionReclamoService.actualizarReclamo(reclamoSeleccionado);
+				gestionJustificacionService.actualizarJustificacion(justificacionSeleccionado);
 
 				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el reclamo.", ""));
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el justificacion.", ""));
 
 			} catch (PersistenciaException e) {
 
@@ -200,26 +204,26 @@ public class GestionReclamoBean implements Serializable {
 	
 	
 	public Boolean validarDatos() {
-		if (this.reclamoSeleccionado.getTitulo() == "") {
-			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Datos no validos", "Debe ingresar el titulo");
-			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-			return false;
-		}
-		if (this.reclamoSeleccionado.getDetalle() == ""||this.reclamoSeleccionado.getDetalle().length() > 45) {
+//		if (this.justificacionSeleccionado.getTitulo() == "") {
+//			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Datos no validos", "Debe ingresar el titulo");
+//			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+//			return false;
+//		}
+		if (this.justificacionSeleccionado.getDetalle() == ""||this.justificacionSeleccionado.getDetalle().length() > 45) {
 			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Datos no validos", "Debe ingresar el detalle ");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 			return false;
 		}
-		if (this.reclamoSeleccionado.getCreditos() == null ) {
-			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Datos no validos", "Debe ingresar los creditos");
-			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-			return false;
-		}
-		if (this.reclamoSeleccionado.getSemestre() == null ) {
-			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Datos no validos", "Debe ingresar el semestre");
-			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-			return false;
-		}
+//		if (this.justificacionSeleccionado.getCreditos() == null ) {
+//			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Datos no validos", "Debe ingresar los creditos");
+//			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+//			return false;
+//		}
+//		if (this.justificacionSeleccionado.getSemestre() == null ) {
+//			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Datos no validos", "Debe ingresar el semestre");
+//			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+//			return false;
+//		}
 		if (this.estudianteQueReclamaDTO != null && this.estudianteQueReclamaDTO.getId() == null) {
 			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Datos no validos", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
@@ -230,25 +234,25 @@ public class GestionReclamoBean implements Serializable {
 		return true;
 	}
 	
-	public String guardarEstadoReclamo() {
+	public String guardarEstadoJustificacion() {
 		try {
-			System.out.println("INGRESANDO A guardarEstadoReclamo");
+			System.out.println("INGRESANDO A guardarEstadoJustificacion");
 			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-");
 			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-");
 			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-");
 			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-");
 			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-");
-			if(reclamoToEditEstado != null || idTipoEstado > 0) {
-			TipoEstadoReclamoDTO tERDTO = null;
-			tERDTO=gestionTipoEstadoReclamoService.obtenerTipoEstadoReclamoDTO(idTipoEstado);
-			System.out.println("tERDTO"+tERDTO.toString());
-			reclamoToEditEstado.setEstadoReclamoId(tERDTO);
-			reclamoToEditEstado.setFechaEstadoReclamo(new Date(System.currentTimeMillis()));
-			gestionReclamoService.actualizarReclamo(reclamoToEditEstado);
+			if(justificacionToEditEstado != null || idTipoEstado > 0) {
+			TipoEstadoJustificacionDTO tEJDTO = null;
+			tEJDTO=gestionTipoEstadoJustificacionService.obtenerTipoEstadoJustificacionDTO(idTipoEstado);
+			System.out.println("tERDTO"+tEJDTO.toString());
+			justificacionToEditEstado.setEstadoJustificacionId(tEJDTO);
+			justificacionToEditEstado.setFechaEstadoJustificacion(new Date(System.currentTimeMillis()));
+			gestionJustificacionService.actualizarJustificacion(justificacionToEditEstado);
 			
 			FacesContext.getCurrentInstance().addMessage(null,
-			new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el estado del reclamo.", ""));
-			reclamoToEditEstado= null;
+			new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el estado del justificacion.", ""));
+			justificacionToEditEstado= null;
 			idTipoEstado=0;
 			}
 		} catch (PersistenciaException e) {
@@ -260,10 +264,10 @@ public class GestionReclamoBean implements Serializable {
 	
 	private void cargarComboEventosDisponibles(){
 		List<Evento> listEventos = new ArrayList<Evento>();
-		listEventos = ejbReclamoRemoto.listarEventos();
+		listEventos = ejbJustificacionRemoto.listarEventos();
 		if(listaDeEventosDTO != null && listaDeEventosDTO.size() ==listEventos.size()) {
 			//el tamaño es el mismo, no hay que hacer nada
-			PrimeFaces.current().ajax().update("idDatosReclamos");
+			PrimeFaces.current().ajax().update("idDatosJustificacions");
 			System.out.println("Actualizando WEB-cargarComboEventosDisponibles");
 		}else {
 			listaDeEventosDTO = new ArrayList<>();
@@ -284,7 +288,7 @@ public class GestionReclamoBean implements Serializable {
 		idEventoSeleccionado=(Integer)event.getNewValue();
 		eventoSeleccionado= gestEventService.obtenerEvento((Integer)event.getNewValue());
 		System.out.println(eventoSeleccionado.toString());
-		reclamoSeleccionado.setEventoId(eventoSeleccionado);
+		justificacionSeleccionado.setEventoId(eventoSeleccionado);
 		
 		if(eventoSeleccionado.getTutorResponsableEventoDTOCollection() !=null) {
 			for (TutorResponsableEventoDTO tre :eventoSeleccionado.getTutorResponsableEventoDTOCollection()) {
@@ -300,7 +304,7 @@ public class GestionReclamoBean implements Serializable {
 	}
 
 	
-	public void seleccionarUsuarioReclamo(EstudianteDTO estudianteDTO) {
+	public void seleccionarUsuarioJustificacion(EstudianteDTO estudianteDTO) {
 		
 		estudianteQueReclamaDTO =estudianteDTO;
 //		idEstudianteDTO = estudianteDTO.getId();
@@ -338,12 +342,12 @@ public class GestionReclamoBean implements Serializable {
 	public void setModoEdicion(boolean modoEdicion) {
 		this.modoEdicion = modoEdicion;
 	}
-	public ReclamoDTO getReclamoSeleccionado() {
-		return reclamoSeleccionado;
+	public JustificacionDTO getJustificacionSeleccionado() {
+		return justificacionSeleccionado;
 	}
 
-	public void setReclamoSeleccionado(ReclamoDTO reclamoSeleccionado) {
-		this.reclamoSeleccionado = reclamoSeleccionado;
+	public void setJustificacionSeleccionado(JustificacionDTO justificacionSeleccionado) {
+		this.justificacionSeleccionado = justificacionSeleccionado;
 	}
 
 
@@ -393,12 +397,12 @@ public class GestionReclamoBean implements Serializable {
 		this.usuarioLogeado = usuarioLogeado;
 	}
 
-	public ReclamoDTO getReclamoToEditEstado() {
-		return reclamoToEditEstado;
+	public JustificacionDTO getJustificacionToEditEstado() {
+		return justificacionToEditEstado;
 	}
 
-	public void setReclamoToEditEstado(ReclamoDTO reclamoToEditEstado) {
-		this.reclamoToEditEstado = reclamoToEditEstado;
+	public void setJustificacionToEditEstado(JustificacionDTO justificacionToEditEstado) {
+		this.justificacionToEditEstado = justificacionToEditEstado;
 	}
 
 	public Integer getIdTipoEstado() {

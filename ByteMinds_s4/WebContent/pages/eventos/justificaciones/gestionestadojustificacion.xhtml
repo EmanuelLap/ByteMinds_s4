@@ -1,0 +1,79 @@
+<ui:composition template="/layout/layout.xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui">
+
+	    <ui:define name="title">
+        <c:set var="title" value="Gestion de estados de justificaciones" scope="request" />
+    </ui:define>
+
+    <ui:define name="content">
+        <style>
+            .grid-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                max-height: 75vh;
+                overflow-y: auto;
+            }
+
+            .grid-item {
+                /* Estilos adicionales para las tablas si son necesarios */
+            }
+        </style>
+              <p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+	<div class="grid-container">
+	
+        <h:form id="estadoJustificacionForm" >
+            <div class="grid-item">
+                <p:dataTable var="estadoReclamo" value="#{gestionEstadoJustificacionBean.listEstadosReclamo}" style="height:400px;overflow-y: auto;"
+                    widgetVar="allTutoTable"  > 
+                    <!-- Columnas de la primera tabla -->
+                    <p:column headerText="Id" filterBy="#{estadoReclamo.id}" filterMatchMode="contains">
+                        <h:outputText value="#{estadoReclamo.id}" />
+                    </p:column>
+                    <p:column headerText="Nombre" filterBy="#{estadoReclamo.nombre}" filterMatchMode="contains">
+                        <h:outputText value="#{estadoReclamo.nombre}" />
+                    </p:column>
+
+                    <p:column headerText="Activo" filterBy="#{estadoReclamo.activo}" filterMatchMode="contains">
+                        <p:selectBooleanCheckbox id="activoEstadoReclamo"
+							value="#{estadoReclamo.activo}" />
+                    </p:column>
+                    <p:column headerText="Accion">
+                        <p:commandButton value="Editar"  partialSubmit="true" update=":formEstadoJustificacionSolo:panelGrup2">
+                        <f:setPropertyActionListener target="#{gestionEstadoJustificacionBean.estadosJustificacionSeleccionado}" value="#{estadoReclamo}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </div>
+			
+        </h:form>
+        <div class="grid-item">
+        <h:form id="formEstadoJustificacionSolo">
+	            	<h:panelGroup id="panelGrup2">
+	                <h2>Estado justificacion seleccionado/nuevo</h2>
+	                <p:outputLabel id="estadoReclamoNombreLbl" value="Nombre"/>
+	                <p:inputText id="estadoReclamoNombreInput" value="#{gestionEstadoJustificacionBean.estadosJustificacionSeleccionado.nombre}"/>
+	                <p:message for="estadoReclamoNombreInput" style="color:red" />
+	                <p:separator/>
+	                
+	                <p:outputLabel id="estadoReclamoIDLbl" value="Id"/>
+	                <p:outputLabel id="estadoReclamoIDInput" value="#{gestionEstadoJustificacionBean.estadosJustificacionSeleccionado.id}"/>
+	                <p:separator/>
+	                
+	                <p:outputLabel id="estadoReclamoActivoLbl" value="Activo"/>
+	                <p:selectBooleanCheckbox  id="estadoReclamoActivoSelectBolean" value="#{gestionEstadoJustificacionBean.estadosJustificacionSeleccionado.activo}"/>
+	                <p:message for="estadoReclamoActivoSelectBolean" style="color:red" />
+	                <p:separator/>
+	                 <p:commandButton value="Guardar" action="#{gestionEstadoJustificacionBean.guardar}" update="formEstadoJustificacionSolo estadoJustificacionForm" />
+	                 </h:panelGroup>
+	                 </h:form>
+	            </div>
+	  </div>
+     </ui:define>
+</ui:composition>

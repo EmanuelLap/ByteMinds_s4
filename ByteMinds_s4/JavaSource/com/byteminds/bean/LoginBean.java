@@ -46,9 +46,7 @@ public class LoginBean implements Serializable {
 	private EJBUsuarioRemoto ejbRemoto;
 	private GestionUsuarioService gUS;
 	private AuthService auth;
-//	private static final String secretKeyString = "EstaEsUnaClaveSecretaDeAlMenos32Caracteres";
-//	private SecretKey key = Keys.hmacShaKeyFor(secretKeyString.getBytes());
-//	SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
 	@PostConstruct
 	public void init() {
 		auth = new AuthService();
@@ -70,13 +68,10 @@ public class LoginBean implements Serializable {
 				return null;	
 			}
 			
-			this.token =auth.createJWT(String.valueOf(user.getId()), "ByteMindsApp", user.getApellidos()+user.getNombres(), 3600000);
-//			this.token = Jwts.builder().setSubject(user.getApellidos()).signWith(key).compact();
+			this.token =auth.createJWT(String.valueOf(user.getId()), "ByteMindsApp", user.getApellidos()+user.getNombres(), 3600000);//El token dura 1 hora
 			// Save the JWT token to session or somewhere else
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("jwt", token);
-			System.out.println("TOKEN: " + token);
-//			System.out.println("SecretKey key: " + key.toString());
-			
+						
 			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido " +" ["+ userioLogeado.getUTipo()+"] " + userioLogeado.getNombres()+" "+userioLogeado.getApellidos() , username);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);

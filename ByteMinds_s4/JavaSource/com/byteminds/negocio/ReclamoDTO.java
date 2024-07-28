@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import tecnofenix.entidades.AccionReclamo;
@@ -19,6 +21,7 @@ public class ReclamoDTO {
 	    private String titulo;
 		
 		@NotNull
+		@Length(min = 1, max = 45)
 	    private String detalle;
 	    
 	    private Date fecha;
@@ -30,9 +33,10 @@ public class ReclamoDTO {
 	    
 	    private EstudianteDTO estudianteId;
 	    
-	   
+	    @NotNull
 	    private Integer creditos;
 	    
+	    @NotNull
 	    private Integer semestre;
 	    
 	    private Boolean activo;

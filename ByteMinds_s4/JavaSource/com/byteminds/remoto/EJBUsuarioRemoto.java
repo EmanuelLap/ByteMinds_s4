@@ -1071,7 +1071,60 @@ public class EJBUsuarioRemoto {
 		 * METODOS RECLAMOS REMOTOS FIN
 		 */
 		
+		/*
+		 * METODOS JUSTIFICACION REMOTOS
+		 */
 		
+		public Justificacion buscarJustificacion(Justificacion id) throws UsuarioNoEncontradoException {
+			
+			return (Justificacion) justificacionBeanRemote.obtenerJustificacionPorAtributo(id);
+		}
+		public List<Justificacion> buscarJustificacionEstudiante(Integer id) throws UsuarioNoEncontradoException {
+			List<Justificacion> listaJustificacionEstudiante = new ArrayList<Justificacion>();
+			listaJustificacionEstudiante = justificacionBeanRemote.buscarJustificacionsEstudiante(id);
+			return listaJustificacionEstudiante;
+		}
+		
+		public Justificacion buscarJustificacionPorId(Integer id) throws UsuarioNoEncontradoException {
+			
+			return (Justificacion) justificacionBeanRemote.buscarJustificacionPorId(id);
+		}
+		
+		public Justificacion crearJustificacion(Justificacion justificacion) {
+			Justificacion justificacionNew = new Justificacion();
+			try {
+				
+				justificacionNew=justificacionBeanRemote.crearJustificacion(justificacion);
+			} catch (ServiciosException e) {
+				System.out.println("Error al crear el justificacion: " + e.getMessage());
+				e.printStackTrace();
+				justificacionNew = null;
+			}
+			return justificacionNew;
+		}
+		
+		public Justificacion modificarJustificacion(Justificacion justificacion) {
+			Justificacion justificacionNew = new Justificacion();
+			try {
+				
+				justificacionNew=justificacionBeanRemote.modificarJustificacion(justificacion);
+			} catch (ServiciosException e) {
+				System.out.println("Error al modificar el Justificacion: " + e.getMessage());
+				e.printStackTrace();
+				justificacionNew = null;
+			}
+			return justificacionNew;
+		}
+		
+		public List<Justificacion> listarJustificacion() {
+			List<Justificacion> listJustificacion = new ArrayList<Justificacion>();
+			listJustificacion=justificacionBeanRemote.listarJustificacion();
+			return listJustificacion;
+		}
+		
+		/*
+		 * METODOS JUSTIFICACION REMOTOS FIN
+		 */
 		/**
 		 * METoDOS ACCION RECLAMO INICIO
 		 */
@@ -1117,4 +1170,104 @@ public class EJBUsuarioRemoto {
 		 * METoDOS ACCION RECLAMO FIN
 		 */
 		
+		
+		/*
+		 * METODOS TipoEstadoJustificacion REMOTOS 
+		 */
+		public TipoEstadoJustificacion crearTipoEstadoJustificacion(TipoEstadoJustificacion tEE) {
+			TipoEstadoJustificacion tEEDevueto = new TipoEstadoJustificacion();
+			try {
+				tEEDevueto = justificacionBeanRemote.crearTipoEstadoJustificacion(tEE);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return tEEDevueto;
+
+		}
+		public TipoEstadoJustificacion editarTipoEstadoJustificacion(TipoEstadoJustificacion tEE) {
+			TipoEstadoJustificacion tEEDevueto = new TipoEstadoJustificacion();
+			try {
+				tEEDevueto = justificacionBeanRemote.editarTipoEstadoJustificacion(tEE);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return tEEDevueto;
+
+		}
+		
+	
+
+		public List<TipoEstadoJustificacion> listarTipoEstadoJustificacion() {
+			List<TipoEstadoJustificacion> lista = new ArrayList<TipoEstadoJustificacion>();
+			try {
+				lista = justificacionBeanRemote.listarTipoEstadoJustificacion();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return lista;
+
+		}
+		public List<TipoEstadoJustificacion> buscarTipoEstadoJustificacionPor(String id, String nombre) {
+			List<TipoEstadoJustificacion> lista = new ArrayList<TipoEstadoJustificacion>();
+			try {
+				lista = justificacionBeanRemote.buscarTipoEstadoJustificacionPor(id,nombre);
+			} catch (Exception e) {
+				// TODO Auto-generated catch blocks
+				e.printStackTrace();
+			}
+			return lista;
+			
+		}
+		
+		/*
+		 * METODOS TipoEstadoJustificacion REMOTOS  FIN
+		 */
+		
+		/**
+		 * METoDOS ACCION JUSTIFICACION INICIO
+		 */
+		public AccionJustificacion crearAccionJustificacion(AccionJustificacion acJustificacion) {
+			AccionJustificacion acJustificacionNew = new AccionJustificacion();
+			try {
+				
+				acJustificacionNew=accionJustificacionBeanRemote.crearAccionJustificacion(acJustificacion);
+			} catch (ServiciosException e) {
+				System.out.println("Error al crear la AccionJustificacion: " + e.getMessage());
+				e.printStackTrace();
+				acJustificacionNew = null;
+			}
+			return acJustificacionNew;
+		}
+		
+		public AccionJustificacion modificarAccionJustificacion(AccionJustificacion acJustificacion) {
+			AccionJustificacion acJustificacionNew = new AccionJustificacion();
+			try {
+				
+				acJustificacionNew=accionJustificacionBeanRemote.modificarAccionJustificacion(acJustificacion);
+			} catch (ServiciosException e) {
+				System.out.println("Error al modificar la AccionJustificacion: " + e.getMessage());
+				e.printStackTrace();
+				acJustificacionNew = null;
+			}
+			return acJustificacionNew;
+		}
+		
+		public List<AccionJustificacion> listAllAccionJustificacionByJustificacionID(Integer acJustificacionID) {
+			List<AccionJustificacion> acJustificacionIDNew = new ArrayList<AccionJustificacion>();
+			try {
+				
+				acJustificacionIDNew=accionJustificacionBeanRemote.listAllAccionJustificacionByJustificacionID(acJustificacionID);
+			} catch (ServiciosException e) {
+				System.out.println("Error al modificar la AccionJustificacion: " + e.getMessage());
+				e.printStackTrace();
+				acJustificacionIDNew = null;
+			}
+			return acJustificacionIDNew;
+		}
+		/**
+		 * METoDOS ACCION RECLAMO FIN
+		 */
 }

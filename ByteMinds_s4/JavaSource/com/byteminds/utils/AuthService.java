@@ -12,18 +12,14 @@ import java.util.Date;
 
 public class AuthService {
   
-//    private final String keyString = "EstaEsUnaClaveSecretaDeAlMenos32Caracteres"; // clave secreta de al menos 32 caracteres
-//    private final SecretKey key = Keys.hmacShaKeyFor(keyString.getBytes(StandardCharsets.UTF_8)); // genera una Key a partir de la clave secreta
-    SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    
-    public String login(String username, String password) {
-        // Aquí debes implementar la lógica de autenticación. Este es solo un ejemplo simple.
-        if ("user".equals(username) && "password".equals(password)) {
-            return createJWT("1", "MyApp", username, 3600000); // genera un token JWT con 1 hora de vida
-        } else {
-            throw new RuntimeException("Autenticación fallida");
-        }
-    }
+//    public String login(String username, String password) {
+//        // Aquí debes implementar la lógica de autenticación. Este es solo un ejemplo simple.
+//        if ("user".equals(username) && "password".equals(password)) {
+//            return createJWT("1", "ByteMindsApp", username, 3600000); // genera un token JWT con 1 hora de vida
+//        } else {
+//            throw new RuntimeException("Autenticación fallida");
+//        }
+//    }
 
     public String createJWT(String id, String issuer, String subject, long ttlMillis) {
         long nowMillis = System.currentTimeMillis();
@@ -36,14 +32,20 @@ public class AuthService {
         long expMillis = nowMillis + ttlMillis;
         Date exp = new Date(expMillis);
 
-        return Jwts.builder()
+		// Crea el JWT!
+        String jwt = new String();
+        jwt= Jwts.builder()
                 .setId(id)
                 .setIssuer(issuer)
                 .setSubject(subject)
                 .setIssuedAt(now)
                 .setExpiration(exp)
-                .signWith(key) // usa la Key para firmar el JWT
+                .signWith(KeyManager.getKey()) // usa la Key para firmar el JWT
                 .compact();
+
+		System.out.println("TOKEN: "+jwt);
+        
+		return jwt; 
     }
 
     public void parseJWT(String jwt) {
@@ -51,7 +53,7 @@ public class AuthService {
         
         try {
             jws = Jwts.parserBuilder()  // Recibes un JwtParserBuilder
-                    .setSigningKey(key) // La clave de firma
+                    .setSigningKey(KeyManager.getKey()) // La clave de firma
                     .build()            // Llamas a build para obtener un JwtParser
                     .parseClaimsJws(jwt); // Finalmente puedes llamar a parseClaimsJws
         } catch (Exception e) {

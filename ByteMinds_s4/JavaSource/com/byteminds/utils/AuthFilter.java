@@ -11,26 +11,32 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
-//@Provider //TODO:DESCOMENTAR PARA APLICAR FILTROS LUEGO DE VERIFICAR ERROR CON EL TOKEN
+@Provider //TODO:DESCOMENTAR PARA APLICAR FILTROS LUEGO DE VERIFICAR ERROR CON EL TOKEN
 public class AuthFilter implements ContainerRequestFilter {
 
-//    private String key = "EstaEsUnaClaveSecretaDeAlMenos32Caracteres"; // asegúrate de mantener esta clave secreta en un lugar seguro
-	SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-//    EstaEsUnaClaveSecretaDeAlMenos32Caracteres
     @Override
     public void filter(ContainerRequestContext requestContext) {
+    	 String path = requestContext.getUriInfo().getPath();
+    	 System.out.println("requestContext.getUriInfo().getPath(): "+path);
+         // Permitir el acceso a la ruta de login sin autenticación
+         if (path.startsWith("/login")) {
+             return;
+         }
     	String authHeader = requestContext.getHeaderString("Authorization");
-        System.out.println("FILTRO DE AUTORIZACION...");
-    	System.out.println(authHeader);
+//        System.out.println("FILTRO DE AUTORIZACION...");
+//    	System.out.println(authHeader);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
             return;
         }
         
         String token = authHeader.substring("Bearer".length()).trim();
-        System.out.println("AuthFilter: mostrando token: "+token);
+        
+//        System.out.println("AuthFilter: Token: "+token);
         try {
-            Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+//            Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+        	 SecretKey key = KeyManager.getKey(); // Usa la clave centralizada para validar el token
+             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
         } catch (Exception e) {
         	System.out.println("Se genero una exeption "+ e);
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());

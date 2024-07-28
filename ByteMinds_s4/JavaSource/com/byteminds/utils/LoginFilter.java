@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-//@WebFilter(urlPatterns = {"/*"})
+@WebFilter(urlPatterns = {"/*"})
 public class LoginFilter implements Filter {
 
     @Override
@@ -25,7 +25,7 @@ public class LoginFilter implements Filter {
         
         String path = request.getRequestURI().substring(request.getContextPath().length());
 
-        if (path.startsWith("/layout") || path.equals("/css")|| path.equals("/registroweb/registro.xhtml")|| path.startsWith("/rest")) {
+        if (path.startsWith("/layout") || path.startsWith("/css")|| path.equals("/registroweb/registro.xhtml")|| path.startsWith("/rest")) {
             // No aplicamos el filtro a /layout o /login
             chain.doFilter(req, res); 
             return;
