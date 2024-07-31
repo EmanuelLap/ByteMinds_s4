@@ -126,6 +126,11 @@
 <!--             <p:menuitem value="Mantenimiento de lista aux"   outcome="/pages/reclamos/altaReclamo.xhtml" /> -->
         </p:submenu>
         
+          <p:submenu label="Escolaridad" icon="ui-icon-document" rendered="#{loginBean.esEstudiante()}">
+          <p:menuitem value="Ver escolaridad"  action="#{gestionEscolaridadBean.inicializar}" partialSubmit="true" rendered="#{loginBean.esEstudiante()}"/>
+          </p:submenu>
+        
+        
 <!--         submenu para Itrs -->
  		<p:submenu label="Gestion" icon="ui-icon-document" rendered="#{loginBean.esAnalista()}">
 	 		<p:menuitem value="Gestion ITRS"   action="#{gestionItrBean.inicializar}" outcome="/pages/itr/gestionITR.xhtml">

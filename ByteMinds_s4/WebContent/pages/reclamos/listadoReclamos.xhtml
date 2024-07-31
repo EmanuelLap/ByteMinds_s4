@@ -135,7 +135,10 @@
 
 			<p:column sortBy="#{reclamo.fecha}">
 				<f:facet name="header">Fecha de reclamo</f:facet>
-				#{reclamo.fecha}
+				<p:outputLabel value="#{reclamo.fecha}">
+					<f:convertDateTime pattern="MM/dd/yyyy"/>
+				</p:outputLabel>
+				
 			</p:column>
 
 			<p:column sortBy="#{reclamo.eventoId.titulo}">
@@ -145,7 +148,10 @@
 
 			<p:column sortBy="#{reclamo.eventoId.inicio}">
 				<f:facet name="header">Fecha de evento</f:facet>
-				#{reclamo.eventoId.inicio}
+				<p:outputLabel value="#{reclamo.eventoId.inicio}">
+					<f:convertDateTime pattern="MM/dd/yyyy"/>
+				</p:outputLabel>
+				
 			</p:column>
 			<!-- 			<p:column > -->
 			<!-- 				<f:facet name="header">Docentes</f:facet> -->

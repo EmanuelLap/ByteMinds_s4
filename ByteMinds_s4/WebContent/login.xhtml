@@ -37,14 +37,15 @@
 .pipe {
 	margin: 0 10px;
 }
+
 .link-container a {
-    color: blue;
-    text-decoration: none;
-    margin: 0 10px;
+	color: blue;
+	text-decoration: none;
+	margin: 0 10px;
 }
 
 .link-container a:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 </style>
 </h:head>
@@ -55,16 +56,20 @@
 				life="3000" />
 
 			<p:panel header="Login" style="text-align: center;">
-			
+
 				<h:outputLabel for="username" value="Username:" />
-				<p:inputText id="username" value="#{loginBean.username}"/>
-					
+				<p:inputText id="username" value="#{loginBean.username}" />
+
 				<h:outputLabel for="password" value="Password:" />
-				<p:password id="password" value="#{loginBean.password}"/>
-					
+				<p:password id="password" value="#{loginBean.password}" />
+
 				<div style="position: relative; text-align: center;">
+					<p:selectBooleanCheckbox id="ldapLogin" value="#{loginBean.activeDirectory}" 
+					itemLabel="LDAP" disabled="false"/>
+					
 					<h:commandButton value="Login" action="#{loginBean.login}"
 						update="messagesLogin" />
+
 				</div>
 				<div class="link-container">
 					<h:outputLink value="registroweb/registro.xhtml">

@@ -118,7 +118,9 @@
 
 			<p:column sortBy="#{justificacion.fecha}">
 				<f:facet name="header">Fecha de justificacion</f:facet>
-				#{justificacion.fecha}
+				<p:outputLabel value="#{justificacion.fecha}">
+					<f:convertDateTime pattern="MM/dd/yyyy"/>
+				</p:outputLabel>
 			</p:column>
 
 			<p:column sortBy="#{justificacion.eventoId.titulo}">
@@ -128,7 +130,9 @@
 
 			<p:column sortBy="#{justificacion.eventoId.inicio}">
 				<f:facet name="header">Fecha de evento</f:facet>
-				#{justificacion.eventoId.inicio}
+				<p:outputLabel value="#{justificacion.eventoId.inicio}">
+					<f:convertDateTime pattern="MM/dd/yyyy"/>
+				</p:outputLabel>
 			</p:column>
 
 			<p:column>

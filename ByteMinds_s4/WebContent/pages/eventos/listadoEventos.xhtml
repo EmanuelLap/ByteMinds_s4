@@ -61,20 +61,19 @@
 
 
 				<p:outputLabel value="Fecha inicio entre" />
-				<p:calendar id="inicioEventoinicio"
+				<p:calendar id="inicioEventoinicio" 
 					value="#{gestionEnventosBean.criterioInicioInicio}" />
 					
 								<p:outputLabel value="Fecha inicio entre" />
-				<p:calendar id="inicioEventofin"
+				<p:calendar id="inicioEventofin" 
 					value="#{gestionEnventosBean.criterioInicioFin}" />
 					
 				<p:outputLabel value="Fecha fin entre" />
-				<p:calendar id="finEventoinicio"
+				<p:calendar id="finEventoinicio" 
 					value="#{gestionEnventosBean.criterioFinInicio}" />
 					
 								<p:outputLabel value="Fecha fin evento" />
-				<p:calendar id="finEventofin"
-					value="#{gestionEnventosBean.criterioFinFin}" />
+				<p:calendar id="finEventofin" value="#{gestionEnventosBean.criterioFinFin}" />
 				
 				<p:outputLabel value="Eliminados" />
 				<p:selectBooleanCheckbox id="actCrit"
@@ -141,11 +140,18 @@
 
 			<p:column sortBy="#{evento.inicio}">
 				<f:facet name="header">Fecha de inicio</f:facet>
-				#{evento.inicio}
+				
+				<p:outputLabel value="#{evento.inicio}">
+				<f:convertDateTime pattern="MM/dd/yyyy"/>
+				 </p:outputLabel>
 			</p:column>
 			<p:column sortBy="#{evento.fin}">
 				<f:facet name="header">Fecha de fin</f:facet>
-				#{evento.fin}
+				<p:outputLabel value="#{evento.fin}" >
+				<f:convertDateTime pattern="MM/dd/yyyy"/>
+				 </p:outputLabel>
+				
+				
 			</p:column>
 
 			<p:column sortBy="#{evento.localizacion}">

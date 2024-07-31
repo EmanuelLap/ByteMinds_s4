@@ -261,6 +261,28 @@ public class GestionUsuarioService implements Serializable {
 	}
 
 	
+	public UsuarioDTO buscarUsuarioPorDocumento(String documento, String tipo) {
+		UsuarioDTO usuario=null;
+		try {
+			if((documento!=null || documento!="") && (tipo!=null || tipo!="" )
+					&& (tipo.equals("ESTUDIANTE") || tipo.equals("ANALISTA")|| tipo.equals("TUTOR"))) {
+				
+		
+			List<UsuarioDTO> listaUsuarios =seleccionarUsuarios(tipo, null, null, documento, null,
+					null, null, null, null, null, null, null, null, null, null, null, null);
+			if(!listaUsuarios.isEmpty()) {
+				usuario=listaUsuarios.get(0);
+			}
+			
+			}
+		} catch (PersistenciaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return usuario;
+	}
+	
 	public UsuarioDTO login (String username ,String password) {
 			Usuario user = null;
 			try {
@@ -275,5 +297,7 @@ public class GestionUsuarioService implements Serializable {
 			}
 			return null;
 		}
+	
+	
 }
 
