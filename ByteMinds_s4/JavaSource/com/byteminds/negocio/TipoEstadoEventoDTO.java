@@ -1,8 +1,15 @@
 package com.byteminds.negocio;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotNull;
 
-public class TipoEstadoEventoDTO {
+public class TipoEstadoEventoDTO implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private Integer id;
 

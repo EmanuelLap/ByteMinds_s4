@@ -1,11 +1,18 @@
 package com.byteminds.negocio;
 
+import java.io.Serializable;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 import tecnofenix.entidades.RegistroAsistencia;
 
-public class ConvocatoriaAsistenciaEventoEstudianteDTO {
+public class ConvocatoriaAsistenciaEventoEstudianteDTO  implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private Integer id;
 

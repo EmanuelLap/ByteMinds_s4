@@ -1,5 +1,6 @@
 package com.byteminds.negocio;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -9,10 +10,15 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
-public class AccionJustificacionDTO {
+public class AccionJustificacionDTO implements Serializable{
 
 
-    private Integer id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Integer id;
 
     @NotNull
     @Size(min = 1, max = 250)

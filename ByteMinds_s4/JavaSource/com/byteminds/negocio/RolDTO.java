@@ -1,10 +1,15 @@
 package com.byteminds.negocio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+public class RolDTO implements Serializable {
 
-public class RolDTO {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private Integer id;
 
@@ -15,7 +20,7 @@ public class RolDTO {
 	private Boolean activo;
 
 	private List<FuncionalidadDTO> funcionalidades = new ArrayList<FuncionalidadDTO>();
-	
+
 	public RolDTO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -59,8 +64,5 @@ public class RolDTO {
 	public void setFuncionalidades(List<FuncionalidadDTO> funcionalidades) {
 		this.funcionalidades = funcionalidades;
 	}
-	
-	
-	
-	
+
 }

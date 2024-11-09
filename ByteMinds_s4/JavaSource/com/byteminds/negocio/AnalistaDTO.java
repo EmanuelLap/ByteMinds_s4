@@ -1,10 +1,16 @@
 package com.byteminds.negocio;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class AnalistaDTO extends UsuarioDTO{
+public class AnalistaDTO extends UsuarioDTO implements Serializable{
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public AnalistaDTO() {
 		// TODO Auto-generated constructor stub
 		this.setValidado(false);

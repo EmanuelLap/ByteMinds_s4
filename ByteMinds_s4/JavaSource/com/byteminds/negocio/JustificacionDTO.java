@@ -1,13 +1,19 @@
 package com.byteminds.negocio;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
 
-public class JustificacionDTO {
+public class JustificacionDTO  implements Serializable{
 	
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 		@NotNull
 	    private Integer id;
 		

@@ -1,12 +1,20 @@
 package com.byteminds.negocio;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.jboss.marshalling.SerializabilityChecker;
 
 
-public class ItrDTO {
+public class ItrDTO implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@NotNull
 	private Integer id;
 

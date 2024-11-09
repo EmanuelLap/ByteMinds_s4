@@ -1,8 +1,14 @@
 package com.byteminds.negocio;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class TutorDTO extends UsuarioDTO {
+public class TutorDTO extends UsuarioDTO implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private TipoTutorDTO tipoDTO;
 
@@ -14,18 +20,15 @@ public class TutorDTO extends UsuarioDTO {
 		this.setActivo(true);
 	}
 
-
 	public TutorDTO(Integer documento, String usuario, String contrasenia, String apellidos, String nombres,
 			Date fechaNacimiento, String departamento, String genero, String localidad, String mail,
-			String mailPersonal, String telefono, ItrDTO itr, RolDTO rol, boolean activo, 
-			boolean validado, TipoTutorDTO tipoDTO, TipoAreaDTO areaDTO) {
+			String mailPersonal, String telefono, ItrDTO itr, RolDTO rol, boolean activo, boolean validado,
+			TipoTutorDTO tipoDTO, TipoAreaDTO areaDTO) {
 		super(documento, usuario, contrasenia, apellidos, nombres, fechaNacimiento, departamento, genero, localidad,
 				mail, mailPersonal, telefono, itr, rol, activo, validado);
 		this.tipoDTO = tipoDTO;
 		this.areaDTO = areaDTO;
 	}
-
-
 
 	public TipoTutorDTO getTipoDTO() {
 		return tipoDTO;
@@ -42,6 +45,5 @@ public class TutorDTO extends UsuarioDTO {
 	public void setAreaDTO(TipoAreaDTO areaDTO) {
 		this.areaDTO = areaDTO;
 	}
-
 
 }

@@ -1,69 +1,63 @@
 package com.byteminds.negocio;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotNull;
 
-public class TipoEstadoJustificacionDTO {
+public class TipoEstadoJustificacionDTO implements Serializable {
 
-		private Integer id;
+	/**
+	* 
+	*/
+	private static final long serialVersionUID = 1L;
 
-	    @NotNull
-	    private String nombre;
+	private Integer id;
 
-	    private Boolean activo;
-	    
-	    
-	    public TipoEstadoJustificacionDTO() {
+	@NotNull
+	private String nombre;
+
+	private Boolean activo;
+
+	public TipoEstadoJustificacionDTO() {
 //			this.id=1;
 //			this.nombre="Reclamo inicial new";
-			this.activo=true;
+		this.activo = true;
 	}
-    
-    
 
-public TipoEstadoJustificacionDTO(Integer id, @NotNull String nombre, Boolean activo) {
+	public TipoEstadoJustificacionDTO(Integer id, @NotNull String nombre, Boolean activo) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.activo = activo;
 	}
 
-
-
 	public Integer getId() {
 		return id;
 	}
-
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-
 	public String getNombre() {
 		return nombre;
 	}
-
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
-
 	public Boolean getActivo() {
 		return activo;
 	}
-
 
 	public void setActivo(Boolean activo) {
 		this.activo = activo;
 	}
 
-
-
 	@Override
 	public String toString() {
 		return "TipoEstadoJustificacionDTO [id=" + id + ", nombre=" + nombre + ", activo=" + activo + "]";
 	}
-    
-    
+
 }

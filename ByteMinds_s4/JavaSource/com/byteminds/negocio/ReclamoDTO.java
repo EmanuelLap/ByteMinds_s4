@@ -1,5 +1,6 @@
 package com.byteminds.negocio;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
@@ -12,98 +13,108 @@ import tecnofenix.entidades.AccionReclamo;
 import tecnofenix.entidades.Estudiante;
 import tecnofenix.entidades.Evento;
 
-public class ReclamoDTO {
-	
-		@NotNull
-	    private Integer id;
-		
-		@NotNull
-	    private String titulo;
-		
-		@NotNull
-		@Length(min = 1, max = 45)
-	    private String detalle;
-	    
-	    private Date fecha;
-	    
+public class ReclamoDTO implements Serializable {
+
+	/**
+	* 
+	*/
+	private static final long serialVersionUID = 1L;
+
+	@NotNull
+	private Integer id;
+
+	@NotNull
+	private String titulo;
+
+	@NotNull
+	@Length(min = 1, max = 45)
+	private String detalle;
+
+	private Date fecha;
+
 //	    @JsonIgnore
 //	    private Collection<AccionReclamoDTO> accionReclamoDTOCollection;
-	    
-	    private EventoDTO eventoId;
-	    
-	    private EstudianteDTO estudianteId;
-	    
-	    @NotNull
-	    private Integer creditos;
-	    
-	    @NotNull
-	    private Integer semestre;
-	    
-	    private Boolean activo;
 
-	    private TipoEstadoReclamoDTO estadoReclamoId;
-	    
-	    private Date fechaEstadoReclamo;
-	    
-		public ReclamoDTO() {
-			super();
-					
-		}
+	private EventoDTO eventoId;
 
-		public ReclamoDTO(@NotNull Integer id, @NotNull String detalle, Date fecha,
-				/*Collection<AccionReclamoDTO> accionReclamoDTOCollection,*/ EventoDTO eventoId, EstudianteDTO estudianteId) {
-			super();
-			this.id = id;
-			this.detalle = detalle;
-			this.fecha = fecha;
+	private EstudianteDTO estudianteId;
+
+	@NotNull
+	private Integer creditos;
+
+	@NotNull
+	private Integer semestre;
+
+	private Boolean activo;
+
+	private TipoEstadoReclamoDTO estadoReclamoId;
+
+	private Date fechaEstadoReclamo;
+
+	public ReclamoDTO() {
+		super();
+
+	}
+
+	public ReclamoDTO(@NotNull Integer id, @NotNull String detalle, Date fecha,
+			/* Collection<AccionReclamoDTO> accionReclamoDTOCollection, */ EventoDTO eventoId,
+			EstudianteDTO estudianteId) {
+		super();
+		this.id = id;
+		this.detalle = detalle;
+		this.fecha = fecha;
 //			this.accionReclamoDTOCollection = accionReclamoDTOCollection;
-			this.eventoId = eventoId;
-			this.estudianteId = estudianteId;
-		}
+		this.eventoId = eventoId;
+		this.estudianteId = estudianteId;
+	}
 
-		public Integer getId() {
-			return id;
-		}
+	public Integer getId() {
+		return id;
+	}
 
-		public void setId(Integer id) {
-			this.id = id;
-		}
-	    public String getTitulo() {
-			return titulo;
-		}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-		public void setTitulo(String titulo) {
-			this.titulo = titulo;
-		}
-		public String getDetalle() {
-			return detalle;
-		}
+	public String getTitulo() {
+		return titulo;
+	}
 
-		public void setDetalle(String detalle) {
-			this.detalle = detalle;
-		}
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
 
-		public Date getFecha() {
-			return fecha;
-		}
+	public String getDetalle() {
+		return detalle;
+	}
 
-		public void setFecha(Date fecha) {
-			this.fecha = fecha;
-		}
-	    public Integer getCreditos() {
-			return creditos;
-		}
+	public void setDetalle(String detalle) {
+		this.detalle = detalle;
+	}
 
-		public void setCreditos(Integer creditos) {
-			this.creditos = creditos;
-		}
-		public Integer getSemestre() {
-			return semestre;
-		}
+	public Date getFecha() {
+		return fecha;
+	}
 
-		public void setSemestre(Integer semestre) {
-			this.semestre = semestre;
-		}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+	public Integer getCreditos() {
+		return creditos;
+	}
+
+	public void setCreditos(Integer creditos) {
+		this.creditos = creditos;
+	}
+
+	public Integer getSemestre() {
+		return semestre;
+	}
+
+	public void setSemestre(Integer semestre) {
+		this.semestre = semestre;
+	}
 //		public Collection<AccionReclamoDTO> getAccionReclamoDTOCollection() {
 //			return accionReclamoDTOCollection;
 //		}
@@ -112,46 +123,44 @@ public class ReclamoDTO {
 //			this.accionReclamoDTOCollection = accionReclamoDTOCollection;
 //		}
 
-		public EventoDTO getEventoId() {
-			return eventoId;
-		}
+	public EventoDTO getEventoId() {
+		return eventoId;
+	}
 
-		public void setEventoId(EventoDTO eventoId) {
-			this.eventoId = eventoId;
-		}
+	public void setEventoId(EventoDTO eventoId) {
+		this.eventoId = eventoId;
+	}
 
-		public EstudianteDTO getEstudianteId() {
-			return estudianteId;
-		}
+	public EstudianteDTO getEstudianteId() {
+		return estudianteId;
+	}
 
-		public void setEstudianteId(EstudianteDTO estudianteId) {
-			this.estudianteId = estudianteId;
-		}
+	public void setEstudianteId(EstudianteDTO estudianteId) {
+		this.estudianteId = estudianteId;
+	}
 
-		public Boolean getActivo() {
-			return activo;
-		}
+	public Boolean getActivo() {
+		return activo;
+	}
 
-		public void setActivo(Boolean activo) {
-			this.activo = activo;
-		}
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
 
-		public TipoEstadoReclamoDTO getEstadoReclamoId() {
-			return estadoReclamoId;
-		}
+	public TipoEstadoReclamoDTO getEstadoReclamoId() {
+		return estadoReclamoId;
+	}
 
-		public void setEstadoReclamoId(TipoEstadoReclamoDTO estadoReclamoId) {
-			this.estadoReclamoId = estadoReclamoId;
-		}
+	public void setEstadoReclamoId(TipoEstadoReclamoDTO estadoReclamoId) {
+		this.estadoReclamoId = estadoReclamoId;
+	}
 
-		public Date getFechaEstadoReclamo() {
-			return fechaEstadoReclamo;
-		}
+	public Date getFechaEstadoReclamo() {
+		return fechaEstadoReclamo;
+	}
 
-		public void setFechaEstadoReclamo(Date fechaEstadoReclamo) {
-			this.fechaEstadoReclamo = fechaEstadoReclamo;
-		}
-		
-		
-		
+	public void setFechaEstadoReclamo(Date fechaEstadoReclamo) {
+		this.fechaEstadoReclamo = fechaEstadoReclamo;
+	}
+
 }

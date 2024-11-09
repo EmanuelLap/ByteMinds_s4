@@ -1,11 +1,19 @@
 package com.byteminds.negocio;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class TipoAreaDTO {
+public class TipoAreaDTO implements Serializable{
 
-    @NotNull
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
+	@NotNull
     private Integer id;
 
 
