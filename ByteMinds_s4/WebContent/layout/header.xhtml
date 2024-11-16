@@ -18,22 +18,27 @@
      <p:menubar>
  		
         <p:submenu label="Gestion de Usuarios" icon="ui-icon-document" rendered="#{loginBean.esAnalista() or loginBean.esTutor()}">
-            <p:menuitem value="Seleccion de usuario"   outcome="/pages/Usuarios.xhtml" />
-            <p:menuitem value="Alta de usuario estudiante" outcome="/pages/DatosUsuario.xhtml"  >
-            	<f:param name="id" value="" />
-    			<f:param name="modalidad" value="insert" />
-    			<f:param name="u_tipo" value="ESTUDIANTE" />
-            </p:menuitem>
-            <p:menuitem value="Alta de usuario tutor" outcome="/pages/DatosUsuario.xhtml"  >
-            	<f:param name="id" value="" />
-    			<f:param name="modalidad" value="insert" />
-            	<f:param name="u_tipo" value="TUTOR" />
-            </p:menuitem>
-            <p:menuitem value="Alta de usuario analista" outcome="/pages/DatosUsuario.xhtml"  >
-            	<f:param name="id" value="" />
-    			<f:param name="modalidad" value="insert" />
-    			<f:param name="u_tipo" value="ANALISTA" />
-            </p:menuitem>
+            <p:menuitem value="Busqueda de usuarios"   outcome="/pages/Usuarios.xhtml" />
+<!--             <p:menuitem value="Alta de usuario estudiante" outcome="/pages/DatosUsuario.xhtml"  > -->
+<!--             	<f:param name="id" value="" /> -->
+<!--     			<f:param name="modalidad" value="insert" /> -->
+<!--     			<f:param name="u_tipo" value="ESTUDIANTE" /> -->
+<!--             </p:menuitem> -->
+<!-- 			           <p:menuitem value="Alta de usuario estudiante NUEVO"  action="#{gestionUsuario.inicializar}" partialSubmit="true"> -->
+<!-- 							<f:setPropertyActionListener target="#{gestionUsuario.id}" value="#{null}" /> -->
+<!-- 							<f:setPropertyActionListener target="#{gestionUsuario.modalidad}" value="insert" /> -->
+<!-- 							<f:setPropertyActionListener target="#{gestionUsuario.u_tipo}" value="ESTUDIANTE" /> -->
+<!-- 			            </p:menuitem> -->
+<!--             <p:menuitem value="Alta de usuario tutor" outcome="/pages/DatosUsuario.xhtml"  > -->
+<!--             	<f:param name="id" value="" /> -->
+<!--     			<f:param name="modalidad" value="insert" /> -->
+<!--             	<f:param name="u_tipo" value="TUTOR" /> -->
+<!--             </p:menuitem> -->
+<!--             <p:menuitem value="Alta de usuario analista" outcome="/pages/DatosUsuario.xhtml"  > -->
+<!--             	<f:param name="id" value="" /> -->
+<!--     			<f:param name="modalidad" value="insert" /> -->
+<!--     			<f:param name="u_tipo" value="ANALISTA" /> -->
+<!--             </p:menuitem> -->
              
         </p:submenu>
  
@@ -90,6 +95,7 @@
             <p:menuitem value="Alta de Justificacion"  action="#{gestionJustificacion.inicializar}" partialSubmit="true">
 				<f:setPropertyActionListener target="#{gestionJustificacion.id}" value="#{null}" />
 				<f:setPropertyActionListener target="#{gestionJustificacion.modalidad}" value="insert" />
+				<f:setPropertyActionListener target="#{gestionJustificacion.navegar}" value="/index.xhtml?faces-redirect=true" />
             </p:menuitem>
             	
             <p:menuitem value="Listado de justificaciones" outcome="/pages/eventos/justificaciones/listadoJustificaciones.xhtml" rendered="#{loginBean.esAnalista()}"/>
@@ -109,10 +115,12 @@
 <!--             	<f:param name="idEstudianteDTO" value="#{loginBean.userioLogeado.id}" /> -->
 				<f:setPropertyActionListener target="#{gestionReclamo.id}" value="#{null}" />
 				<f:setPropertyActionListener target="#{gestionReclamo.modalidad}" value="insert" />
+				<f:setPropertyActionListener target="#{gestionReclamo.navegar}" value="/index.xhtml?faces-redirect=true" />
+					
             </p:menuitem>
             	
             <p:menuitem value="Listado de reclamos" outcome="/pages/reclamos/listadoReclamos.xhtml" rendered="#{loginBean.esAnalista()}"/>
-            <p:menuitem value="Listado de reclamos Estudiante"   outcome="/pages/reclamos/listadoReclamosEstudiante.xhtml" rendered="#{loginBean.esEstudiante()}"/>
+            <p:menuitem value="Listado de reclamos Estudiante"   action="#{gestionReclamosBean.seleccionarEventosEstudiante()}" rendered="#{loginBean.esEstudiante()}"/>
             
 <!--             <p:menuitem value="Modificacion de reclamos"   outcome="/pages/reclamos/altaReclamo.xhtml" > -->
 <!--             	<f:param name="id" value="" /> -->

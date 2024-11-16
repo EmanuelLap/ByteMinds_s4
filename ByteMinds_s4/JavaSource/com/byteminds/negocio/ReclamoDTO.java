@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -23,11 +24,12 @@ public class ReclamoDTO implements Serializable {
 	@NotNull
 	private Integer id;
 
-	@NotNull
+	@NotNull (message = "El titulo del reclamo es obligatorio")
+	@Length(min = 1, max = 40 , message = "El titulo del reclamo debe tener entre 1 y 40 caracteres")
 	private String titulo;
 
-	@NotNull
-	@Length(min = 1, max = 45)
+	@NotNull (message = "El detalle del reclamo es obligatorio")
+	@Size(min = 1, max = 45, message = "El detalle del reclamo debe tener entre menos de 200 caracteres")
 	private String detalle;
 
 	private Date fecha;
@@ -39,10 +41,10 @@ public class ReclamoDTO implements Serializable {
 
 	private EstudianteDTO estudianteId;
 
-	@NotNull
+	@NotNull (message = "Los creditos son obligatorios")
 	private Integer creditos;
 
-	@NotNull
+	@NotNull (message = "El semestre es obligatorio")
 	private Integer semestre;
 
 	private Boolean activo;

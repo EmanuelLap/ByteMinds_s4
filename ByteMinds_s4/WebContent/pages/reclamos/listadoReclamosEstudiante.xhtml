@@ -17,17 +17,17 @@
 	</p:messages>
 		<h:form id="formBuscar">
 		
-			<p:commandButton value="Buscar"
-				action="#{gestionReclamosBean.seleccionarEventosEstudiante()}"
-				update="tablaReclamos" oncomplete="PF('blockUIWidget').hide();">
-				<p:ajax onstart="PF('blockUIWidget').show()"
-					 />
+<!-- 			<p:commandButton value="Buscar" -->
+<!-- 				action="#{gestionReclamosBean.seleccionarEventosEstudiante()}" -->
+<!-- 				update="tablaReclamos" oncomplete="PF('blockUIWidget').hide();"> -->
+<!-- 				<p:ajax onstart="PF('blockUIWidget').show()" -->
+<!-- 					 /> -->
 
-			</p:commandButton>
+<!-- 			</p:commandButton> -->
 
-			<p:blockUI block="formBuscar" widgetVar="blockUIWidget">
-				<p:outputLabel value="Buscando reclamos..."></p:outputLabel>
-			</p:blockUI>
+<!-- 			<p:blockUI block="formBuscar" widgetVar="blockUIWidget"> -->
+<!-- 				<p:outputLabel value="Buscando reclamos..."></p:outputLabel> -->
+<!-- 			</p:blockUI> -->
 
 		</h:form>
 
@@ -46,6 +46,8 @@
 					action="#{gestionReclamo.inicializar}">
 					<f:setPropertyActionListener target="#{gestionReclamo.id}" value="#{reclamo.id}" />
 					<f:setPropertyActionListener target="#{gestionReclamo.modalidad}" value="update" />
+					<f:setPropertyActionListener target="#{gestionReclamo.navegar}" value="/pages/reclamos/listadoReclamosEstudiante.xhtml?faces-redirect=true" />
+					
 				</h:commandLink>
 				</h:form>
 			</p:column>
@@ -132,8 +134,10 @@
 			<f:facet name="header">Registro de Acciones</f:facet>
 
 			<p:commandButton value="Ver acciones"
-				action="#{gestionAccionReclamoBean.inicializarAccionReclamoEstudiante(reclamo)}" />
-
+				action="#{gestionAccionReclamoBean.inicializarAccionReclamoEstudiante(reclamo)}">
+				<f:setPropertyActionListener target="#{gestionReclamo.navegar}" value="/pages/reclamos/listadoReclamosEstudiante.xhtml?faces-redirect=true" />
+			</p:commandButton>
+			
 		</p:column>
 		</p:dataTable>
 

@@ -106,7 +106,7 @@ public class GestionReclamosBean implements Serializable{
 		listadoDeReclamosFiltrados.clear();
 		listadoDeReclamosFiltrados=gestionReclamoService.buscarReclamosEstudiante(loginBean.getUserioLogeado().getId());
 
-		return "";
+		return "/pages/reclamos/listadoReclamosEstudiante.xhtml?faces-redirect=true";
 		
 	}
 

@@ -57,6 +57,7 @@ public class GestionJustificacionBean implements Serializable {
 	private GestionEventoService gestEventService;
 	private Integer id;
 	private String modalidad;
+	private String navegar;
 	
 	private EstudianteDTO estudianteQueReclamaDTO;
 	private Integer idEstudianteDTO;
@@ -201,7 +202,13 @@ public class GestionJustificacionBean implements Serializable {
 		return "";
 	}
 
-	
+	public String navegacion() {
+		if(navegar == null || navegar.isEmpty()) {
+			return "/index.xhtml?faces-redirect=true";
+		}else {
+			return navegar;
+		}
+	}
 	
 	public Boolean validarDatos() {
 //		if (this.justificacionSeleccionado.getTitulo() == "") {
@@ -277,7 +284,7 @@ public class GestionJustificacionBean implements Serializable {
 	
 			}
 			for(EventoDTO e :listEventosDTO) {
-				listaDeEventosDTO.add(new SelectItem(e.getId(), e.toString()));	
+				listaDeEventosDTO.add(new SelectItem(e.getId(), e.toStringCombo()));	
 			}
 		}
 	}
@@ -411,6 +418,14 @@ public class GestionJustificacionBean implements Serializable {
 
 	public void setIdTipoEstado(Integer idTipoEstado) {
 		this.idTipoEstado = idTipoEstado;
+	}
+
+	public String getNavegar() {
+		return navegar;
+	}
+
+	public void setNavegar(String navegar) {
+		this.navegar = navegar;
 	}
 	
 }

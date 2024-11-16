@@ -22,7 +22,7 @@
 	
 		<h:form id="idDatosUsuario" prependId="false">
 
-			<p:messages id="messages" showDetail="true" closable="true">
+			<p:messages id="messages" showDetail="true"  autoUpdate="true" closable="true">
 				<p:autoUpdate />
 			</p:messages>
 			<h:commandButton id="idVolver" immediate="true" value="Volver"
@@ -101,7 +101,7 @@
 
 				<p:outputLabel value="Género" />
 				<p:selectOneMenu id="genero" value="#{gestionUsuario.usuarioSeleccionado.genero}">
-					<f:selectItem itemLabel="Seleccione genero" itemValue="-1" />
+					<f:selectItem itemLabel="Seleccione genero" itemValue="O" />
 					<f:selectItem itemLabel="Masculino" itemValue="M" />
 					<f:selectItem itemLabel="Femenino" itemValue="F" />
 					<f:selectItem itemLabel="Prefiero No decirlo" itemValue="O" />
@@ -184,9 +184,9 @@
 
 				
 				<p:outputLabel value="Rol" />
-				<p:selectOneMenu id="listaDerolDTOparaUsuario"	value="#{gestionUsuario.rolDTOSeleccionadoId}">
+				<p:selectOneMenu id="listaDerolDTOparaUsuario" disabled="true"	value="#{gestionUsuario.rolDTOSeleccionadoId}">
 					<f:selectItem itemLabel="Seleccione Rol" itemValue="-1"/>
-					<f:selectItems value="#{combosBean.comboROLSelectItem}" />
+					<f:selectItems value="#{combosBean.comboROLSelectItemRegistro}" />
 					<f:ajax process="@this" partialSubmit="true"
 						listener="#{gestionUsuario.actualizarROLSeleccionado}"  />
 						
@@ -206,7 +206,9 @@
 					<p:message for="validado" style="color:red" />
 					
 				
-					<p:commandButton id="botonBeanROl2" action="#{gestionUsuario.print()}" value="Imprimir" />
+<!-- 					<p:commandButton id="botonBeanROl2" action="#{gestionUsuario.print()}" value="Imprimir" /> -->
+<!-- 					<p:commandButton id="botonBeanLimpiar" action="#{gestionUsuario.limpiar()}" immediate="true"  value="Limpiar" update="@this" /> -->
+					
 			</p:panelGrid>
 
 		</h:form>

@@ -50,7 +50,7 @@ public class GestionEstadoReclamoBean implements Serializable{
 		listEstadosReclamo.clear();
 		listEstadosReclamo=gTERS.listarTipoEstadoReclamo();
 		estadosReclamoSeleccionado = new TipoEstadoReclamoDTO();
-		return "/pages/reclamos/gestionestadoreclamo.xhtml";
+		return "/pages/reclamos/gestionestadoreclamo.xhtml?faces-redirect=true";
 	}
 	
 	

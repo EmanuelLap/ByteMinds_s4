@@ -103,6 +103,11 @@ public class GestionAccionReclamoBean implements Serializable{
 		System.out.println("TODO: volver");
 		return "/pages/reclamos/listadoReclamos.xhtml";//pages/reclamos/listadoReclamos.xhtml
 	}
+	public String volverEstudiante() {
+		System.out.println("TODO: volver");
+		return "/pages/reclamos/listadoReclamosEstudiante.xhtml";
+	}
+	
 	public String editarAccionReclamo() {
 		System.out.println("TODO: editarAccionReclamo");
 		

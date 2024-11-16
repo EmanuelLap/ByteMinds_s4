@@ -70,6 +70,12 @@ public class LoginBean implements Serializable {
 				FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 				return null;	
 			}
+			if(userioLogeado.getActivo()==false) {
+				message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Su usuario esta desactivado");
+				FacesContext.getCurrentInstance().addMessage(null, message);
+				FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+				return null;	
+			}
 			
 			this.token =auth.createJWT(String.valueOf(user.getId()), "ByteMindsApp", user.getApellidos()+user.getNombres(), 3600000);//El token dura 1 hora
 			// Save the JWT token to session or somewhere else

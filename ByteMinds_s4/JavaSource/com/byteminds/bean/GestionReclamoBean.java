@@ -54,6 +54,7 @@ public class GestionReclamoBean implements Serializable {
 	private GestionEventoService gestEventService;
 	private Integer id;
 	private String modalidad;
+	private String navegar;
 	
 	private EstudianteDTO estudianteQueReclamaDTO;
 	private Integer idEstudianteDTO;
@@ -116,6 +117,7 @@ public class GestionReclamoBean implements Serializable {
 		if (id != null ) {
 						reclamoSeleccionado = gestionReclamoService.fromReclamo(ejbReclamoRemoto.buscarReclamoPorId(id));
 						this.idEventoSeleccionado = reclamoSeleccionado.getEventoId().getId();
+						estudianteQueReclamaDTO=(EstudianteDTO)reclamoSeleccionado.getEstudianteId();
 						
 		} else {
 //			reclamoSeleccionado = new ReclamoDTO();
@@ -137,7 +139,7 @@ public class GestionReclamoBean implements Serializable {
 
 		}
 		 
-		return "/pages/reclamos/altaReclamo.xhtml";
+		return "/pages/reclamos/altaReclamo.xhtml?faces-redirect=true";
 	}
 
 	public String salvarCambios() {
@@ -273,7 +275,7 @@ public class GestionReclamoBean implements Serializable {
 	
 			}
 			for(EventoDTO e :listEventosDTO) {
-				listaDeEventosDTO.add(new SelectItem(e.getId(), e.toString()));	
+				listaDeEventosDTO.add(new SelectItem(e.getId(), e.toStringCombo()));	
 			}
 		}
 	}
@@ -299,6 +301,18 @@ public class GestionReclamoBean implements Serializable {
 //	return"";
 	}
 
+	public String navegacion() {
+		if(navegar == null || navegar.isEmpty()) {
+			return "/index.xhtml?faces-redirect=true";
+		}else {
+			return navegar;
+		}
+	}
+	
+	public String listarReclamosEstudiante() {
+		
+		return "/pages/reclamos/listadoReclamosEstudiante.xhtml?faces-redirect=true";
+	}
 	
 	public void seleccionarUsuarioReclamo(EstudianteDTO estudianteDTO) {
 		
@@ -407,6 +421,14 @@ public class GestionReclamoBean implements Serializable {
 
 	public void setIdTipoEstado(Integer idTipoEstado) {
 		this.idTipoEstado = idTipoEstado;
+	}
+
+	public String getNavegar() {
+		return navegar;
+	}
+
+	public void setNavegar(String navegar) {
+		this.navegar = navegar;
 	}
 	
 }

@@ -1,6 +1,7 @@
 package com.byteminds.negocio;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 
@@ -179,6 +180,14 @@ public class EventoDTO implements Serializable {
 	public String toString() {
 		return "EventoDTO [id=" + id + ", titulo=" + titulo + ", inicio=" + inicio + ", localizacion=" + localizacion
 				+ "]";
+	}
+	
+	public String toStringCombo() {
+		String formatoDeseado = "dd/MM/yyyy";
+        SimpleDateFormat formateador = new SimpleDateFormat(formatoDeseado);
+        String fechaFormateada = formateador.format(inicio);
+        
+		return " " + id + ", Titulo:" + titulo + ", Inicio:" + fechaFormateada + ", Localizacion:" + localizacion ;
 	}
 
 }

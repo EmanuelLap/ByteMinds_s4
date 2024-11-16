@@ -22,11 +22,11 @@
 
 .login-form .ui-button {
 	color: black;
-	background-color: #007BFF;
+/* 	background-color: #007BFF; */
 }
 
 .login-form .ui-button:hover {
-	background-color: #0056b3;
+/* 	background-color: #0056b3; */
 }
 
 .link-container {
@@ -71,31 +71,43 @@
 						update="messagesLogin" />
 
 				</div>
-				<div class="link-container">
-					<h:outputLink value="registroweb/registro.xhtml">
-						<h:outputText value="Registro estudiante" />
-						<f:param name="id" value="" />
-						<f:param name="modalidad" value="insert" />
-						<f:param name="u_tipo" value="ESTUDIANTE" />
-					</h:outputLink>
+				<div style="position: relative; text-align: center;">
+<!-- 				linea de separacion -->
+					<hr />
+					<br />
+					<h:outputLabel value="Registro de usuario" style="color:blue"/>
+					
+				</div>
+				<div class="link-container" style="position: relative; text-align: center;">
+<!-- 					<h:outputLink value="registroweb/registro.xhtml" > -->
+<!-- 						<h:outputText value="Registro estudiante" /> -->
+<!-- 								<f:param name="u_tipo" value="ESTUDIANTE" /> -->
+<!-- 					</h:outputLink> -->
+					<p:commandButton value="Estudiante" action="#{gestionRegistro.inicializar}" partialSubmit="true">
+						<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}" value="ESTUDIANTE" />
+					</p:commandButton>
 
 					<span class="pipe">|</span>
 
-					<h:outputLink value="registroweb/registro.xhtml">
-						<h:outputText value="Registro tutor" />
-						<f:param name="id" value="" />
-						<f:param name="modalidad" value="insert" />
-						<f:param name="u_tipo" value="TUTOR" />
-					</h:outputLink>
-
+<!-- 					<h:outputLink value="registroweb/registro.xhtml"> -->
+<!-- 						<h:outputText value="Registro tutor" /> -->
+<!-- 						<f:param name="id" value="" /> -->
+<!-- 						<f:param name="modalidad" value="insert" /> -->
+<!-- 						<f:param name="u_tipo" value="TUTOR" /> -->
+<!-- 					</h:outputLink> -->
+			<p:commandButton value="Tutor" action="#{gestionRegistro.inicializar}" partialSubmit="true">
+						<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}" value="TUTOR" />
+					</p:commandButton>
 					<span class="pipe">|</span>
-
-					<h:outputLink value="registroweb/registro.xhtml">
-						<h:outputText value="Registro analista" />
-						<f:param name="id" value="" />
-						<f:param name="modalidad" value="insert" />
-						<f:param name="u_tipo" value="ANALISTA" />
-					</h:outputLink>
+			<p:commandButton value="Analista" action="#{gestionRegistro.inicializar}" partialSubmit="true">
+						<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}" value="ANALISTA" />
+					</p:commandButton>
+<!-- 					<h:outputLink value="registroweb/registro.xhtml"> -->
+<!-- 						<h:outputText value="Registro analista" /> -->
+<!-- 						<f:param name="id" value="" /> -->
+<!-- 						<f:param name="modalidad" value="insert" /> -->
+<!-- 						<f:param name="u_tipo" value="ANALISTA" /> -->
+<!-- 					</h:outputLink> -->
 				</div>
 
 			</p:panel>

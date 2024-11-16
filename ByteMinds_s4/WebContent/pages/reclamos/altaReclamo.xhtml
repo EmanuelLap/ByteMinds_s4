@@ -24,7 +24,7 @@
 				<p:autoUpdate />
 			</p:messages>
 			<h:commandButton id="idVolverReclamo" immediate="true" value="Volver"
-				action="/index">
+				action="#{gestionReclamo.navegacion()}">
 				<f:ajax />
 			</h:commandButton>
 
@@ -40,7 +40,7 @@
 							<f:param name="id" value="${gestionReclamo.id}" />
 							<f:param name="modalidad" value="update" />
 						</h:commandButton>
-						<h:commandButton value="Generar reclamo"
+						<h:commandButton value="Guardar reclamo"
 							rendered="#{gestionReclamo.modoEdicion}" update=":form"
 							action="#{gestionReclamo.salvarCambios}">
 							<f:param name="id" value="${gestionReclamo.id}" />

@@ -18,49 +18,51 @@
 		<h:form id="formBuscar">
 		
 		
-			<h:commandLink value="Nuevo justificacion"
+			<p:commandButton value="Nuevo justificacion"
 				action="#{gestionJustificacion.inicializar}">
-				<f:setPropertyActionListener target="#{gestionJustificacion.id}" value="" />
+				<f:setPropertyActionListener target="#{gestionJustificacion.id}" value="#{null}" />
 				<f:setPropertyActionListener target="#{gestionJustificacion.modalidad}" value="insert" />
-			</h:commandLink>
+				<f:setPropertyActionListener target="#{gestionJustificacion.navegar}" value="/pages/eventos/justificaciones/listadoJustificacionesEstudiante.xhtml?faces-redirect=true" />
+		
+			</p:commandButton>
 
-			<h3>
-				<h:outputLabel value="Criterios de Seleccion" />
-			</h3>
-
-
-
-			<h:panelGrid columns="2">
-
-				<p:outputLabel value="Descripcion" />
-				<p:inputText id="descripcionCrit"
-					value="#{gestionJustificacionesBean.criterioDescripcion}" />
-
-				<p:outputLabel value="Fecha" />
-				<p:calendar id="reclamoFecha" disabled="true"
-					value="#{gestionJustificacionesBean.criterioFecha}" />
-
-				<p:outputLabel value="Evento - Actividad" />
-				<p:inputText id="eventoActividadCrit"
-					value="#{gestionJustificacionesBean.criterioEventoActividad}" />
-
-				<p:outputLabel value="Fecha Evento" />
-				<p:calendar id="reclamoFechaEvento" disabled="true"
-					value="#{gestionJustificacionesBean.criterioFechaEvento}" />
+<!-- 			<h3> -->
+<!-- 				<h:outputLabel value="Criterios de Seleccion" /> -->
+<!-- 			</h3> -->
 
 
-				<p:outputLabel value="Docente" />
-				<p:inputText id="docenteCrit"
-					value="#{gestionJustificacionesBean.criterioDocente}" />
+
+<!-- 			<h:panelGrid columns="2"> -->
+
+<!-- 				<p:outputLabel value="Descripcion" /> -->
+<!-- 				<p:inputText id="descripcionCrit" -->
+<!-- 					value="#{gestionJustificacionesBean.criterioDescripcion}" /> -->
+
+<!-- 				<p:outputLabel value="Fecha" /> -->
+<!-- 				<p:calendar id="reclamoFecha" disabled="true" -->
+<!-- 					value="#{gestionJustificacionesBean.criterioFecha}" /> -->
+
+<!-- 				<p:outputLabel value="Evento - Actividad" /> -->
+<!-- 				<p:inputText id="eventoActividadCrit" -->
+<!-- 					value="#{gestionJustificacionesBean.criterioEventoActividad}" /> -->
+
+<!-- 				<p:outputLabel value="Fecha Evento" /> -->
+<!-- 				<p:calendar id="reclamoFechaEvento" disabled="true" -->
+<!-- 					value="#{gestionJustificacionesBean.criterioFechaEvento}" /> -->
+
+
+<!-- 				<p:outputLabel value="Docente" /> -->
+<!-- 				<p:inputText id="docenteCrit" -->
+<!-- 					value="#{gestionJustificacionesBean.criterioDocente}" /> -->
 					
-			<p:outputLabel value="Estado justificacion" />
-			<p:selectOneMenu id="tipoEstadoCrit" value="#{gestionJustificacionesBean.criterioTipoEstado}"
-				effect="fold" editable="false">
-				<f:selectItem itemLabel="Selecione Estado" itemValue=""/>
-				<f:selectItems value="#{combosBean.comboTipoEstadoJustificacionSelectItem}" />
-			</p:selectOneMenu>
+<!-- 			<p:outputLabel value="Estado justificacion" /> -->
+<!-- 			<p:selectOneMenu id="tipoEstadoCrit" value="#{gestionJustificacionesBean.criterioTipoEstado}" -->
+<!-- 				effect="fold" editable="false"> -->
+<!-- 				<f:selectItem itemLabel="Selecione Estado" itemValue=""/> -->
+<!-- 				<f:selectItems value="#{combosBean.comboTipoEstadoJustificacionSelectItem}" /> -->
+<!-- 			</p:selectOneMenu> -->
 	
-			</h:panelGrid>
+<!-- 			</h:panelGrid> -->
 
 			<p:commandButton value="Buscar"
 				action="#{gestionJustificacionesBean.seleccionarEventos()}"
@@ -86,11 +88,13 @@
 			<p:column>
 				<f:facet name="header">Acciones</f:facet>
 			<h:form>
-				<h:commandLink value="Editar Justificacion"
+				<p:commandButton value="Editar Justificacion"
 					action="#{gestionJustificacion.inicializar}">
 					<f:setPropertyActionListener target="#{gestionJustificacion.id}" value="#{justificacion.id}" />
 					<f:setPropertyActionListener target="#{gestionJustificacion.modalidad}" value="update" />
-				</h:commandLink>
+					<f:setPropertyActionListener target="#{gestionJustificacion.navegar}" value="/pages/eventos/justificaciones/listadoJustificacionesEstudiante.xhtml?faces-redirect=true" />
+		
+				</p:commandButton>
 				</h:form>
 			</p:column>
 
@@ -98,10 +102,11 @@
 			<p:column sortBy="#{justificacion.estadoJustificacionId}">
 				<f:facet name="header">Estado</f:facet>
 				#{justificacion.estadoJustificacionId.nombre}
-				 <p:commandButton value="Editar estado" style=""
-			                       oncomplete="PF('editDialog').show()" update="editDialogForm">
-			            <f:setPropertyActionListener target="#{gestionJustificacion.justificacionToEditEstado}" value="#{justificacion}" />
-			        </p:commandButton>
+				<!--el estudiante no debe modificar el estado de la justificacion-->
+<!-- 				 <p:commandButton value="Editar estado" style="" -->
+<!-- 			                       oncomplete="PF('editDialog').show()" update="editDialogForm"> -->
+<!-- 			            <f:setPropertyActionListener target="#{gestionJustificacion.justificacionToEditEstado}" value="#{justificacion}" /> -->
+<!-- 			        </p:commandButton> -->
 			</p:column>
 			
 			<p:column sortBy="#{justificacion.estudianteId}">
@@ -117,7 +122,10 @@
 
 			<p:column sortBy="#{justificacion.fecha}">
 				<f:facet name="header">Fecha de justificacion</f:facet>
-				#{justificacion.fecha}
+				
+				<h:outputText value="#{justificacion.fecha}">
+       				 <f:convertDateTime pattern="dd/MM/yyyy" />
+   		 		</h:outputText>
 			</p:column>
 
 			<p:column sortBy="#{justificacion.eventoId.titulo}">
@@ -127,7 +135,11 @@
 
 			<p:column sortBy="#{justificacion.eventoId.inicio}">
 				<f:facet name="header">Fecha de evento</f:facet>
-				#{justificacion.eventoId.inicio}
+				
+				<h:outputText value="#{justificacion.eventoId.inicio}">
+       				 <f:convertDateTime pattern="dd/MM/yyyy" />
+   		 		</h:outputText>
+				 
 			</p:column>
 			
 			<p:column>
@@ -147,13 +159,13 @@
 			</p:column>
 
 
-			<p:column>
-			<f:facet name="header">Registro Accion</f:facet>
+<!-- 			<p:column> -->
+<!-- 			<f:facet name="header">Registro Accion</f:facet> -->
 
-			<p:commandButton value="Accion"
-				action="#{gestionAccionJustificacionBean.inicializarAccionJustificacion(justificacion)}" />
+<!-- 			<p:commandButton value="Accion" -->
+<!-- 				action="#{gestionAccionJustificacionBean.inicializarAccionJustificacion(justificacion)}" /> -->
 
-		</p:column>
+<!-- 		</p:column> -->
 		</p:dataTable>
 
 

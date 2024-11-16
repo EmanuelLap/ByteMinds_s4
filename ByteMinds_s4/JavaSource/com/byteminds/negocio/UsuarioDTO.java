@@ -1,8 +1,11 @@
 package com.byteminds.negocio;
 
 import javax.validation.constraints.NotNull;
-
+import javax.validation.constraints.Size;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -25,40 +28,43 @@ public class UsuarioDTO implements Serializable {
 	@NotNull
 	private Integer id;
 
-	@NotNull
+	@NotNull(message = "El documento de identidad es obligatorio")
+//	@Size(min = 6, max = 8, message = "El documento de identidad debe tener entre 6 y 8 caracteres")
+	@Min(value = 99999, message = "El documento de identidad debe tener entre 6 y 8 caracteres")
+	@Max(value = 99999999, message = "El documento de identidad debe tener entre 6 y 8 caracteres")
 	private Integer documento;
 
-	@NotNull
-	@Length(min = 4, max = 50)
+	@NotNull(message = "Ingrese un nombre de usuario minimo 4 caracteres")
+	@Size(min = 4, max = 45, message = "El nombre de usuario debe tener entre 4 y 50 caracteres")
 	private String usuario;
 
-	@NotNull
-	@Length(min = 8, max = 16)
+	@NotNull(message = "La contraseña es obligatoria")
+	@Size(min = 8, max = 16, message = "La contraseña debe tener entre 8 y 16 caracteres")
 	private String contrasenia;
 
-	@NotNull
-	@Length(min = 2, max = 50)
+	@NotNull (message = "El apellido es obligatorio")
+	@Size(min = 2, max = 45, message = "El apellido debe tener entre 2 y 45 caracteres")
 	private String apellidos;
 
-	@NotNull
-	@Length(min = 2, max = 50)
+	@NotNull (message = "El nombre es obligatorio")
+	@Size(min = 2, max = 45, message = "El nombre debe tener entre 2 y 45 caracteres")
 	private String nombres;
 
-	@NotNull
+	@NotNull (message = "La fecha de nacimiento es obligatoria")
 	private Date fechaNacimiento;
 
 	private String departamento;
 	private String genero;
 	private String localidad;
 
-	@NotNull
+	@NotNull(message = "El correo electronico es obligatorio")
 	@Email
 	private String mail;
 
 	private String mailPersonal;
 
-	@NotNull
-	@Length(min = 4, max = 20)
+	@NotNull (message = "El telefono es obligatorio")
+	@Size(min = 4, max = 20, message = "El telefono debe tener entre 4 y 20 caracteres")
 	private String telefono;
 	private ItrDTO itr;
 	private RolDTO rol;

@@ -18,11 +18,13 @@
 		<h:form id="formBuscar">
 		
 		
-			<h:commandLink value="Nuevo reclamo"
+			<p:commandButton value="Nuevo reclamo"
 				action="#{gestionReclamo.inicializar}">
-				<f:setPropertyActionListener target="#{gestionReclamo.id}" value="" />
+				<f:setPropertyActionListener target="#{gestionReclamo.id}" value="#{null}" />
 				<f:setPropertyActionListener target="#{gestionReclamo.modalidad}" value="insert" />
-			</h:commandLink>
+				<f:setPropertyActionListener target="#{gestionReclamo.navegar}" value="/pages/reclamos/listadoReclamos.xhtml?faces-redirect=true" />
+					
+			</p:commandButton>
 
 			<h3>
 				<h:outputLabel value="Criterios de Seleccion" />
@@ -101,6 +103,8 @@
 					action="#{gestionReclamo.inicializar}">
 					<f:setPropertyActionListener target="#{gestionReclamo.id}" value="#{reclamo.id}" />
 					<f:setPropertyActionListener target="#{gestionReclamo.modalidad}" value="update" />
+					<f:setPropertyActionListener target="#{gestionReclamo.navegar}" value="/pages/reclamos/listadoReclamos.xhtml?faces-redirect=true" />
+					
 				</h:commandLink>
 				</h:form>
 			</p:column>

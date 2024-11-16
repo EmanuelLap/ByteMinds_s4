@@ -104,7 +104,12 @@ public class GestionAccionJustificacionBean implements Serializable{
 	
 	public String volver() {
 		System.out.println("TODO: volver");
-		return "/pages/eventos/justificaciones/listadoJustificacions.xhtml";//pages/reclamos/listadoJustificacions.xhtml
+		return "/pages/eventos/justificaciones/listadoJustificaciones.xhtml";//pages/reclamos/listadoJustificacions.xhtml
+	}
+	
+	public String volverEstudiante() {
+		System.out.println("TODO: volver");
+		return "/pages/eventos/justificaciones/listadoJustificacionesEstudiante.xhtml";//pages/reclamos/listadoJustificacions.xhtml
 	}
 	public String editarAccionJustificacion() {
 		System.out.println("TODO: editarAccionJustificacion");

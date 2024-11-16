@@ -64,8 +64,10 @@ public class GestionTipoAreaService implements Serializable {
 	// servicios para capa de Presentacion
 
 public TipoAreaDTO obtenerTipoAreaPorId(Integer id) {
-	
-	
+	List<TipoArea> tipoArea = ejbRemoto.buscarTipoAreaPor(String.valueOf(id),null);
+	if(tipoArea.size()>0) {
+		return fromTipoArea(tipoArea.get(0));
+	}
 	return null;
 }
 

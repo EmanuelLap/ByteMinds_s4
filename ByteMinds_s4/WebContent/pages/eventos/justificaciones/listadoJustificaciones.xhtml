@@ -18,11 +18,12 @@
 		<h:form id="formBuscar">
 		
 		
-			<h:commandLink value="Nueva justificacion"
+			<p:commandButton value="Nueva justificacion"
 				action="#{gestionJustificacion.inicializar}">
-				<f:setPropertyActionListener target="#{gestionJustificacion.id}" value="" />
+				<f:setPropertyActionListener target="#{gestionJustificacion.id}" value="#{null}" />
 				<f:setPropertyActionListener target="#{gestionJustificacion.modalidad}" value="insert" />
-			</h:commandLink>
+				<f:setPropertyActionListener target="#{gestionJustificacion.navegar}" value="/pages/eventos/justificaciones/listadoJustificaciones.xhtml?faces-redirect=true" />
+			</p:commandButton>
 
 			<h3>
 				<h:outputLabel value="Criterios de Seleccion" />
@@ -92,6 +93,8 @@
 					action="#{gestionJustificacion.inicializar}">
 					<f:setPropertyActionListener target="#{gestionJustificacion.id}" value="#{justificacion.id}" />
 					<f:setPropertyActionListener target="#{gestionJustificacion.modalidad}" value="update" />
+					<f:setPropertyActionListener target="#{gestionJustificacion.navegar}" value="/pages/eventos/justificaciones/listadoJustificaciones.xhtml?faces-redirect=true" />
+		
 				</h:commandLink>
 				</h:form>
 			</p:column>
@@ -155,7 +158,7 @@
 			<p:column>
 			<f:facet name="header">Registro Accion</f:facet>
 
-			<p:commandButton value="Accion"
+			<p:commandButton value="Accion" id="btnAccionJustificacion"
 				action="#{gestionAccionJustificacionBean.inicializarAccionJustificacion(justificacion)}" />
 
 		</p:column>

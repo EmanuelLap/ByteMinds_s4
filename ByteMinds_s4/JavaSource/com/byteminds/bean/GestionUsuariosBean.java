@@ -118,6 +118,18 @@ public class GestionUsuariosBean implements Serializable{
 		
 	}
 	
+	public String getGeneroDescripcion(String genero) {
+	    switch (genero) {
+	        case "M":
+	            return "Masculino";
+	        case "F":
+	            return "Femenino";
+	        case "O":
+	            return "Otro";
+	        default:
+	            return "No especificado";
+	    }
+	}
 	
 	// ******** Getters & Setters****************************
 	

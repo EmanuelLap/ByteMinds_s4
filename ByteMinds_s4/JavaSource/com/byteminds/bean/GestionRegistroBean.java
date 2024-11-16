@@ -33,9 +33,9 @@ import com.byteminds.negocio.UsuarioDTO;
 import com.byteminds.utils.ExceptionsTools;
 
 
-@Named(value = "gestionUsuario") // JEE8
+@Named(value = "gestionRegistro") // JEE8
 @SessionScoped // JEE8
-public class GestionUsuarioBean implements Serializable {
+public class GestionRegistroBean implements Serializable {
 
 	/**
 	 * 
@@ -51,15 +51,9 @@ public class GestionUsuarioBean implements Serializable {
 	GestionTipoTutorService gestionTipoTutorService;
 	GestionTipoAreaService gestionTipoAreaService;
 	
-	private Integer id;
-	private String modalidad;
+
 	private String u_tipo;
-
-
-
-	private String contrasenia;
-	private String nuevaContrasenia;
-	private String nuevaContraseniaConfirmar;
+	private Boolean mostrarContrasenia = false;
 
 	private UsuarioDTO usuarioSeleccionado;
 
@@ -82,7 +76,7 @@ public class GestionUsuarioBean implements Serializable {
 	
 	private boolean modoEdicion = false;
 
-	public GestionUsuarioBean() {
+	public GestionRegistroBean() {
 		super();
 		gestionItrService= new GestionItrService();
 		gestionRolService = new GestionRolService();
@@ -98,7 +92,6 @@ public class GestionUsuarioBean implements Serializable {
 		fechaMaximaNacimiento = cal.getTime();
 	}
 
-	
 	@PostConstruct
 	public void init() {
 		anosGeneracion = new ArrayList<>();
@@ -109,138 +102,103 @@ public class GestionUsuarioBean implements Serializable {
 
 	}
 
+	
 	// se ejecuta antes de desplegar la vista
-	public void preRenderViewListener() {
-
-		if (id != null) {
-			usuarioSeleccionado = gestionUsuarioService.buscarUsuario(id);
-			this.itrDTOSeleccionadoId = usuarioSeleccionado.getItr().getId();
-			this.rolDTOSeleccionadoId= usuarioSeleccionado.getRol().getId();
-			if(esTutor()){
-				this.tipoAreaDTOSeleccionadoId = ((TutorDTO)(usuarioSeleccionado)).getTipoDTO().getId();
-				this.tipoTutorDTOSeleccionadoId = ((TutorDTO)(usuarioSeleccionado)).getAreaDTO().getId();
-			
-			}
-		} else {
-			if (u_tipo.contentEquals("ESTUDIANTE") && usuarioSeleccionado == null) {
-				usuarioSeleccionado = new EstudianteDTO();
-			}
-			if (u_tipo.contentEquals("ANALISTA") && usuarioSeleccionado == null) {
-				usuarioSeleccionado = new AnalistaDTO();
-			}
-			if (u_tipo.contentEquals("TUTOR") && usuarioSeleccionado == null) {
-				usuarioSeleccionado = new TutorDTO();
-			}
-			usuarioSeleccionado.setUTipo(u_tipo);
-			//Solo cargar cuando es nuevo
-			if(usuarioSeleccionado == null) {
+	public String inicializar() {
 				this.itrDTOSeleccionadoId=0;
 				this.rolDTOSeleccionadoId=0;
 				this.tipoAreaDTOSeleccionadoId = 0;
 				this.tipoTutorDTOSeleccionadoId = 0;
+				
+			if (u_tipo.contentEquals("ESTUDIANTE")) {
+				usuarioSeleccionado = new EstudianteDTO();
+				this.rolDTOSeleccionadoId=1;
+				rolDTOSeleccionado = gestionRolService.obtenerRolSeleccionado(1);
+			    this.usuarioSeleccionado.setRol(rolDTOSeleccionado);
 			}
-		}
-		if (modalidad.contentEquals("view")) {
-			modoEdicion = false;
-		} else if (modalidad.contentEquals("update")) {
-			modoEdicion = true;
-		} else if (modalidad.contentEquals("insert")) {
-			modoEdicion = true;
-		} else if (modalidad.contentEquals("edit")) {
-			modoEdicion = true;
-		} else {
-
-			modoEdicion = false;
-			modalidad = "view";
-
-		}
+			if (u_tipo.contentEquals("ANALISTA")) {
+				usuarioSeleccionado = new AnalistaDTO();
+				this.rolDTOSeleccionadoId=2;
+				rolDTOSeleccionado = gestionRolService.obtenerRolSeleccionado(2);
+			    this.usuarioSeleccionado.setRol(rolDTOSeleccionado);
+			}
+			if (u_tipo.contentEquals("TUTOR")) {
+				usuarioSeleccionado = new TutorDTO();
+				this.rolDTOSeleccionadoId=3;
+				rolDTOSeleccionado = gestionRolService.obtenerRolSeleccionado(3);
+			    this.usuarioSeleccionado.setRol(rolDTOSeleccionado);
+			}
+			usuarioSeleccionado.setUTipo(u_tipo);
+			
+//			return "registroweb/registro.xhtml";
+			return "registroweb/registro.xhtml?faces-redirect=true";
+			
 	}
-
-	// acciones
-	public String cambiarModalidadUpdate() throws CloneNotSupportedException {
-		// this.modalidad="update";
-		return "DatosUsuario?faces-redirect=true&includeViewParams=true";
-
-	}
+public String volver() {
+	return "/login.xhtml?faces-redirect=true";
+}
 
 	// Pasar a modo
 	public String salvarCambios() {
-
-		if (usuarioSeleccionado.getId() == null) {
-				usuarioSeleccionado.setActivo(true);
-				usuarioSeleccionado.setValidado(false);
+		
+		if (usuarioSeleccionado != null) {
+			usuarioSeleccionado.setActivo(true);
+			usuarioSeleccionado.setValidado(false);
 //				usuarioSeleccionado.setRol(rolDTOSeleccionado);
 //				usuarioSeleccionado.setItr(itrDTOSeleccionado);
-			if(validarDatos()) {
-				
-			try {
-				System.out.println(usuarioSeleccionado.toString());
-				System.out.println("------------------------------------------");
-				System.out.println(usuarioSeleccionado.getNombres());
-				System.out.println(usuarioSeleccionado.getApellidos());
-				System.out.println(usuarioSeleccionado.getDocumento());
-				System.out.println(usuarioSeleccionado.getGenero());
-				System.out.println(usuarioSeleccionado.getFechaNacimiento());
-				System.out.println(usuarioSeleccionado.getDepartamento());
-				System.out.println(usuarioSeleccionado.getLocalidad());
-				System.out.println(usuarioSeleccionado.getUTipo());
-				System.out.println(usuarioSeleccionado.getItr().getNombre());
-				System.out.println(usuarioSeleccionado.getRol().getNombre());
-				System.out.println(usuarioSeleccionado.getTelefono());
-				System.out.println(usuarioSeleccionado.getActivo());
-				System.out.println(usuarioSeleccionado.getUsuario());
-				System.out.println(usuarioSeleccionado.getMail());
-				System.out.println(usuarioSeleccionado.getMailPersonal());
-				System.out.println(usuarioSeleccionado.getValidado());
-				System.out.println("------------------------------------------");
-				UsuarioDTO usuarioNuevo;
-				usuarioNuevo = (UsuarioDTO) gestionUsuarioService.agregarUsuario(usuarioSeleccionado);
-				usuarioSeleccionado = null;
-				this.id = usuarioNuevo.getId();
+			cargarMailAutomaticamente();
+			if (validarDatos()) {
 
-				// mensaje de actualizacion correcta
-				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha agregado un nuevo usuario",	"");
+				try {
+					System.out.println(usuarioSeleccionado.toString());
+					System.out.println("------------------------------------------");
+					System.out.println(usuarioSeleccionado.getNombres());
+					System.out.println(usuarioSeleccionado.getApellidos());
+					System.out.println(usuarioSeleccionado.getDocumento());
+					System.out.println(usuarioSeleccionado.getGenero());
+					System.out.println(usuarioSeleccionado.getFechaNacimiento());
+					System.out.println(usuarioSeleccionado.getDepartamento());
+					System.out.println(usuarioSeleccionado.getLocalidad());
+					System.out.println(usuarioSeleccionado.getUTipo());
+					System.out.println(usuarioSeleccionado.getItr().getNombre());
+					System.out.println(usuarioSeleccionado.getRol().getNombre());
+					System.out.println(usuarioSeleccionado.getTelefono());
+					System.out.println(usuarioSeleccionado.getActivo());
+					System.out.println(usuarioSeleccionado.getUsuario());
+					System.out.println(usuarioSeleccionado.getMail());
+					System.out.println(usuarioSeleccionado.getMailPersonal());
+					System.out.println(usuarioSeleccionado.getValidado());
+					System.out.println("------------------------------------------");
+					UsuarioDTO usuarioNuevo;
+					usuarioNuevo = (UsuarioDTO) gestionUsuarioService.agregarUsuario(usuarioSeleccionado);
+					usuarioSeleccionado = null;
+
+					// mensaje de actualizacion correcta
+					FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Se ha agregado un nuevo usuario", "");
+					FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+
+				} catch (PersistenciaException e) {
+
+					Throwable rootException = ExceptionsTools.getCause(e);
+					String msg1 = e.getMessage();
+					String msg2 = ExceptionsTools.formatedMsg(rootException);
+					// mensaje de actualizacion correcta
+					FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
+					FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+
+					e.printStackTrace();
+				}
+
+				return null;
+			}else {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						"ERROR AL VALIDAR USUARIO", "");
 				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-
-				this.modalidad = "view";
-
-			} catch (PersistenciaException e) {
-
-				Throwable rootException = ExceptionsTools.getCause(e);
-				String msg1 = e.getMessage();
-				String msg2 = ExceptionsTools.formatedMsg(rootException);
-				// mensaje de actualizacion correcta
-				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
-				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-
-				this.modalidad = "update";
-
-				e.printStackTrace();
 			}
-			}return null;
-		} else if (modalidad.equals("update")) {
-
-			try {
-				gestionUsuarioService.actualizarUsuario(usuarioSeleccionado);
-
-				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el usuario.", ""));
-
-			} catch (PersistenciaException e) {
-
-				Throwable rootException = ExceptionsTools.getCause(e);
-				String msg1 = e.getMessage();
-				String msg2 = ExceptionsTools.formatedMsg(e.getCause());
-				// mensaje de actualizacion correcta
-				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
-				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-
-				this.modalidad = "update";
-
-				e.printStackTrace();
-			}
+			
 		}
-		return "";
+		return null;
 	}
 
 	public String bajaLogicaUsuario() {
@@ -252,7 +210,7 @@ public class GestionUsuarioBean implements Serializable {
 				gestionUsuarioService.actualizarUsuario(usuarioSeleccionado);
 
 				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha desactivado el usuario.", ""));
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha eliminado el usuario.", ""));
 
 			} catch (PersistenciaException e) {
 
@@ -263,86 +221,45 @@ public class GestionUsuarioBean implements Serializable {
 				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
 				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 
-				this.modalidad = "update";
 
 				e.printStackTrace();
 			}
 		}
 		return "";
 	}
-	
-	public String activarUsuario() {
 
-		if (usuarioSeleccionado.getId() != null) {
-				usuarioSeleccionado.setActivo(true);
-			try {
-				gestionUsuarioService.actualizarUsuario(usuarioSeleccionado);
-
-				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha activado el usuario.", ""));
-
-			} catch (PersistenciaException e) {
-
-				Throwable rootException = ExceptionsTools.getCause(e);
-				String msg1 = e.getMessage();
-				String msg2 = ExceptionsTools.formatedMsg(e.getCause());
-				// mensaje de actualizacion correcta
-				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
-				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-
-				this.modalidad = "update";
-
-				e.printStackTrace();
-			}
-		}
-		return "";
-	}
-	
 	public String print() {
 
 		System.out.println("Apretaste el boton!");
 		return "";
 	}
 	
-	
+	public String limpiar() {
 
-	public void cambiarContrasenia() {
-		FacesMessage message = null;
+			System.out.println("Apretaste el boton LIMPIAR!");
+			inicializar();
 
-		if (contrasenia.equals(usuarioSeleccionado.getContrasenia())) {
+			System.out.println("Apretaste el boton LIMPIAR! SE LIMPIARON?");
 
-			if (nuevaContrasenia.equals(nuevaContraseniaConfirmar) && !nuevaContrasenia.equals("")) {
-				
-				 String password = nuevaContrasenia;
-				    // Validación de la contraseña con una expresión regular que incluye los requisitos mencionados.
-				    String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$";
-				    
-				    if(!password.matches(passwordPattern)) {
-				    	message = new FacesMessage(FacesMessage.SEVERITY_WARN, 
-				            "La contraseña no cumple con los requisitos: debe tener entre 8 y 20 caracteres, incluir números, mayúsculas, minúsculas y caracteres especiales.", "");
-				        FacesContext.getCurrentInstance().addMessage(null, message);
-				        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-				        
-				    }else {
-					usuarioSeleccionado.setContrasenia(nuevaContrasenia);
-					this.salvarCambios();
-					message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se cambio la contraseña ", "");
-					FacesContext.getCurrentInstance().addMessage(null, message);
-					FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-				    }
-			} else {
-				message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Las contraseñas no coinciden", "");
-				FacesContext.getCurrentInstance().addMessage(null, message);
-				FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-			}
-		} else {
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "La contraseña proporcionada no es la correcta! ","");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-		}
+		return "";
 	}
 
-	
+	public void cargarMailAutomaticamente() {
+		System.out.println("MAIL AUTOMATICO SIN SETEAR: " + this.usuarioSeleccionado.getMail());
+		if (this.usuarioSeleccionado.getMail() == null || this.usuarioSeleccionado.getMail().isEmpty()) {
+			if (!this.usuarioSeleccionado.getApellidos().isEmpty()
+					&& !this.usuarioSeleccionado.getNombres().isEmpty()) {
+				String tipoPerfil = this.u_tipo.toLowerCase();
+				if (tipoPerfil.equals("TUTOR")) {
+					tipoPerfil = tipoPerfil + "e";
+				}
+				this.usuarioSeleccionado.setMail(this.usuarioSeleccionado.getNombres() + "."
+						+ this.usuarioSeleccionado.getApellidos() + "@" + tipoPerfil + "s.utec.edu.uy");
+			}
+			System.out.println("MAIL AUTOMATICO: " + this.usuarioSeleccionado.getMail());
+		}
+		
+	}
 
 	public void actualizarITRSeleccionado(AjaxBehaviorEvent event) {
 	    Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
@@ -369,6 +286,7 @@ public class GestionUsuarioBean implements Serializable {
 	
 	
 	public void actualizarTipoTutorAreaSeleccionado(AjaxBehaviorEvent event) {
+		System.out.println("AYAX actualizarTipoTutorAreaSeleccionado");
 	    Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
 	    if(nuevoValor == -1) {
 	    	FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar tipo de area para tutor valido",	"");
@@ -376,7 +294,7 @@ public class GestionUsuarioBean implements Serializable {
 	    }else {
 	    	tipoAreaDTOSeleccionado = gestionTipoAreaService.obtenerTipoAreaPorId(nuevoValor);
 	    	((TutorDTO)this.usuarioSeleccionado).setAreaDTO(tipoAreaDTOSeleccionado);
-//	    System.out.println("ROL SETEADO = "+this.usuarioSeleccionado.getRol().getNombre());
+	    System.out.println("tipoAreaDTOSeleccionado SETEADO = "+((TutorDTO)this.usuarioSeleccionado).getAreaDTO());
 	}}
 	
 
@@ -396,7 +314,12 @@ public class GestionUsuarioBean implements Serializable {
 	
 	
 	public Boolean validarDatos() {
-		
+
+		if(this.usuarioSeleccionado.getMail()==null || this.usuarioSeleccionado.getMail().isEmpty()) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe completar nombre y apellido para que se le asigne un correo ",	"");
+			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+			return false;
+		}
 		if(this.usuarioSeleccionado.getRol()==null) {
 			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar Rol ",	"");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
@@ -450,98 +373,11 @@ public class GestionUsuarioBean implements Serializable {
 		return true;
 	}
 	
-	  public String irACambiarContrasena() {
-	        return "/pages/CambiarContrasena.xhtml?id=" + usuarioSeleccionado.getId() + "&modalidad=edit&faces-redirect=true";
-	    }
-	
-	  public String irPerfil() {
-	        return "/pages/VerPerfil.xhtml?faces-redirect=true";
-	    }
-	
 
 	
-//	
-//	public void validarMailInstitucional(String patron) {
-//		if (txtEmailInstitucional.getText() != null && !txtEmailInstitucional.getText().isEmpty()) {
-//			if (!txtEmailInstitucional.getText().matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + patron + "$")) {
-//				lblEmailValido.setVisible(true);
-//				lblEmailValido.setText("Invalido!");
-//				lblEmailValido.setForeground(Color.RED);
-//				emailInstValido = false;
-//			} else {
-//				lblEmailValido.setVisible(true);
-//				lblEmailValido.setText("Valido!");
-//				lblEmailValido.setForeground(Color.GREEN);
-//				String email = txtEmailInstitucional.getText();
-//				email = email.replaceAll("@" + patron, "");
-//				txtUsuario.setText(email);
-//				emailInstValido = true;
-//
-//			}
-//		}
-//	}
-//	public void validarContrasenia() {
-//		if (!txtPass.getText().matches(PASSWORD_PATTERN)) {
-//			lblpassValido.setVisible(true);
-//			lblpassValido.setText("Invalido!");
-//			lblpassValido.setForeground(Color.RED);
-//			passValido = false;
-//		} else {
-//			lblpassValido.setVisible(true);
-//			lblpassValido.setText("Valido!");
-//			lblpassValido.setForeground(Color.GREEN);
-//			passValido = true;
-//
-//		}
-//	}
-//	
-//	public void validarContraseniasIguales() {
-//		
-//		if(!txtRepetirPass.getText().equals(txtPass.getText())) {
-//			lblpassCoincide.setVisible(true);
-//			lblpassCoincide.setText("No coinciden!");
-//			lblpassCoincide.setForeground(Color.RED);
-//			passCoincideValido = false;
-//		} else {
-//			lblpassCoincide.setVisible(true);
-//			lblpassCoincide.setText("Coinciden!");
-//			lblpassCoincide.setForeground(Color.GREEN);
-//			passCoincideValido = true;
-//
-//		}
-//	}
-//	
-//	public void validarMail() {
-//		if (!txtEmail.getText().matches(EMAIL_VALIDO)) {
-//			lblEmailPersonalValido.setVisible(true);
-//			lblEmailPersonalValido.setText("Invalido!");
-//			lblEmailPersonalValido.setForeground(Color.RED);
-//			emailValido = false;
-//		} else {
-//			lblEmailPersonalValido.setVisible(true);
-//			lblEmailPersonalValido.setText("Valido!");
-//			lblEmailPersonalValido.setForeground(Color.GREEN);
-//			emailValido = true;
-//
-//		}
-//	}
-//	
-//	
-//	public void validarEmailPerIguales() {
-//
-//		if(!txtEmail.getText().equals(txtRepetirEmail.getText())) {
-//			lblemailPersonalCoincide.setVisible(true);
-//			lblemailPersonalCoincide.setText("No coinciden!");
-//			lblemailPersonalCoincide.setForeground(Color.RED);
-//			emailPerCoincideValido = false;
-//		} else {
-//			lblemailPersonalCoincide.setVisible(true);
-//			lblemailPersonalCoincide.setText("Coinciden!");
-//			lblemailPersonalCoincide.setForeground(Color.GREEN);
-//			emailPerCoincideValido = true;
-//
-//		}
-//	}
+	
+	
+
 	
 	
 	public boolean esTutor() {
@@ -556,21 +392,6 @@ public class GestionUsuarioBean implements Serializable {
 		return this.usuarioSeleccionado instanceof AnalistaDTO;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getModalidad() {
-		return modalidad;
-	}
-
-	public void setModalidad(String modalidad) {
-		this.modalidad = modalidad;
-	}
 
 	public UsuarioDTO getUsuarioSeleccionado() {
 		return usuarioSeleccionado;
@@ -600,29 +421,7 @@ public class GestionUsuarioBean implements Serializable {
 		this.gestionUsuarioService = gestionUsuarioService;
 	}
 
-	public String getContrasenia() {
-		return contrasenia;
-	}
 
-	public void setContrasenia(String contrasenia) {
-		this.contrasenia = contrasenia;
-	}
-
-	public String getNuevaContrasenia() {
-		return nuevaContrasenia;
-	}
-
-	public void setNuevaContrasenia(String nuevaContrasenia) {
-		this.nuevaContrasenia = nuevaContrasenia;
-	}
-
-	public String getNuevaContraseniaConfirmar() {
-		return nuevaContraseniaConfirmar;
-	}
-
-	public void setNuevaContraseniaConfirmar(String nuevaContraseniaConfirmar) {
-		this.nuevaContraseniaConfirmar = nuevaContraseniaConfirmar;
-	}
 
 	public ItrDTO getItrDTOSeleccionado() {
 		return itrDTOSeleccionado;
@@ -710,4 +509,15 @@ public class GestionUsuarioBean implements Serializable {
 	public void setFechaMaximaNacimiento(Date fechaMaximaNacimiento) {
 		this.fechaMaximaNacimiento = fechaMaximaNacimiento;
 	}
+
+
+
+	public Boolean getMostrarContrasenia() {
+		return mostrarContrasenia;
+	}
+
+	public void setMostrarContrasenia(Boolean mostrarContrasenia) {
+		this.mostrarContrasenia = mostrarContrasenia;
+	}
+	
 }

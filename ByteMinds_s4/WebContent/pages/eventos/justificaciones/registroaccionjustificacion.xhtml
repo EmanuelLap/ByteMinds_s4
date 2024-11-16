@@ -23,10 +23,11 @@
 			<p:messages id="messages" showDetail="true" closable="true">
 				<p:autoUpdate />
 			</p:messages>
-			<h:commandLink id="idVolverAccionJustificacion"  value="Volver"
-				action="#{gestionAccionJustificacionBean.volver}">
-				<f:ajax />
-			</h:commandLink>
+			
+			<p:commandButton id="idVolverAccionJustificacion"  value="Volver"
+				action="#{gestionAccionJustificacionBean.volver()}" />
+				
+			
 					
 <div class="grid-container">
 			<p:panelGrid columns="2">

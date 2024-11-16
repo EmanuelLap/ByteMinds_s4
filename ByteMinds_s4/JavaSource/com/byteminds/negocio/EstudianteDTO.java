@@ -12,7 +12,7 @@ public class EstudianteDTO extends UsuarioDTO  implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@NotNull
+	@NotNull (message = "La generación es obligatoria")
 	private Integer generacion;
 
 	public EstudianteDTO() {

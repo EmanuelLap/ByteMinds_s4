@@ -49,6 +49,7 @@ public class CombosBean implements Serializable {
 	private List<String> comboItr;
 	private List<SelectItem> comboItrSelectItem;
 	private List<SelectItem> comboROLSelectItem;
+	private List<SelectItem> comboROLSelectItemRegistro;
 	private List<SelectItem> comboTipoTutorSelectItem;
 	private List<SelectItem> comboTipoAreaSelectItem;
 	private List<String> comboRol;
@@ -98,6 +99,7 @@ public class CombosBean implements Serializable {
 		comboTipoEventoSelectItem= new ArrayList<SelectItem>();
 		comboItrSelectItem= new ArrayList<SelectItem>();
 		comboROLSelectItem= new ArrayList<SelectItem>();
+		comboROLSelectItemRegistro= new ArrayList<SelectItem>();
 		comboTipoTutorSelectItem= new ArrayList<SelectItem>();
 		comboTipoAreaSelectItem= new ArrayList<SelectItem>();
 		comboTipoEstadoEventoSelectItem = new ArrayList<SelectItem>();
@@ -209,6 +211,7 @@ public class CombosBean implements Serializable {
 		for (Rol rolItem : listROL) {
 //			this.comboRol.add(gROLS.fromRol(rolItem).getNombre());
 			comboROLSelectItem.add(new SelectItem(gROLS.fromRol(rolItem).getNombre(),gROLS.fromRol(rolItem).getNombre()));
+			comboROLSelectItemRegistro.add(new SelectItem(gROLS.fromRol(rolItem).getId(),gROLS.fromRol(rolItem).getNombre()));
 		}
 
 	}
@@ -246,6 +249,14 @@ public class CombosBean implements Serializable {
 
 	public void setComboROLSelectItem(List<SelectItem> comboROLSelectItem) {
 		this.comboROLSelectItem = comboROLSelectItem;
+	}
+	
+	public List<SelectItem> getComboROLSelectItemRegistro() {
+		return comboROLSelectItemRegistro;
+	}
+
+	public void setComboROLSelectItemRegistro(List<SelectItem> comboROLSelectItemRegistro) {
+		this.comboROLSelectItemRegistro = comboROLSelectItemRegistro;
 	}
 
 	public List<SelectItem> getComboTipoAreaSelectItem() {
