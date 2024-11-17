@@ -2,6 +2,7 @@ package com.byteminds.bean;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,6 +16,7 @@ import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Named;
+import javax.validation.ConstraintViolationException;
 
 import com.byteminds.exception.PersistenciaException;
 import com.byteminds.negocio.AnalistaDTO;
@@ -204,18 +206,39 @@ public class GestionUsuarioBean implements Serializable {
 
 				this.modalidad = "view";
 
-			} catch (PersistenciaException e) {
+//			} catch (PersistenciaException e) {
+//
+//				Throwable rootException = ExceptionsTools.getCause(e);
+//				String msg1 = e.getMessage();
+//				String msg2 = ExceptionsTools.formatedMsg(rootException);
+//				// mensaje de actualizacion correcta
+//				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
+//				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+//
+//				this.modalidad = "update";
+//
+//				e.printStackTrace();
+//			}
+			} catch (Exception e) {
+			    Throwable rootException = ExceptionsTools.getCause(e);
+			    System.out.println("Root Exception Class: " + rootException.getClass().getName());
+			    System.out.println("Root Exception Message: " + rootException.getMessage());
 
-				Throwable rootException = ExceptionsTools.getCause(e);
-				String msg1 = e.getMessage();
-				String msg2 = ExceptionsTools.formatedMsg(rootException);
-				// mensaje de actualizacion correcta
-				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
-				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+			    String msg1 = "Error inesperado.";
+			    String msg2 = ExceptionsTools.formatedMsg(rootException);
 
-				this.modalidad = "update";
+			    if (rootException instanceof ConstraintViolationException || 
+			        rootException instanceof SQLIntegrityConstraintViolationException) {
+			        msg1 = "Error: El dato que quiere ingresar ya existe.";
+			        msg2 = "Por favor, verifique la información ingresada.";
+			    }
 
-				e.printStackTrace();
+			    FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
+			    FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+
+			    this.modalidad = "update";
+
+			    e.printStackTrace();
 			}
 			}return null;
 		} else if (modalidad.equals("update")) {
@@ -226,18 +249,39 @@ public class GestionUsuarioBean implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha modificado el usuario.", ""));
 
-			} catch (PersistenciaException e) {
+//			} catch (PersistenciaException e) {
 
-				Throwable rootException = ExceptionsTools.getCause(e);
-				String msg1 = e.getMessage();
-				String msg2 = ExceptionsTools.formatedMsg(e.getCause());
-				// mensaje de actualizacion correcta
-				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
-				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+//				Throwable rootException = ExceptionsTools.getCause(e);
+//				String msg1 = e.getMessage();
+//				String msg2 = ExceptionsTools.formatedMsg(e.getCause());
+//				// mensaje de actualizacion correcta
+//				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
+//				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+//
+//				this.modalidad = "update";
+//
+//				e.printStackTrace();
+//			}
+			} catch (Exception e) {
+			    Throwable rootException = ExceptionsTools.getCause(e);
+			    System.out.println("Root Exception Class: " + rootException.getClass().getName());
+			    System.out.println("Root Exception Message: " + rootException.getMessage());
 
-				this.modalidad = "update";
+			    String msg1 = "Error inesperado.";
+			    String msg2 = ExceptionsTools.formatedMsg(rootException);
 
-				e.printStackTrace();
+			    if (rootException instanceof ConstraintViolationException || 
+			        rootException instanceof SQLIntegrityConstraintViolationException) {
+			        msg1 = "Error: El dato que quiere ingresar ya existe.";
+			        msg2 = "Por favor, verifique la información ingresada.";
+			    }
+
+			    FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
+			    FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+
+			    this.modalidad = "update";
+
+			    e.printStackTrace();
 			}
 		}
 		return "";

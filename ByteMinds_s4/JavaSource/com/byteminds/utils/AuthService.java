@@ -12,15 +12,6 @@ import java.util.Date;
 
 public class AuthService {
   
-//    public String login(String username, String password) {
-//        // Aquí debes implementar la lógica de autenticación. Este es solo un ejemplo simple.
-//        if ("user".equals(username) && "password".equals(password)) {
-//            return createJWT("1", "ByteMindsApp", username, 3600000); // genera un token JWT con 1 hora de vida
-//        } else {
-//            throw new RuntimeException("Autenticación fallida");
-//        }
-//    }
-
     public String createJWT(String id, String issuer, String subject, long ttlMillis) {
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);

@@ -101,11 +101,15 @@
 			
 			<p:column sortBy="#{justificacion.estadoJustificacionId}">
 				<f:facet name="header">Estado</f:facet>
-				#{justificacion.estadoJustificacionId.nombre}
-				 <p:commandButton value="Editar estado" style=""
-			                       oncomplete="PF('editDialog').show()" update="editDialogForm">
-			            <f:setPropertyActionListener target="#{gestionJustificacion.justificacionToEditEstado}" value="#{justificacion}" />
-			        </p:commandButton>
+				
+				<div style="display: flex; align-items: center; gap: 5px;">
+				    <p:outputLabel value="#{justificacion.estadoJustificacionId.nombre}" />
+				    
+				    <p:commandButton icon="ui-icon-pencil" style="color:green"
+				                     oncomplete="PF('editDialog').show()" update="editDialogForm">
+				        <f:setPropertyActionListener target="#{gestionJustificacion.justificacionToEditEstado}" value="#{justificacion}" />
+				    </p:commandButton>
+				</div>
 			</p:column>
 			
 			<p:column sortBy="#{justificacion.estudianteId}">

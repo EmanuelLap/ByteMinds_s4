@@ -51,7 +51,7 @@
 				<p:message for="id" style="color:red" />
 
 				<p:outputLabel value="Documento" />
-				<p:inputText id="documento"
+				<p:outputLabel id="documento"
 					disabled="#{!gestionUsuario.modoEdicion}"
 					value="#{gestionUsuario.usuarioSeleccionado.documento}" />
 				<p:message for="documento" style="color:red" />
@@ -62,9 +62,9 @@
 				<p:message for="usuario" style="color:red" />
 
 				<p:outputLabel value="Contraseña" />
-				<p:inputText id="contrasenia"
+				<p:outputLabel id="contrasenia"
 					disabled="#{!gestionUsuario.modoEdicion}"
-					value="#{gestionUsuario.usuarioSeleccionado.contrasenia}" />
+					value="********" />
 				<p:message for="contrasenia" style="color:red" />
 
 				<p:outputLabel value="Apellidos" />

@@ -115,11 +115,18 @@
 			
 			<p:column sortBy="#{reclamo.estadoReclamoId}">
 				<f:facet name="header">Estado</f:facet>
-				#{reclamo.estadoReclamoId.nombre}
-				 <p:commandButton value="Editar estado" style=""
+				
+				<div style="display: flex; align-items: center; gap: 5px;">
+				    <p:outputLabel value="#{reclamo.estadoReclamoId.nombre != null and not empty reclamo.estadoReclamoId.nombre ? reclamo.estadoReclamoId.nombre : '-'}"  />
+				    
+				
+				
+				 <p:commandButton icon="ui-icon-pencil" style="color:green"
 			                       oncomplete="PF('editDialog').show()" update="editDialogForm">
 			            <f:setPropertyActionListener target="#{gestionReclamo.reclamoToEditEstado}" value="#{reclamo}" />
 			        </p:commandButton>
+			        
+			        </div>
 			</p:column>
 			
 			<p:column sortBy="#{reclamo.estudianteId}">

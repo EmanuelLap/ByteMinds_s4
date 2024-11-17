@@ -1,5 +1,6 @@
 package com.byteminds.utils;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -15,7 +16,8 @@ public class ExceptionsTools {
 
 		while (null != (cause = result.getCause()) && (result != cause)) {
 			result = cause;
-			if (result instanceof ConstraintViolationException) {
+			if (result instanceof ConstraintViolationException|| 
+		            result instanceof SQLIntegrityConstraintViolationException) {
 				return result;
 			}
 		}
