@@ -20,14 +20,6 @@
 	margin-bottom: 10px;
 }
 
-.login-form .ui-button {
-	color: black;
-/* 	background-color: #007BFF; */
-}
-
-.login-form .ui-button:hover {
-/* 	background-color: #0056b3; */
-}
 
 .link-container {
 	display: flex;
@@ -51,23 +43,34 @@
 </h:head>
 <h:body>
 	<div class="login-form">
-		<h:form>
+		<h:form id="loginForm">
 			<p:growl id="messagesLogin" sticky="true" showDetail="true"
 				life="3000" />
 
 			<p:panel header="Login" style="text-align: center;">
-
+<div style="position: relative; display: inline-block; text-align: left;">
 				<h:outputLabel for="username" value="Username:" />
 				<p:inputText id="username" value="#{loginBean.username}" />
-
+	
 				<h:outputLabel for="password" value="Password:" />
-				<p:password id="password" value="#{loginBean.password}" />
+<!-- 				style="position: absolute; right: 5px; top: 50%; transform: translateY(125%); width: 20px; height: 20px; background: none; border: none;"  -->
+					<p:inputText id="password" value="#{loginBean.password}" type="password" />
+					
+					<p:selectBooleanCheckbox id="mostrarContrasenia" 
+					
+					                             value="#{gestionRegistro.mostrarContrasenia}" 
+					                             onchange="togglePasswordVisibility('loginForm:password', this)" />
+				<h:outputLabel for="mostrarContrasenia" value="  Mostrar contraseña" />
+				
+				</div>
+
+
 
 				<div style="position: relative; text-align: center;">
 					<p:selectBooleanCheckbox id="ldapLogin" value="#{loginBean.activeDirectory}" 
 					itemLabel="LDAP" disabled="false"/>
 					
-					<h:commandButton value="Login" action="#{loginBean.login}"
+					<h:commandButton value="Login" action="#{loginBean.login}" 
 						update="messagesLogin" />
 
 				</div>
@@ -79,22 +82,13 @@
 					
 				</div>
 				<div class="link-container" style="position: relative; text-align: center;">
-<!-- 					<h:outputLink value="registroweb/registro.xhtml" > -->
-<!-- 						<h:outputText value="Registro estudiante" /> -->
-<!-- 								<f:param name="u_tipo" value="ESTUDIANTE" /> -->
-<!-- 					</h:outputLink> -->
+
 					<p:commandButton value="Estudiante" action="#{gestionRegistro.inicializar}" partialSubmit="true">
 						<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}" value="ESTUDIANTE" />
 					</p:commandButton>
 
 					<span class="pipe">|</span>
 
-<!-- 					<h:outputLink value="registroweb/registro.xhtml"> -->
-<!-- 						<h:outputText value="Registro tutor" /> -->
-<!-- 						<f:param name="id" value="" /> -->
-<!-- 						<f:param name="modalidad" value="insert" /> -->
-<!-- 						<f:param name="u_tipo" value="TUTOR" /> -->
-<!-- 					</h:outputLink> -->
 			<p:commandButton value="Tutor" action="#{gestionRegistro.inicializar}" partialSubmit="true">
 						<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}" value="TUTOR" />
 					</p:commandButton>
@@ -102,16 +96,20 @@
 			<p:commandButton value="Analista" action="#{gestionRegistro.inicializar}" partialSubmit="true">
 						<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}" value="ANALISTA" />
 					</p:commandButton>
-<!-- 					<h:outputLink value="registroweb/registro.xhtml"> -->
-<!-- 						<h:outputText value="Registro analista" /> -->
-<!-- 						<f:param name="id" value="" /> -->
-<!-- 						<f:param name="modalidad" value="insert" /> -->
-<!-- 						<f:param name="u_tipo" value="ANALISTA" /> -->
-<!-- 					</h:outputLink> -->
+
 				</div>
 
 			</p:panel>
-
+			<script type="text/javascript">
+			function togglePasswordVisibility(inputId, checkbox) {
+			    var inputField = document.getElementById(inputId);
+			    if (checkbox.checked) {
+			        inputField.type = "text";
+			    } else {
+			        inputField.type = "password";
+			    }
+			}
+			</script>
 
 		</h:form>
 	</div>

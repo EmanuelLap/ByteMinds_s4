@@ -156,16 +156,19 @@ public class GestionEventoService implements Serializable {
 			eventoDTO.setInicio(ev.getInicio());
 			eventoDTO.setFin(ev.getFin());
 			
+			eventoDTO.setTutorResponsableEventoDTOCollection(new ArrayList<Integer>());
 			try {
-
-				ev.setTutorResponsableEventoCollection(ejbRemoto.obtenerTutoresDeEvento(ev.getId()));
-			if(ev.getTutorResponsableEventoCollection() != null || !ev.getTutorResponsableEventoCollection().isEmpty()) {
-				for(TutorResponsableEvento tre: ev.getTutorResponsableEventoCollection()) {
+				List<TutorResponsableEvento>treList= ejbRemoto.obtenerTutoresDeEvento(ev.getId());
+//				ev.setTutorResponsableEventoCollection(ejbRemoto.obtenerTutoresDeEvento(ev.getId()));
+				
+			if(treList != null || !treList.isEmpty()) {
+				for(TutorResponsableEvento tre: treList) {
 					eventoDTO.getTutorResponsableEventoDTOCollection().add(tre.getTutorId().getId());
 				}
 			}
 			} catch ( Exception e) {
 				System.out.println("Error al intentar traer la lista de tutores del evento!");
+				e.printStackTrace();
 			}
 			
 			eventoDTO.setItrDTO(ev.getItr().getId());
@@ -342,6 +345,9 @@ public class GestionEventoService implements Serializable {
 //		return null;
 		
 		System.out.println("ENTRANDO A AGREGAR EVENTO MOBILE");
+		
+		
+		 System.out.println(eventoSeleccionado.toString());
 		EventoDTO eventoDTO = new EventoDTO();
 		
 		eventoDTO.setId(eventoSeleccionado.getId());
@@ -361,17 +367,22 @@ public class GestionEventoService implements Serializable {
 		eventoDTO.setTipoEvento(gTE.obtenerTipoEvento(eventoSeleccionado.getTipoEvento()));
 		
 		
-		List<TutorResponsableEventoDTO> listaDeTutoresResponsablesDTO = new ArrayList<TutorResponsableEventoDTO>();
-		if(eventoSeleccionado.getTutorResponsableEventoDTOCollection() != null || !eventoSeleccionado.getTutorResponsableEventoDTOCollection().isEmpty()) {
-			for(Integer treDTO: eventoSeleccionado.getTutorResponsableEventoDTOCollection()) {
-				TutorResponsableEventoDTO treNew = new TutorResponsableEventoDTO();
-				treNew.setEventoId(eventoSeleccionado.getId());
-				treNew.setTutorId((TutorDTO)gUS.buscarUsuario(treDTO));
-				listaDeTutoresResponsablesDTO.add(treNew);
-			}
-		}
 		
-		eventoDTO.setTutorResponsableEventoDTOCollection(listaDeTutoresResponsablesDTO);
+//		List<TutorResponsableEventoDTO> listaDeTutoresResponsablesDTO = new ArrayList<TutorResponsableEventoDTO>();
+//		if(eventoSeleccionado.getTutorResponsableEventoDTOCollection() != null || !eventoSeleccionado.getTutorResponsableEventoDTOCollection().isEmpty()) {
+//			for(Integer treDTO: eventoSeleccionado.getTutorResponsableEventoDTOCollection()) {
+//				TutorResponsableEventoDTO treNew = new TutorResponsableEventoDTO();
+//				treNew.setEventoId(eventoSeleccionado.getId());
+//				System.out.println("treNew.setTutorId((TutorDTO)gUS.buscarUsuario(treDTO));" +treDTO);
+//				TutorDTO tDTO = (TutorDTO)gUS.buscarUsuario(treDTO);
+//				System.out.println(tDTO.toString());
+//				treNew.setTutorId(tDTO);
+//				listaDeTutoresResponsablesDTO.add(treNew);
+//			}
+//		}
+		
+//		eventoDTO.setTutorResponsableEventoDTOCollection(listaDeTutoresResponsablesDTO);
+		eventoDTO.setTutorResponsableEventoDTOCollection(gTRE.allTutorRespEventoDTO(eventoSeleccionado.getId()));
 		Evento eventoResult = ejbRemoto.modificarEvento(toEventoEntidad(eventoDTO));
 		EventoDTO eventDTOResult= fromEvento(eventoResult);
 		

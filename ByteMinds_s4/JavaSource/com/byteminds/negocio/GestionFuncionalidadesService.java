@@ -30,32 +30,28 @@ public class GestionFuncionalidadesService implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-
 	public FuncionalidadDTO fromFuncionalidad(Funcionalidad funcionalidad) {
 		FuncionalidadDTO funcionalidadDTO = new FuncionalidadDTO();
-		
+
 		funcionalidadDTO.setId(funcionalidad.getId());
 		funcionalidadDTO.setNombre(funcionalidad.getNombre());
 		funcionalidadDTO.setDescripcion(funcionalidad.getDescripcion());
 		funcionalidadDTO.setActivo(funcionalidad.getActivo());
-		
+
 		return funcionalidadDTO;
 	}
 
 	public Funcionalidad toFuncionalidad(FuncionalidadDTO funcionalidadDTO) {
 		Funcionalidad funcionalidad = new Funcionalidad();
-		
+
 		funcionalidad.setId(funcionalidadDTO.getId());
 		funcionalidad.setNombre(funcionalidadDTO.getNombre());
 		funcionalidad.setDescripcion(funcionalidadDTO.getDescripcion());
 		funcionalidad.setActivo(funcionalidadDTO.getActivo());
-		
-		
+
 		return funcionalidad;
 	}
 
 	// servicios para capa de Presentacion
-
-
 
 }

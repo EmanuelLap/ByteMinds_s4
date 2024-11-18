@@ -13,35 +13,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter(urlPatterns = {"/*"})
+@WebFilter(urlPatterns = { "/*" })
 public class LoginFilter implements Filter {
 
-    @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse response = (HttpServletResponse) res;
-        HttpSession session = request.getSession(false);
+	@Override
+	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+			throws IOException, ServletException {
+		HttpServletRequest request = (HttpServletRequest) req;
+		HttpServletResponse response = (HttpServletResponse) res;
+		HttpSession session = request.getSession(false);
 
-        
-        String path = request.getRequestURI().substring(request.getContextPath().length());
+		String path = request.getRequestURI().substring(request.getContextPath().length());
 
-        if (path.startsWith("/layout") || path.startsWith("/css")|| path.equals("/registroweb/registro.xhtml")|| path.startsWith("/rest")) {
-            // No aplicamos el filtro a /layout o /login
-            chain.doFilter(req, res); 
-            return;
-        }
+		if (path.startsWith("/layout") || path.startsWith("/css") || path.equals("/registroweb/registro.xhtml")
+				|| path.startsWith("/rest")) {
+			// No aplicamos el filtro a /layout o /login
+			chain.doFilter(req, res);
+			return;
+		}
 
-        
-        String loginURL = request.getContextPath() + "/login.xhtml";
+		String loginURL = request.getContextPath() + "/login.xhtml";
 
-        boolean loggedIn = (session != null) && (session.getAttribute("jwt") != null);
-        boolean loginRequest = request.getRequestURI().equals(loginURL);
+		boolean loggedIn = (session != null) && (session.getAttribute("jwt") != null);
+		boolean loginRequest = request.getRequestURI().equals(loginURL);
 
-        if (loggedIn || loginRequest) {
-            chain.doFilter(request, response);
-        } else {
-            response.sendRedirect(loginURL);
-        }
-    }
+		if (loggedIn || loginRequest) {
+			chain.doFilter(request, response);
+		} else {
+			response.sendRedirect(loginURL);
+		}
+	}
 
 }

@@ -154,9 +154,9 @@ public class GestionUsuarioService implements Serializable {
 		usuario.setLocalidad(userDTO.getLocalidad());
 		usuario.setMail(userDTO.getMail());
 		usuario.setMailPersonal(userDTO.getMailPersonal());
-		
+
 		usuario.setUTipo(userDTO.getUTipo());
-		
+
 		usuario.setItr(gItr.toITR(userDTO.getItr()));
 		usuario.setRol(gRol.toRol(userDTO.getRol()));
 
@@ -222,35 +222,34 @@ public class GestionUsuarioService implements Serializable {
 //		return fromUsuario(e);
 //	}
 
-	
-	public List<TutorDTO> listadoDeTutores(){
+	public List<TutorDTO> listadoDeTutores() {
 		List<TutorDTO> listadoTutoresDTO = new ArrayList<TutorDTO>();
 		List<Tutor> listadoTutores = new ArrayList<Tutor>();
-		
-		listadoTutores=ejbRemoto.listarTutores();
-		
-		for (Tutor tut:listadoTutores) {
-			TutorDTO tutorcito =(TutorDTO)this.fromUsuario(tut);
+
+		listadoTutores = ejbRemoto.listarTutores();
+
+		for (Tutor tut : listadoTutores) {
+			TutorDTO tutorcito = (TutorDTO) this.fromUsuario(tut);
 			listadoTutoresDTO.add(tutorcito);
 		}
-		
+
 		return listadoTutoresDTO;
 	}
-	
-	public List<TutorDTO> listadoDeTutoresActivos(){
+
+	public List<TutorDTO> listadoDeTutoresActivos() {
 		List<TutorDTO> listadoTutoresDTO = new ArrayList<TutorDTO>();
 		List<Tutor> listadoTutores = new ArrayList<Tutor>();
-		
-		listadoTutores=ejbRemoto.listarTutoresActivos();
-		
-		for (Tutor tut:listadoTutores) {
-			TutorDTO tutorcito =(TutorDTO)this.fromUsuario(tut);
+
+		listadoTutores = ejbRemoto.listarTutoresActivos();
+
+		for (Tutor tut : listadoTutores) {
+			TutorDTO tutorcito = (TutorDTO) this.fromUsuario(tut);
 			listadoTutoresDTO.add(tutorcito);
 		}
-		
+
 		return listadoTutoresDTO;
 	}
-	
+
 	public UsuarioDTO agregarUsuario(UsuarioDTO usuarioSeleccionado) throws PersistenciaException {
 		Usuario e = ejbRemoto.crearUsuario(toUsuario(usuarioSeleccionado));
 		return fromUsuario(e);
@@ -260,44 +259,40 @@ public class GestionUsuarioService implements Serializable {
 		Usuario e = ejbRemoto.modificarUsuario(toUsuario(usuarioSeleccionado));
 	}
 
-	
 	public UsuarioDTO buscarUsuarioPorDocumento(String documento, String tipo) {
-		UsuarioDTO usuario=null;
+		UsuarioDTO usuario = null;
 		try {
-			if((documento!=null || documento!="") && (tipo!=null || tipo!="" )
-					&& (tipo.equals("ESTUDIANTE") || tipo.equals("ANALISTA")|| tipo.equals("TUTOR"))) {
-				
-		
-			List<UsuarioDTO> listaUsuarios =seleccionarUsuarios(tipo, null, null, documento, null,
-					null, null, null, null, null, null, null, null, null, null, null, null);
-			if(!listaUsuarios.isEmpty()) {
-				usuario=listaUsuarios.get(0);
-			}
-			
+			if ((documento != null || documento != "") && (tipo != null || tipo != "")
+					&& (tipo.equals("ESTUDIANTE") || tipo.equals("ANALISTA") || tipo.equals("TUTOR"))) {
+
+				List<UsuarioDTO> listaUsuarios = seleccionarUsuarios(tipo, null, null, documento, null, null, null,
+						null, null, null, null, null, null, null, null, null, null);
+				if (!listaUsuarios.isEmpty()) {
+					usuario = listaUsuarios.get(0);
+				}
+
 			}
 		} catch (PersistenciaException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return usuario;
 	}
-	
-	public UsuarioDTO login (String username ,String password) {
-			Usuario user = null;
-			try {
-				
-				user = ejbRemoto.login(username, password);
-				if(user!=null && user.getId()!=null) {
-					return fromUsuario(user);
-				}
-				
-			} catch (Exception e) {
-				System.out.println(e);
-			}
-			return null;
-		}
-	
-	
-}
 
+	public UsuarioDTO login(String username, String password) {
+		Usuario user = null;
+		try {
+
+			user = ejbRemoto.login(username, password);
+			if (user != null && user.getId() != null) {
+				return fromUsuario(user);
+			}
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
+	}
+
+}

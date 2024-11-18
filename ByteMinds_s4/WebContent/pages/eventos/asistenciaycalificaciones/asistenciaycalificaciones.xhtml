@@ -179,7 +179,12 @@
 						</p:column>
 
 					</p:dataTable>
-					
+
+					<p:commandButton value="Imprimir" type="button" >
+						<p:printer target="tablaConvocados"
+							configuration="title: 'Reporte asistencia evento: #{gestionEnventosBean.eventoSeleccionado.titulo}', globalStyles: true,  timeout: 1000" />
+					</p:commandButton>
+		
 					<p:commandButton value="Guardar" onclick="return confirm('¿Desea confirmar la convocatoria?');" 
 					action="#{gestionConvocatoriaAsistenciaEventoEstudianteBean.guardarAsistemciaConvocatoria()}" 
 					update=":convocadosAEventosForm:tablaConvocados" style="float: right;margin-top: 30px"

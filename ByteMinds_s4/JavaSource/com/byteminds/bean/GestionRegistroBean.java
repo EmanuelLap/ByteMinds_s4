@@ -32,7 +32,6 @@ import com.byteminds.negocio.TutorDTO;
 import com.byteminds.negocio.UsuarioDTO;
 import com.byteminds.utils.ExceptionsTools;
 
-
 @Named(value = "gestionRegistro") // JEE8
 @SessionScoped // JEE8
 public class GestionRegistroBean implements Serializable {
@@ -50,7 +49,6 @@ public class GestionRegistroBean implements Serializable {
 	GestionRolService gestionRolService;
 	GestionTipoTutorService gestionTipoTutorService;
 	GestionTipoAreaService gestionTipoAreaService;
-	
 
 	private String u_tipo;
 	private Boolean mostrarContrasenia = false;
@@ -62,85 +60,83 @@ public class GestionRegistroBean implements Serializable {
 	private Integer rolDTOSeleccionadoId;
 
 	private RolDTO rolDTOSeleccionado;
-	private Integer idRolSeleccionado;//marcar para borrar?
-	
-	
+	private Integer idRolSeleccionado;// marcar para borrar?
+
 	private TipoTutorDTO tipoTutorDTOSeleccionado;
 	private TipoAreaDTO tipoAreaDTOSeleccionado;
 	private Integer tipoTutorDTOSeleccionadoId;
 	private Integer tipoAreaDTOSeleccionadoId;
-	
+
 	private List<Integer> anosGeneracion;
 	private Date fechaMaximaNacimiento;
-	
-	
+
 	private boolean modoEdicion = false;
 
 	public GestionRegistroBean() {
 		super();
-		gestionItrService= new GestionItrService();
+		gestionItrService = new GestionItrService();
 		gestionRolService = new GestionRolService();
-		gestionTipoTutorService= new GestionTipoTutorService();
-		gestionTipoAreaService= new GestionTipoAreaService();
-		
+		gestionTipoTutorService = new GestionTipoTutorService();
+		gestionTipoAreaService = new GestionTipoAreaService();
+
 		itrDTOSeleccionado = new ItrDTO();
 		rolDTOSeleccionado = new RolDTO();
-		 
+
 		Calendar cal = Calendar.getInstance();
-	        cal.add(Calendar.YEAR, -18);
-	         
+		cal.add(Calendar.YEAR, -18);
+
 		fechaMaximaNacimiento = cal.getTime();
 	}
 
 	@PostConstruct
 	public void init() {
 		anosGeneracion = new ArrayList<>();
-	        int añoActual = Calendar.getInstance().get(Calendar.YEAR);
-	        for (int i = 2011; i <= añoActual; i++) {
-	        	anosGeneracion.add(i);
-	        }
+		int añoActual = Calendar.getInstance().get(Calendar.YEAR);
+		for (int i = 2011; i <= añoActual; i++) {
+			anosGeneracion.add(i);
+		}
 
 	}
 
-	
 	// se ejecuta antes de desplegar la vista
 	public String inicializar() {
-				this.itrDTOSeleccionadoId=0;
-				this.rolDTOSeleccionadoId=0;
-				this.tipoAreaDTOSeleccionadoId = 0;
-				this.tipoTutorDTOSeleccionadoId = 0;
-				
-			if (u_tipo.contentEquals("ESTUDIANTE")) {
-				usuarioSeleccionado = new EstudianteDTO();
-				this.rolDTOSeleccionadoId=1;
-				rolDTOSeleccionado = gestionRolService.obtenerRolSeleccionado(1);
-			    this.usuarioSeleccionado.setRol(rolDTOSeleccionado);
-			}
-			if (u_tipo.contentEquals("ANALISTA")) {
-				usuarioSeleccionado = new AnalistaDTO();
-				this.rolDTOSeleccionadoId=2;
-				rolDTOSeleccionado = gestionRolService.obtenerRolSeleccionado(2);
-			    this.usuarioSeleccionado.setRol(rolDTOSeleccionado);
-			}
-			if (u_tipo.contentEquals("TUTOR")) {
-				usuarioSeleccionado = new TutorDTO();
-				this.rolDTOSeleccionadoId=3;
-				rolDTOSeleccionado = gestionRolService.obtenerRolSeleccionado(3);
-			    this.usuarioSeleccionado.setRol(rolDTOSeleccionado);
-			}
-			usuarioSeleccionado.setUTipo(u_tipo);
-			
+		this.itrDTOSeleccionadoId = 0;
+		this.rolDTOSeleccionadoId = 0;
+		this.tipoAreaDTOSeleccionadoId = 0;
+		this.tipoTutorDTOSeleccionadoId = 0;
+
+		if (u_tipo.contentEquals("ESTUDIANTE")) {
+			usuarioSeleccionado = new EstudianteDTO();
+			this.rolDTOSeleccionadoId = 1;
+			rolDTOSeleccionado = gestionRolService.obtenerRolSeleccionado(1);
+			this.usuarioSeleccionado.setRol(rolDTOSeleccionado);
+		}
+		if (u_tipo.contentEquals("ANALISTA")) {
+			usuarioSeleccionado = new AnalistaDTO();
+			this.rolDTOSeleccionadoId = 2;
+			rolDTOSeleccionado = gestionRolService.obtenerRolSeleccionado(2);
+			this.usuarioSeleccionado.setRol(rolDTOSeleccionado);
+		}
+		if (u_tipo.contentEquals("TUTOR")) {
+			usuarioSeleccionado = new TutorDTO();
+			this.rolDTOSeleccionadoId = 3;
+			rolDTOSeleccionado = gestionRolService.obtenerRolSeleccionado(3);
+			this.usuarioSeleccionado.setRol(rolDTOSeleccionado);
+		}
+		usuarioSeleccionado.setUTipo(u_tipo);
+
 //			return "registroweb/registro.xhtml";
-			return "registroweb/registro.xhtml?faces-redirect=true";
-			
+		return "registroweb/registro.xhtml?faces-redirect=true";
+
 	}
-public String volver() {
-	return "/login.xhtml?faces-redirect=true";
-}
+
+	public String volver() {
+		return "/login.xhtml?faces-redirect=true";
+	}
 
 	// Pasar a modo
 	public String salvarCambios() {
-		
+
 		if (usuarioSeleccionado != null) {
 			usuarioSeleccionado.setActivo(true);
 			usuarioSeleccionado.setValidado(false);
@@ -191,12 +187,11 @@ public String volver() {
 				}
 
 				return null;
-			}else {
-				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						"ERROR AL VALIDAR USUARIO", "");
+			} else {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "ERROR AL VALIDAR USUARIO", "");
 				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 			}
-			
+
 		}
 		return null;
 	}
@@ -221,7 +216,6 @@ public String volver() {
 				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
 				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 
-
 				e.printStackTrace();
 			}
 		}
@@ -233,13 +227,13 @@ public String volver() {
 		System.out.println("Apretaste el boton!");
 		return "";
 	}
-	
+
 	public String limpiar() {
 
-			System.out.println("Apretaste el boton LIMPIAR!");
-			inicializar();
+		System.out.println("Apretaste el boton LIMPIAR!");
+		inicializar();
 
-			System.out.println("Apretaste el boton LIMPIAR! SE LIMPIARON?");
+		System.out.println("Apretaste el boton LIMPIAR! SE LIMPIARON?");
 
 		return "";
 	}
@@ -258,128 +252,127 @@ public String volver() {
 			}
 			System.out.println("MAIL AUTOMATICO: " + this.usuarioSeleccionado.getMail());
 		}
-		
+
 	}
 
 	public void actualizarITRSeleccionado(AjaxBehaviorEvent event) {
-	    Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
-	    if(nuevoValor == -1) {
-	    	FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar un ITR valido",	"");
+		Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
+		if (nuevoValor == -1) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar un ITR valido", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-	    }else {
-	    itrDTOSeleccionado = gestionItrService.obtenerITRSeleccionado(nuevoValor);
-	    this.usuarioSeleccionado.setItr(itrDTOSeleccionado);
+		} else {
+			itrDTOSeleccionado = gestionItrService.obtenerITRSeleccionado(nuevoValor);
+			this.usuarioSeleccionado.setItr(itrDTOSeleccionado);
 //	    System.out.println("ITR SETEADO = "+this.usuarioSeleccionado.getItr().getNombre());
-	    }
+		}
 	}
-	
+
 	public void actualizarROLSeleccionado(AjaxBehaviorEvent event) {
-	    Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
-	    if(nuevoValor == -1) {
-	    	FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar Rol valido",	"");
+		Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
+		if (nuevoValor == -1) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar Rol valido", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-	    }else {
-	    rolDTOSeleccionado = gestionRolService.obtenerRolSeleccionado(nuevoValor);
-	    this.usuarioSeleccionado.setRol(rolDTOSeleccionado);
+		} else {
+			rolDTOSeleccionado = gestionRolService.obtenerRolSeleccionado(nuevoValor);
+			this.usuarioSeleccionado.setRol(rolDTOSeleccionado);
 //	    System.out.println("ROL SETEADO = "+this.usuarioSeleccionado.getRol().getNombre());
-	}}
-	
-	
+		}
+	}
+
 	public void actualizarTipoTutorAreaSeleccionado(AjaxBehaviorEvent event) {
 		System.out.println("AYAX actualizarTipoTutorAreaSeleccionado");
-	    Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
-	    if(nuevoValor == -1) {
-	    	FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar tipo de area para tutor valido",	"");
+		Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
+		if (nuevoValor == -1) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+					"Debe seleccionar tipo de area para tutor valido", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-	    }else {
-	    	tipoAreaDTOSeleccionado = gestionTipoAreaService.obtenerTipoAreaPorId(nuevoValor);
-	    	((TutorDTO)this.usuarioSeleccionado).setAreaDTO(tipoAreaDTOSeleccionado);
-	    System.out.println("tipoAreaDTOSeleccionado SETEADO = "+((TutorDTO)this.usuarioSeleccionado).getAreaDTO());
-	}}
-	
+		} else {
+			tipoAreaDTOSeleccionado = gestionTipoAreaService.obtenerTipoAreaPorId(nuevoValor);
+			((TutorDTO) this.usuarioSeleccionado).setAreaDTO(tipoAreaDTOSeleccionado);
+			System.out
+					.println("tipoAreaDTOSeleccionado SETEADO = " + ((TutorDTO) this.usuarioSeleccionado).getAreaDTO());
+		}
+	}
 
 	public void actualizarTipoTutorSeleccionado(AjaxBehaviorEvent event) {
-	    Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
-	    if(nuevoValor == -1) {
-	    	FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar tipo de tutor valido",	"");
+		Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
+		if (nuevoValor == -1) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+					"Debe seleccionar tipo de tutor valido", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-	    }else {
-	    	tipoTutorDTOSeleccionado = gestionTipoTutorService.obtenerTipoTutorPorId(nuevoValor);
-	    	((TutorDTO)this.usuarioSeleccionado).setTipoDTO(tipoTutorDTOSeleccionado);
-	    	 
+		} else {
+			tipoTutorDTOSeleccionado = gestionTipoTutorService.obtenerTipoTutorPorId(nuevoValor);
+			((TutorDTO) this.usuarioSeleccionado).setTipoDTO(tipoTutorDTOSeleccionado);
+
 //	    System.out.println("ROL SETEADO = "+this.usuarioSeleccionado.getRol().getNombre());
-	}}
-	
-	
-	
-	
+		}
+	}
+
 	public Boolean validarDatos() {
 
-		if(this.usuarioSeleccionado.getMail()==null || this.usuarioSeleccionado.getMail().isEmpty()) {
-			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe completar nombre y apellido para que se le asigne un correo ",	"");
+		if (this.usuarioSeleccionado.getMail() == null || this.usuarioSeleccionado.getMail().isEmpty()) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+					"Debe completar nombre y apellido para que se le asigne un correo ", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 			return false;
 		}
-		if(this.usuarioSeleccionado.getRol()==null) {
-			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar Rol ",	"");
+		if (this.usuarioSeleccionado.getRol() == null) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar Rol ", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 			return false;
 		}
-		if(this.usuarioSeleccionado.getItr()==null) {
-			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar Itr ",	"");
+		if (this.usuarioSeleccionado.getItr() == null) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar Itr ", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 			return false;
 		}
-		if(this.usuarioSeleccionado.getContrasenia() == null) {
-		    FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe Ingresar contraseña", "");
-		    FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-		    return false;
+		if (this.usuarioSeleccionado.getContrasenia() == null) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe Ingresar contraseña", "");
+			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+			return false;
 		} else {
-		    String password = this.usuarioSeleccionado.getContrasenia();
-		    // Validación de la contraseña con una expresión regular que incluye los requisitos mencionados.
-		    String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$";
-		    
-		    if(!password.matches(passwordPattern)) {
-		        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, 
-		            "La contraseña no cumple con los requisitos: debe tener entre 8 y 20 caracteres, incluir números, mayúsculas, minúsculas y caracteres especiales.", "");
-		        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-		        return false;
-		    }
-		}
-		
-		if(esEstudiante()) {
-			
-			if(((EstudianteDTO)this.usuarioSeleccionado).getGeneracion()== null) {
-			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar el año de la generacion", "");
-		    FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-		    return false;
+			String password = this.usuarioSeleccionado.getContrasenia();
+			// Validación de la contraseña con una expresión regular que incluye los
+			// requisitos mencionados.
+			String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$";
+
+			if (!password.matches(passwordPattern)) {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+						"La contraseña no cumple con los requisitos: debe tener entre 8 y 20 caracteres, incluir números, mayúsculas, minúsculas y caracteres especiales.",
+						"");
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				return false;
 			}
 		}
-		
+
+		if (esEstudiante()) {
+
+			if (((EstudianteDTO) this.usuarioSeleccionado).getGeneracion() == null) {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+						"Debe seleccionar el año de la generacion", "");
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				return false;
+			}
+		}
+
 		if (esTutor()) {
 			if (((TutorDTO) this.usuarioSeleccionado).getAreaDTO() == null) {
-				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar el tipo de area", "");
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar el tipo de area",
+						"");
 				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 				return false;
 			}
 			if (((TutorDTO) this.usuarioSeleccionado).getTipoDTO() == null) {
-				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar el tipo de tutor", "");
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+						"Debe seleccionar el tipo de tutor", "");
 				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 				return false;
 			}
 		}
-		
-		
+
 		return true;
 	}
-	
 
-	
-	
-	
-
-	
-	
 	public boolean esTutor() {
 		return this.usuarioSeleccionado instanceof TutorDTO;
 	}
@@ -391,7 +384,6 @@ public String volver() {
 	public boolean esAnalista() {
 		return this.usuarioSeleccionado instanceof AnalistaDTO;
 	}
-
 
 	public UsuarioDTO getUsuarioSeleccionado() {
 		return usuarioSeleccionado;
@@ -421,8 +413,6 @@ public String volver() {
 		this.gestionUsuarioService = gestionUsuarioService;
 	}
 
-
-
 	public ItrDTO getItrDTOSeleccionado() {
 		return itrDTOSeleccionado;
 	}
@@ -438,6 +428,7 @@ public String volver() {
 	public void setItrDTOSeleccionadoId(Integer itrDTOSeleccionadoId) {
 		this.itrDTOSeleccionadoId = itrDTOSeleccionadoId;
 	}
+
 	public String getU_tipo() {
 		return u_tipo;
 	}
@@ -510,8 +501,6 @@ public String volver() {
 		this.fechaMaximaNacimiento = fechaMaximaNacimiento;
 	}
 
-
-
 	public Boolean getMostrarContrasenia() {
 		return mostrarContrasenia;
 	}
@@ -519,5 +508,5 @@ public String volver() {
 	public void setMostrarContrasenia(Boolean mostrarContrasenia) {
 		this.mostrarContrasenia = mostrarContrasenia;
 	}
-	
+
 }

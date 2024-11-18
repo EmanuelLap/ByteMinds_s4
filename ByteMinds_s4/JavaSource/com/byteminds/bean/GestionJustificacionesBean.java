@@ -1,6 +1,5 @@
 package com.byteminds.bean;
 
-
 import javax.ejb.EJB;
 
 import java.io.Serializable;
@@ -12,7 +11,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-
 import com.byteminds.exception.PersistenciaException;
 
 import com.byteminds.negocio.GestionJustificacionService;
@@ -21,17 +19,15 @@ import com.byteminds.negocio.JustificacionDTO;
 
 import javax.enterprise.context.SessionScoped;
 
+@Named(value = "gestionJustificacionesBean") // JEE8
+@SessionScoped // JEE8
+public class GestionJustificacionesBean implements Serializable {
 
-
-@Named(value="gestionJustificacionesBean")		//JEE8
-@SessionScoped				        //JEE8
-public class GestionJustificacionesBean implements Serializable{
-	
 	@EJB
 	GestionJustificacionService gestionJustificacionService;
-	
+
 	@Inject
-    LoginBean loginBean = new LoginBean();
+	LoginBean loginBean = new LoginBean();
 //	@Inject
 //	PersistenciaBean persistenciaBean;
 	/**
@@ -41,7 +37,6 @@ public class GestionJustificacionesBean implements Serializable{
 	/**
 	 * 
 	 */
-	
 
 	private String criterioDescripcion;
 	private Date criterioFecha;
@@ -50,62 +45,61 @@ public class GestionJustificacionesBean implements Serializable{
 	private String criterioDocente;
 
 	private String criterioTipoEstado;
-	
-	
+
 	private List<JustificacionDTO> listadoDeJustificacionFiltrados;
 
 	public GestionJustificacionesBean() {
 		super();
-		//TODO: INICIALIZAMOS Los filtros de eventos para que esten en vacios
-		listadoDeJustificacionFiltrados= new ArrayList<>();
+		// TODO: INICIALIZAMOS Los filtros de eventos para que esten en vacios
+		listadoDeJustificacionFiltrados = new ArrayList<>();
 	}
-	
+
 	// ********Acciones****************************
 	public String seleccionarEventos() throws PersistenciaException {
 		listadoDeJustificacionFiltrados.clear();
-		 // Verificar si los criterios son nulos y asignar valores predeterminados si es necesario
-	   
-	    if (criterioDescripcion == null) {
-	    	criterioDescripcion = "";
-	    }
-	    if (criterioEventoActividad == null) {
-	    	criterioEventoActividad = "";
-	    }
-	    if (criterioDocente == null) {
-	    	criterioDocente = "";
-	    }
-	   
-	    if (criterioFecha == null) {
-	        // Manejar el caso en el que criterioFinInicio sea nulo
-	    }
-	    if (criterioFechaEvento == null) {
-	        // Manejar el caso en el que criterioFinFin sea nulo
-	    }
-	    if(criterioTipoEstado==null) {
-	    	criterioTipoEstado="";
-	    }
-		
-	    listadoDeJustificacionFiltrados=gestionJustificacionService.listarJustificacions();
+		// Verificar si los criterios son nulos y asignar valores predeterminados si es
+		// necesario
+
+		if (criterioDescripcion == null) {
+			criterioDescripcion = "";
+		}
+		if (criterioEventoActividad == null) {
+			criterioEventoActividad = "";
+		}
+		if (criterioDocente == null) {
+			criterioDocente = "";
+		}
+
+		if (criterioFecha == null) {
+			// Manejar el caso en el que criterioFinInicio sea nulo
+		}
+		if (criterioFechaEvento == null) {
+			// Manejar el caso en el que criterioFinFin sea nulo
+		}
+		if (criterioTipoEstado == null) {
+			criterioTipoEstado = "";
+		}
+
+		listadoDeJustificacionFiltrados = gestionJustificacionService.listarJustificacions();
 
 		return "";
 	}
+
 	public String seleccionarEventosEstudiante() throws PersistenciaException {
 		listadoDeJustificacionFiltrados.clear();
-		listadoDeJustificacionFiltrados=gestionJustificacionService.buscarJustificacionsEstudiante(loginBean.getUserioLogeado().getId());
+		listadoDeJustificacionFiltrados = gestionJustificacionService
+				.buscarJustificacionsEstudiante(loginBean.getUserioLogeado().getId());
 
 		return "";
-		
+
 	}
 
 	public String verDatosJustificacion() {
-		//Navegamos a datos reclamo
+		// Navegamos a datos reclamo
 		return "DatosJustificacion";
 	}
 
-	
 	// ******** Getters & Setters****************************
-	
-	
 
 	public String getCriterioDescripcion() {
 		return criterioDescripcion;
@@ -162,6 +156,5 @@ public class GestionJustificacionesBean implements Serializable{
 	public void setCriterioTipoEstado(String criterioTipoEstado) {
 		this.criterioTipoEstado = criterioTipoEstado;
 	}
-	
-	
+
 }

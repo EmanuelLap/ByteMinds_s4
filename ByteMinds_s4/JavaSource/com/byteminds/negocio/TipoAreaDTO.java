@@ -5,31 +5,26 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class TipoAreaDTO implements Serializable{
+public class TipoAreaDTO implements Serializable {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@NotNull
+	private Integer id;
 
 	@NotNull
-    private Integer id;
+	@Size(min = 1, max = 45)
+	private String nombre;
 
+	@NotNull
+	private Boolean bajaLogica;
 
-    @NotNull
-    @Size(min = 1, max = 45)
-    private String nombre;
+	public TipoAreaDTO() {
 
-
-    @NotNull
-    private Boolean bajaLogica;
-    
-    public TipoAreaDTO() {
-		
 	}
-    
-    
 
 	public Integer getId() {
 		return id;
@@ -54,6 +49,5 @@ public class TipoAreaDTO implements Serializable{
 	public void setBajaLogica(Boolean bajaLogica) {
 		this.bajaLogica = bajaLogica;
 	}
-    
-    
+
 }

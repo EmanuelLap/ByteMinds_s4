@@ -173,7 +173,7 @@ public void setTutorResponsableEventoDTOCollection(
 
 @Override
 public String toString() {
-	return "EventoDTO [id=" + id + ", titulo=" + titulo + ", inicio=" + inicio + ", localizacion=" + localizacion + "]";
+	return "EventoDTO [id=" + id + ", titulo=" + titulo + ", inicio=" + inicio + ", localizacion=" + localizacion + ", TUTORES="+tutorResponsableEventoDTOCollection.toString()+" ]";
 }
 
 

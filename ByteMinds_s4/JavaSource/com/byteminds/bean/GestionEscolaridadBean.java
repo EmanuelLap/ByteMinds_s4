@@ -23,7 +23,6 @@ import com.byteminds.utils.ExceptionsTools;
 
 import tecnofenix.entidades.ConvocatoriaAsistenciaEventoEstudiante;
 
-
 @Named(value = "gestionEscolaridadBean") // JEE8
 @SessionScoped // JEE8
 public class GestionEscolaridadBean implements Serializable {
@@ -37,10 +36,9 @@ public class GestionEscolaridadBean implements Serializable {
 	LoginBean gestionLoginBean;
 
 	List<ConvocatoriaAsistenciaEventoEstudianteDTO> listEscolaridad;
-	
+
 	private double promedioCalificacion;
-	
-	
+
 	public GestionEscolaridadBean() {
 		System.out.println("INICIALIZANDO GestionEscolaridadBean");
 		gCAEES = new GestionConvocatoriaAsistenciaEventoEstudianteService();
@@ -53,30 +51,25 @@ public class GestionEscolaridadBean implements Serializable {
 		listEscolaridad.clear();
 		listEscolaridad = gCAEES.filtrarAsistEstuAEventosPor(null, null, null, null,
 				String.valueOf(gestionLoginBean.getUserioLogeado().getDocumento()), null, null, null);
-		
-		calcularPromedioCalificacion() ;
-		
+
+		calcularPromedioCalificacion();
+
 		return "/pages/escolaridad/escolaridad.xhtml";
 	}
 
+	public void calcularPromedioCalificacion() {
+		promedioCalificacion = 0;
+		if (listEscolaridad != null && !listEscolaridad.isEmpty()) {
+			double sum = 0;
+			for (ConvocatoriaAsistenciaEventoEstudianteDTO escolaridad : listEscolaridad) {
+				sum += escolaridad.getCalificacion();
+			}
+			promedioCalificacion = sum / listEscolaridad.size();
+		} else {
+			promedioCalificacion = 0;
+		}
+	}
 
-    public void calcularPromedioCalificacion() {
-    	promedioCalificacion=0;
-        if (listEscolaridad != null && !listEscolaridad.isEmpty()) {
-            double sum = 0;
-            for (ConvocatoriaAsistenciaEventoEstudianteDTO escolaridad : listEscolaridad) {
-                sum += escolaridad.getCalificacion();
-            }
-            promedioCalificacion = sum / listEscolaridad.size();
-        } else {
-            promedioCalificacion = 0;
-        }
-    }
-	
-	
-	
-	
-	
 	public List<ConvocatoriaAsistenciaEventoEstudianteDTO> getListEscolaridad() {
 		return listEscolaridad;
 	}
@@ -85,12 +78,12 @@ public class GestionEscolaridadBean implements Serializable {
 		this.listEscolaridad = listEscolaridad;
 	}
 
-	 public double getPromedioCalificacion() {
-	        return promedioCalificacion;
-	    }
+	public double getPromedioCalificacion() {
+		return promedioCalificacion;
+	}
 
-	    public void setPromedioCalificacion(double promedioCalificacion) {
-	        this.promedioCalificacion = promedioCalificacion;
-	    }
+	public void setPromedioCalificacion(double promedioCalificacion) {
+		this.promedioCalificacion = promedioCalificacion;
+	}
 
 }

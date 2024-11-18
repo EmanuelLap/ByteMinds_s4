@@ -34,7 +34,6 @@ import com.byteminds.negocio.TutorDTO;
 import com.byteminds.negocio.UsuarioDTO;
 import com.byteminds.utils.ExceptionsTools;
 
-
 @Named(value = "gestionUsuario") // JEE8
 @SessionScoped // JEE8
 public class GestionUsuarioBean implements Serializable {
@@ -52,12 +51,10 @@ public class GestionUsuarioBean implements Serializable {
 	GestionRolService gestionRolService;
 	GestionTipoTutorService gestionTipoTutorService;
 	GestionTipoAreaService gestionTipoAreaService;
-	
+
 	private Integer id;
 	private String modalidad;
 	private String u_tipo;
-
-
 
 	private String contrasenia;
 	private String nuevaContrasenia;
@@ -70,44 +67,41 @@ public class GestionUsuarioBean implements Serializable {
 	private Integer rolDTOSeleccionadoId;
 
 	private RolDTO rolDTOSeleccionado;
-	private Integer idRolSeleccionado;//marcar para borrar?
-	
-	
+	private Integer idRolSeleccionado;// marcar para borrar?
+
 	private TipoTutorDTO tipoTutorDTOSeleccionado;
 	private TipoAreaDTO tipoAreaDTOSeleccionado;
 	private Integer tipoTutorDTOSeleccionadoId;
 	private Integer tipoAreaDTOSeleccionadoId;
-	
+
 	private List<Integer> anosGeneracion;
 	private Date fechaMaximaNacimiento;
-	
-	
+
 	private boolean modoEdicion = false;
 
 	public GestionUsuarioBean() {
 		super();
-		gestionItrService= new GestionItrService();
+		gestionItrService = new GestionItrService();
 		gestionRolService = new GestionRolService();
-		gestionTipoTutorService= new GestionTipoTutorService();
-		gestionTipoAreaService= new GestionTipoAreaService();
-		
+		gestionTipoTutorService = new GestionTipoTutorService();
+		gestionTipoAreaService = new GestionTipoAreaService();
+
 		itrDTOSeleccionado = new ItrDTO();
 		rolDTOSeleccionado = new RolDTO();
-		 
+
 		Calendar cal = Calendar.getInstance();
-	        cal.add(Calendar.YEAR, -18);
-	         
+		cal.add(Calendar.YEAR, -18);
+
 		fechaMaximaNacimiento = cal.getTime();
 	}
 
-	
 	@PostConstruct
 	public void init() {
 		anosGeneracion = new ArrayList<>();
-	        int añoActual = Calendar.getInstance().get(Calendar.YEAR);
-	        for (int i = 2011; i <= añoActual; i++) {
-	        	anosGeneracion.add(i);
-	        }
+		int añoActual = Calendar.getInstance().get(Calendar.YEAR);
+		for (int i = 2011; i <= añoActual; i++) {
+			anosGeneracion.add(i);
+		}
 
 	}
 
@@ -117,11 +111,11 @@ public class GestionUsuarioBean implements Serializable {
 		if (id != null) {
 			usuarioSeleccionado = gestionUsuarioService.buscarUsuario(id);
 			this.itrDTOSeleccionadoId = usuarioSeleccionado.getItr().getId();
-			this.rolDTOSeleccionadoId= usuarioSeleccionado.getRol().getId();
-			if(esTutor()){
-				this.tipoAreaDTOSeleccionadoId = ((TutorDTO)(usuarioSeleccionado)).getTipoDTO().getId();
-				this.tipoTutorDTOSeleccionadoId = ((TutorDTO)(usuarioSeleccionado)).getAreaDTO().getId();
-			
+			this.rolDTOSeleccionadoId = usuarioSeleccionado.getRol().getId();
+			if (esTutor()) {
+				this.tipoAreaDTOSeleccionadoId = ((TutorDTO) (usuarioSeleccionado)).getTipoDTO().getId();
+				this.tipoTutorDTOSeleccionadoId = ((TutorDTO) (usuarioSeleccionado)).getAreaDTO().getId();
+
 			}
 		} else {
 			if (u_tipo.contentEquals("ESTUDIANTE") && usuarioSeleccionado == null) {
@@ -134,10 +128,10 @@ public class GestionUsuarioBean implements Serializable {
 				usuarioSeleccionado = new TutorDTO();
 			}
 			usuarioSeleccionado.setUTipo(u_tipo);
-			//Solo cargar cuando es nuevo
-			if(usuarioSeleccionado == null) {
-				this.itrDTOSeleccionadoId=0;
-				this.rolDTOSeleccionadoId=0;
+			// Solo cargar cuando es nuevo
+			if (usuarioSeleccionado == null) {
+				this.itrDTOSeleccionadoId = 0;
+				this.rolDTOSeleccionadoId = 0;
 				this.tipoAreaDTOSeleccionadoId = 0;
 				this.tipoTutorDTOSeleccionadoId = 0;
 			}
@@ -169,42 +163,43 @@ public class GestionUsuarioBean implements Serializable {
 	public String salvarCambios() {
 
 		if (usuarioSeleccionado.getId() == null) {
-				usuarioSeleccionado.setActivo(true);
-				usuarioSeleccionado.setValidado(false);
+			usuarioSeleccionado.setActivo(true);
+			usuarioSeleccionado.setValidado(false);
 //				usuarioSeleccionado.setRol(rolDTOSeleccionado);
 //				usuarioSeleccionado.setItr(itrDTOSeleccionado);
-			if(validarDatos()) {
-				
-			try {
-				System.out.println(usuarioSeleccionado.toString());
-				System.out.println("------------------------------------------");
-				System.out.println(usuarioSeleccionado.getNombres());
-				System.out.println(usuarioSeleccionado.getApellidos());
-				System.out.println(usuarioSeleccionado.getDocumento());
-				System.out.println(usuarioSeleccionado.getGenero());
-				System.out.println(usuarioSeleccionado.getFechaNacimiento());
-				System.out.println(usuarioSeleccionado.getDepartamento());
-				System.out.println(usuarioSeleccionado.getLocalidad());
-				System.out.println(usuarioSeleccionado.getUTipo());
-				System.out.println(usuarioSeleccionado.getItr().getNombre());
-				System.out.println(usuarioSeleccionado.getRol().getNombre());
-				System.out.println(usuarioSeleccionado.getTelefono());
-				System.out.println(usuarioSeleccionado.getActivo());
-				System.out.println(usuarioSeleccionado.getUsuario());
-				System.out.println(usuarioSeleccionado.getMail());
-				System.out.println(usuarioSeleccionado.getMailPersonal());
-				System.out.println(usuarioSeleccionado.getValidado());
-				System.out.println("------------------------------------------");
-				UsuarioDTO usuarioNuevo;
-				usuarioNuevo = (UsuarioDTO) gestionUsuarioService.agregarUsuario(usuarioSeleccionado);
-				usuarioSeleccionado = null;
-				this.id = usuarioNuevo.getId();
+			if (validarDatos()) {
 
-				// mensaje de actualizacion correcta
-				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha agregado un nuevo usuario",	"");
-				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				try {
+					System.out.println(usuarioSeleccionado.toString());
+					System.out.println("------------------------------------------");
+					System.out.println(usuarioSeleccionado.getNombres());
+					System.out.println(usuarioSeleccionado.getApellidos());
+					System.out.println(usuarioSeleccionado.getDocumento());
+					System.out.println(usuarioSeleccionado.getGenero());
+					System.out.println(usuarioSeleccionado.getFechaNacimiento());
+					System.out.println(usuarioSeleccionado.getDepartamento());
+					System.out.println(usuarioSeleccionado.getLocalidad());
+					System.out.println(usuarioSeleccionado.getUTipo());
+					System.out.println(usuarioSeleccionado.getItr().getNombre());
+					System.out.println(usuarioSeleccionado.getRol().getNombre());
+					System.out.println(usuarioSeleccionado.getTelefono());
+					System.out.println(usuarioSeleccionado.getActivo());
+					System.out.println(usuarioSeleccionado.getUsuario());
+					System.out.println(usuarioSeleccionado.getMail());
+					System.out.println(usuarioSeleccionado.getMailPersonal());
+					System.out.println(usuarioSeleccionado.getValidado());
+					System.out.println("------------------------------------------");
+					UsuarioDTO usuarioNuevo;
+					usuarioNuevo = (UsuarioDTO) gestionUsuarioService.agregarUsuario(usuarioSeleccionado);
+					usuarioSeleccionado = null;
+					this.id = usuarioNuevo.getId();
 
-				this.modalidad = "view";
+					// mensaje de actualizacion correcta
+					FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Se ha agregado un nuevo usuario", "");
+					FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+
+					this.modalidad = "view";
 
 //			} catch (PersistenciaException e) {
 //
@@ -219,28 +214,29 @@ public class GestionUsuarioBean implements Serializable {
 //
 //				e.printStackTrace();
 //			}
-			} catch (Exception e) {
-			    Throwable rootException = ExceptionsTools.getCause(e);
-			    System.out.println("Root Exception Class: " + rootException.getClass().getName());
-			    System.out.println("Root Exception Message: " + rootException.getMessage());
+				} catch (Exception e) {
+					Throwable rootException = ExceptionsTools.getCause(e);
+					System.out.println("Root Exception Class: " + rootException.getClass().getName());
+					System.out.println("Root Exception Message: " + rootException.getMessage());
 
-			    String msg1 = "Error inesperado.";
-			    String msg2 = ExceptionsTools.formatedMsg(rootException);
+					String msg1 = "Error inesperado.";
+					String msg2 = ExceptionsTools.formatedMsg(rootException);
 
-			    if (rootException instanceof ConstraintViolationException || 
-			        rootException instanceof SQLIntegrityConstraintViolationException) {
-			        msg1 = "Error: El dato que quiere ingresar ya existe.";
-			        msg2 = "Por favor, verifique la información ingresada.";
-			    }
+					if (rootException instanceof ConstraintViolationException
+							|| rootException instanceof SQLIntegrityConstraintViolationException) {
+						msg1 = "Error: El dato que quiere ingresar ya existe.";
+						msg2 = "Por favor, verifique la información ingresada.";
+					}
 
-			    FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
-			    FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+					FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
+					FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 
-			    this.modalidad = "update";
+					this.modalidad = "update";
 
-			    e.printStackTrace();
+					e.printStackTrace();
+				}
 			}
-			}return null;
+			return null;
 		} else if (modalidad.equals("update")) {
 
 			try {
@@ -263,25 +259,25 @@ public class GestionUsuarioBean implements Serializable {
 //				e.printStackTrace();
 //			}
 			} catch (Exception e) {
-			    Throwable rootException = ExceptionsTools.getCause(e);
-			    System.out.println("Root Exception Class: " + rootException.getClass().getName());
-			    System.out.println("Root Exception Message: " + rootException.getMessage());
+				Throwable rootException = ExceptionsTools.getCause(e);
+				System.out.println("Root Exception Class: " + rootException.getClass().getName());
+				System.out.println("Root Exception Message: " + rootException.getMessage());
 
-			    String msg1 = "Error inesperado.";
-			    String msg2 = ExceptionsTools.formatedMsg(rootException);
+				String msg1 = "Error inesperado.";
+				String msg2 = ExceptionsTools.formatedMsg(rootException);
 
-			    if (rootException instanceof ConstraintViolationException || 
-			        rootException instanceof SQLIntegrityConstraintViolationException) {
-			        msg1 = "Error: El dato que quiere ingresar ya existe.";
-			        msg2 = "Por favor, verifique la información ingresada.";
-			    }
+				if (rootException instanceof ConstraintViolationException
+						|| rootException instanceof SQLIntegrityConstraintViolationException) {
+					msg1 = "Error: El dato que quiere ingresar ya existe.";
+					msg2 = "Por favor, verifique la información ingresada.";
+				}
 
-			    FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
-			    FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg1, msg2);
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 
-			    this.modalidad = "update";
+				this.modalidad = "update";
 
-			    e.printStackTrace();
+				e.printStackTrace();
 			}
 		}
 		return "";
@@ -314,11 +310,11 @@ public class GestionUsuarioBean implements Serializable {
 		}
 		return "";
 	}
-	
+
 	public String activarUsuario() {
 
 		if (usuarioSeleccionado.getId() != null) {
-				usuarioSeleccionado.setActivo(true);
+			usuarioSeleccionado.setActivo(true);
 			try {
 				gestionUsuarioService.actualizarUsuario(usuarioSeleccionado);
 
@@ -341,14 +337,12 @@ public class GestionUsuarioBean implements Serializable {
 		}
 		return "";
 	}
-	
+
 	public String print() {
 
 		System.out.println("Apretaste el boton!");
 		return "";
 	}
-	
-	
 
 	public void cambiarContrasenia() {
 		FacesMessage message = null;
@@ -356,154 +350,158 @@ public class GestionUsuarioBean implements Serializable {
 		if (contrasenia.equals(usuarioSeleccionado.getContrasenia())) {
 
 			if (nuevaContrasenia.equals(nuevaContraseniaConfirmar) && !nuevaContrasenia.equals("")) {
-				
-				 String password = nuevaContrasenia;
-				    // Validación de la contraseña con una expresión regular que incluye los requisitos mencionados.
-				    String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$";
-				    
-				    if(!password.matches(passwordPattern)) {
-				    	message = new FacesMessage(FacesMessage.SEVERITY_WARN, 
-				            "La contraseña no cumple con los requisitos: debe tener entre 8 y 20 caracteres, incluir números, mayúsculas, minúsculas y caracteres especiales.", "");
-				        FacesContext.getCurrentInstance().addMessage(null, message);
-				        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-				        
-				    }else {
+
+				String password = nuevaContrasenia;
+				// Validación de la contraseña con una expresión regular que incluye los
+				// requisitos mencionados.
+				String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$";
+
+				if (!password.matches(passwordPattern)) {
+					message = new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"La contraseña no cumple con los requisitos: debe tener entre 8 y 20 caracteres, incluir números, mayúsculas, minúsculas y caracteres especiales.",
+							"");
+					FacesContext.getCurrentInstance().addMessage(null, message);
+					FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+
+				} else {
 					usuarioSeleccionado.setContrasenia(nuevaContrasenia);
 					this.salvarCambios();
 					message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se cambio la contraseña ", "");
 					FacesContext.getCurrentInstance().addMessage(null, message);
 					FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-				    }
+				}
 			} else {
 				message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Las contraseñas no coinciden", "");
 				FacesContext.getCurrentInstance().addMessage(null, message);
 				FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 			}
 		} else {
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "La contraseña proporcionada no es la correcta! ","");
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "La contraseña proporcionada no es la correcta! ",
+					"");
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 		}
 	}
 
-	
-
 	public void actualizarITRSeleccionado(AjaxBehaviorEvent event) {
-	    Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
-	    if(nuevoValor == -1) {
-	    	FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar un ITR valido",	"");
+		Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
+		if (nuevoValor == -1) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar un ITR valido", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-	    }else {
-	    itrDTOSeleccionado = gestionItrService.obtenerITRSeleccionado(nuevoValor);
-	    this.usuarioSeleccionado.setItr(itrDTOSeleccionado);
+		} else {
+			itrDTOSeleccionado = gestionItrService.obtenerITRSeleccionado(nuevoValor);
+			this.usuarioSeleccionado.setItr(itrDTOSeleccionado);
 //	    System.out.println("ITR SETEADO = "+this.usuarioSeleccionado.getItr().getNombre());
-	    }
+		}
 	}
-	
+
 	public void actualizarROLSeleccionado(AjaxBehaviorEvent event) {
-	    Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
-	    if(nuevoValor == -1) {
-	    	FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar Rol valido",	"");
+		Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
+		if (nuevoValor == -1) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar Rol valido", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-	    }else {
-	    rolDTOSeleccionado = gestionRolService.obtenerRolSeleccionado(nuevoValor);
-	    this.usuarioSeleccionado.setRol(rolDTOSeleccionado);
+		} else {
+			rolDTOSeleccionado = gestionRolService.obtenerRolSeleccionado(nuevoValor);
+			this.usuarioSeleccionado.setRol(rolDTOSeleccionado);
 //	    System.out.println("ROL SETEADO = "+this.usuarioSeleccionado.getRol().getNombre());
-	}}
-	
-	
+		}
+	}
+
 	public void actualizarTipoTutorAreaSeleccionado(AjaxBehaviorEvent event) {
-	    Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
-	    if(nuevoValor == -1) {
-	    	FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar tipo de area para tutor valido",	"");
+		Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
+		if (nuevoValor == -1) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+					"Debe seleccionar tipo de area para tutor valido", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-	    }else {
-	    	tipoAreaDTOSeleccionado = gestionTipoAreaService.obtenerTipoAreaPorId(nuevoValor);
-	    	((TutorDTO)this.usuarioSeleccionado).setAreaDTO(tipoAreaDTOSeleccionado);
+		} else {
+			tipoAreaDTOSeleccionado = gestionTipoAreaService.obtenerTipoAreaPorId(nuevoValor);
+			((TutorDTO) this.usuarioSeleccionado).setAreaDTO(tipoAreaDTOSeleccionado);
 //	    System.out.println("ROL SETEADO = "+this.usuarioSeleccionado.getRol().getNombre());
-	}}
-	
+		}
+	}
 
 	public void actualizarTipoTutorSeleccionado(AjaxBehaviorEvent event) {
-	    Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
-	    if(nuevoValor == -1) {
-	    	FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar tipo de tutor valido",	"");
+		Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
+		if (nuevoValor == -1) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+					"Debe seleccionar tipo de tutor valido", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-	    }else {
-	    	tipoTutorDTOSeleccionado = gestionTipoTutorService.obtenerTipoTutorPorId(nuevoValor);
-	    	((TutorDTO)this.usuarioSeleccionado).setTipoDTO(tipoTutorDTOSeleccionado);
-	    	 
-//	    System.out.println("ROL SETEADO = "+this.usuarioSeleccionado.getRol().getNombre());
-	}}
-	
-	
-	
-	
-	public Boolean validarDatos() {
-		
-		if(this.usuarioSeleccionado.getRol()==null) {
-			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar Rol ",	"");
-			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-			return false;
-		}
-		if(this.usuarioSeleccionado.getItr()==null) {
-			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar Itr ",	"");
-			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-			return false;
-		}
-		if(this.usuarioSeleccionado.getContrasenia() == null) {
-		    FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe Ingresar contraseña", "");
-		    FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-		    return false;
 		} else {
-		    String password = this.usuarioSeleccionado.getContrasenia();
-		    // Validación de la contraseña con una expresión regular que incluye los requisitos mencionados.
-		    String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$";
-		    
-		    if(!password.matches(passwordPattern)) {
-		        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, 
-		            "La contraseña no cumple con los requisitos: debe tener entre 8 y 20 caracteres, incluir números, mayúsculas, minúsculas y caracteres especiales.", "");
-		        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-		        return false;
-		    }
+			tipoTutorDTOSeleccionado = gestionTipoTutorService.obtenerTipoTutorPorId(nuevoValor);
+			((TutorDTO) this.usuarioSeleccionado).setTipoDTO(tipoTutorDTOSeleccionado);
+
+//	    System.out.println("ROL SETEADO = "+this.usuarioSeleccionado.getRol().getNombre());
 		}
-		
-		if(esEstudiante()) {
-			
-			if(((EstudianteDTO)this.usuarioSeleccionado).getGeneracion()== null) {
-			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar el año de la generacion", "");
-		    FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-		    return false;
+	}
+
+	public Boolean validarDatos() {
+
+		if (this.usuarioSeleccionado.getRol() == null) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar Rol ", "");
+			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+			return false;
+		}
+		if (this.usuarioSeleccionado.getItr() == null) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar Itr ", "");
+			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+			return false;
+		}
+		if (this.usuarioSeleccionado.getContrasenia() == null) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe Ingresar contraseña", "");
+			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+			return false;
+		} else {
+			String password = this.usuarioSeleccionado.getContrasenia();
+			// Validación de la contraseña con una expresión regular que incluye los
+			// requisitos mencionados.
+			String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$";
+
+			if (!password.matches(passwordPattern)) {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+						"La contraseña no cumple con los requisitos: debe tener entre 8 y 20 caracteres, incluir números, mayúsculas, minúsculas y caracteres especiales.",
+						"");
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				return false;
 			}
 		}
-		
+
+		if (esEstudiante()) {
+
+			if (((EstudianteDTO) this.usuarioSeleccionado).getGeneracion() == null) {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+						"Debe seleccionar el año de la generacion", "");
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				return false;
+			}
+		}
+
 		if (esTutor()) {
 			if (((TutorDTO) this.usuarioSeleccionado).getAreaDTO() == null) {
-				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar el tipo de area", "");
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar el tipo de area",
+						"");
 				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 				return false;
 			}
 			if (((TutorDTO) this.usuarioSeleccionado).getTipoDTO() == null) {
-				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar el tipo de tutor", "");
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+						"Debe seleccionar el tipo de tutor", "");
 				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 				return false;
 			}
 		}
-		
-		
+
 		return true;
 	}
-	
-	  public String irACambiarContrasena() {
-	        return "/pages/CambiarContrasena.xhtml?id=" + usuarioSeleccionado.getId() + "&modalidad=edit&faces-redirect=true";
-	    }
-	
-	  public String irPerfil() {
-	        return "/pages/VerPerfil.xhtml?faces-redirect=true";
-	    }
-	
 
-	
+	public String irACambiarContrasena() {
+		return "/pages/CambiarContrasena.xhtml?id=" + usuarioSeleccionado.getId()
+				+ "&modalidad=edit&faces-redirect=true";
+	}
+
+	public String irPerfil() {
+		return "/pages/VerPerfil.xhtml?faces-redirect=true";
+	}
+
 //	
 //	public void validarMailInstitucional(String patron) {
 //		if (txtEmailInstitucional.getText() != null && !txtEmailInstitucional.getText().isEmpty()) {
@@ -586,8 +584,7 @@ public class GestionUsuarioBean implements Serializable {
 //
 //		}
 //	}
-	
-	
+
 	public boolean esTutor() {
 		return this.usuarioSeleccionado instanceof TutorDTO;
 	}
@@ -683,6 +680,7 @@ public class GestionUsuarioBean implements Serializable {
 	public void setItrDTOSeleccionadoId(Integer itrDTOSeleccionadoId) {
 		this.itrDTOSeleccionadoId = itrDTOSeleccionadoId;
 	}
+
 	public String getU_tipo() {
 		return u_tipo;
 	}

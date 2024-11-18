@@ -24,11 +24,9 @@ public class GestionRolService implements Serializable {
 	private EJBUsuarioRemoto ejbRemoto;
 
 	public GestionRolService() {
-	ejbRemoto = new EJBUsuarioRemoto();
+		ejbRemoto = new EJBUsuarioRemoto();
 	}
-	
-	
-	
+
 	public RolDTO fromRol(Rol rol) {
 		RolDTO rolDTO = new RolDTO();
 
@@ -76,23 +74,21 @@ public class GestionRolService implements Serializable {
 
 	public RolDTO obtenerRolSeleccionado(Integer idRol) {
 		Rol rol = new Rol();
-		
-		rol=ejbRemoto.obtenerRolPorId(idRol);
-		
+
+		rol = ejbRemoto.obtenerRolPorId(idRol);
+
 		return fromRol(rol);
 	}
 
-	
-
 	public List<RolDTO> listarRolDTO() {
-		List<Rol> roles=new ArrayList<Rol>();
-		List<RolDTO> rolesDTO=new ArrayList<RolDTO>();
-		
-		roles=ejbRemoto.listarRoles();
-		for(Rol ttt: roles) {
+		List<Rol> roles = new ArrayList<Rol>();
+		List<RolDTO> rolesDTO = new ArrayList<RolDTO>();
+
+		roles = ejbRemoto.listarRoles();
+		for (Rol ttt : roles) {
 			rolesDTO.add(fromRol(ttt));
 		}
-		
+
 		return rolesDTO;
 	}
 }

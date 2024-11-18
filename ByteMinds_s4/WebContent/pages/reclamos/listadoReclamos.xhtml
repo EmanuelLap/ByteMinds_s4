@@ -213,8 +213,12 @@
 		</p:column>
 		</p:dataTable>
 
+		<p:commandButton value="Imprimir" type="button">
+			<p:printer target="tablaReclamos"
+				configuration="globalStyles: true, title: 'Reporte reclamos', timeout: 1000" />
+		</p:commandButton>
 
-	<p:dialog id="editDialog" widgetVar="editDialog"  resizable="false">
+		<p:dialog id="editDialog" widgetVar="editDialog"  resizable="false">
 				    <h:form id="editDialogForm">
 				        <h2>Editar estado reclamo</h2>
 				        

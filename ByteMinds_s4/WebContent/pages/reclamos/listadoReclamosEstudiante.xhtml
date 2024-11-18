@@ -140,7 +140,10 @@
 			
 		</p:column>
 		</p:dataTable>
-
+		<p:commandButton value="Imprimir" type="button">
+			<p:printer target="tablaReclamos"
+				configuration="globalStyles: true, title: 'Reporte reclamos estudiante', timeout: 1000" />
+		</p:commandButton>
 
 	<p:dialog id="editDialog" widgetVar="editDialog"  resizable="false">
 				    <h:form id="editDialogForm">

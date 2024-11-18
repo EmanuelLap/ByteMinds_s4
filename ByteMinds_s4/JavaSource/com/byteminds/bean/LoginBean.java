@@ -48,7 +48,8 @@ public class LoginBean implements Serializable {
 	private GestionUsuarioService gUS;
 	private AuthService auth;
 	private Boolean activeDirectory;
-
+	private Boolean mostrarContrasenia;
+	
 	@PostConstruct
 	public void init() {
 		auth = new AuthService();
@@ -77,7 +78,8 @@ public class LoginBean implements Serializable {
 				return null;	
 			}
 			
-			this.token =auth.createJWT(String.valueOf(user.getId()), "ByteMindsApp", user.getApellidos()+user.getNombres(), 3600000);//El token dura 1 hora
+//			this.token =auth.createJWT(String.valueOf(user.getId()), "ByteMindsApp", user.getApellidos()+user.getNombres(), 3600000);//El token dura 1 hora
+			this.token =auth.createJWT(String.valueOf(user.getId()), "ByteMindsApp", user.getApellidos()+user.getNombres(), 360000000);//El token dura 1 hora
 			// Save the JWT token to session or somewhere else
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("jwt", token);
 						
@@ -97,7 +99,7 @@ public class LoginBean implements Serializable {
 	public String logout() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.getExternalContext().invalidateSession();
-		return "/login?faces-redirect=true";
+		return "/login.xhtml?faces-redirect=true";
 	}
 
 	private UsuarioDTO validateUsernamePassword() {
@@ -127,8 +129,8 @@ public class LoginBean implements Serializable {
 	
 	 private UsuarioDTO loginActiveDirectory(String username, String password) {
 		 UsuarioDTO user = null;
-//		 String ldapAdServer = "ldap://192.168.1.200:389"; //  servidor LDAP ALBERTO
-		 String ldapAdServer = "ldap://192.168.136.11:389"; //  servidor LDAP
+		 String ldapAdServer = "ldap://192.168.1.200:389"; //  servidor LDAP LOCAL
+//		 String ldapAdServer = "ldap://192.168.136.11:389"; //  servidor LDAP GNS3	
 	        String ldapSearchBase = "dc=utec,dc=edu,dc=uy";
 	        String ldapUsername = "cn=Administrator,cn=Users,dc=utec,dc=edu,dc=uy"; // Usuario administrador LDAP
 	        String ldapPassword = "Pfinal2024.01"; // Contraseña del usuario administrador
@@ -327,6 +329,14 @@ public class LoginBean implements Serializable {
 
 	public void setActiveDirectory(Boolean activeDirectory) {
 		this.activeDirectory = activeDirectory;
+	}
+
+	public Boolean getMostrarContrasenia() {
+		return mostrarContrasenia;
+	}
+
+	public void setMostrarContrasenia(Boolean mostrarContrasenia) {
+		this.mostrarContrasenia = mostrarContrasenia;
 	}
 
 }
