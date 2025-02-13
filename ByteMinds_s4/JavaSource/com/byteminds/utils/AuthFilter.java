@@ -11,7 +11,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
-@Provider //TODO:DESCOMENTAR PARA APLICAR FILTROS LUEGO DE VERIFICAR ERROR CON EL TOKEN
+@Provider
 public class AuthFilter implements ContainerRequestFilter {
 
     @Override
@@ -19,7 +19,7 @@ public class AuthFilter implements ContainerRequestFilter {
     	 String path = requestContext.getUriInfo().getPath();
     	 System.out.println("requestContext.getUriInfo().getPath(): "+path);
          // Permitir el acceso a la ruta de login sin autenticación
-         if (path.startsWith("/login")) {
+         if (path.startsWith("/login")|| path.startsWith("/layout")) {
              return;
          }
     	String authHeader = requestContext.getHeaderString("Authorization");

@@ -61,8 +61,8 @@ public class GestionAccionJustificacionBean implements Serializable{
 		accionJustificacionSeleccionado = new AccionJustificacionDTO();
 		accionJustificacionSeleccionado.setFecha(new Date(System.currentTimeMillis()));
 		accionJustificacionSeleccionado.setJustificacionId(justificacionSeleccionado);
-		System.out.println(loginBean.getUserioLogeado().getNombres() +" " +loginBean.getUserioLogeado().getApellidos() );
-		accionJustificacionSeleccionado.setAnalistaId((AnalistaDTO)loginBean.getUserioLogeado());
+		System.out.println(loginBean.getUsuarioLogeado().getNombres() +" " +loginBean.getUsuarioLogeado().getApellidos() );
+		accionJustificacionSeleccionado.setAnalistaId((AnalistaDTO)loginBean.getUsuarioLogeado());
 		
 		//traer lista de acciones sobre este reclamo mismo
 		

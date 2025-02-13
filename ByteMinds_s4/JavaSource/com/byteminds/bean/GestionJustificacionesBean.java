@@ -88,7 +88,7 @@ public class GestionJustificacionesBean implements Serializable {
 	public String seleccionarEventosEstudiante() throws PersistenciaException {
 		listadoDeJustificacionFiltrados.clear();
 		listadoDeJustificacionFiltrados = gestionJustificacionService
-				.buscarJustificacionsEstudiante(loginBean.getUserioLogeado().getId());
+				.buscarJustificacionsEstudiante(loginBean.getUsuarioLogeado().getId());
 
 		return "";
 

@@ -15,8 +15,8 @@ import com.byteminds.negocio.TutorDTO;
 public class TutorConverter implements Converter {
 
     @EJB
-    private GestionUsuarioService gestionUsuarioService = new GestionUsuarioService(); // Suponiendo que tienes un servicio EJB para obtener tutores por ID
-
+    private GestionUsuarioService gestionUsuarioService = new GestionUsuarioService(); // Inyección de dependencias
+    
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         if (value == null || value.isEmpty()) {

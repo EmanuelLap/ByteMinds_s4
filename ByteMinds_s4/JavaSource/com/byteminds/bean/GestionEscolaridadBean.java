@@ -50,7 +50,7 @@ public class GestionEscolaridadBean implements Serializable {
 		System.out.println("INICIALIZANDO GestionEscolaridadBean ");
 		listEscolaridad.clear();
 		listEscolaridad = gCAEES.filtrarAsistEstuAEventosPor(null, null, null, null,
-				String.valueOf(gestionLoginBean.getUserioLogeado().getDocumento()), null, null, null);
+				String.valueOf(gestionLoginBean.getUsuarioLogeado().getDocumento()), null, null, null);
 
 		calcularPromedioCalificacion();
 

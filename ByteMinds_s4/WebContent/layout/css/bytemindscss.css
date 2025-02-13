@@ -220,3 +220,8 @@ table.padding_autocompletenew td {
 /*.ui-datatable .ui-button:hover {*/
 /*    background-color: #45a049;*/
 /*}*/
+
+body .ui-menu.ui-menubar .ui-menu-parent .ui-menu-child {
+    width: auto !important;
+   padding-right: 5px !important;
+}

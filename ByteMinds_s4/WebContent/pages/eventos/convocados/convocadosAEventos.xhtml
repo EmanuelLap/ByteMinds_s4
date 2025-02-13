@@ -20,7 +20,7 @@
 				<div class="leftDiv">
 					<!--filtro eventos -->
 					<h:panelGrid columns="2">
-						<p:outputLabel value="Titulo" />
+						<p:outputLabel value="Título" />
 						<p:inputText id="tituloCrit"
 							value="#{gestionEnventosBean.criterioTitulo}" />
 
@@ -48,7 +48,7 @@
 							<f:selectItems value="#{combosBean.comboItr}" />
 						</p:selectOneMenu>
 
-						<p:outputLabel value="Localizacion" />
+						<p:outputLabel value="Localización" />
 						<p:inputText id="localizacionCrit"
 							value="#{gestionEnventosBean.criterioLocalizacion}" />
 
@@ -90,7 +90,7 @@
 <!-- 						</p:column> -->
 
 						<p:column sortBy="#{evento.titulo}">
-							<f:facet name="header">Titulo</f:facet>
+							<f:facet name="header">Título</f:facet>
 							<h:outputText value="#{evento.titulo}" />
 						</p:column>
 
@@ -118,7 +118,7 @@
 						</p:column>
 
 						<p:column sortBy="#{evento.localizacion}">
-							<f:facet name="header">Localizacion</f:facet>
+							<f:facet name="header">Localización</f:facet>
 							<h:outputText value="#{evento.localizacion}" /> 
 						</p:column>
 
@@ -144,7 +144,7 @@
 
 					<!-- Listado de Estudiantes -->
 					<h3>
-						<h:outputLabel value="Busqueda y seleccion de usuarios" />
+						<h:outputLabel value="Búsqueda y selección de usuarios" />
 					</h3>
 					<h:panelGrid columns="2">
 								<p:outputLabel value="Nombre" />

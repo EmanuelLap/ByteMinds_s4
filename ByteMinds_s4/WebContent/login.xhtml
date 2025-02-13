@@ -1,104 +1,62 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
+<html xmlns="http://www.w3.org/1999/xhtml">
+<div xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
+
+<link type="text/css" rel="stylesheet" href="http://localhost:8080/ByteMinds_s4/layout/css/previologin.css"/>
+	
 	<title>Login Page</title>
-	<style>
-.login-form {
-	max-width: 400px;
-	margin: 0 auto;
-	padding: 15px;
-	background-color: white;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	border-radius: 5px;
-}
-
-.login-form .ui-inputfield, .login-form .ui-button {
-	width: 100%;
-	margin-bottom: 10px;
-}
-
-
-.link-container {
-	display: flex;
-	align-items: center;
-}
-
-.pipe {
-	margin: 0 10px;
-}
-
-.link-container a {
-	color: blue;
-	text-decoration: none;
-	margin: 0 10px;
-}
-
-.link-container a:hover {
-	text-decoration: underline;
-}
-</style>
 </h:head>
 <h:body>
+	<!-- Componente Growl para mensajes emergentes -->
+	<p:growl id="messagesLogin" sticky="true" showDetail="true" life="3000" />
+
 	<div class="login-form">
 		<h:form id="loginForm">
-			<p:growl id="messagesLogin" sticky="true" showDetail="true"
-				life="3000" />
+			<!-- Logo institucional -->
+			<img src="layout/img/isologotipo_fondo_transparente.png" alt="Logo Institucional" class="logo" />
 
-			<p:panel header="Login" style="text-align: center;">
-<div style="position: relative; display: inline-block; text-align: left;">
-				<h:outputLabel for="username" value="Username:" />
-				<p:inputText id="username" value="#{loginBean.username}" />
-	
-				<h:outputLabel for="password" value="Password:" />
-<!-- 				style="position: absolute; right: 5px; top: 50%; transform: translateY(125%); width: 20px; height: 20px; background: none; border: none;"  -->
+			<p:panel id="panelLogin" header="Control de acceso" style="text-align: center;">
+				<div style="position: relative; display: inline-block; text-align: left;">
+					<h:outputLabel for="username" value="Usuario:" />
+					<p:inputText id="username" value="#{loginBean.username}" />
+
+					<h:outputLabel for="password" value="Contraseña:" />
 					<p:inputText id="password" value="#{loginBean.password}" type="password" />
-					
+
 					<p:selectBooleanCheckbox id="mostrarContrasenia" 
+						value="#{gestionRegistro.mostrarContrasenia}" 
+						onchange="togglePasswordVisibility('loginForm:password', this)" />
+					<h:outputLabel for="mostrarContrasenia" value="  Mostrar contraseña" />
 					
-					                             value="#{gestionRegistro.mostrarContrasenia}" 
-					                             onchange="togglePasswordVisibility('loginForm:password', this)" />
-				<h:outputLabel for="mostrarContrasenia" value="  Mostrar contraseña" />
-				
+					<p:commandLink id="recuperarContraseniaID" value="Olvide mi contraseña" action="#{loginBean.recuperarContrasenia}" style="color:blue;padding-left: 10px;" />
 				</div>
 
-
-
 				<div style="position: relative; text-align: center;">
-					<p:selectBooleanCheckbox id="ldapLogin" value="#{loginBean.activeDirectory}" 
-					itemLabel="LDAP" disabled="false"/>
-					
-					<h:commandButton value="Login" action="#{loginBean.login}" 
-						update="messagesLogin" />
-
+					<p:selectBooleanCheckbox id="ldapLogin" value="#{loginBean.activeDirectory}" itemLabel="LDAP" disabled="false"/>
+					<h:commandButton value="Iniciar Sesión" action="#{loginBean.login}" update="messagesLogin" />
 				</div>
 				<div style="position: relative; text-align: center;">
-<!-- 				linea de separacion -->
 					<hr />
 					<br />
 					<h:outputLabel value="Registro de usuario" style="color:blue"/>
-					
 				</div>
 				<div class="link-container" style="position: relative; text-align: center;">
-
 					<p:commandButton value="Estudiante" action="#{gestionRegistro.inicializar}" partialSubmit="true">
 						<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}" value="ESTUDIANTE" />
 					</p:commandButton>
-
 					<span class="pipe">|</span>
-
-			<p:commandButton value="Tutor" action="#{gestionRegistro.inicializar}" partialSubmit="true">
+					<p:commandButton value="Tutor" action="#{gestionRegistro.inicializar}" partialSubmit="true">
 						<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}" value="TUTOR" />
 					</p:commandButton>
 					<span class="pipe">|</span>
-			<p:commandButton value="Analista" action="#{gestionRegistro.inicializar}" partialSubmit="true">
+					<p:commandButton value="Analista" action="#{gestionRegistro.inicializar}" partialSubmit="true">
 						<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}" value="ANALISTA" />
 					</p:commandButton>
-
 				</div>
-
 			</p:panel>
 			<script type="text/javascript">
 			function togglePasswordVisibility(inputId, checkbox) {
@@ -110,8 +68,8 @@
 			    }
 			}
 			</script>
-
 		</h:form>
 	</div>
 </h:body>
+</div>
 </html>

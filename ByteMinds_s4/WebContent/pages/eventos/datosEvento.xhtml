@@ -57,7 +57,7 @@
 							value="#{gestionEventoBean.eventoDTOseleccionado.id}" />
 						<p:message for="id" style="color:red" />
 
-						<p:outputLabel value="Titulo" />
+						<p:outputLabel value="Título" />
 						<p:inputText id="eventoTitulo" 
 							disabled="#{!gestionEventoBean.modoEdicion}" 
 							value="#{gestionEventoBean.eventoDTOseleccionado.titulo}" partialSubmit="true" >
@@ -107,7 +107,7 @@
 							</p:calendar>
 						<p:message for="inicioEvento" style="color:red" />
 
-						<p:outputLabel value="Localizacion" />
+						<p:outputLabel value="Localización" />
 						<p:inputText id="localizacionEvento"
 							disabled="#{!gestionEventoBean.modoEdicion}" partialSubmit="true"
 							value="#{gestionEventoBean.eventoDTOseleccionado.localizacion}" >
@@ -119,7 +119,7 @@
 
 
 
-						<p:outputLabel value="ITRCombo" />
+						<p:outputLabel value="ITR" />
 						<p:selectOneMenu id="itrListaDeITRparaEvento"
 							value="#{gestionEventoBean.itrDTOSeleccionadoId}">
 							<f:selectItem itemLabel="Seleccione Itr" itemValue="-1" />

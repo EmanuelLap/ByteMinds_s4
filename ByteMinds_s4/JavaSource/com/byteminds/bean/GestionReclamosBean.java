@@ -104,7 +104,7 @@ public class GestionReclamosBean implements Serializable{
 	}
 	public String seleccionarEventosEstudiante() throws PersistenciaException {
 		listadoDeReclamosFiltrados.clear();
-		listadoDeReclamosFiltrados=gestionReclamoService.buscarReclamosEstudiante(loginBean.getUserioLogeado().getId());
+		listadoDeReclamosFiltrados=gestionReclamoService.buscarReclamosEstudiante(loginBean.getUsuarioLogeado().getId());
 
 		return "/pages/reclamos/listadoReclamosEstudiante.xhtml?faces-redirect=true";
 		

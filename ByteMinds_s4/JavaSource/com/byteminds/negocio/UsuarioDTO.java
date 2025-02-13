@@ -246,5 +246,8 @@ public class UsuarioDTO implements Serializable {
 	public void setValidado(boolean validado) {
 		this.validado = validado;
 	}
-
+	
+	public String toStringRestablecer() {
+		return this.usuario + "," + this.mail;
+	}
 }

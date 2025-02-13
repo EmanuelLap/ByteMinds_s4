@@ -24,10 +24,10 @@ public class LoginFilter implements Filter {
 		HttpSession session = request.getSession(false);
 
 		String path = request.getRequestURI().substring(request.getContextPath().length());
-
-		if (path.startsWith("/layout") || path.startsWith("/css") || path.equals("/registroweb/registro.xhtml")
-				|| path.startsWith("/rest")) {
-			// No aplicamos el filtro a /layout o /login
+		
+		if (path.startsWith("/layout") || path.equals("/registroweb/registro.xhtml") || path.startsWith("/javax.faces.resource")
+				|| path.startsWith("/rest")|| path.equals("/recuperar.xhtml")|| path.equals("/restablecer.xhtml")) {
+			// No aplicamos el filtro a Layout registros recuperar o restablecer servicios rest y recursos.
 			chain.doFilter(req, res);
 			return;
 		}

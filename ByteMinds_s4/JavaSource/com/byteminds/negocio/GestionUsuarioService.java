@@ -169,11 +169,11 @@ public class GestionUsuarioService implements Serializable {
 	// servicios para capa de Presentacion
 
 	public List<UsuarioDTO> seleccionarUsuarios() throws PersistenciaException {
-		// buscamos todos los objetos EmpleadoEmpresa
+		// buscamos todos los objetos 
 		List<Usuario> listaUsuarios = ejbRemoto.listarUsuarios();
 
 		List<UsuarioDTO> listaUsuariosDTO = new ArrayList<UsuarioDTO>();
-		// recorremos listaEmpleadosEmpresa y vamos populando listaEmpleado (haciendo la
+		// recorremos(haciendo la
 		// conversion requerida)
 		for (Usuario usuario : listaUsuarios) {
 			listaUsuariosDTO.add(fromUsuario(usuario));

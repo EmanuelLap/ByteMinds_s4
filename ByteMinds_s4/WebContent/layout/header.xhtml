@@ -3,164 +3,95 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:p="http://primefaces.org/ui" >
-    	
-    	
-   	<div style="background-color: #809fff;padding: 12px">
-		<span
-			style="color: white; font-size: 180%; font-family: Arial; margin: 20px">
-			Sistema de Gestion de UTEC </span>
-
-	</div>
-   	
+    xmlns:p="http://primefaces.org/ui">
+    
+    <div style="background-color: #809fff;padding: 12px">
+        <span style="color: white; font-size: 180%; font-family: Arial; margin: 20px">
+            Sistema de Gestión de UTEC
+        </span>
+    </div>
+    
     <h:form>  
     <p:growl id="messages2"/>
      <p:menubar>
- 		
-        <p:submenu label="Gestion de Usuarios" icon="ui-icon-document" rendered="#{loginBean.esAnalista() or loginBean.esTutor()}">
-            <p:menuitem value="Busqueda de usuarios"   outcome="/pages/Usuarios.xhtml" />
-<!--             <p:menuitem value="Alta de usuario estudiante" outcome="/pages/DatosUsuario.xhtml"  > -->
-<!--             	<f:param name="id" value="" /> -->
-<!--     			<f:param name="modalidad" value="insert" /> -->
-<!--     			<f:param name="u_tipo" value="ESTUDIANTE" /> -->
-<!--             </p:menuitem> -->
-<!-- 			           <p:menuitem value="Alta de usuario estudiante NUEVO"  action="#{gestionUsuario.inicializar}" partialSubmit="true"> -->
-<!-- 							<f:setPropertyActionListener target="#{gestionUsuario.id}" value="#{null}" /> -->
-<!-- 							<f:setPropertyActionListener target="#{gestionUsuario.modalidad}" value="insert" /> -->
-<!-- 							<f:setPropertyActionListener target="#{gestionUsuario.u_tipo}" value="ESTUDIANTE" /> -->
-<!-- 			            </p:menuitem> -->
-<!--             <p:menuitem value="Alta de usuario tutor" outcome="/pages/DatosUsuario.xhtml"  > -->
-<!--             	<f:param name="id" value="" /> -->
-<!--     			<f:param name="modalidad" value="insert" /> -->
-<!--             	<f:param name="u_tipo" value="TUTOR" /> -->
-<!--             </p:menuitem> -->
-<!--             <p:menuitem value="Alta de usuario analista" outcome="/pages/DatosUsuario.xhtml"  > -->
-<!--             	<f:param name="id" value="" /> -->
-<!--     			<f:param name="modalidad" value="insert" /> -->
-<!--     			<f:param name="u_tipo" value="ANALISTA" /> -->
-<!--             </p:menuitem> -->
-             
-        </p:submenu>
- 
+         <p:submenu label="Gestión de Usuarios" icon="ui-icon-document" rendered="#{loginBean.esAnalista() or loginBean.esTutor()}">
+                <p:menuitem value="Búsqueda de usuarios" outcome="/pages/Usuarios.xhtml" />
 
+				<p:menuitem value="Alta de usuario analista" action="#{gestionRegistro.navegarRegistroAnalista}" partialSubmit="true">
+					<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}"	value="ANALISTA" />
+				</p:menuitem>
+				<p:menuitem value="Alta de usuario tutor" action="#{gestionRegistro.navegarRegistroTutor()}" partialSubmit="true">
+					<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}"	value="TUTOR" />
+				</p:menuitem>
+				<p:menuitem value="Alta de usuario estudiante" action="#{gestionRegistro.navegarRegistroEstudiante()}" partialSubmit="true">
+					<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}"	value="ESTUDIANTE" />
+				</p:menuitem>
+			</p:submenu>
 
- 		  <!-- Nuevo submenu para el perfil del usuario -->
             <p:submenu label="Perfil del usuario" icon="ui-icon-user">
                 <p:menuitem value="Ver perfil" outcome="/pages/VerPerfil.xhtml">
-                <f:param name="id" value="#{loginBean.userioLogeado.id}" />
-    			<f:param name="modalidad" value="view" />
-    			</p:menuitem>
+                    <f:param name="id" value="#{loginBean.usuarioLogeado.id}" />
+                    <f:param name="modalidad" value="view" />
+                </p:menuitem>
                 <p:menuitem value="Editar perfil" outcome="/pages/EditarPerfil.xhtml">
-                 <f:param name="id" value="#{loginBean.userioLogeado.id}" />
-    			<f:param name="modalidad" value="edit" />
-    			</p:menuitem>
+                    <f:param name="id" value="#{loginBean.usuarioLogeado.id}" />
+                    <f:param name="modalidad" value="edit" />
+                </p:menuitem>
                 <p:menuitem value="Cambiar contraseña" outcome="/pages/CambiarContrasena.xhtml">
-                <f:param name="id" value="#{loginBean.userioLogeado.id}" />
-    			<f:param name="modalidad" value="edit" />
-    			</p:menuitem>
-    
+                    <f:param name="id" value="#{loginBean.usuarioLogeado.id}" />
+                    <f:param name="modalidad" value="edit" />
+                </p:menuitem>
             </p:submenu>
-            
-            
-            <!-- Nuevo submenu para eventos -->
+
             <p:submenu label="Eventos" icon="ui-icon-user" rendered="#{loginBean.esAnalista() or loginBean.esTutor()}">
                 <p:menuitem value="Listar Eventos" outcome="/pages/eventos/listadoEventos.xhtml">
-                <f:param name="id" value="#{loginBean.userioLogeado.id}" />
-    			<f:param name="modalidad" value="view" />
-    			</p:menuitem>
-                <p:menuitem value="Nuevo evento" action="#{gestionEventoBean.inicializar}" partialSubmit="true">
-<!--                  <f:param name="id" value="null" /> outcome="/pages/eventos/datosEvento.xhtml" -->
-<!--     			<f:param name="modalidad" value="insert" /> -->
-    			    <f:setPropertyActionListener target="#{gestionEventoBean.id}" value="#{null}" />
-        			<f:setPropertyActionListener target="#{gestionEventoBean.modalidad}" value="insert" />
-    			</p:menuitem>
-<!--                 <p:menuitem value="Editar evento" outcome="/pages/eventos/datosEvento.xhtml"> -->
-<!--                 <f:param name="id" value="#{loginBean.userioLogeado.id}" /> -->
-<!--     			<f:param name="modalidad" value="edit" /> -->
-<!--     			</p:menuitem> -->
-    			 <p:menuitem value="Convocados a evento" outcome="/pages/eventos/convocados/convocadosAEventos.xhtml">
-<!--                 <f:param name="id" value="#{loginBean.userioLogeado.id}" /> -->
-<!--     			<f:param name="modalidad" value="edit" /> -->
-    			</p:menuitem>
-    			<p:menuitem value="Asistencia a evento" outcome="/pages/eventos/asistenciaycalificaciones/asistenciaycalificaciones.xhtml">
-<!--                 <f:param name="id" value="#{loginBean.userioLogeado.id}" /> -->
-<!--     			<f:param name="modalidad" value="edit" /> -->
-    			</p:menuitem>
-    			
-    
-            </p:submenu>
-			<!--Sub menu para Justificaciones Estudiantes -->
-	
-             <p:submenu label="Justificaciones" icon="ui-icon-document" >
-            <p:menuitem value="Alta de Justificacion"  action="#{gestionJustificacion.inicializar}" partialSubmit="true">
-				<f:setPropertyActionListener target="#{gestionJustificacion.id}" value="#{null}" />
-				<f:setPropertyActionListener target="#{gestionJustificacion.modalidad}" value="insert" />
-				<f:setPropertyActionListener target="#{gestionJustificacion.navegar}" value="/index.xhtml?faces-redirect=true" />
-            </p:menuitem>
-            	
-            <p:menuitem value="Listado de justificaciones" outcome="/pages/eventos/justificaciones/listadoJustificaciones.xhtml" rendered="#{loginBean.esAnalista()}"/>
-            <p:menuitem value="Listado de justificaciones Estudiante"   outcome="/pages/eventos/justificaciones/listadoJustificacionesEstudiante.xhtml" rendered="#{loginBean.esEstudiante()}"/>
-
-            <p:menuitem value="Registro de acciones"   outcome="/pages/eventos/justificaciones/listadoJustificaciones.xhtml" rendered="#{loginBean.esAnalista()}"/>
-
-            
-        </p:submenu>
-
-
-
-			<!--Sub menu para Reclamos -->
-             <p:submenu label="Reclamos" icon="ui-icon-document" >
-            <p:menuitem value="Alta de reclamos"  action="#{gestionReclamo.inicializar}" partialSubmit="true">
-<!--             	<f:param name="modalidad" value="insert" /> -->
-<!--             	<f:param name="idEstudianteDTO" value="#{loginBean.userioLogeado.id}" /> -->
-				<f:setPropertyActionListener target="#{gestionReclamo.id}" value="#{null}" />
-				<f:setPropertyActionListener target="#{gestionReclamo.modalidad}" value="insert" />
-				<f:setPropertyActionListener target="#{gestionReclamo.navegar}" value="/index.xhtml?faces-redirect=true" />
-					
-            </p:menuitem>
-            	
-            <p:menuitem value="Listado de reclamos" outcome="/pages/reclamos/listadoReclamos.xhtml" rendered="#{loginBean.esAnalista()}"/>
-            <p:menuitem value="Listado de reclamos Estudiante"   action="#{gestionReclamosBean.seleccionarEventosEstudiante()}" rendered="#{loginBean.esEstudiante()}"/>
-            
-<!--             <p:menuitem value="Modificacion de reclamos"   outcome="/pages/reclamos/altaReclamo.xhtml" > -->
-<!--             	<f:param name="id" value="" /> -->
-<!--     			<f:param name="modalidad" value="update" /> -->
-<!--             </p:menuitem> -->
-            <p:menuitem value="Registro de acciones"   outcome="/pages/reclamos/listadoReclamos.xhtml" rendered="#{loginBean.esAnalista()}"/>
-
-            
-<!--             <p:menuitem value="Baja de reclamo"   outcome="/pages/reclamos/altaReclamo.xhtml" /> -->
-<!--             <p:menuitem value="Mantenimiento de lista aux"   outcome="/pages/reclamos/altaReclamo.xhtml" /> -->
-        </p:submenu>
-        
-          <p:submenu label="Escolaridad" icon="ui-icon-document" rendered="#{loginBean.esEstudiante()}">
-          <p:menuitem value="Ver escolaridad"  action="#{gestionEscolaridadBean.inicializar}" partialSubmit="true" rendered="#{loginBean.esEstudiante()}"/>
-          </p:submenu>
-        
-        
-<!--         submenu para Itrs -->
- 		<p:submenu label="Gestion                  " icon="ui-icon-document" rendered="#{loginBean.esAnalista()}">
-	 		<p:menuitem value="Gestion ITRS"   action="#{gestionItrBean.inicializar}" outcome="/pages/itr/gestionITR.xhtml">
-	 		  			<f:setPropertyActionListener target="#{gestionItrBean.id}" value="#{null}" />
-	        			<f:setPropertyActionListener target="#{gestionItrBean.modalidad}" value="insert" />
-	 		</p:menuitem>
-		
-		<p:menuitem value="Gestion de estados justificaciones" action="#{gestionEstadoJustificacionBean.inicializar}" partialSubmit="true"  rendered="#{loginBean.esAnalista()}"/>
-		<p:menuitem value="Gestion de estados reclamo" action="#{gestionEstadoReclamoBean.inicializar}" partialSubmit="true"  rendered="#{loginBean.esAnalista()}"/>
-		
-		
-		
- 		</p:submenu>
-                  
-                   <p:menuitem value="Cerrar sesión"  action="#{loginBean.logout}" >
-
+                    <f:param name="id" value="#{loginBean.usuarioLogeado.id}" />
+                    <f:param name="modalidad" value="view" />
                 </p:menuitem>
-    </p:menubar>
-</h:form>
- 
-    
-    	
-   	
-    		
-            
+                <p:menuitem value="Nuevo evento" action="#{gestionEventoBean.inicializar}" partialSubmit="true">
+                    <f:setPropertyActionListener target="#{gestionEventoBean.id}" value="#{null}" />
+                    <f:setPropertyActionListener target="#{gestionEventoBean.modalidad}" value="insert" />
+                </p:menuitem>
+                <p:menuitem value="Convocados a eventos" outcome="/pages/eventos/convocados/convocadosAEventos.xhtml" />
+                <p:menuitem value="Asistencia a eventos" outcome="/pages/eventos/asistenciaycalificaciones/asistenciaycalificaciones.xhtml" />
+            </p:submenu>
+
+            <p:submenu label="Justificaciones" icon="ui-icon-document">
+                <p:menuitem value="Alta de Justificación" action="#{gestionJustificacion.inicializar}" partialSubmit="true">
+                    <f:setPropertyActionListener target="#{gestionJustificacion.id}" value="#{null}" />
+                    <f:setPropertyActionListener target="#{gestionJustificacion.modalidad}" value="insert" />
+                    <f:setPropertyActionListener target="#{gestionJustificacion.navegar}" value="/index.xhtml?faces-redirect=true" />
+                </p:menuitem>
+                <p:menuitem value="Listado de justificaciones" outcome="/pages/eventos/justificaciones/listadoJustificaciones.xhtml" rendered="#{loginBean.esAnalista()}" />
+                <p:menuitem value="Listado de justificaciones del estudiante" outcome="/pages/eventos/justificaciones/listadoJustificacionesEstudiante.xhtml" rendered="#{loginBean.esEstudiante()}" />
+                <p:menuitem value="Registro de acciones" outcome="/pages/eventos/justificaciones/listadoJustificaciones.xhtml" rendered="#{loginBean.esAnalista()}" />
+            </p:submenu>
+
+            <p:submenu label="Reclamos" icon="ui-icon-document">
+                <p:menuitem value="Alta de reclamo" action="#{gestionReclamo.inicializar}" partialSubmit="true">
+                    <f:setPropertyActionListener target="#{gestionReclamo.id}" value="#{null}" />
+                    <f:setPropertyActionListener target="#{gestionReclamo.modalidad}" value="insert" />
+                    <f:setPropertyActionListener target="#{gestionReclamo.navegar}" value="/index.xhtml?faces-redirect=true" />
+                </p:menuitem>
+                <p:menuitem value="Listado de reclamos" outcome="/pages/reclamos/listadoReclamos.xhtml" rendered="#{loginBean.esAnalista()}" />
+                <p:menuitem value="Listado de reclamos del estudiante" action="#{gestionReclamosBean.seleccionarEventosEstudiante()}" rendered="#{loginBean.esEstudiante()}" />
+                <p:menuitem value="Registro de acciones" outcome="/pages/reclamos/listadoReclamos.xhtml" rendered="#{loginBean.esAnalista()}" />
+            </p:submenu>
+
+            <p:submenu label="Escolaridad" icon="ui-icon-document" rendered="#{loginBean.esEstudiante()}">
+                <p:menuitem value="Ver escolaridad" action="#{gestionEscolaridadBean.inicializar}" partialSubmit="true" rendered="#{loginBean.esEstudiante()}" />
+            </p:submenu>
+
+            <p:submenu label="Gestión" icon="ui-icon-document" rendered="#{loginBean.esAnalista()}" >
+                <p:menuitem value="Gestión ITRs" action="#{gestionItrBean.inicializar}" outcome="/pages/itr/gestionITR.xhtml">
+                    <f:setPropertyActionListener target="#{gestionItrBean.id}" value="#{null}" />
+                    <f:setPropertyActionListener target="#{gestionItrBean.modalidad}" value="insert" />
+                </p:menuitem>
+                <p:menuitem value="Gestión de estados de justificaciones"  action="#{gestionEstadoJustificacionBean.inicializar}" partialSubmit="true" rendered="#{loginBean.esAnalista()}" />
+                <p:menuitem value="Gestión de estados de reclamo" action="#{gestionEstadoReclamoBean.inicializar}" partialSubmit="true" rendered="#{loginBean.esAnalista()}" />
+            </p:submenu>
+
+            <p:menuitem value="Cerrar sesión" action="#{loginBean.logout}" />
+        </p:menubar>
+    </h:form>
 </ui:composition>

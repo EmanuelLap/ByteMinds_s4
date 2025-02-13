@@ -105,13 +105,13 @@ public class GestionReclamoBean implements Serializable {
 //		if(idEstudianteDTO!= null) {
 			
 //			estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.fromUsuario(ejbReclamoRemoto.buscarUsuarioPor("ESTUDIANTE", "123", "", "", "", "", "", "", "", "", null, null, null, "", "", null, null).get(0));
-			if(loginBean.getUserioLogeado().getUTipo().equals("ESTUDIANTE")) {
-				estudianteQueReclamaDTO=(EstudianteDTO)loginBean.getUserioLogeado();
+			if(loginBean.getUsuarioLogeado().getUTipo().equals("ESTUDIANTE")) {
+				estudianteQueReclamaDTO=(EstudianteDTO)loginBean.getUsuarioLogeado();
 //			}else {
 //				estudianteQueReclamaDTO =(EstudianteDTO) gestionUsuarioService.buscarUsuario(idEstudianteDTO);//TODO: cambiar por idEstudianteDTO
 //			}
 		}
-			if(loginBean.getUserioLogeado().getUTipo().equals("ANALISTA")) {
+			if(loginBean.getUsuarioLogeado().getUTipo().equals("ANALISTA")) {
 				
 			}
 		if (id != null ) {

@@ -7,7 +7,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="title">
-		<c:set var="title" value="Gestion de reclamos, listado reclamos"
+		<c:set var="title" value="Gestión de reclamos, listado reclamos"
 			scope="request" />
 	</ui:define>
 
@@ -67,12 +67,12 @@
 				#{reclamo.estudianteId.documento}
 			</p:column>
 			<p:column sortBy="#{reclamo.titulo}">
-				<f:facet name="header">Titulo</f:facet>
+				<f:facet name="header">Título</f:facet>
 				#{reclamo.titulo}
 			</p:column>
 
 			<p:column sortBy="#{reclamo.detalle}">
-				<f:facet name="header">Descripcion detalle</f:facet>
+				<f:facet name="header">Descripción detalle</f:facet>
 				#{reclamo.detalle}
 			</p:column>
 
@@ -82,7 +82,7 @@
 			</p:column>
 
 			<p:column sortBy="#{reclamo.eventoId.titulo}">
-				<f:facet name="header">Titulo Evento</f:facet>
+				<f:facet name="header">Título Evento</f:facet>
 				#{reclamo.eventoId.titulo}
 			</p:column>
 
@@ -96,7 +96,7 @@
 			<!-- 			</p:column> -->
 			<p:column>
 				<f:facet name="header">Ver Docentes</f:facet>
-				<p:commandButton value="Ver mas" type="button"
+				<p:commandButton value="Ver más" type="button"
 					onclick="PF('${reclamo}').show();" />
 
 				<p:dialog header="Informacion de docentes de evento reclamado"
@@ -116,7 +116,7 @@
 
 
 			<p:column sortBy="#{reclamo.creditos}">
-				<f:facet name="header">Creditos</f:facet>
+				<f:facet name="header">Créditos</f:facet>
 				#{reclamo.creditos}
 			</p:column>
 			<!-- 			<p:column> -->

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<link type="text/css" rel="stylesheet" href="http://localhost:8080/ByteMinds_s4/layout/css/previologin.css"/>
+	<title>Recuperar Contraseña</title>
+	
+</h:head>
+<h:body>
+<div class="recuperar-form">
+	<h:form>
+		<img src="layout/img/isologotipo_fondo_transparente.png" alt="Logo Institucional" class="logo" /> 
+	
+		<p:growl id="messagesRecuperar" sticky="true" showDetail="true" life="3000" />
+		<div style="position: relative; display: inline-block; text-align: left;">
+		<p:outputLabel value="Ingrese su correo electrónico:" />
+		<p:inputText value="#{recuperacionController.email}" />
+		<p:outputLabel value="Ingrese su nombre de usuario:" />
+		<p:inputText value="#{recuperacionController.usuario}" />
+		<p:commandButton value="Recuperar Contraseña"
+			action="#{recuperacionController.enviarCorreoRecuperacion}" update="messagesRecuperar" />
+		</div>
+		<div class="link-container">
+			<p:outputLabel value="¿Ya tiene una cuenta?" />
+			
+			<a href="login.xhtml">Iniciar Sesión</a>
+		</div>
+		
+	</h:form>
+</div>
+</h:body>
+</html>

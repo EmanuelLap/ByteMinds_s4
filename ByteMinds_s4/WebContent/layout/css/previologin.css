@@ -1,0 +1,117 @@
+/* Estilo para el fondo de la página */
+body {
+	background-image: url('http://localhost:8080/ByteMinds_s4/layout/img/fondoUTEC.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	height: 100vh;
+	margin: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.login-form {
+	max-width: 400px;
+	margin: 0 auto;
+	padding: 15px;
+	background-color: rgba(255, 255, 255, 0.9);
+	/* Fondo blanco con transparencia */
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	border-radius: 5px;
+	text-align: center;
+	position: relative;
+	z-index: 1;
+	
+}
+
+.login-form .ui-inputfield,
+.login-form .ui-button {
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.recuperar-form {
+	max-width: 400px;
+	margin: 0 auto;
+	padding: 15px;
+	background-color: rgba(255, 255, 255, 0.9);
+	/* Fondo blanco con transparencia */
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	border-radius: 5px;
+	text-align: center;
+	position: relative;
+	z-index: 1;
+	
+}
+
+.recuperar-form .ui-inputfield,
+.recuperar-form .ui-button {
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.restablecer-form {
+	max-width: 400px;
+	margin: 0 auto;
+	padding: 15px;
+	background-color: rgba(255, 255, 255, 0.9);
+	/* Fondo blanco con transparencia */
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	border-radius: 5px;
+	text-align: center;
+	position: relative;
+	z-index: 1;
+	
+}
+
+.restablecer-form .ui-inputfield,
+.restablecer-form .ui-button {
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+
+
+.link-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.pipe {
+	margin: 0 10px;
+}
+
+.link-container a {
+	color: blue;
+	text-decoration: none;
+	margin: 0 10px;
+}
+
+.link-container a:hover {
+	text-decoration: underline;
+}
+
+.logo {
+	width: 100px;
+	/* Ajusta el tamaño del logo */
+	margin-bottom: 20px;
+}
+
+
+.ui-growl {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	z-index: 10000;
+}
+
+/*.registro-form {*/
+/*    width: 80%; */
+/*    max-width: 600px;*/
+/*    padding: 20px;*/
+/*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);*/
+/*    border-radius: 8px;*/
+/*    text-align: center;*/
+/*}*/

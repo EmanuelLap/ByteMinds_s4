@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<link type="text/css" rel="stylesheet" href="http://localhost:8080/ByteMinds_s4/layout/css/previologin.css"/>
+	<title>Restablecer Contraseña</title>
+</h:head>
+<h:body>
+ 		<f:metadata>
+            <!-- Captura el parámetro "token" de la URL y lo asigna al controlador -->
+            <f:viewParam name="token" value="#{restablecerController.token}" />
+        </f:metadata>
+<div class="restablecer-form">
+		<h:form id="restablecer-form">
+			<img src="layout/img/isologotipo_fondo_transparente.png" alt="Logo Institucional" class="logo" />
+			<p:growl id="messagesRestablecer" sticky="true" showDetail="true"	life="3000" />
+			<div style="position: relative; display: inline-block; text-align: left;">
+				<p:outputLabel value="Nueva Contraseña:" />
+<!-- 				<p:inputSecret value="#{restablecerController.nuevaContrasenia}" /> -->
+
+				<p:inputText id="password" value="#{restablecerController.nuevaContrasenia}" type="password" />
+				
+				<p:selectBooleanCheckbox id="mostrarContrasenia" 
+						value="#{restablecerController.mostrarContrasenia}" 
+						onchange="togglePasswordVisibility('restablecer-form:password', this)" />
+				<h:outputLabel for="mostrarContrasenia" value="  Mostrar contraseña" />
+				<p:commandButton id="restablecer-button" value="Restablecer Contraseña"
+                    action="#{restablecerController.restablecerContrasenia}"
+                    update="messagesRestablecer" />
+
+			</div>
+			<div class="link-container">
+				<p:outputLabel value="¿Ya tiene una cuenta?" />
+				
+				<a href="login.xhtml">Iniciar Sesión</a>
+			</div>
+			<script type="text/javascript">
+			function togglePasswordVisibility(inputId, checkbox) {
+			    var inputField = document.getElementById(inputId);
+			    if (checkbox.checked) {
+			        inputField.type = "text";
+			    } else {
+			        inputField.type = "password";
+			    }
+			}
+			</script>
+		</h:form>
+	</div>
+</h:body>
+</html>

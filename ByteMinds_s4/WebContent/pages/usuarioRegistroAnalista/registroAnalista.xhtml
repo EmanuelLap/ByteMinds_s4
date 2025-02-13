@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="/layout/layout.xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">
+		<c:set var="title" value="Registro" scope="request" />
+	</ui:define>
+
+	<ui:define name="content">
+	<div class="registro-form">
+			
+			<p:panel style="text-align: center;">
+
+
+				
+			<h:form id="idRegistro">
+				<!-- Campo oculto para enviar el valor al backend -->
+				<h:inputHidden id="u_tipoHidden" value="#{gestionRegistro.u_tipo}" />
+			
+				<p:messages id="messages" showDetail="true"  autoUpdate="true" closable="true">
+						<p:autoUpdate />
+					</p:messages>
+<!-- 					quiero que el estilo sea el medio de la pantalla -->
+				<p:panelGrid columns="3" style="width: 60%; margin: 0 auto; text-align: center;">
+
+					<p:outputLabel value="ID" />
+					<p:inputText id="id" disabled="true"
+						value="#{gestionRegistro.usuarioSeleccionado.id}" />
+					<p:message for="id" style="color:red" />
+
+					<p:outputLabel value="* Documento" />
+					<p:inputText id="documento" required="true"
+						value="#{gestionRegistro.usuarioSeleccionado.documento}" />
+					<p:message for="documento" style="color:red" />
+
+					<p:outputLabel value="* Usuario" />
+					<p:inputText id="usuario" required="true"
+						value="#{gestionRegistro.usuarioSeleccionado.usuario}" />
+					<p:message for="usuario" style="color:red"  />
+
+<!-- 					<p:outputLabel value="Contraseña" /> -->
+<!-- 					<p:inputText id="contrasenia" -->
+<!-- 						value="#{gestionRegistro.usuarioSeleccionado.contrasenia}" /> -->
+<!-- 					<p:message for="contrasenia" style="color:red" /> -->
+
+					
+					    <p:outputLabel value="* Contraseña" />
+					    
+					    <!-- Campo de contraseña -->
+					    <p:inputText id="contrasenia"  required="true"
+					                 value="#{gestionRegistro.usuarioSeleccionado.contrasenia}" 
+					                 type="password" />
+					 <p:panelGrid columns="3">
+					    <!-- Checkbox para alternar visibilidad -->
+					  
+					    <p:selectBooleanCheckbox id="mostrarContrasenia" 
+					                             value="#{gestionRegistro.mostrarContrasenia}" 
+					                             onchange="togglePasswordVisibility('idRegistro:contrasenia', this)" />
+					    <p:outputLabel value="Mostrar contraseña" for="mostrarContrasenia" />
+					     <p:message for="contrasenia" style="color:red" />
+					</p:panelGrid>
+					
+					<p:outputLabel value="* Apellidos" />
+					<p:inputText id="apellidos"  onkeyup="updateEmail()" required="true"
+						value="#{gestionRegistro.usuarioSeleccionado.apellidos}" />
+					<p:message for="apellidos" style="color:red" />
+
+					<p:outputLabel value="* Nombres" />
+					<p:inputText id="nombres"  onkeyup="updateEmail()" required="true"
+						value="#{gestionRegistro.usuarioSeleccionado.nombres}" />
+					<p:message for="nombres" style="color:red" />
+
+					<p:outputLabel value="* Fecha de Nacimiento" />
+					<p:calendar id="fechaNacimiento" required="true"
+						maxdate="#{gestionRegistro.fechaMaximaNacimiento}"
+						value="#{gestionRegistro.usuarioSeleccionado.fechaNacimiento}" />
+					<p:message for="fechaNacimiento" style="color:red" />
+
+					<p:outputLabel value="Departamento" />
+					<p:selectOneMenu id="departamento"
+						value="#{gestionRegistro.usuarioSeleccionado.departamento}">
+						<f:selectItem itemLabel="Seleccione un departamento" itemValue="" />
+						<f:selectItems value="#{combosBean.listaDepartamentos}"
+							var="departamento" itemLabel="#{departamento}"
+							itemValue="#{departamento}" />
+					</p:selectOneMenu>
+					<p:message for="departamento" style="color:red" />
+
+					<p:outputLabel value="Género" />
+					<p:selectOneMenu id="genero"
+						value="#{gestionRegistro.usuarioSeleccionado.genero}">
+						<f:selectItem itemLabel="Seleccione genero" itemValue="" />
+						<f:selectItem itemLabel="Masculino" itemValue="M" />
+						<f:selectItem itemLabel="Femenino" itemValue="F" />
+						<f:selectItem itemLabel="Prefiero No decirlo" itemValue="O" />
+					</p:selectOneMenu>
+					<p:message for="genero" style="color:red" />
+
+					<p:outputLabel value="Localidad" />
+					<p:inputText id="localidad"
+						
+						value="#{gestionRegistro.usuarioSeleccionado.localidad}" />
+					<p:message for="localidad" style="color:red" />
+
+					<p:outputLabel value="Email" />
+					<p:inputText id="mail" readonly="true" size="45"
+						value="#{gestionRegistro.usuarioSeleccionado.mail}"/>
+					<p:message for="mail" style="color:red" />
+
+					<p:outputLabel value="* Email Personal" />
+					<p:inputText id="mailPersonal" required="true"
+						value="#{gestionRegistro.usuarioSeleccionado.mailPersonal}" />
+					<p:message for="mailPersonal" style="color:red" />
+
+					<p:outputLabel value="* Teléfono" />
+					<p:inputText id="telefono"
+						
+						value="#{gestionRegistro.usuarioSeleccionado.telefono}" />
+					<p:message for="telefono" style="color:red" />
+
+
+					<p:outputLabel value="Tipo tutor"
+						rendered="#{gestionRegistro.esTutor()}" />
+					<p:selectOneMenu id="tipoTutorParaUsuarioTutor"
+						rendered="#{gestionRegistro.esTutor()}"
+						value="#{gestionRegistro.tipoTutorDTOSeleccionadoId}">
+						<f:selectItem itemLabel="Seleccione tipo tutor" itemValue="-1" />
+						<f:selectItems value="#{combosBean.comboTipoTutorSelectItem}" />
+						<p:ajax process="@this" partialSubmit="true"
+							listener="#{gestionRegistro.actualizarTipoTutorSeleccionado}" />
+
+					</p:selectOneMenu>
+
+					<p:message for="tipoTutorParaUsuarioTutor" style="color:red"
+						rendered="#{gestionRegistro.esTutor()}" />
+
+
+					<p:outputLabel value="Tipo area"
+						rendered="#{gestionRegistro.esTutor()}" />
+					<p:selectOneMenu id="tipoAreaParaUsuarioTutor"
+						rendered="#{gestionRegistro.esTutor()}"
+						value="#{gestionRegistro.tipoAreaDTOSeleccionadoId}">
+						<f:selectItem itemLabel="Seleccione tipo area" itemValue="-1" />
+						<f:selectItems value="#{combosBean.comboTipoAreaSelectItem}" />
+						<p:ajax process="@this" partialSubmit="true"
+							listener="#{gestionRegistro.actualizarTipoTutorAreaSeleccionado}" />
+
+					</p:selectOneMenu>
+					<p:message for="tipoAreaParaUsuarioTutor" style="color:red"
+						rendered="#{gestionRegistro.esTutor()}" />
+
+
+
+
+					<p:outputLabel value="Generacion"
+						rendered="#{gestionRegistro.esEstudiante()}" />
+					<p:selectOneMenu id="generacion"
+						value="#{gestionRegistro.usuarioSeleccionado.generacion}"
+						
+						rendered="#{gestionRegistro.esEstudiante()}">
+						<f:selectItems value="#{gestionRegistro.anosGeneracion}" var="ano"
+							itemValue="#{ano}" itemLabel="#{ano}" />
+					</p:selectOneMenu>
+					<p:message for="generacion" style="color:red"
+						rendered="#{gestionRegistro.esEstudiante()}" />
+
+
+
+					<p:outputLabel value="ITRCombo" />
+					<p:selectOneMenu id="itrListaDeITRparaUsuario"
+						value="#{gestionRegistro.itrDTOSeleccionadoId}">
+						<f:selectItem itemLabel="Seleccione Itr" itemValue="-1" />
+						<f:selectItems value="#{combosBean.comboItrSelectItem}" />
+						<p:ajax process="@this" partialSubmit="true"
+							listener="#{gestionRegistro.actualizarITRSeleccionado}" />
+
+					</p:selectOneMenu>
+					<p:message for="itrListaDeITRparaUsuario" style="color:red" />
+
+
+					<p:outputLabel value="Rol" />
+					<p:selectOneMenu id="listaDerolDTOparaUsuario" disabled="true"
+						value="#{gestionRegistro.rolDTOSeleccionadoId}">
+						<f:selectItem itemLabel="Seleccione Rol" itemValue="-1" />
+						<f:selectItems value="#{combosBean.comboROLSelectItemRegistro}" />
+						<f:ajax process="@this" partialSubmit="true"
+							listener="#{gestionRegistro.actualizarROLSeleccionado}" />
+
+					</p:selectOneMenu>
+					<p:message for="listaDerolDTOparaUsuario" style="color:red" />
+
+					<p:outputLabel value="Activo" rendered="false" />
+					<p:selectBooleanCheckbox id="activo" rendered="false"
+						value="#{gestionRegistro.usuarioSeleccionado.activo}" />
+					<p:message for="activo" style="color:red" />
+
+					<p:outputLabel value="Validado" rendered="false"/>
+					<p:selectBooleanCheckbox id="validado" rendered="false"
+						value="#{gestionRegistro.usuarioSeleccionado.validado}" />
+					<p:message for="validado" style="color:red" />
+
+
+<!-- 					<p:commandButton id="botonBeanROl2" -->
+<!-- 						action="#{gestionRegistro.print()}" value="Imprimir" /> -->
+					
+<!-- 					<p:outputLabel value="#{gestionRegistro.pepe}" />	 -->
+<!-- 					<p:inputText id="pepe" -->
+						
+<!-- 						value="#{gestionRegistro.pepe}" /> -->
+<!-- 					<p:message for="pepe" style="color:red" /> -->
+						
+				</p:panelGrid>
+				
+				<p:commandButton id="botonBeanLimpiar"
+					action="#{gestionRegistro.limpiar()}" immediate="true"
+					value="Limpiar" update="idRegistro" process="@this"/>
+
+<!-- 				<p:commandButton outcome="/login.xhtml" value="Volver" immediate="true"/> -->
+				<p:commandButton value="Volver" action="#{gestionRegistro.volverLogeado()}"  immediate="true"/>
+				
+				<p:commandButton value="Salvar cambios" action="#{gestionRegistro.salvarCambios}"
+				 oncomplete="updateEmail();" update=":idRegistro" >	</p:commandButton>
+<!-- 					</div> -->
+
+
+<script type="text/javascript">
+function togglePasswordVisibility(inputId, checkbox) {
+    var inputField = document.getElementById(inputId);
+    if (checkbox.checked) {
+        inputField.type = "text";
+    } else {
+        inputField.type = "password";
+    }
+}
+
+function updateEmail() {
+	console.log("updateEmail EJECUTANDOSE");
+    var apellidos = document.getElementById("idRegistro:apellidos").value;
+    var nombres = document.getElementById("idRegistro:nombres").value;
+    var utipo = document.getElementById("idRegistro:u_tipoHidden").value;
+    if(utipo.endsWith("R")) {
+	    utipo= utipo + "e";
+	    
+    }
+    if (nombres &amp;&amp; apellidos) {
+        var email = nombres.toLowerCase() + "." + apellidos.toLowerCase() + "@" + utipo.toLowerCase() + "s.utec.edu.uy";
+        document.getElementById("idRegistro:mail").value = email;
+    } else {
+        document.getElementById("idRegistro:mail").value = "";
+    }
+}
+</script>
+			</h:form>
+
+
+		</p:panel>
+
+	</div>
+
+			</ui:define>
+</ui:composition>
+

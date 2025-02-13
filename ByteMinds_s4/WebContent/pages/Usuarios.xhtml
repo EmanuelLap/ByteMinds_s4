@@ -7,7 +7,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="title">
-		<c:set var="title" value="Gestion de Usuarios" scope="request" />
+		<c:set var="title" value="Gestión de usuarios" scope="request" />
 	</ui:define>
 
 	<ui:define name="content">
@@ -19,7 +19,7 @@
 
 
 			<h3>
-				<h:outputLabel value="Criterios de Seleccion" />
+				<h:outputLabel value="Criterios de Selección" />
 			</h3>
 
 
@@ -49,7 +49,7 @@
 				<p:outputLabel value="ROL" />
 				<p:selectOneMenu id="rolCrit" value="#{gestionUsuarios.criterioROL}"
 					effect="fold" editable="false">
-					<f:selectItem itemLabel="Selecione Rol" itemValue=""/>
+					<f:selectItem itemLabel="Seleccione Rol" itemValue=""/>
 					<f:selectItems value="#{combosBean.comboROLSelectItem}" />
 				</p:selectOneMenu>
 
@@ -183,14 +183,14 @@
 			</p:column>
 			
 			<p:column>
-				<f:facet name="header">Ver mas</f:facet>
-				<p:commandButton value="Ver mas" type="button"
+				<f:facet name="header">Ver más</f:facet>
+				<p:commandButton value="Ver más" type="button"
 					onclick="PF('${usuario}').show();" />
 
-				<p:dialog header="Informacion de usuario" widgetVar="${usuario}"
+				<p:dialog header="Información de usuario" widgetVar="${usuario}"
 					showEffect="explode" hideEffect="bounce" height="200">
 
-					<h:outputLabel value="Contrasenia:***********" />
+					<h:outputLabel value="Contraseña:***********" />
 					<br />
 <!-- 					<h:outputLabel -->
 <!-- 						value="Fecha de nacimiento:${usuario.fechaNacimiento}" /> -->

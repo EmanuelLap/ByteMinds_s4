@@ -7,7 +7,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="title">
-		<c:set var="title" value="Gestion de justificaciones, listados"
+		<c:set var="title" value="Gestión de justificaciones, listados"
 			scope="request" />
 	</ui:define>
 
@@ -18,7 +18,7 @@
 		<h:form id="formBuscar">
 		
 		
-			<p:commandButton value="Nuevo justificacion"
+			<p:commandButton value="Nueva justificacion"
 				action="#{gestionJustificacion.inicializar}">
 				<f:setPropertyActionListener target="#{gestionJustificacion.id}" value="#{null}" />
 				<f:setPropertyActionListener target="#{gestionJustificacion.modalidad}" value="insert" />
@@ -88,7 +88,7 @@
 			<p:column>
 				<f:facet name="header">Acciones</f:facet>
 			<h:form>
-				<p:commandButton value="Editar Justificacion"
+				<p:commandButton value="Editar Justificación"
 					action="#{gestionJustificacion.inicializar}">
 					<f:setPropertyActionListener target="#{gestionJustificacion.id}" value="#{justificacion.id}" />
 					<f:setPropertyActionListener target="#{gestionJustificacion.modalidad}" value="update" />
@@ -116,12 +116,12 @@
 			</p:column>
 
 			<p:column sortBy="#{justificacion.detalle}">
-				<f:facet name="header">Descripcion detalle</f:facet>
+				<f:facet name="header">Descripción detalle</f:facet>
 				#{justificacion.detalle}
 			</p:column>
 
 			<p:column sortBy="#{justificacion.fecha}">
-				<f:facet name="header">Fecha de justificacion</f:facet>
+				<f:facet name="header">Fecha de justificación</f:facet>
 				
 				<h:outputText value="#{justificacion.fecha}">
        				 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -129,7 +129,7 @@
 			</p:column>
 
 			<p:column sortBy="#{justificacion.eventoId.titulo}">
-				<f:facet name="header">Titulo Evento</f:facet>
+				<f:facet name="header">Título Evento</f:facet>
 				#{justificacion.eventoId.titulo}
 			</p:column>
 
@@ -144,10 +144,10 @@
 			
 			<p:column>
 				<f:facet name="header">Ver Docentes</f:facet>
-				<p:commandButton value="Ver mas" type="button"
+				<p:commandButton value="Ver más" type="button"
 					onclick="PF('${justificacion}').show();" />
 
-				<p:dialog header="Informacion de docentes de evento reclamado"
+				<p:dialog header="Información: docentes de evento reclamado"
 					widgetVar="${justificacion}" showEffect="explode" hideEffect="bounce"
 					height="200">
 
@@ -174,7 +174,7 @@
 
 	<p:dialog id="editDialog" widgetVar="editDialog"  resizable="false">
 				    <h:form id="editDialogForm">
-				        <h2>Editar estado justificacion</h2>
+				        <h2>Editar estado justificación</h2>
 				        
 						<p:selectOneMenu id="tipoEstadoCrit" value="#{gestionJustificacion.idTipoEstado}"
 							effect="fold" editable="false">

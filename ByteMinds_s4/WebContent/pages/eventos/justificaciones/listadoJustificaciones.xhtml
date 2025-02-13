@@ -7,7 +7,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="title">
-		<c:set var="title" value="Gestion de justificaciones, listado justificaciones"
+		<c:set var="title" value="Gestión de justificaciones, listado justificaciones"
 			scope="request" />
 	</ui:define>
 
@@ -18,7 +18,7 @@
 		<h:form id="formBuscar">
 		
 		
-			<p:commandButton value="Nueva justificacion"
+			<p:commandButton value="Nueva justificación"
 				action="#{gestionJustificacion.inicializar}">
 				<f:setPropertyActionListener target="#{gestionJustificacion.id}" value="#{null}" />
 				<f:setPropertyActionListener target="#{gestionJustificacion.modalidad}" value="insert" />
@@ -26,7 +26,7 @@
 			</p:commandButton>
 
 			<h3>
-				<h:outputLabel value="Criterios de Seleccion" />
+				<h:outputLabel value="Criterios de Selección" />
 			</h3>
 
 
@@ -34,7 +34,7 @@
 			<h:panelGrid columns="2">
 
 
-				<p:outputLabel value="Descripcion" />
+				<p:outputLabel value="Descripción" />
 				<p:inputText id="descripcionCrit"
 					value="#{gestionJustificacionesBean.criterioDescripcion}" />
 
@@ -56,7 +56,7 @@
 					value="#{gestionJustificacionesBean.criterioDocente}" />
 
 					
-			<p:outputLabel value="Estado justificacion" />
+			<p:outputLabel value="Estado justificación" />
 			<p:selectOneMenu id="tipoEstadoCrit" value="#{gestionJustificacionesBean.criterioTipoEstado}"
 				effect="fold" editable="false">
 				<f:selectItem itemLabel="Selecione Estado" itemValue=""/>
@@ -119,19 +119,19 @@
 			</p:column>
 
 			<p:column sortBy="#{justificacion.detalle}">
-				<f:facet name="header">Descripcion detalle</f:facet>
+				<f:facet name="header">Descripción detalle</f:facet>
 				#{justificacion.detalle}
 			</p:column>
 
 			<p:column sortBy="#{justificacion.fecha}">
-				<f:facet name="header">Fecha de justificacion</f:facet>
+				<f:facet name="header">Fecha de justificación</f:facet>
 				<p:outputLabel value="#{justificacion.fecha}">
 					<f:convertDateTime pattern="MM/dd/yyyy"/>
 				</p:outputLabel>
 			</p:column>
 
 			<p:column sortBy="#{justificacion.eventoId.titulo}">
-				<f:facet name="header">Titulo Evento</f:facet>
+				<f:facet name="header">Título Evento</f:facet>
 				#{justificacion.eventoId.titulo}
 			</p:column>
 
@@ -144,10 +144,10 @@
 
 			<p:column>
 				<f:facet name="header">Ver Docentes</f:facet>
-				<p:commandButton value="Ver mas" type="button"
+				<p:commandButton value="Ver más" type="button"
 					onclick="PF('${justificacion}').show();" />
 
-				<p:dialog header="Informacion de docentes de evento reclamado"
+				<p:dialog header="Información: docentes de evento reclamado"
 					widgetVar="${justificacion}" showEffect="explode" hideEffect="bounce"
 					height="200">
 
@@ -160,7 +160,7 @@
 
 			
 			<p:column>
-			<f:facet name="header">Registro Accion</f:facet>
+			<f:facet name="header">Registro Acción</f:facet>
 
 			<p:commandButton value="Accion" id="btnAccionJustificacion"
 				action="#{gestionAccionJustificacionBean.inicializarAccionJustificacion(justificacion)}" />
@@ -175,7 +175,7 @@
 
 	<p:dialog id="editDialog" widgetVar="editDialog"  resizable="false">
 				    <h:form id="editDialogForm">
-				        <h2>Editar estado justificacion</h2>
+				        <h2>Editar estado justificación</h2>
 				        
 						<p:selectOneMenu id="tipoEstadoCrit" value="#{gestionJustificacion.idTipoEstado}"
 							effect="fold" editable="false">

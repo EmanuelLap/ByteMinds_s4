@@ -67,12 +67,12 @@
 				<p:message for="reclamoUsuarioReclamante" style="color:red" />
 	</p:panelGrid>
 <p:panelGrid columns="3">
-				<p:outputLabel value="Titulo de reclamo" />
+				<p:outputLabel value="Título de reclamo" />
 				<p:inputText id="reclamoTitulo" disabled="false"
 					value="#{gestionReclamo.reclamoSeleccionado.titulo}" />
 				<p:message for="reclamoTitulo" style="color:red" />
 
-				<p:outputLabel value="Descripcion" />
+				<p:outputLabel value="Descripción" />
 				<p:inputTextarea id="reclamoDescripcion"
 					disabled="#{!gestionReclamo.modoEdicion}"
 					value="#{gestionReclamo.reclamoSeleccionado.detalle}" />
@@ -124,7 +124,7 @@
 
 
 
-				<p:outputLabel value="Creditos" />
+				<p:outputLabel value="Créditos" />
 				<p:inputText id="reclamoCreditos"
 					disabled="#{!gestionReclamo.modoEdicion}"
 					value="#{gestionReclamo.reclamoSeleccionado.creditos}" />

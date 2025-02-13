@@ -178,7 +178,7 @@ public class EventoDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "EventoDTO [id=" + id + ", titulo=" + titulo + ", inicio=" + inicio + ", localizacion=" + localizacion
+		return "EventoDTO [id=" + id + ", título=" + titulo + ", inicio=" + inicio + ", localización=" + localizacion
 				+ "]";
 	}
 	
@@ -187,7 +187,7 @@ public class EventoDTO implements Serializable {
         SimpleDateFormat formateador = new SimpleDateFormat(formatoDeseado);
         String fechaFormateada = formateador.format(inicio);
         
-		return " " + id + ", Titulo:" + titulo + ", Inicio:" + fechaFormateada + ", Localizacion:" + localizacion ;
+		return " " + id + ", Título:" + titulo + ", Inicio:" + fechaFormateada + ", Localización:" + localizacion ;
 	}
 
 }

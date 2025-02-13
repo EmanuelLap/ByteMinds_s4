@@ -6,7 +6,7 @@
     xmlns:p="http://primefaces.org/ui">
 
 	    <ui:define name="title">
-        <c:set var="title" value="Gestion de estados de reclamos" scope="request" />
+        <c:set var="title" value="Gestión de estados de reclamos" scope="request" />
     </ui:define>
 
     <ui:define name="content">
@@ -44,7 +44,7 @@
                         <p:selectBooleanCheckbox id="activoEstadoReclamo"
 							value="#{estadoReclamo.activo}" />
                     </p:column>
-                    <p:column headerText="Accion">
+                    <p:column headerText="Acción">
                         <p:commandButton value="Editar"  partialSubmit="true" update=":formEstadoReclamoSolo:panelGrup2">
                         <f:setPropertyActionListener target="#{gestionEstadoReclamoBean.estadosReclamoSeleccionado}" value="#{estadoReclamo}"/>
                         </p:commandButton>

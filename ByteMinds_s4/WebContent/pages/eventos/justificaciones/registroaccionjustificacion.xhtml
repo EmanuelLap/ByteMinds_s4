@@ -6,7 +6,7 @@
     xmlns:p="http://primefaces.org/ui">
 
 	 <ui:define name="title">
-        <c:set var="title" value="Registro accion sobre justificacion" scope="request" />
+        <c:set var="title" value="Registro accion sobre justificación" scope="request" />
     </ui:define>
 
     <ui:define name="content">
@@ -44,7 +44,7 @@
 <!-- 				<p:outputLabel id="justificacionTitulo"  -->
 <!-- 					value="#{gestionAccionJustificacionBean.justificacionSeleccionado.titulo}" /> -->
 
-				<p:outputLabel value="Descripcion" />
+				<p:outputLabel value="Descripción" />
 				<p:outputLabel id="justificacionDescripcion"
 					value="#{gestionAccionJustificacionBean.justificacionSeleccionado.detalle}" />
 				
@@ -76,7 +76,7 @@
 			</p:panelGrid>
 			
 			<p:panelGrid columns="1">
-				<h2>Acciones sobre justificacion:</h2>
+				<h2>Acciones sobre justificación:</h2>
 				<p:dataTable id="tablaAccionJustificaciones"
 				value="#{gestionAccionJustificacionBean.accionJustificacionList}"
 				var="actionJustificacion" styleClass="employeeTable"
@@ -100,7 +100,7 @@
 					</h:outputLabel>
 				</p:column>
 				<p:column>
-					<f:facet name="header">Analista que atiende justificacion</f:facet>
+					<f:facet name="header">Analista que atiende justificación</f:facet>
 					<p:outputLabel value="#{actionJustificacion.analistaId.nombres} #{actionJustificacion.analistaId.apellidos}"/>
 				</p:column>
 				</p:dataTable>
@@ -109,7 +109,7 @@
 			
 	</div>		
 	
-	<h3 style="margin-top:0">Nueva accion sobre justificacion:</h3>
+	<h3 style="margin-top:0">Nueva acción sobre justificación:</h3>
 <p:separator />
 			<p:panelGrid  columns="2">
 			

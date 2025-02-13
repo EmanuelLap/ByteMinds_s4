@@ -43,7 +43,7 @@ public class LoginBean implements Serializable {
 	private String username;
 	private String password;
 	private String token = "token";
-	private UsuarioDTO userioLogeado;
+	private UsuarioDTO usuarioLogeado;
 	private EJBUsuarioRemoto ejbRemoto;
 	private GestionUsuarioService gUS;
 	private AuthService auth;
@@ -64,26 +64,26 @@ public class LoginBean implements Serializable {
 		FacesMessage message = null;
 
 		if (user != null) {
-			userioLogeado = user;
-			if(userioLogeado.getValidado()==false) {
+			usuarioLogeado = user;
+			if(usuarioLogeado.getValidado()==false) {
 				message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Su usuario todavia no fue validado");
 				FacesContext.getCurrentInstance().addMessage(null, message);
 				FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 				return null;	
 			}
-			if(userioLogeado.getActivo()==false) {
+			if(usuarioLogeado.getActivo()==false) {
 				message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Su usuario esta desactivado");
 				FacesContext.getCurrentInstance().addMessage(null, message);
 				FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 				return null;	
 			}
 			
-//			this.token =auth.createJWT(String.valueOf(user.getId()), "ByteMindsApp", user.getApellidos()+user.getNombres(), 3600000);//El token dura 1 hora
-			this.token =auth.createJWT(String.valueOf(user.getId()), "ByteMindsApp", user.getApellidos()+user.getNombres(), 360000000);//El token dura 1 hora
-			// Save the JWT token to session or somewhere else
+			this.token =auth.createJWT(String.valueOf(user.getId()), "ByteMindsApp", user.getApellidos()+user.getNombres(), 3600000);//El token dura 1 hora
+//			this.token =auth.createJWT(String.valueOf(user.getId()), "ByteMindsApp", user.getApellidos()+user.getNombres(), 3600000000);//El token dura 41 dias para testing
+			// Guarda el JWT token a la sesión
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("jwt", token);
 						
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido " +" ["+ userioLogeado.getUTipo()+"] " + userioLogeado.getNombres()+" "+userioLogeado.getApellidos() , username);
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido " +" ["+ usuarioLogeado.getUTipo()+"] " + usuarioLogeado.getNombres()+" "+usuarioLogeado.getApellidos() , username);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
 
@@ -102,6 +102,11 @@ public class LoginBean implements Serializable {
 		return "/login.xhtml?faces-redirect=true";
 	}
 
+	public String recuperarContrasenia() {
+		return "recuperar.xhtml?faces-redirect=true";
+	}
+	
+	
 	private UsuarioDTO validateUsernamePassword() {
 		if(username==null||password==null||username.equals("")||password.equals("")) {
 			return null;
@@ -272,15 +277,15 @@ public class LoginBean implements Serializable {
 	 
 	  
 	public boolean esTutor() {
-		return this.userioLogeado instanceof TutorDTO;
+		return this.usuarioLogeado instanceof TutorDTO;
 	}
 
 	public boolean esEstudiante() {
-		return this.userioLogeado instanceof EstudianteDTO;
+		return this.usuarioLogeado instanceof EstudianteDTO;
 	}
 
 	public boolean esAnalista() {
-		return this.userioLogeado instanceof AnalistaDTO;
+		return this.usuarioLogeado instanceof AnalistaDTO;
 	}
 	
 	public String getUsername() {
@@ -307,12 +312,12 @@ public class LoginBean implements Serializable {
 		this.token = token;
 	}
 
-	public UsuarioDTO getUserioLogeado() {
-		return userioLogeado;
+	public UsuarioDTO getUsuarioLogeado() {
+		return usuarioLogeado;
 	}
 
-	public void setUserioLogeado(UsuarioDTO userioLogeado) {
-		this.userioLogeado = userioLogeado;
+	public void setUsuarioLogeado(UsuarioDTO usuarioLogeado) {
+		this.usuarioLogeado = usuarioLogeado;
 	}
 
 	public GestionUsuarioService getgUS() {

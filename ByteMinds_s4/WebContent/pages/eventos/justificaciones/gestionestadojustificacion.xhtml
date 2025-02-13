@@ -6,7 +6,7 @@
     xmlns:p="http://primefaces.org/ui">
 
 	    <ui:define name="title">
-        <c:set var="title" value="Gestion de estados de justificaciones" scope="request" />
+        <c:set var="title" value="Gestión de estados de justificaciones" scope="request" />
     </ui:define>
 
     <ui:define name="content">
@@ -44,7 +44,7 @@
                         <p:selectBooleanCheckbox id="activoEstadoReclamo"
 							value="#{estadoReclamo.activo}" />
                     </p:column>
-                    <p:column headerText="Accion">
+                    <p:column headerText="Acción">
                         <p:commandButton value="Editar"  partialSubmit="true" update=":formEstadoJustificacionSolo:panelGrup2">
                         <f:setPropertyActionListener target="#{gestionEstadoJustificacionBean.estadosJustificacionSeleccionado}" value="#{estadoReclamo}"/>
                         </p:commandButton>
@@ -56,7 +56,7 @@
         <div class="grid-item">
         <h:form id="formEstadoJustificacionSolo">
 	            	<h:panelGroup id="panelGrup2">
-	                <h2>Estado justificacion seleccionado/nuevo</h2>
+	                <h2>Estado justificación seleccionado/nuevo</h2>
 	                <p:outputLabel id="estadoReclamoNombreLbl" value="Nombre"/>
 	                <p:inputText id="estadoReclamoNombreInput" value="#{gestionEstadoJustificacionBean.estadosJustificacionSeleccionado.nombre}"/>
 	                <p:message for="estadoReclamoNombreInput" style="color:red" />

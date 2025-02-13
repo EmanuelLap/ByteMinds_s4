@@ -133,6 +133,25 @@ public class GestionRegistroBean implements Serializable {
 	public String volver() {
 		return "/login.xhtml?faces-redirect=true";
 	}
+	
+	public String volverLogeado() {
+		return "/index?faces-redirect=true";
+	}
+	public String navegarRegistroAnalista() {
+	    this.u_tipo = "ANALISTA"; // Asegura que el valor se setea
+	    inicializar();
+	    return "/pages/usuarioRegistroAnalista/registroAnalista.xhtml?faces-redirect=true";
+	}
+	public String navegarRegistroEstudiante() {
+	    this.u_tipo = "ESTUDIANTE"; // Asegura que el valor se setea
+	    inicializar();
+	    return "/pages/usuarioRegistroAnalista/registroAnalista.xhtml?faces-redirect=true";
+	}
+	public String navegarRegistroTutor() {
+	    this.u_tipo = "TUTOR"; // Asegura que el valor se setea
+	    inicializar();
+	    return "/pages/usuarioRegistroAnalista/registroAnalista.xhtml?faces-redirect=true";
+	}
 
 	// Pasar a modo
 	public String salvarCambios() {
@@ -332,8 +351,7 @@ public class GestionRegistroBean implements Serializable {
 			return false;
 		} else {
 			String password = this.usuarioSeleccionado.getContrasenia();
-			// Validación de la contraseña con una expresión regular que incluye los
-			// requisitos mencionados.
+			// Validación de la contraseña con una expresión regular.
 			String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$";
 
 			if (!password.matches(passwordPattern)) {
