@@ -79,9 +79,12 @@ public class GestionJustificacionesBean implements Serializable {
 		if (criterioTipoEstado == null) {
 			criterioTipoEstado = "";
 		}
-
-		listadoDeJustificacionFiltrados = gestionJustificacionService.listarJustificacions();
-
+		if(loginBean.esEstudiante()){
+			Integer idEstudiante = loginBean.getUsuarioLogeado().getId();
+			listadoDeJustificacionFiltrados = gestionJustificacionService.buscarJustificacionsEstudiante(idEstudiante);
+		}else {
+			listadoDeJustificacionFiltrados = gestionJustificacionService.listarJustificacions();
+		}
 		return "";
 	}
 

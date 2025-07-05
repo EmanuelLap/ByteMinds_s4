@@ -52,7 +52,7 @@
 
 				<p:column headerText="Calificación"
 					sortBy="#{escolaridad.calificacion}">
-					<h:outputText value="#{escolaridad.calificacion}" />
+					<h:outputText value="#{escolaridad.calificacion != null ? escolaridad.calificacion : 'Sin calificar'}" />
 				</p:column>
 				
 				  <!-- Grupo de columnas para el footer -->

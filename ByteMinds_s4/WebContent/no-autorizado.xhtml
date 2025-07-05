@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:head>
+	<link type="text/css" rel="stylesheet" href="http://localhost:8080/ByteMinds_s4/layout/css/previologin.css"/>
+    <title>Acceso Restringido</title>
+    <style>
+    
+
+.unauthorized-box {
+	max-width: 400px;
+	margin: 80px auto;
+	padding: 30px;
+	text-align: center;
+	border: 2px solid #e53935;
+	border-radius: 12px;
+	background-color: #fff3f3;
+	box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+}
+.unauthorized-icon {
+	font-size: 64px;
+	color: #e53935;
+	margin-bottom: 16px;
+}
+
+.unauthorized-message {
+	font-size: 18px;
+	color: #333;
+	margin-bottom: 20px;
+}
+
+.return-button {
+	margin-top: 10px;
+}    
+</style>
+</h:head>
+<h:body>
+    <div class="unauthorized-box">
+         <img src="http://localhost:8080/ByteMinds_s4/layout/img/noautorizado.png"
+             alt="Acceso denegado" class="unauthorized-icon" />
+        <div class="unauthorized-message">
+            No tiene permisos para acceder a esta página.
+        </div>
+        <p:button value="Volver al inicio" icon="pi pi-home" outcome="/index.xhtml" styleClass="return-button ui-button-danger" />
+    </div>
+</h:body>
+</html>

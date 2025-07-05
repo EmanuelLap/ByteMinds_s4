@@ -59,12 +59,18 @@ public class GestionEscolaridadBean implements Serializable {
 
 	public void calcularPromedioCalificacion() {
 		promedioCalificacion = 0;
+		System.out.println("LISTA EScolaridad " + listEscolaridad.size());
 		if (listEscolaridad != null && !listEscolaridad.isEmpty()) {
 			double sum = 0;
 			for (ConvocatoriaAsistenciaEventoEstudianteDTO escolaridad : listEscolaridad) {
+				if(escolaridad.getCalificacion() != null){
+				System.out.println("CALIFICACION " + escolaridad.getCalificacion());
 				sum += escolaridad.getCalificacion();
+				}
+				System.out.println("SUMA " + sum);
 			}
 			promedioCalificacion = sum / listEscolaridad.size();
+			System.out.println("PROMEDIO " + promedioCalificacion);
 		} else {
 			promedioCalificacion = 0;
 		}

@@ -122,7 +122,7 @@ public class RecuperacionController  implements Serializable {
     
     private void enviarCorreo(String email, String usuario, String token) {
         final String username = "noreplybyteminds";
-        final String password = "XXXX XXXX XXXX XXXX";
+        final String password = "XXXX xxxx XXXX xxxx";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -140,7 +140,7 @@ public class RecuperacionController  implements Serializable {
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("noreplybyteminds@gmail.com"));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("jasuaga@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("jasuaga@gmail.com"));//mauro.diaz@estudiantes.utec.edu.uy  //jasuaga@gmail.com
             message.setSubject("Recuperación de Contraseña");
             message.setText("Para restablecer la contraseña del usuario " + usuario + ", haz clic en el siguiente enlace: "
                 + "http://localhost:8080/ByteMinds_s4/restablecer.xhtml?token=" + token );//+"?usuario="+usuario

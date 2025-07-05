@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
@@ -17,6 +18,7 @@ import com.byteminds.negocio.UsuarioDTO;
 import com.byteminds.remoto.EJBUsuarioRemoto;
 import com.byteminds.utils.AuthService;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.naming.Context;
@@ -78,8 +80,8 @@ public class LoginBean implements Serializable {
 				return null;	
 			}
 			
-			this.token =auth.createJWT(String.valueOf(user.getId()), "ByteMindsApp", user.getApellidos()+user.getNombres(), 3600000);//El token dura 1 hora
-//			this.token =auth.createJWT(String.valueOf(user.getId()), "ByteMindsApp", user.getApellidos()+user.getNombres(), 3600000000);//El token dura 41 dias para testing
+//			this.token =auth.createJWT(String.valueOf(user.getId()), "ByteMindsApp", user.getApellidos()+user.getNombres(), 3600000);//El token dura 1 hora
+			this.token =auth.createJWT(String.valueOf(user.getId()), "ByteMindsApp", user.getApellidos()+user.getNombres(), 360000000);//El token dura 41 dias para testing
 			// Guarda el JWT token a la sesión
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("jwt", token);
 						
@@ -130,7 +132,49 @@ public class LoginBean implements Serializable {
 		}
 	}
 
+	public void verificarAccesoAnalista() {
+	    if (!esAnalista()) {
+	        try {
+	        	ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+	        	ec.redirect(ec.getRequestContextPath() + "/no-autorizado.xhtml");
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
 	
+	public void verificarAccesoEstudiante() {
+	    if (!esEstudiante()) {
+	        try {
+	        	ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+	        	ec.redirect(ec.getRequestContextPath() + "/no-autorizado.xhtml");
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
+	
+	public void verificarAccesoTutor() {
+	    if (!esTutor()) {
+	        try {
+	        	ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+	        	ec.redirect(ec.getRequestContextPath() + "/no-autorizado.xhtml");
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
+	
+	public void verificarAccesoAnalistaOTutor() {
+	    if (esEstudiante()) {
+	        try {
+	        	ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+	        	ec.redirect(ec.getRequestContextPath() + "/no-autorizado.xhtml");
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
 	
 	 private UsuarioDTO loginActiveDirectory(String username, String password) {
 		 UsuarioDTO user = null;
