@@ -6,6 +6,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.byteminds.negocio.AnalistaDTO;
@@ -52,6 +53,10 @@ public class LoginBean implements Serializable {
 	private Boolean activeDirectory;
 	private Boolean mostrarContrasenia;
 	
+	@Inject
+	private GestionUsuarioBean gestionUsuario;
+
+	
 	@PostConstruct
 	public void init() {
 		auth = new AuthService();
@@ -88,6 +93,7 @@ public class LoginBean implements Serializable {
 			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido " +" ["+ usuarioLogeado.getUTipo()+"] " + usuarioLogeado.getNombres()+" "+usuarioLogeado.getApellidos() , username);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+			gestionUsuario.setUsuarioSeleccionado(usuarioLogeado);
 
 			return "index?faces-redirect=true";
 		} else {
