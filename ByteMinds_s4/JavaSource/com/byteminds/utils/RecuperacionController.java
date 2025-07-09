@@ -121,8 +121,8 @@ public class RecuperacionController  implements Serializable {
     }
     
     private void enviarCorreo(String email, String usuario, String token) {
-        final String username = "noreplybyteminds";
-        final String password = "XXXX xxxx XXXX xxxx";
+        final String username = "mailejemplo";
+        final String password = "XXXX XXXX XXXX XXXX";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");

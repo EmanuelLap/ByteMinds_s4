@@ -88,6 +88,21 @@ public class GestionUsuariosBean implements Serializable{
 		return "";
 	}
 	
+	public String limpiarFiltros() {
+		criterioNombre="";
+		criterioApellido="";
+		criterioROL="";
+		criterioITR="";
+		
+		criterioTodos = true;
+		criterioActivo = false;
+		criterioNoActivo= false;
+		criterioValidado= false;
+		criterioNoValidado= false;
+		usuariosSeleccionados.clear();;
+		return "";
+	}
+	
 	public String seleccionarUsuariosEstudiantes() throws PersistenciaException {
 		System.out.println("seleccionarUsuariosEstudiantes() ");
 		System.out.println("Criterio documento: "+criterioDocumento);

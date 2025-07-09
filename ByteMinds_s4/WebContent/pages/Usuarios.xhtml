@@ -101,6 +101,9 @@
 			<p:commandButton value="Buscar"	action="#{gestionUsuarios.seleccionarUsuarios}" update="tablaUsuarios" oncomplete="PF('blockUIWidget').hide();">
 				<p:ajax onstart="PF('blockUIWidget').show()"  />
 			</p:commandButton>
+			<p:commandButton value="Limpiar" action="#{gestionUsuarios.limpiarFiltros}" update="tablaUsuarios itrCrit rolCrit" oncomplete="PF('blockUIWidget').hide();">
+				<p:ajax onstart="PF('blockUIWidget').show()"  />
+			</p:commandButton>
 			
  <p:blockUI block="formBuscar" widgetVar="blockUIWidget">
         <!-- Puedes personalizar el mensaje que se muestra mientras se está procesando la solicitud -->

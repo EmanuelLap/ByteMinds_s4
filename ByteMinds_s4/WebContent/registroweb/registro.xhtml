@@ -125,7 +125,7 @@
 					<p:message for="telefono" style="color:red" />
 
 
-					<p:outputLabel value="Tipo tutor"
+					<p:outputLabel value="* Tipo tutor"
 						rendered="#{gestionRegistro.esTutor()}" />
 					<p:selectOneMenu id="tipoTutorParaUsuarioTutor"
 						rendered="#{gestionRegistro.esTutor()}"
@@ -141,7 +141,7 @@
 						rendered="#{gestionRegistro.esTutor()}" />
 
 
-					<p:outputLabel value="Tipo area"
+					<p:outputLabel value="* Tipo area"
 						rendered="#{gestionRegistro.esTutor()}" />
 					<p:selectOneMenu id="tipoAreaParaUsuarioTutor"
 						rendered="#{gestionRegistro.esTutor()}"
@@ -172,7 +172,7 @@
 
 
 
-					<p:outputLabel value="ITRCombo" />
+					<p:outputLabel value="* ITR" />
 					<p:selectOneMenu id="itrListaDeITRparaUsuario"
 						value="#{gestionRegistro.itrDTOSeleccionadoId}">
 						<f:selectItem itemLabel="Seleccione Itr" itemValue="-1" />
@@ -222,13 +222,21 @@
 					value="Limpiar" update="idRegistro" process="@this"/>
 
 <!-- 				<p:commandButton outcome="/login.xhtml" value="Volver" immediate="true"/> -->
-				<p:commandButton value="Volver" action="#{gestionRegistro.volver}"  immediate="true"/>
+				<p:commandButton value="Volver" onclick="return confirmarVolver();" action="#{gestionRegistro.volver}" immediate="true" />
 				
 				<p:commandButton value="Salvar cambios" action="#{gestionRegistro.salvarCambios}"
 				 oncomplete="updateEmail();" update=":idRegistro" >	</p:commandButton>
 <!-- 					</div> -->
 					
 <script type="text/javascript">
+function confirmarVolver() {
+    if (!confirm('¿Está seguro que desea volver? Se perderán los datos no guardados.')) {
+        return false;
+    }
+    return true;
+}
+
+
 function togglePasswordVisibility(inputId, checkbox) {
     var inputField = document.getElementById(inputId);
     if (checkbox.checked) {

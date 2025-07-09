@@ -436,6 +436,8 @@ public class GestionUsuarioBean implements Serializable {
 
 	public Boolean validarDatos() {
 
+		
+		
 		if (this.usuarioSeleccionado.getRol() == null) {
 			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar Rol ", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
@@ -467,6 +469,8 @@ public class GestionUsuarioBean implements Serializable {
 
 		if (esEstudiante()) {
 
+			
+			
 			if (((EstudianteDTO) this.usuarioSeleccionado).getGeneracion() == null) {
 				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
 						"Debe seleccionar el año de la generacion", "");

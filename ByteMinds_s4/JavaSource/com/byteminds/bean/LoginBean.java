@@ -63,7 +63,7 @@ public class LoginBean implements Serializable {
 
 	// Este metodo debe retornar el token y mandar la redireccion al index
 	public String login() {
-		
+		System.out.println("login "+username+" "+password);
 		UsuarioDTO user = validateUsernamePassword();
 
 		FacesMessage message = null;
