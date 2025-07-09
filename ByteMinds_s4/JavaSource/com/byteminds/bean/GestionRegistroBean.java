@@ -328,7 +328,15 @@ public class GestionRegistroBean implements Serializable {
 	}
 
 	public Boolean validarDatos() {
-
+		//validar que documento tenga solo numeros y 8 digitos
+		if (this.usuarioSeleccionado.getDocumento() == null || 
+			    !(this.usuarioSeleccionado.getDocumento() >= 1_000_000 && 
+			      this.usuarioSeleccionado.getDocumento() <= 99_999_999)) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+					"Debe completar documento de identidad con un formato valido ", "");
+			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+			return false;
+		}		
 		if (this.usuarioSeleccionado.getMail() == null || this.usuarioSeleccionado.getMail().isEmpty()) {
 			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
 					"Debe completar nombre y apellido para que se le asigne un correo ", "");

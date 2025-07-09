@@ -4,61 +4,95 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-<h:head>
+	<h:head>
+		<title>Inicio de sesión</title>
+<!-- 		<link type="text/css" rel="stylesheet" href="http://localhost:8080/ByteMinds_s4/layout/css/previologin.css" /> -->
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/layout/css/previologin.css"/>
 
-<link type="text/css" rel="stylesheet" href="http://localhost:8080/ByteMinds_s4/layout/css/previologin.css"/>
-	
-	<title>Login Page</title>
-</h:head>
-<h:body>
-	<!-- Componente Growl para mensajes emergentes -->
-	<p:growl id="messagesLogin" sticky="true" showDetail="true" life="3000" />
+	</h:head>
+	<h:body>
+		<!-- Componente Growl para mensajes emergentes -->
+		<p:growl id="messagesLogin" sticky="true" showDetail="true"
+			life="3000" />
 
-	<div class="login-form">
-		<h:form id="loginForm">
-			<!-- Logo institucional -->
-			<img src="layout/img/isologotipo_fondo_transparente.png" alt="Logo Institucional" class="logo" />
+		<div class="login-form">
+			<h:form id="loginForm">
+				<!-- Logo institucional -->
+				<img src="layout/img/isologotipo_fondo_transparente.png"
+					alt="Logo Institucional" class="logo" />
 
-			<p:panel id="panelLogin" header="Control de acceso" style="text-align: center;">
-				<div style="position: relative; display: inline-block; text-align: left;">
-					<h:outputLabel for="username" value="Usuario:" />
-					<p:inputText id="username" value="#{loginBean.username}" />
+				<p:panel id="panelLogin" header="Control de acceso"
+					style="text-align: center;">
+					<div
+						style="position: relative; display: inline-block; text-align: left;">
+						<h:outputLabel for="username" value="Usuario:" />
+						<p:inputText id="username" value="#{loginBean.username}" />
 
-					<h:outputLabel for="password" value="Contraseña:" />
-					<p:inputText id="password" value="#{loginBean.password}" type="password" />
+						<h:outputLabel for="password" value="Contraseña:" />
+						<p:inputText id="password" value="#{loginBean.password}"
+							type="password" />
 
-					<p:selectBooleanCheckbox id="mostrarContrasenia" 
-						value="#{gestionRegistro.mostrarContrasenia}" 
-						onchange="togglePasswordVisibility('loginForm:password', this)" />
-					<h:outputLabel for="mostrarContrasenia" value="  Mostrar contraseña" />
-					
-					<p:commandLink id="recuperarContraseniaID" value="Olvide mi contraseña" action="#{loginBean.recuperarContrasenia}" style="color:blue;padding-left: 10px;" />
-				</div>
+						<p:selectBooleanCheckbox id="mostrarContrasenia"
+							value="#{gestionRegistro.mostrarContrasenia}"
+							onchange="togglePasswordVisibility('loginForm:password', this)" />
+						<h:outputLabel for="mostrarContrasenia"
+							value="  Mostrar contraseña" />
 
-				<div style="position: relative; text-align: center;">
-					<p:selectBooleanCheckbox id="ldapLogin" value="#{loginBean.activeDirectory}" itemLabel="LDAP" disabled="false"/>
-					<h:commandButton value="Iniciar Sesión" action="#{loginBean.login}" update="messagesLogin" />
-				</div>
-				<div style="position: relative; text-align: center;">
-					<hr />
-					<br />
-					<h:outputLabel value="Registro de usuario" style="color:blue"/>
-				</div>
-				<div class="link-container" style="position: relative; text-align: center;">
-					<p:commandButton value="Estudiante" action="#{gestionRegistro.inicializar}" partialSubmit="true">
-						<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}" value="ESTUDIANTE" />
-					</p:commandButton>
-					<span class="pipe">|</span>
-					<p:commandButton value="Tutor" action="#{gestionRegistro.inicializar}" partialSubmit="true">
-						<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}" value="TUTOR" />
-					</p:commandButton>
-					<span class="pipe">|</span>
-					<p:commandButton value="Analista" action="#{gestionRegistro.inicializar}" partialSubmit="true">
-						<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}" value="ANALISTA" />
-					</p:commandButton>
-				</div>
-			</p:panel>
-			<script type="text/javascript">
+						<p:commandLink id="recuperarContraseniaID"
+							value="Olvide mi contraseña"
+							action="#{loginBean.recuperarContrasenia}"
+							style="color:blue;padding-left: 10px;" />
+					</div>
+
+					<div style="position: relative; text-align: center;">
+						<p:selectBooleanCheckbox id="ldapLogin"
+							value="#{loginBean.activeDirectory}" itemLabel="LDAP"
+							disabled="false" />
+						<h:commandButton value="Iniciar Sesión"
+							action="#{loginBean.login}" update="messagesLogin" />
+					</div>
+					<div style="position: relative; text-align: center;">
+						<hr />
+						<br />
+						<h:outputLabel value="Registro de usuario" style="color:blue" />
+					</div>
+					<div class="link-container"
+						style="position: relative; text-align: center;">
+						<p:commandButton value="Estudiante"
+							action="#{gestionRegistro.inicializar}" partialSubmit="true">
+							<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}"
+								value="ESTUDIANTE" />
+						</p:commandButton>
+						<span class="pipe">|</span>
+						<p:commandButton value="Tutor"
+							action="#{gestionRegistro.inicializar}" partialSubmit="true">
+							<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}"
+								value="TUTOR" />
+						</p:commandButton>
+						<span class="pipe">|</span>
+						<p:commandButton value="Analista"
+							action="#{gestionRegistro.inicializar}" partialSubmit="true">
+							<f:setPropertyActionListener target="#{gestionRegistro.u_tipo}"
+								value="ANALISTA" />
+						</p:commandButton>
+					</div>
+				</p:panel>
+
+		<script type="text/javascript">
+		
+		    document.addEventListener("DOMContentLoaded", function() {
+		        // Verificar si algún recurso cargado tiene jsessionid
+		        var resourcesWithJSessionId = Array.from(document.querySelectorAll("link[href*='jsessionid'], script[src*='jsessionid']"));
+		        
+		        if (resourcesWithJSessionId.length > 0) {
+		            console.log("Se detectaron recursos con jsessionid. Refrescando...");
+		            var cleanUrl = window.location.href.split(';jsessionid=')[0];
+		            window.location.replace(cleanUrl);
+		        }
+		    });
+		
+		</script>
+		<script type="text/javascript">
 			function togglePasswordVisibility(inputId, checkbox) {
 			    var inputField = document.getElementById(inputId);
 			    if (checkbox.checked) {
@@ -67,9 +101,9 @@
 			        inputField.type = "password";
 			    }
 			}
-			</script>
-		</h:form>
-	</div>
-</h:body>
+		</script>
+			</h:form>
+		</div>
+	</h:body>
 </div>
 </html>

@@ -124,41 +124,41 @@ public class EJBUsuarioRemoto {
 	
 	public Usuario login(String usu, String pass) {
 		Usuario logeado = null;
-		System.out.println("Verificando Login");
+		System.out.println("Llamando a EJB desde la web para verificar Login");
 		try {
 			logeado =  usuarioRemote.login(usu, pass);
 		} catch (Exception e) {
 			System.err.println(e);
 		}
 
-		System.out.println("Usuario RETORNADO");
+		System.out.println("Usuario RETORNADO: "+logeado.getNombres()+" "+logeado.getApellidos());
 		return logeado;
 	}
 
 	public Usuario login(Usuario usuario) {
 
-		System.out.println("Verificando Login");
+		System.out.println("Llamando a EJB desde la web para verificar Login");
 		try {
 //			usuario=usuarioRemote.login(usuario);
 		} catch (Exception e) {
 			System.err.println(e);
 		}
 
-		System.out.println("Usuario RETORNADO");
+		System.out.println("Usuario RETORNADO: DEPRECATED");
 		return usuario;
 	}
 
 	public Usuario crearUsuario(Usuario usuario) {
 
 		try {
-			System.out.println("LEVANTANDOOO USUARIO");
+			System.out.println("crearUsuario USUARIO ejbusuarioremoto");
 			usuario = usuarioRemote.crearUsuario(usuario);
 
 		} catch (ServiciosException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Usuario RETORNADO");
+		System.out.println("Usuario CREADO: "+usuario.getNombres()+" "+usuario.getApellidos());
 		return usuario;
 	}
 	public Usuario modificarUsuario(Usuario usuario) {
@@ -171,7 +171,7 @@ public class EJBUsuarioRemoto {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Usuario RETORNADO");
+		System.out.println("Usuario MODIFICADO: "+usuario.getNombres()+" "+usuario.getApellidos());
 		return usuario;
 	}
 	
@@ -185,7 +185,7 @@ public class EJBUsuarioRemoto {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Usuario borrado");
+		System.out.println("Usuario BORRADO: "+usuario.getNombres()+" "+usuario.getApellidos());
 		return usuario;
 	}
 	
