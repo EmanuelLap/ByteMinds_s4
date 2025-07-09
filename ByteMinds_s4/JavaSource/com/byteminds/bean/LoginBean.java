@@ -53,10 +53,8 @@ public class LoginBean implements Serializable {
 	private Boolean activeDirectory;
 	private Boolean mostrarContrasenia;
 	
-	@Inject
-	private GestionUsuarioBean gestionUsuario;
 
-	
+
 	@PostConstruct
 	public void init() {
 		auth = new AuthService();
@@ -93,7 +91,6 @@ public class LoginBean implements Serializable {
 			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido " +" ["+ usuarioLogeado.getUTipo()+"] " + usuarioLogeado.getNombres()+" "+usuarioLogeado.getApellidos() , username);
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-			gestionUsuario.setUsuarioSeleccionado(usuarioLogeado);
 
 			return "index?faces-redirect=true";
 		} else {

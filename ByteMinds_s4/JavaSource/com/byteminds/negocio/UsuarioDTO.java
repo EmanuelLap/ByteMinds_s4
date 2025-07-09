@@ -250,4 +250,14 @@ public class UsuarioDTO implements Serializable {
 	public String toStringRestablecer() {
 		return this.usuario + "," + this.mail;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+	    if (this == obj) return true;
+	    if (obj == null || getClass() != obj.getClass()) return false;
+	    UsuarioDTO other = (UsuarioDTO) obj;
+	    return this.id != null && this.id.equals(other.id);
+	}
+
+
 }

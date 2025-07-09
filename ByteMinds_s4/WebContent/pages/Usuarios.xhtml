@@ -112,7 +112,7 @@
 		<h3>
 			<h:outputLabel value="Usuarios seleccionados" />
 		</h3>
-		<h:outputText value="Usuario logueado: #{gestionUsuario.usuarioSeleccionado.usuario}" />
+		
 		<p:dataTable id="tablaUsuarios"
 			value="#{gestionUsuarios.usuariosSeleccionados}" var="usuario"
 			styleClass="ui-datatable"
@@ -178,16 +178,20 @@
 				<p:commandButton value="Desactivar"
 					actionListener="#{gestionUsuario.setUsuarioSeleccionado(usuario)}"
 					action="#{gestionUsuario.bajaLogicaUsuario}"
-					disabled="#{usuario.usuario eq gestionUsuario.usuarioSeleccionado.usuario}"
+					disabled="#{loginBean.usuarioLogeado eq usuario}"
 					onclick="if(!confirm('¿Estás seguro de que quieres desactivar ${usuario.nombres}?')) return false;"
 					update=":tablaUsuarios" />
 				<p:commandButton value="Activar"
 					actionListener="#{gestionUsuario.setUsuarioSeleccionado(usuario)}"
 					action="#{gestionUsuario.activarUsuario}"
-					disabled="#{usuario.usuario eq gestionUsuario.usuarioSeleccionado.usuario}"
+					disabled="#{loginBean.usuarioLogeado eq usuario}"
 					onclick="if(!confirm('¿Estás seguro de que quieres activar ${usuario.nombres}?')) return false;"
 					update=":tablaUsuarios" />
-
+					
+				<h:outputText value="Usted no puede activar o desactivar su propio usuario"
+              	rendered="#{loginBean.usuarioLogeado eq usuario}"
+             	style="color:red; font-weight:bold"/>
+             	
 			</p:column>
 			
 			<p:column>

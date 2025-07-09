@@ -193,18 +193,23 @@
 				</p:selectOneMenu>
 					<p:message for="listaDerolDTOparaUsuario" style="color:red" />
 					
-					<p:outputLabel value="Activo" />
+					<p:outputLabel value="Activo" rendered="#{loginBean.usuarioLogeado ne gestionUsuario.usuarioSeleccionado}"/>
 					<p:selectBooleanCheckbox id="activo"
 						disabled="#{!gestionUsuario.modoEdicion}"
+						rendered="#{loginBean.usuarioLogeado ne gestionUsuario.usuarioSeleccionado}"
 						value="#{gestionUsuario.usuarioSeleccionado.activo}" />
 					<p:message for="activo" style="color:red" />
 
-					<p:outputLabel value="Validado" />
+					<p:outputLabel value="Validado" rendered="#{loginBean.usuarioLogeado ne gestionUsuario.usuarioSeleccionado}" />
 					<p:selectBooleanCheckbox id="validado"
 						disabled="#{!gestionUsuario.modoEdicion}"
+						rendered="#{loginBean.usuarioLogeado ne gestionUsuario.usuarioSeleccionado}"
 						value="#{gestionUsuario.usuarioSeleccionado.validado}" />
 					<p:message for="validado" style="color:red" />
 					
+					<h:outputText value="Usted no puede activar o desactivar su propio usuario"
+              	rendered="#{loginBean.usuarioLogeado eq gestionUsuario.usuarioSeleccionado}"
+             	style="color:red; font-weight:bold"/>
 				
 <!-- 					<p:commandButton id="botonBeanROl2" action="#{gestionUsuario.print()}" value="Imprimir" /> -->
 <!-- 					<p:commandButton id="botonBeanLimpiar" action="#{gestionUsuario.limpiar()}" immediate="true"  value="Limpiar" update="@this" /> -->
