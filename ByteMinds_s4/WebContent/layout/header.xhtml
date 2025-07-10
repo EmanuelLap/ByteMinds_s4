@@ -92,6 +92,24 @@
             </p:submenu>
 
             <p:menuitem value="Cerrar sesión" action="#{loginBean.logout}" />
-        </p:menubar>
+
+			<f:facet name="options">
+				<h:outputText id="userInfoText"
+					value="Usuario: #{loginBean.usuarioLogeado.usuario}"
+					style="font-weight:bold; margin-right:20px;" />
+					
+				<img src="http://localhost:8080/ByteMinds_s4/layout/img/#{loginBean.usuarioLogeado.rol.nombre.toLowerCase()}.svg"  id="iconUserAnalista"  style="vertical-align: right;height: 25px;width: 25px" />
+				
+				<p:tooltip for="userInfoText" showEffect="fade" hideEffect="fade">
+				    Nombre: #{loginBean.usuarioLogeado.nombres} #{loginBean.usuarioLogeado.apellidos}<br />
+				    Documento: #{loginBean.usuarioLogeado.documento}<br />
+				    Mail: #{loginBean.usuarioLogeado.mail}<br />
+				    Localidad: #{loginBean.usuarioLogeado.localidad}<br />
+				    Departamento: #{loginBean.usuarioLogeado.departamento}<br />
+				    ITR: #{loginBean.usuarioLogeado.itr.nombre}<br />
+				    Rol: #{loginBean.usuarioLogeado.rol.nombre}
+				</p:tooltip>
+			</f:facet>
+		</p:menubar>
     </h:form>
 </ui:composition>
