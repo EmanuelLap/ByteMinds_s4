@@ -337,9 +337,9 @@ public class GestionRegistroBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 			return false;
 		}		
-		if (this.usuarioSeleccionado.getMail() == null || this.usuarioSeleccionado.getMail().isEmpty()) {
+		if (this.usuarioSeleccionado.getMailPersonal() == null || this.usuarioSeleccionado.getMail().isEmpty()) {
 			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
-					"Debe completar nombre y apellido para que se le asigne un correo ", "");
+					"El mail personal es obligatorio ", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 			return false;
 		}

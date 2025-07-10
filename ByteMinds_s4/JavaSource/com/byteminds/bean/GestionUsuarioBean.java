@@ -436,8 +436,14 @@ public class GestionUsuarioBean implements Serializable {
 
 	public Boolean validarDatos() {
 
-		
-		
+		if (this.usuarioSeleccionado.getDocumento() == null || 
+			    !(this.usuarioSeleccionado.getDocumento() >= 1_000_000 && 
+			      this.usuarioSeleccionado.getDocumento() <= 99_999_999)) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+					"Debe completar documento de identidad con un formato valido ", "");
+			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+			return false;
+		}		
 		if (this.usuarioSeleccionado.getRol() == null) {
 			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar Rol ", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
@@ -454,8 +460,7 @@ public class GestionUsuarioBean implements Serializable {
 			return false;
 		} else {
 			String password = this.usuarioSeleccionado.getContrasenia();
-			// Validación de la contraseña con una expresión regular que incluye los
-			// requisitos mencionados.
+			// Validación de la contraseña con expresión regular
 			String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$";
 
 			if (!password.matches(passwordPattern)) {
