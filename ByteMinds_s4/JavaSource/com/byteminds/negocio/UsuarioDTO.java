@@ -1,18 +1,17 @@
 package com.byteminds.negocio;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Date;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-
-import org.hibernate.validator.constraints.Length;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
-import java.io.Serializable;
-import java.util.Date;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({ @JsonSubTypes.Type(value = TutorDTO.class, name = "TUTOR"),
@@ -34,19 +33,19 @@ public class UsuarioDTO implements Serializable {
 	@Max(value = 99999999, message = "El documento de identidad debe tener entre 6 y 8 caracteres")
 	private Integer documento;
 
-	@NotNull(message = "Ingrese un nombre de usuario minimo 4 caracteres")
+	@NotBlank(message = "Ingrese un nombre de usuario minimo 4 caracteres")
 	@Size(min = 4, max = 45, message = "El nombre de usuario debe tener entre 4 y 50 caracteres")
 	private String usuario;
 
-	@NotNull(message = "La contraseña es obligatoria")
+	@NotBlank(message = "La contraseña es obligatoria")
 	@Size(min = 8, max = 16, message = "La contraseña debe tener entre 8 y 16 caracteres")
 	private String contrasenia;
 
-	@NotNull (message = "El apellido es obligatorio")
+	@NotBlank (message = "El apellido es obligatorio")
 	@Size(min = 2, max = 45, message = "El apellido debe tener entre 2 y 45 caracteres")
 	private String apellidos;
 
-	@NotNull (message = "El nombre es obligatorio")
+	@NotBlank (message = "El nombre es obligatorio")
 	@Size(min = 2, max = 45, message = "El nombre debe tener entre 2 y 45 caracteres")
 	private String nombres;
 
@@ -57,13 +56,14 @@ public class UsuarioDTO implements Serializable {
 	private String genero;
 	private String localidad;
 
-	@NotNull(message = "El correo electronico es obligatorio")
-	@Email
+	@NotBlank(message = "El correo electronico es obligatorio")
+	@Email(message = "Debe ingresar un correo electrónico válido")
 	private String mail;
-
+	@NotBlank(message = "El correo electronico personal es obligatorio")
+	@Email(message = "Debe ingresar un correo electrónico válido")
 	private String mailPersonal;
 
-	@NotNull (message = "El telefono es obligatorio")
+	@NotBlank (message = "El telefono es obligatorio")
 	@Size(min = 4, max = 20, message = "El telefono debe tener entre 4 y 20 caracteres")
 	private String telefono;
 	private ItrDTO itr;

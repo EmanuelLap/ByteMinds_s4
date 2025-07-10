@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -18,7 +19,7 @@ public class EventoDTO implements Serializable {
 
 	private Integer id;
 
-	@NotNull(message = "El titulo no puede ser vacio")
+	@NotBlank(message = "El titulo no puede ser vacio")
 	private String titulo;
 
 //    @Enumerated(EnumType.STRING)

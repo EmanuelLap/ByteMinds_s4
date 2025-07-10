@@ -3,7 +3,6 @@ package com.byteminds.negocio;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 
 public class EstudianteDTO extends UsuarioDTO  implements Serializable{

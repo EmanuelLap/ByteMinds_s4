@@ -1,19 +1,17 @@
 package com.byteminds.negocio.mobile;
 
 import java.util.ArrayList;
-
 import java.util.Date;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 public class EventoDTOMobile {
 
 
 	private Integer id;
 
-	@NotNull(message = "El titulo no puede ser vacio")
+	@NotBlank(message = "El titulo no puede ser vacio")
 	private String titulo;
 
 //    @Enumerated(EnumType.STRING)

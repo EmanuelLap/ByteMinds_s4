@@ -1,18 +1,13 @@
 package com.byteminds.negocio;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Length;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import tecnofenix.entidades.AccionReclamo;
-import tecnofenix.entidades.Estudiante;
-import tecnofenix.entidades.Evento;
 
 public class ReclamoDTO implements Serializable {
 
@@ -24,11 +19,11 @@ public class ReclamoDTO implements Serializable {
 	@NotNull
 	private Integer id;
 
-	@NotNull (message = "El titulo del reclamo es obligatorio")
+	@NotBlank (message = "El titulo del reclamo es obligatorio")
 	@Length(min = 1, max = 40 , message = "El titulo del reclamo debe tener entre 1 y 40 caracteres")
 	private String titulo;
 
-	@NotNull (message = "El detalle del reclamo es obligatorio")
+	@NotBlank (message = "El detalle del reclamo es obligatorio")
 	@Size(min = 1, max = 45, message = "El detalle del reclamo debe tener entre menos de 200 caracteres")
 	private String detalle;
 

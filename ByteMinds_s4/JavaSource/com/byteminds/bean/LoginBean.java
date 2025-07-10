@@ -63,10 +63,16 @@ public class LoginBean implements Serializable {
 
 	// Este metodo debe retornar el token y mandar la redireccion al index
 	public String login() {
-		System.out.println("login "+username+" "+password);
-		UsuarioDTO user = validateUsernamePassword();
-
 		FacesMessage message = null;
+		
+		if(username==null||password==null||username.equals("")||password.equals("")) {
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Los campos usuario y contraseña son obligatorios.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+			return null;
+		}
+		//Aqui valida si el usuario ingreso algun dato
+		UsuarioDTO user = validateUsernamePassword();
 
 		if (user != null) {
 			usuarioLogeado = user;
