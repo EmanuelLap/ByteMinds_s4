@@ -48,7 +48,10 @@
 		<p:message for="nombres" style="color:red" />
 		
 		<p:outputLabel value="Fecha de Nacimiento" />
-		<p:calendar id="fechaNacimiento" disabled="#{!gestionUsuario.modoEdicion}" value="#{gestionUsuario.usuarioSeleccionado.fechaNacimiento}" placeholder="Fecha de Nacimiento"/>
+		<p:calendar id="fechaNacimiento" disabled="#{!gestionUsuario.modoEdicion}" 
+		value="#{gestionUsuario.usuarioSeleccionado.fechaNacimiento}"
+		maxdate="#{gestionUsuario.fechaMaximaNacimiento}"
+		 placeholder="Fecha de Nacimiento"/>
 		<p:message for="fechaNacimiento" style="color:red" />
 		
 <!-- 		<p:outputLabel value="Departamento" /> -->

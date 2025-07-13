@@ -34,7 +34,7 @@
 <div class="grid-container">
         <h:form id="itrSeleccionarID" >
             <div class="grid-item">
-                <p:dataTable var="itr" value="#{gestionItrBean.listITRDTO}" style="height:400px;overflow-y: auto;"
+                <p:dataTable var="itr" value="#{gestionItrBean.listITRDTO}" style="overflow-y: auto;"
                     widgetVar="allTutoTable"  > 
 <!--                     filteredValue="#{gestionItrBean.listaDeITRFiltrados}" -->
                     <!-- Columnas de la primera tabla -->
@@ -61,26 +61,89 @@
            
         </h:form>
          <div class="grid-item">
-         <h:form id="formITRSolo">
-	            	<h:panelGroup id="panelGrup2">
-				          	 <h2>Itr seleccionado/nuevo</h2>
-				             <p:outputLabel id="itrNombreLbl" value="Nombre"/>
-				             <p:inputText id="itrNombreInput" value="#{gestionItrBean.itrDTOSeleccionado.nombre}"/>
-				             <p:message for="itrNombreInput" style="color:red" />
-				             <p:separator/>
-				             <p:outputLabel id="itrDepartamentoLbl" value="Departamento"/>
-				             <p:inputText id="itrDepartamentoInput" value="#{gestionItrBean.itrDTOSeleccionado.departamento}"/>
-				             <p:message for="itrDepartamentoInput" style="color:red" />
-				             <p:separator/>
-				             <p:outputLabel id="itrActivoLbl" value="Activo"/>
-				             <p:selectBooleanCheckbox  id="itrActivoSelectBolean" value="#{gestionItrBean.itrDTOSeleccionado.activo}"/>
-				             <p:message for="itrActivoSelectBolean" style="color:red" />
-				             <p:separator/>
-				             <p:commandButton value="Guardar" action="#{gestionItrBean.salvarCambios()}"  update="formITRSolo itrSeleccionarID"/>
-	            	
-	            	</h:panelGroup>
-        </h:form>
-        </div>
+				<h:form id="formITRSolo">
+					<!-- 	            	<h:panelGroup id="panelGrup2"> -->
+					<!-- 				          	 <h2>Itr seleccionado/nuevo</h2> -->
+					<!-- 				             <p:outputLabel id="itrNombreLbl" value="Nombre"/> -->
+					<!-- 				             <p:inputText id="itrNombreInput" value="#{gestionItrBean.itrDTOSeleccionado.nombre}"/> -->
+					<!-- 				             <p:message for="itrNombreInput" style="color:red" /> -->
+					<!-- 				             <p:separator/> -->
+					<!-- 							<p:outputLabel id="itrDepartamentoLbl" value="Departamento" /> -->
+					<!-- 							<p:selectOneMenu id="departamento" -->
+					<!-- 								value="#{gestionItrBean.itrDTOSeleccionado.departamento}"> -->
+					<!-- 								<f:selectItem itemLabel="Seleccione un departamento" itemValue="" /> -->
+					<!-- 								<f:selectItems value="#{combosBean.listaDepartamentos}" -->
+					<!-- 									var="departamento" itemLabel="#{departamento}" -->
+					<!-- 									itemValue="#{departamento}" /> -->
+					<!-- 							</p:selectOneMenu> -->
+					<!-- 							<p:message for="departamento" style="color:red" /> -->
+					<!-- 							<p:separator/> -->
+					<!-- 				             <p:outputLabel id="itrActivoLbl" value="Activo"/> -->
+					<!-- 				             <p:selectBooleanCheckbox  id="itrActivoSelectBolean" value="#{gestionItrBean.itrDTOSeleccionado.activo}"/> -->
+					<!-- 				             <p:message for="itrActivoSelectBolean" style="color:red" /> -->
+					<!-- 				             <p:separator/> -->
+					<!-- 				             <p:commandButton value="Guardar" action="#{gestionItrBean.salvarCambios()}"  update="formITRSolo itrSeleccionarID"/> -->
+
+					<!-- 	            	</h:panelGroup> -->
+					<h:panelGroup id="panelGrup2"
+						style="display: flex; flex-direction: column; gap: 1rem; max-width: 500px; margin: 0 auto; padding: 1.5rem; background: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+
+						<h2	style="margin: 0 0 1rem 0; color: #2c3e50; text-align: center;">ITR seleccionado/nuevo</h2>
+
+						<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+							<p:outputLabel id="itrNombreLbl" value="Nombre" style="font-weight: bold;" />
+							<p:inputText id="itrNombreInput" value="#{gestionItrBean.itrDTOSeleccionado.nombre}"
+								style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid #ddd;" />
+							<p:message for="itrNombreInput" style="color: red; font-size: 0.8rem;" />
+						</div>
+
+						<p:separator style="margin: 0.5rem 0;" />
+
+						<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+							<p:outputLabel id="itrDepartamentoLbl" value="Departamento"
+								style="font-weight: bold;" />
+							<p:selectOneMenu id="departamento"
+								value="#{gestionItrBean.itrDTOSeleccionado.departamento}"
+								style="width: 100%;">
+								<f:selectItem itemLabel="Seleccione un departamento"
+									itemValue="" />
+								<f:selectItems value="#{combosBean.listaDepartamentos}"
+									var="departamento" itemLabel="#{departamento}"
+									itemValue="#{departamento}" />
+							</p:selectOneMenu>
+							<p:message for="departamento"
+								style="color: red; font-size: 0.8rem;" />
+						</div>
+
+						<p:separator style="margin: 0.5rem 0;" />
+
+						<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+							<p:outputLabel id="itrActivoLbl" value="Activo"
+								style="font-weight: bold;" />
+							<div style="display: flex; align-items: center; gap: 0.5rem;">
+								<p:selectBooleanCheckbox id="itrActivoSelectBolean"
+									value="#{gestionItrBean.itrDTOSeleccionado.activo}" />
+							</div>
+							<p:message for="itrActivoSelectBolean"
+								style="color: red; font-size: 0.8rem;" />
+						</div>
+
+						<p:separator style="margin: 0.5rem 0;" />
+
+						<p:commandButton value="Guardar"
+							action="#{gestionItrBean.salvarCambios()}"
+							update="formITRSolo itrSeleccionarID"
+							style="background: #3498db; color: white; border: none; padding: 0.75rem; 
+                          border-radius: 4px; cursor: pointer; transition: background 0.3s;"  
+							onmouseover="this.style.background='#2980b9'"
+							onmouseout="this.style.background='#3498db'" />
+<!-- 				             <p:commandButton value="Guardar" action="#{gestionItrBean.salvarCambios()}"  update="formITRSolo itrSeleccionarID"/> -->
+
+					</h:panelGroup>
+
+
+				</h:form>
+			</div>
  </div>
     </ui:define>
 </ui:composition>

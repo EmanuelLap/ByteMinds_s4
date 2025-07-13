@@ -2,6 +2,7 @@ package com.byteminds.negocio;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
@@ -258,6 +259,9 @@ public class UsuarioDTO implements Serializable {
 	    UsuarioDTO other = (UsuarioDTO) obj;
 	    return this.id != null && this.id.equals(other.id);
 	}
-
+	@Override
+	public int hashCode() {
+	    return Objects.hash(id);
+	}
 
 }

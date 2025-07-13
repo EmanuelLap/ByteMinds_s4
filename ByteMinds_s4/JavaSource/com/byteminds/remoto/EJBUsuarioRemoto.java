@@ -1067,6 +1067,39 @@ public class EJBUsuarioRemoto {
 			return listReclamo;
 		}
 		
+		public List<Reclamo> buscarReclamosPor(String id, String detalle, String fechaReclamo,
+				String accionReclamo, String eventoId, String estudianteId)
+		        throws ReclamoNoEncontradoException {
+			
+			List<Reclamo> listReclamo = new ArrayList<Reclamo>();
+			
+			listReclamo=reclamoBeanRemote.buscarReclamosPor(id, detalle, fechaReclamo, accionReclamo, eventoId, estudianteId);
+			return listReclamo;
+			
+		}
+		
+		public List<Reclamo> buscarReclamosPor(
+		        String tituloReclamo,
+		        String detalle,
+		        Date fechaReclamo,
+		        String eventoId,
+		        Date fechaEvento,
+		        String semestre,
+		        String creditos,
+		        String estadoReclamo,
+		        String estudianteId)
+		        throws ReclamoNoEncontradoException {
+			
+			List<Reclamo> listReclamo = new ArrayList<Reclamo>();
+			
+			listReclamo=reclamoBeanRemote.
+					buscarReclamosPor(tituloReclamo, detalle, fechaReclamo, eventoId, fechaEvento, semestre, creditos, estadoReclamo, estudianteId);
+					
+			return listReclamo;
+			
+		}
+		
+		
 		/*
 		 * METODOS RECLAMOS REMOTOS FIN
 		 */

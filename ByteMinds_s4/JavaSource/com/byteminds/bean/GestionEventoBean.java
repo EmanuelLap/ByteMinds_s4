@@ -2,6 +2,7 @@ package com.byteminds.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -190,7 +191,7 @@ public class GestionEventoBean implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 
 				this.modalidad = "view";
-
+				this.inicializar();
 			} catch (PersistenciaException e) {
 
 				Throwable rootException = ExceptionsTools.getCause(e);
@@ -378,6 +379,40 @@ public class GestionEventoBean implements Serializable {
 		
 		
 		public Boolean validarDatos() {
+			
+			//Obtener la fecha del sistema
+			Date fechaActual = new Date(System.currentTimeMillis());
+			
+			if(this.eventoDTOseleccionado.getInicio()!=null ) {
+				//Verificar que la fecha de inicio no sea menor a la fecha actual
+				if(this.eventoDTOseleccionado.getInicio().before(fechaActual)) {
+					FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "La fecha de inicio no puede ser menor a la fecha actual ",	"");
+					FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+					return false;
+				}
+			}else {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe ingresar una fecha de inicio ",	"");
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				return false;
+			}
+			if(this.eventoDTOseleccionado.getFin()!=null ) {
+				//Verificar que la fecha de fin no sea menor a la fecha inicio
+				if(this.eventoDTOseleccionado.getInicio().after(this.eventoDTOseleccionado.getFin())) {
+					FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "La fecha de fin no puede ser menor a la fecha de inicio ",	"");
+					FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+					return false;
+				}
+			}else {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe ingresar una fecha de fin ",	"");
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				return false;
+			}
+			
+			if(this.eventoDTOseleccionado.getTutorResponsableEventoDTOCollection()==null || this.eventoDTOseleccionado.getTutorResponsableEventoDTOCollection().isEmpty()) {
+				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe ingresar como minimo un tutor responsable del evento ",	"");
+				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				return false;
+			}
 			
 			if(this.eventoDTOseleccionado.getTitulo()==null) {
 				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe ingresar un titulo ",	"");

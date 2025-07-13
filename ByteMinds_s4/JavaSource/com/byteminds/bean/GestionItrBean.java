@@ -34,6 +34,9 @@ public class GestionItrBean implements Serializable {
 //	private GestionItrService gITRService;
 	@Inject
 	GestionUsuarioBean gestionUsuarioBean;
+	
+	@Inject
+	CombosBean combosBean;
 
 	private List<ItrDTO> listITRDTO = new ArrayList<ItrDTO>();
 	private ItrDTO itrDTOSeleccionado = new ItrDTO();
@@ -144,6 +147,9 @@ public class GestionItrBean implements Serializable {
 				}
 			}
 		}
+		//Mandamos a refrescar los combos para que tomen los cambios
+		combosBean.cargarITRCombos();
+		
 		return "";
 	}
 
@@ -170,11 +176,8 @@ public class GestionItrBean implements Serializable {
 	}
 
 	public boolean validarITR() {
-//		if(this.itrDTOSeleccionado==null) {
-//			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "El ITR no puede ser null ",	"");
-//			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-//			return false;
-//		}
+		
+		
 		if (this.itrDTOSeleccionado.getNombre() == null) {
 			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe ingresar un nombre para el ITR ",
 					"");

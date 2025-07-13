@@ -107,10 +107,13 @@ public class GestionUsuarioBean implements Serializable {
 
 	// se ejecuta antes de desplegar la vista
 	public void preRenderViewListener() {
-
+	    if (FacesContext.getCurrentInstance().isPostback()) {
+	        return;
+	    }
 		if (id != null) {
 			usuarioSeleccionado = gestionUsuarioService.buscarUsuario(id);
-			this.itrDTOSeleccionadoId = usuarioSeleccionado.getItr().getId();
+			this.itrDTOSeleccionado = usuarioSeleccionado.getItr();
+			System.out.println("preRenderViewListener itrDTOSeleccionado: " + itrDTOSeleccionado.getNombre());
 			this.rolDTOSeleccionadoId = usuarioSeleccionado.getRol().getId();
 			if (esTutor()) {
 				this.tipoAreaDTOSeleccionadoId = ((TutorDTO) (usuarioSeleccionado)).getTipoDTO().getId();
@@ -161,34 +164,35 @@ public class GestionUsuarioBean implements Serializable {
 
 	// Pasar a modo
 	public String salvarCambios() {
-
+		if (validarDatos()) {
+			System.out.println(usuarioSeleccionado.toString());
+			System.out.println("------------------------------------------");
+			System.out.println(usuarioSeleccionado.getNombres());
+			System.out.println(usuarioSeleccionado.getApellidos());
+			System.out.println(usuarioSeleccionado.getDocumento());
+			System.out.println(usuarioSeleccionado.getGenero());
+			System.out.println(usuarioSeleccionado.getFechaNacimiento());
+			System.out.println(usuarioSeleccionado.getDepartamento());
+			System.out.println(usuarioSeleccionado.getLocalidad());
+			System.out.println(usuarioSeleccionado.getUTipo());
+			System.out.println(usuarioSeleccionado.getItr().getNombre());
+			System.out.println(usuarioSeleccionado.getRol().getNombre());
+			System.out.println(usuarioSeleccionado.getTelefono());
+			System.out.println(usuarioSeleccionado.getActivo());
+			System.out.println(usuarioSeleccionado.getUsuario());
+			System.out.println(usuarioSeleccionado.getMail());
+			System.out.println(usuarioSeleccionado.getMailPersonal());
+			System.out.println(usuarioSeleccionado.getValidado());
+			System.out.println("------------------------------------------");
 		if (usuarioSeleccionado.getId() == null) {
 			usuarioSeleccionado.setActivo(true);
 			usuarioSeleccionado.setValidado(false);
 //				usuarioSeleccionado.setRol(rolDTOSeleccionado);
 //				usuarioSeleccionado.setItr(itrDTOSeleccionado);
-			if (validarDatos()) {
+			
 
 				try {
-					System.out.println(usuarioSeleccionado.toString());
-					System.out.println("------------------------------------------");
-					System.out.println(usuarioSeleccionado.getNombres());
-					System.out.println(usuarioSeleccionado.getApellidos());
-					System.out.println(usuarioSeleccionado.getDocumento());
-					System.out.println(usuarioSeleccionado.getGenero());
-					System.out.println(usuarioSeleccionado.getFechaNacimiento());
-					System.out.println(usuarioSeleccionado.getDepartamento());
-					System.out.println(usuarioSeleccionado.getLocalidad());
-					System.out.println(usuarioSeleccionado.getUTipo());
-					System.out.println(usuarioSeleccionado.getItr().getNombre());
-					System.out.println(usuarioSeleccionado.getRol().getNombre());
-					System.out.println(usuarioSeleccionado.getTelefono());
-					System.out.println(usuarioSeleccionado.getActivo());
-					System.out.println(usuarioSeleccionado.getUsuario());
-					System.out.println(usuarioSeleccionado.getMail());
-					System.out.println(usuarioSeleccionado.getMailPersonal());
-					System.out.println(usuarioSeleccionado.getValidado());
-					System.out.println("------------------------------------------");
+					
 					UsuarioDTO usuarioNuevo;
 					usuarioNuevo = (UsuarioDTO) gestionUsuarioService.agregarUsuario(usuarioSeleccionado);
 					usuarioSeleccionado = null;
@@ -235,9 +239,9 @@ public class GestionUsuarioBean implements Serializable {
 
 					e.printStackTrace();
 				}
-			}
+			
 			return null;
-		} else if (modalidad.equals("update")) {
+		} else if (modalidad.equals("update") || modalidad.equals("edit")) {
 
 			try {
 				gestionUsuarioService.actualizarUsuario(usuarioSeleccionado);
@@ -279,6 +283,7 @@ public class GestionUsuarioBean implements Serializable {
 
 				e.printStackTrace();
 			}
+		}
 		}
 		return "";
 	}
@@ -383,16 +388,28 @@ public class GestionUsuarioBean implements Serializable {
 		}
 	}
 
+//	public void actualizarITRSeleccionado(AjaxBehaviorEvent event) {
+//		Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
+//		if (nuevoValor == -1) {
+//			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar un ITR valido", "");
+//			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+//		} else {
+//			itrDTOSeleccionado = gestionItrService.obtenerITRSeleccionado(nuevoValor);
+//			this.usuarioSeleccionado.setItr(itrDTOSeleccionado);
+////	    System.out.println("ITR SETEADO = "+this.usuarioSeleccionado.getItr().getNombre());
+//		}
+//	}
 	public void actualizarITRSeleccionado(AjaxBehaviorEvent event) {
-		Integer nuevoValor = (Integer) ((UIOutput) event.getSource()).getValue();
-		if (nuevoValor == -1) {
+		itrDTOSeleccionado = (ItrDTO) ((UIOutput) event.getSource()).getValue();
+		if (itrDTOSeleccionado == null) {
 			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe seleccionar un ITR valido", "");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 		} else {
-			itrDTOSeleccionado = gestionItrService.obtenerITRSeleccionado(nuevoValor);
+			
 			this.usuarioSeleccionado.setItr(itrDTOSeleccionado);
-//	    System.out.println("ITR SETEADO = "+this.usuarioSeleccionado.getItr().getNombre());
+	    System.out.println("ITR SETEADO = "+this.usuarioSeleccionado.getItr().getNombre());
 		}
+	  
 	}
 
 	public void actualizarROLSeleccionado(AjaxBehaviorEvent event) {
@@ -471,6 +488,7 @@ public class GestionUsuarioBean implements Serializable {
 				return false;
 			}
 		}
+
 
 		if (esEstudiante()) {
 

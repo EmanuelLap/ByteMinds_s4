@@ -1,28 +1,20 @@
 package com.byteminds.bean;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
+import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.byteminds.negocio.AccionReclamoDTO;
-import com.byteminds.negocio.AnalistaDTO;
-import com.byteminds.negocio.GestionAccionReclamoService;
+import com.byteminds.negocio.GestionReclamoService;
 import com.byteminds.negocio.GestionTipoEstadoReclamoService;
 import com.byteminds.negocio.ReclamoDTO;
 import com.byteminds.negocio.TipoEstadoReclamoDTO;
-
-import javax.enterprise.context.SessionScoped;
-import javax.faces.annotation.ManagedProperty;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 
 
 
@@ -31,9 +23,11 @@ import javax.faces.context.FacesContext;
 public class GestionEstadoReclamoBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	
+	@Inject
+	CombosBean combosBean;
 	
 	GestionTipoEstadoReclamoService gTERS = new GestionTipoEstadoReclamoService();
+	GestionReclamoService gestionReclamoService; 
 	
 	private List<TipoEstadoReclamoDTO> listEstadosReclamo;
 	private TipoEstadoReclamoDTO estadosReclamoSeleccionado;
@@ -42,6 +36,7 @@ public class GestionEstadoReclamoBean implements Serializable{
 	public GestionEstadoReclamoBean() {
 		listEstadosReclamo = new ArrayList<TipoEstadoReclamoDTO>();
 		estadosReclamoSeleccionado = new TipoEstadoReclamoDTO();
+		gestionReclamoService = new GestionReclamoService();
 	}
 
 
@@ -72,14 +67,67 @@ public class GestionEstadoReclamoBean implements Serializable{
 			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Debe ingresar valores para un nuevo estado",	"");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 		}else {
-			gTERS.guardar(estadosReclamoSeleccionado);
-		FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ingreso/modifico el estado de los reclamos",	"");
-		FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-		inicializar();
+			if(estadosReclamoSeleccionado.getId()==null) {
+				//Si existe el nombre del estado no guardamos y mandamos mensaje de error
+				if(!validarExisteNombreEstado(estadosReclamoSeleccionado)) {
+					gTERS.guardar(estadosReclamoSeleccionado);
+					FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ingreso/modifico el estado de los reclamos",	"");
+					FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+					inicializar();
+				}else {
+					FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "El estado ingresado ya existe",	"");
+					FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+				}
+
+			}else {
+				if(validarEstadoReclamoAsociadoAReclamo(estadosReclamoSeleccionado)) {
+					
+					FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "No es posible modificar/eliminar un estado ya asignado a un reclamo",	"");
+					FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+					inicializar();
+				}else {
+					gTERS.guardar(estadosReclamoSeleccionado);
+					FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ingreso/modifico el estado de los reclamos",	"");
+					FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+					inicializar();
+				}
+			}
+			
+
 		}
+		//Mandamos a refrescar los combos para que tomen los cambios
+		combosBean.cargarTipoEstadoReclamo();
+		
 		return "";
 	}
 	
+	
+	public Boolean validarEstadoReclamoAsociadoAReclamo(TipoEstadoReclamoDTO tERDTO) {
+		String tipoEstadoReclamoDTOId = String.valueOf(tERDTO.getId());
+		List<ReclamoDTO> listReclamos = new ArrayList<ReclamoDTO>();
+		//Buscamos que existan reclamos activos con el TipoEstadoReclamoDTO seleccionado
+		listReclamos=gestionReclamoService.buscarReclamosPor(null, null, null, null, null, null, null, tipoEstadoReclamoDTOId, null);
+		if(listReclamos.size()>0) {
+			for(ReclamoDTO rDTO:listReclamos) {
+				if(rDTO.getActivo()) {
+					return true;
+				}
+			}
+			return false;
+		}else {
+			return false;
+		}
+	}
+	
+	public Boolean validarExisteNombreEstado(TipoEstadoReclamoDTO tERDTO) {
+		List<SelectItem> listEstadosReclamoSelectItem = combosBean.getComboTipoEstadoReclamoSelectItem(); 
+		for(SelectItem tERDTO2:listEstadosReclamoSelectItem) {
+			if(tERDTO2.getLabel().equals(tERDTO.getNombre())) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	public List<TipoEstadoReclamoDTO> getListEstadosReclamo() {
 		return listEstadosReclamo;

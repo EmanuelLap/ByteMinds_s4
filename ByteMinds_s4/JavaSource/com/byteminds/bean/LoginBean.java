@@ -187,8 +187,10 @@ public class LoginBean implements Serializable {
 	
 	 private UsuarioDTO loginActiveDirectory(String username, String password) {
 		 UsuarioDTO user = null;
-		 String ldapAdServer = "ldap://192.168.1.200:389"; //  servidor LDAP LOCAL
+//		 String ldapAdServer = "ldap://192.168.1.200:389"; //  servidor LDAP LOCAL
 //		 String ldapAdServer = "ldap://192.168.136.11:389"; //  servidor LDAP GNS3	
+		 String ldapAdServer = "ldap://192.168.1.200:636"; //  servidor LDAP LOCAL con SEGURIDAD
+		 
 	        String ldapSearchBase = "dc=utec,dc=edu,dc=uy";
 	        String ldapUsername = "cn=Administrator,cn=Users,dc=utec,dc=edu,dc=uy"; // Usuario administrador LDAP
 	        String ldapPassword = "Pfinal2024.01"; // Contraseña del usuario administrador
@@ -197,7 +199,7 @@ public class LoginBean implements Serializable {
 	        Hashtable<String, Object> env = new Hashtable<String, Object>();
 	        env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 	        env.put(Context.PROVIDER_URL, ldapAdServer);
-	        env.put(Context.SECURITY_AUTHENTICATION, "simple");
+	        env.put(Context.SECURITY_PROTOCOL, "ssl");
 	        env.put(Context.SECURITY_PRINCIPAL, ldapUsername);
 	        env.put(Context.SECURITY_CREDENTIALS, ldapPassword);
 

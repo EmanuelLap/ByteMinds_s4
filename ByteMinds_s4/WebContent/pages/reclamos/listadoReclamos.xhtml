@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
 <ui:composition template="/layout/layout.xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -11,7 +10,7 @@
     </f:metadata>
 
 	<ui:define name="title">
-		<c:set var="title" value="Gestión de reclamos, listado reclamos"
+		<c:set var="title" value="GestiÃ³n de reclamos, listado reclamos"
 			scope="request" />
 	</ui:define>
 
@@ -31,42 +30,57 @@
 			</p:commandButton>
 
 			<h3>
-				<h:outputLabel value="Criterios de Selección" />
+				<h:outputLabel value="Criterios de SelecciÃ³n" />
 			</h3>
 
 
 
 			<h:panelGrid columns="2">
-				<p:outputLabel value="Título" />
+				<p:outputLabel value="TÃ­tulo" />
 				<p:inputText id="tituloCrit"
 					value="#{gestionReclamosBean.criterioTitulo}" />
 
-				<p:outputLabel value="Descripción" />
+				<p:outputLabel value="DescripciÃ³n" />
 				<p:inputText id="descripcionCrit"
 					value="#{gestionReclamosBean.criterioDescripcion}" />
 
-				<p:outputLabel value="Fecha" />
-				<p:calendar id="reclamoFecha" disabled="true"
+				<p:outputLabel value="Fecha del reclamo" />
+				<p:calendar id="reclamoFecha" 
 					value="#{gestionReclamosBean.criterioFecha}" />
 
-				<p:outputLabel value="Evento - Actividad" />
-				<p:inputText id="eventoActividadCrit"
-					value="#{gestionReclamosBean.criterioEventoActividad}" />
+				<p:outputLabel value="Evento - Actividad" />		
+				<p:selectOneMenu id="listaDeEvento"
+					value="#{gestionReclamosBean.criterioEventoActividad}"
+					converter="eventoConverter" >
+					<f:selectItem itemLabel="Seleccione Evento" itemValue="#{null}" />
+					<f:selectItems value="#{combosBean.listaEventos}" var="evento"
+						itemLabel="#{evento.toStringCombo()}" itemValue="#{evento}" />
+				 <p:ajax event="change" update="reclamoEventoDocente reclamoFechaEvento" 
+       			 listener="#{gestionReclamosBean.cargarDocentesDelEvento}" />
+				</p:selectOneMenu>
 
-				<p:outputLabel value="Fecha Evento" />
-				<p:calendar id="reclamoFechaEvento" disabled="true"
+
+				<p:outputLabel value="Fecha Evento seleccionado" rendered="#{gestionReclamosBean.criterioEventoActividad ne null}"/>
+				<p:calendar id="reclamoFechaEventoSeleccionado" disabled="true" rendered="#{gestionReclamosBean.criterioEventoActividad ne null}"
+					value="#{gestionReclamosBean.criterioEventoActividad.inicio}" />
+
+				<p:outputLabel value="Fecha Evento" rendered="#{gestionReclamosBean.criterioEventoActividad eq null}"/>
+				<p:calendar id="reclamoFechaEvento" rendered="#{gestionReclamosBean.criterioEventoActividad eq null}"
 					value="#{gestionReclamosBean.criterioFechaEvento}" />
 
-
 				<p:outputLabel value="Docente" />
-				<p:inputText id="docenteCrit"
-					value="#{gestionReclamosBean.criterioDocente}" />
+				<p:dataList id="reclamoEventoDocente"
+					value="#{gestionReclamosBean.docentesDelEventoSeleccionado}"
+					var="tutorNombre">
+				    #{tutorNombre.tutorId.nombres} #{tutorNombre.tutorId.apellidos}
+				</p:dataList>
+
 
 				<p:outputLabel value="Semestre" />
 				<p:inputText id="semestreCrit"
 					value="#{gestionReclamosBean.criterioSemestre}" />
 
-				<p:outputLabel value="Créditos" />
+				<p:outputLabel value="CrÃ©ditos" />
 				<p:inputText id="creditosCrit"
 					value="#{gestionReclamosBean.criterioCreditos}" />
 					
@@ -76,9 +90,16 @@
 				<f:selectItem itemLabel="Selecione Estado" itemValue=""/>
 				<f:selectItems value="#{combosBean.comboTipoEstadoReclamoSelectItem}" />
 			</p:selectOneMenu>
-	
-			</h:panelGrid>
 
+				<p:outputLabel for="reclamoEliminado" value="Mostrar eliminados" />
+				<p:selectBooleanCheckbox id="reclamoEliminado"
+					value="#{gestionReclamosBean.criterioEliminados}">
+					<p:ajax
+						listener="#{gestionReclamosBean.actualizarFiltroEliminados}"
+						update="tablaReclamos" />
+				</p:selectBooleanCheckbox>
+			</h:panelGrid>
+			
 			<p:commandButton value="Buscar"
 				action="#{gestionReclamosBean.seleccionarEventos()}"
 				update="tablaReclamos" oncomplete="PF('blockUIWidget').hide();">
@@ -139,32 +160,32 @@
 				#{reclamo.estudianteId.documento}
 			</p:column>
 			<p:column sortBy="#{reclamo.titulo}">
-				<f:facet name="header">Título</f:facet>
+				<f:facet name="header">TÃ­tulo</f:facet>
 				#{reclamo.titulo}
 			</p:column>
 
 			<p:column sortBy="#{reclamo.detalle}">
-				<f:facet name="header">Descripción detalle</f:facet>
+				<f:facet name="header">DescripciÃ³n detalle</f:facet>
 				#{reclamo.detalle}
 			</p:column>
 
 			<p:column sortBy="#{reclamo.fecha}">
 				<f:facet name="header">Fecha de reclamo</f:facet>
 				<p:outputLabel value="#{reclamo.fecha}">
-					<f:convertDateTime pattern="MM/dd/yyyy"/>
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
 				</p:outputLabel>
 				
 			</p:column>
 
 			<p:column sortBy="#{reclamo.eventoId.titulo}">
-				<f:facet name="header">Título Evento</f:facet>
+				<f:facet name="header">TÃ­tulo Evento</f:facet>
 				#{reclamo.eventoId.titulo}
 			</p:column>
 
 			<p:column sortBy="#{reclamo.eventoId.inicio}">
 				<f:facet name="header">Fecha de evento</f:facet>
 				<p:outputLabel value="#{reclamo.eventoId.inicio}">
-					<f:convertDateTime pattern="MM/dd/yyyy"/>
+					<f:convertDateTime pattern="dd/MM/yyyy" />
 				</p:outputLabel>
 				
 			</p:column>
@@ -174,10 +195,10 @@
 			<!-- 			</p:column> -->
 			<p:column>
 				<f:facet name="header">Ver Docentes</f:facet>
-				<p:commandButton value="Ver más" type="button"
+				<p:commandButton value="Ver mÃ¡s" type="button"
 					onclick="PF('${reclamo}').show();" />
 
-				<p:dialog header="Información: docentes de evento reclamado"
+				<p:dialog header="InformaciÃ³n: docentes de evento reclamado"
 					widgetVar="${reclamo}" showEffect="explode" hideEffect="bounce"
 					height="200">
 
@@ -194,27 +215,45 @@
 
 
 			<p:column sortBy="#{reclamo.creditos}">
-				<f:facet name="header">Créditos</f:facet>
+				<f:facet name="header">CrÃ©ditos</f:facet>
 				#{reclamo.creditos}
 			</p:column>
-			<!-- 			<p:column> -->
-			<!-- 				<f:facet name="header">Desactivar</f:facet> -->
+<!-- 			<p:column> -->
+<!-- 				<f:facet name="header">Eliminar</f:facet> -->
 
-			<!-- 				<p:commandButton value="Desactivar" -->
-			<!-- 					actionListener="#{gestionUsuario.setUsuarioSeleccionado(reclamo)}" -->
-			<!-- 					action="#{gestionUsuario.bajaLogicaUsuario}" -->
-			<!-- 					onclick="if(!confirm('¿Estás seguro de que quieres desactivar ${reclamo.nombres}?')) return false;" -->
-			<!-- 					update=":tablaUsuarios" /> -->
+<!-- 				<p:commandButton value="Eliminar" -->
+					
+<!-- 					action="#{gestionReclamo.bajaLogicaReclamo(reclamo)}" -->
+<!-- 					onclick="if(!confirm('Â¿EstÃ¡s seguro de que quieres eliminar ${reclamo.titulo} ${reclamo.detalle}?')) return false;" -->
+<!-- 					update=":tablaReclamos" /> -->
 
-<!-- 		</p:column> -->
+<!-- 			</p:column> -->
+			  <p:column headerText="Eliminar/Activar">
+			        <!-- BotÃ³n â€œEliminarâ€ solo si estÃ¡ activo -->
+			        <p:commandButton value="Eliminar"
+			                         action="#{gestionReclamosBean.bajaLogicaReclamo(reclamo)}"
+			                         rendered="#{reclamo.activo}"
+			                         onclick="if(!confirm('Â¿Confirma eliminar #{reclamo.titulo}?')) return false;"
+			                         update="tablaReclamos, formBuscar:reclamoEliminado" />
+			
+			        <!-- BotÃ³n â€œActivarâ€ solo si estÃ¡ eliminado -->
+			        <p:commandButton value="Activar"
+			                         action="#{gestionReclamosBean.activarReclamo(reclamo)}"
+			                         rendered="#{not reclamo.activo}"
+			                         onclick="if(!confirm('Â¿Confirma activar #{reclamo.titulo}?')) return false;"
+			                         update="tablaReclamos, formBuscar:reclamoEliminado" />
+			    </p:column>
 
 			<p:column>
-			<f:facet name="header">Registro Acción</f:facet>
+			
+			<f:facet name="header">Registro AcciÃ³n</f:facet>
 
 			<p:commandButton value="Accion"
 				action="#{gestionAccionReclamoBean.inicializarAccionReclamo(reclamo)}" />
 
 		</p:column>
+		
+		
 		</p:dataTable>
 
 		<p:commandButton value="Imprimir" type="button">

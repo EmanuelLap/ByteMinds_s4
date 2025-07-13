@@ -8,6 +8,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 
+import com.byteminds.negocio.EventoDTO;
+import com.byteminds.negocio.GestionEventoService;
 import com.byteminds.negocio.GestionItrService;
 import com.byteminds.negocio.GestionModalidadEventoService;
 import com.byteminds.negocio.GestionRolService;
@@ -26,6 +28,7 @@ import com.byteminds.negocio.TipoEstadoReclamoDTO;
 import com.byteminds.negocio.TipoEventoDTO;
 import com.byteminds.remoto.EJBUsuarioRemoto;
 
+import tecnofenix.entidades.Evento;
 import tecnofenix.entidades.Itr;
 import tecnofenix.entidades.Rol;
 import tecnofenix.entidades.TipoArea;
@@ -47,6 +50,8 @@ public class CombosBean implements Serializable {
 	private EJBUsuarioRemoto ejbRemoto;
 
 	private List<String> comboItr;
+	private List<ItrDTO> listaItr;
+	
 	private List<SelectItem> comboItrSelectItem;
 	private List<SelectItem> comboROLSelectItem;
 	private List<SelectItem> comboROLSelectItemRegistro;
@@ -59,12 +64,15 @@ public class CombosBean implements Serializable {
 
 	private List<String> comboTipoEvento;
 	private List<SelectItem> comboTipoEventoSelectItem;
+	private List<EventoDTO> listaEventos;
 	
 	private List<SelectItem> comboTipoEstadoEventoSelectItem;
 	
 	private List<SelectItem> comboTipoEstadoReclamoSelectItem;
 	
 	private List<SelectItem> comboTipoEstadoJustificacionSelectItem;
+	
+//	private List<SelectItem> comboCalificacionesSelectItem;
 	
 	private List<String> listaDepartamentos;
 	
@@ -77,7 +85,7 @@ public class CombosBean implements Serializable {
 	private GestionTipoEstadoEventoService gTipoEstadoEvento;
 	private GestionTipoEstadoReclamoService gTipoEstadoReclamo;
 	private GestionTipoEstadoJustificacionService gTipoEstadoJustificacion;
-	
+	private GestionEventoService gestionEventoService;
 	
 	public CombosBean() {
 		gITRS = new GestionItrService();
@@ -89,13 +97,16 @@ public class CombosBean implements Serializable {
 		gTipoEstadoEvento = new GestionTipoEstadoEventoService();
 		gTipoEstadoReclamo = new GestionTipoEstadoReclamoService();
 		gTipoEstadoJustificacion = new GestionTipoEstadoJustificacionService();
+		gestionEventoService = new GestionEventoService();
 		
 		ejbRemoto = new EJBUsuarioRemoto();
 		comboItr = new ArrayList<String>();
+		listaItr = new ArrayList<ItrDTO>();
 		comboRol = new ArrayList<String>();
 		comboModalidadSelectItem = new ArrayList<SelectItem>();
 		comboModalidad= new ArrayList<String>();
 		comboTipoEvento = new ArrayList<String>();
+		listaEventos = new ArrayList<EventoDTO>();
 		comboTipoEventoSelectItem= new ArrayList<SelectItem>();
 		comboItrSelectItem= new ArrayList<SelectItem>();
 		comboROLSelectItem= new ArrayList<SelectItem>();
@@ -106,6 +117,7 @@ public class CombosBean implements Serializable {
 		comboTipoEstadoReclamoSelectItem  = new ArrayList<SelectItem>();
 		comboTipoEstadoJustificacionSelectItem = new ArrayList<SelectItem>();
 		listaDepartamentos = new ArrayList<String>();
+//		comboCalificacionesSelectItem = new ArrayList<SelectItem>();
 		
 		cargarITRCombos();
 		cargarROLCombos();
@@ -117,6 +129,8 @@ public class CombosBean implements Serializable {
 		cargarTipoEstadoReclamo();
 		cargarTipoEstadoJustificacion();
 		cargarDepartamentosCombos();
+		cargarComboEventosDisponibles();
+//		cargarComboCalificaciones();
 	}
 
 	private void cargarTipoEvento() {
@@ -138,22 +152,30 @@ public class CombosBean implements Serializable {
 		}
 			
 	}
-	private void cargarTipoEstadoJustificacion() {
+	public void cargarTipoEstadoJustificacion() {
 		List<TipoEstadoJustificacionDTO> listTEJDTO= new ArrayList<TipoEstadoJustificacionDTO>();	
 		listTEJDTO.addAll(gTipoEstadoJustificacion.listarTipoEstadoJustificacion());
+		//limpiamos la lista vieja
+		comboTipoEstadoJustificacionSelectItem.clear();
 		
 		for (TipoEstadoJustificacionDTO tejDTO : listTEJDTO) {
+			if(tejDTO.getActivo()) {//no cargamos los que estan inactivos
 				comboTipoEstadoJustificacionSelectItem.add(new SelectItem(tejDTO.getId(),tejDTO.getNombre()));
+			}
 		}
 			
 	}
 	
-	private void cargarTipoEstadoReclamo() {
+	public void cargarTipoEstadoReclamo() {
 		List<TipoEstadoReclamoDTO> listTERDTO= new ArrayList<TipoEstadoReclamoDTO>();	
 		listTERDTO.addAll(gTipoEstadoReclamo.listarTipoEstadoReclamo());
+		//limpiamos la lista vieja
+		comboTipoEstadoReclamoSelectItem.clear();
 		
 		for (TipoEstadoReclamoDTO terDTO : listTERDTO) {
+			if(terDTO.getActivo()) {//no cargamos los que estan inactivos
 				comboTipoEstadoReclamoSelectItem.add(new SelectItem(terDTO.getId(),terDTO.getNombre()));
+			}
 		}
 			
 	}
@@ -173,13 +195,21 @@ public class CombosBean implements Serializable {
 //		comboModalidad.add(new SelectItem("SEMI_PRESENCIAL", "Semipresencial"));
 	}
 	
-	private void cargarITRCombos() {
+	public void cargarITRCombos() {
 		List<Itr> listItr = ejbRemoto.listarITR();
-
+		this.comboItr.clear();
+		comboItrSelectItem.clear();
+		listaItr.clear();
+		
 		for (Itr itrItem : listItr) {
-			this.comboItr.add(gITRS.fromITR(itrItem).getNombre());
-			comboItrSelectItem.add(new SelectItem(gITRS.fromITR(itrItem).getId(),gITRS.fromITR(itrItem).getNombre()));
-//			comboItrSelectItem.add(new SelectItem(gITRS.fromITR(itrItem),gITRS.fromITR(itrItem).getNombre()));
+			if (itrItem.getActivo()) {
+				this.comboItr.add(gITRS.fromITR(itrItem).getNombre());
+				comboItrSelectItem
+						.add(new SelectItem(gITRS.fromITR(itrItem).getId(), gITRS.fromITR(itrItem).getNombre()));
+				//este agrega la clase DTO
+				listaItr.add(gITRS.fromITR(itrItem));
+
+			}
 		}
 
 	}
@@ -226,6 +256,27 @@ public class CombosBean implements Serializable {
 
 	}
 	
+	public void cargarComboEventosDisponibles() {
+		List<Evento> listEventos = ejbRemoto.listarEventos();
+
+		listaEventos.clear();
+		
+		for (Evento evento : listEventos) {
+			listaEventos.add(gestionEventoService.fromEvento(evento));
+		}
+	}
+	
+	
+	
+//	public void cargarComboCalificaciones() {
+//		comboCalificacionesSelectItem.add(new SelectItem(null, "Seleccione una calificación"));
+//		comboCalificacionesSelectItem.add(new SelectItem(0, "0"));	
+//		comboCalificacionesSelectItem.add(new SelectItem(1, "1"));	
+//		comboCalificacionesSelectItem.add(new SelectItem(2, "2"));	
+//		comboCalificacionesSelectItem.add(new SelectItem(3, "3"));	
+//		comboCalificacionesSelectItem.add(new SelectItem(4, "4"));	
+//		comboCalificacionesSelectItem.add(new SelectItem(5, "5"));
+//	}
 	
 	public List<String> getComboItr() {
 		return comboItr;
@@ -345,5 +396,25 @@ public class CombosBean implements Serializable {
 	public void setListaDepartamentos(List<String> listaDepartamentos) {
 		this.listaDepartamentos = listaDepartamentos;
 	}
+	
+	public List<ItrDTO> getListaItr() {
+	    return this.listaItr;
+	}
+
+	public List<EventoDTO> getListaEventos() {
+		return listaEventos;
+	}
+
+	public void setListaEventos(List<EventoDTO> listaEventos) {
+		this.listaEventos = listaEventos;
+	}
+
+//	public List<SelectItem> getComboCalificacionesSelectItem() {
+//		return comboCalificacionesSelectItem;
+//	}
+//
+//	public void setComboCalificacionesSelectItem(List<SelectItem> comboCalificacionesSelectItem) {
+//		this.comboCalificacionesSelectItem = comboCalificacionesSelectItem;
+//	}
 	
 }

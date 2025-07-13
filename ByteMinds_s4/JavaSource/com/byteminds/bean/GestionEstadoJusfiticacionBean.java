@@ -32,6 +32,8 @@ public class GestionEstadoJusfiticacionBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	@Inject
+	CombosBean combosBean;
 	
 	GestionTipoEstadoJustificacionService gTERS = new GestionTipoEstadoJustificacionService();
 	
@@ -77,6 +79,10 @@ public class GestionEstadoJusfiticacionBean implements Serializable{
 		FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 		inicializar();
 		}
+		//Mandamos a refrescar los combos para que tomen los cambios
+		combosBean.cargarTipoEstadoJustificacion();
+		
+		
 		return "";
 	}
 	

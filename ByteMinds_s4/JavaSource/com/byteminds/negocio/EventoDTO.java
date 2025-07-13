@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -19,7 +20,8 @@ public class EventoDTO implements Serializable {
 
 	private Integer id;
 
-	@NotBlank(message = "El titulo no puede ser vacio")
+	@NotBlank(message = "El titulo no puede ser vacío")
+	@Size(min = 1, max = 255 , message = "El titulo debe tener entre 1 y 255 caracteres")
 	private String titulo;
 
 //    @Enumerated(EnumType.STRING)

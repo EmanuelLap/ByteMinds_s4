@@ -3,6 +3,7 @@ package com.byteminds.negocio;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -131,6 +132,38 @@ public class GestionReclamoService implements Serializable {
 			reclamosDTOlist.add(this.fromReclamo(rec));
 		}
 		
+		return reclamosDTOlist;
+	}
+	
+//	public List<ReclamoDTO> buscarReclamosPor(String id, String detalle, String fechaReclamo,
+//			String accionReclamo, String eventoId, String estudianteId){
+//		List<Reclamo> reclamosList = ejbRemoto.buscarReclamosPor(id, detalle, fechaReclamo, accionReclamo, eventoId, estudianteId);
+//		List<ReclamoDTO> reclamosDTOlist = new ArrayList<ReclamoDTO>();
+//		
+//		for(Reclamo rec: reclamosList) {
+//			reclamosDTOlist.add(this.fromReclamo(rec));
+//		}
+//		
+//		return reclamosDTOlist;
+//	}
+	
+	public List<ReclamoDTO> buscarReclamosPor(
+	        String tituloReclamo,
+	        String detalle,
+	        Date fechaReclamo,
+	        String eventoId,
+	        Date fechaEvento,
+	        String semestre,
+	        String creditos,
+	        String estadoReclamo,
+	        String estudianteId){
+		List<Reclamo> reclamosList = ejbRemoto.buscarReclamosPor(tituloReclamo, detalle, fechaReclamo, eventoId, fechaEvento, semestre, creditos, estadoReclamo, estudianteId);
+		List<ReclamoDTO> reclamosDTOlist = new ArrayList<ReclamoDTO>();
+		if (reclamosList != null) {
+			for (Reclamo rec : reclamosList) {
+				reclamosDTOlist.add(this.fromReclamo(rec));
+			}
+		}
 		return reclamosDTOlist;
 	}
 	

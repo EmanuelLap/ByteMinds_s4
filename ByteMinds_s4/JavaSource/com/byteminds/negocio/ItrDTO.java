@@ -1,7 +1,9 @@
 package com.byteminds.negocio;
 
 import java.io.Serializable;
+import java.util.Objects;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
@@ -18,11 +20,11 @@ public class ItrDTO implements Serializable{
 	@NotNull
 	private Integer id;
 
-	@NotNull
+	@NotBlank (message = "El departamento es obligatorio")
 	@Length(min = 1, max = 45)
 	private String departamento;
 
-	@NotNull
+	@NotBlank (message = "El nombre es obligatorio")
 	private String nombre;
 
 	@NotNull
@@ -81,5 +83,16 @@ public class ItrDTO implements Serializable{
 	}
 	
 	
-	
+	@Override
+	public boolean equals(Object obj) {
+	    if (this == obj) return true;
+	    if (obj == null || getClass() != obj.getClass()) return false;
+	    ItrDTO other = (ItrDTO) obj;
+	    return id != null && id.equals(other.id);
+	}
+
+	@Override
+	public int hashCode() {
+	    return Objects.hash(id);
+	}
 }

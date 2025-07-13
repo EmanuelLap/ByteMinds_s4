@@ -97,7 +97,7 @@
 					value="#{gestionReclamo.idEventoSeleccionado}"
 					valueChangeListener="#{gestionReclamo.actualizarEventoSeleccionado}"
 					onchange="submit()">
-					
+					<f:selectItem itemLabel="Seleccione un reclamo" itemValue="0" />
 					<f:selectItems value="#{gestionReclamo.listaDeEventosDTO}" />	
 				</p:selectOneMenu>
 				<p:message for="reclamoEventoList" style="color:red" />

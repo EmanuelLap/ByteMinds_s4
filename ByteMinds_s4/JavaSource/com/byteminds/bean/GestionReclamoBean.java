@@ -151,14 +151,15 @@ public class GestionReclamoBean implements Serializable {
 			try {
 				reclamoSeleccionado.setEstudianteId(estudianteQueReclamaDTO);
 				nuevoReclamoDTO = gestionReclamoService.agregarReclamo(reclamoSeleccionado);
+				
+				
 				this.id = nuevoReclamoDTO.getId();
 
 				// mensaje de actualizacion correcta
 				FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha agregado un nuevo reclamo",	"");
 				FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 
-				this.modalidad = "view";
-
+				this.inicializar();
 			} catch (PersistenciaException e) {
 
 				Throwable rootException = ExceptionsTools.getCause(e);
@@ -202,6 +203,13 @@ public class GestionReclamoBean implements Serializable {
 	
 	
 	public Boolean validarDatos() {
+		
+		if (this.idEventoSeleccionado == 0) {
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Datos no validos", "Seleccione un evento / actividad valido");
+			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+			return false;
+		}
+		
 		if (this.reclamoSeleccionado.getTitulo() == "") {
 			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Datos no validos", "Debe ingresar el titulo");
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
@@ -319,6 +327,16 @@ public class GestionReclamoBean implements Serializable {
 		estudianteQueReclamaDTO =estudianteDTO;
 //		idEstudianteDTO = estudianteDTO.getId();
 		
+	}
+	
+	public void bajaLogicaReclamo(ReclamoDTO reclamoDTO) {
+		reclamoDTO.setActivo(false);
+		try {
+			gestionReclamoService.actualizarReclamo(reclamoDTO);
+		} catch (PersistenciaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public List<EventoDTO> getListEventosDTO() {

@@ -172,13 +172,26 @@
 
 
 
-				<p:outputLabel value="ITRCombo" />
-				<p:selectOneMenu id="itrListaDeITRparaUsuario"	value="#{gestionUsuario.itrDTOSeleccionadoId}">
-				<f:selectItem itemLabel="Seleccione Itr" itemValue="-1"/>
-					<f:selectItems value="#{combosBean.comboItrSelectItem}" />
-					<p:ajax process="@this" partialSubmit="true"
-						listener="#{gestionUsuario.actualizarITRSeleccionado}" />
+<!-- 				<p:outputLabel value="ITRCombo" /> -->
+<!-- 				<p:selectOneMenu id="itrListaDeITRparaUsuario"	value="#{gestionUsuario.itrDTOSeleccionadoId}"> -->
+<!-- 				<f:selectItem itemLabel="Seleccione Itr" itemValue="-1"/> -->
+<!-- 					<f:selectItems value="#{combosBean.comboItrSelectItem}" /> -->
+<!-- 					<p:ajax process="@this" partialSubmit="true" -->
+<!-- 						listener="#{gestionUsuario.actualizarITRSeleccionado}" /> -->
 						
+<!-- 				</p:selectOneMenu> -->
+<!-- 				<p:message for="itrListaDeITRparaUsuario" style="color:red" /> -->
+				<p:outputLabel value="ITR" for="itrListaDeITRparaUsuario" />
+				<p:selectOneMenu id="itrListaDeITRparaUsuario"
+				                 value="#{gestionUsuario.itrDTOSeleccionado}"
+				                 converter="itrConverter"
+				                 required="true"
+				                 requiredMessage="Debe seleccionar un ITR">
+				    <f:selectItem itemLabel="Seleccione ITR" itemValue="#{null}" />
+				    <f:selectItems value="#{combosBean.listaItr}" var="itr"
+				                   itemLabel="#{itr.nombre}" itemValue="#{itr}" />
+				    <p:ajax listener="#{gestionUsuario.actualizarITRSeleccionado}"
+				            process="@this" update="itrListaDeITRparaUsuario"/>
 				</p:selectOneMenu>
 				<p:message for="itrListaDeITRparaUsuario" style="color:red" />
 

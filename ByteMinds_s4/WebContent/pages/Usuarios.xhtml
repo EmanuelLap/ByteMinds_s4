@@ -181,15 +181,17 @@
 				<p:commandButton value="Desactivar"
 					actionListener="#{gestionUsuario.setUsuarioSeleccionado(usuario)}"
 					action="#{gestionUsuario.bajaLogicaUsuario}"
-					disabled="#{loginBean.usuarioLogeado eq usuario}"
+					disabled="#{loginBean.usuarioLogeado eq usuario or not usuario.activo}"
 					onclick="if(!confirm('¿Estás seguro de que quieres desactivar ${usuario.nombres}?')) return false;"
-					update=":tablaUsuarios" />
+					update=":tablaUsuarios" 
+					style="color:red; font-weight:bold"/>
 				<p:commandButton value="Activar"
 					actionListener="#{gestionUsuario.setUsuarioSeleccionado(usuario)}"
 					action="#{gestionUsuario.activarUsuario}"
-					disabled="#{loginBean.usuarioLogeado eq usuario}"
+					disabled="#{loginBean.usuarioLogeado eq usuario or usuario.activo}"
 					onclick="if(!confirm('¿Estás seguro de que quieres activar ${usuario.nombres}?')) return false;"
-					update=":tablaUsuarios" />
+					update=":tablaUsuarios" 
+					style="color:green; font-weight:bold"/>
 					
 				<h:outputText value="Usted no puede activar o desactivar su propio usuario"
               	rendered="#{loginBean.usuarioLogeado eq usuario}"

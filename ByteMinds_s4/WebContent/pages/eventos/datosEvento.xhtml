@@ -61,7 +61,7 @@
 						<p:outputLabel value="ID" rendered="#{!gestionEventoBean.modoEdicion}"/>
 						<p:inputText id="id" disabled="true" rendered="#{!gestionEventoBean.modoEdicion}"
 							value="#{gestionEventoBean.eventoDTOseleccionado.id}" />
-						<p:message for="id" style="color:red" />
+						<p:message for="id" style="color:red" rendered="#{!gestionEventoBean.modoEdicion}" />
 
 						<p:outputLabel value="Título" />
 						<p:inputText id="eventoTitulo" 
@@ -96,22 +96,48 @@
 						</p:selectOneMenu>
 						<p:message for="modalidadEvento" style="color:red" />
 
-						<p:outputLabel value="Inicio" />
-						<p:calendar id="inicioEvento"
-							disabled="#{!gestionEventoBean.modoEdicion}" partialSubmit="true"
-							value="#{gestionEventoBean.eventoDTOseleccionado.inicio}">
-							<p:ajax process="@this" partialSubmit="true"/>
-							</p:calendar>
-						<p:message for="inicioEvento" style="color:red" />
+<!-- 						<p:outputLabel value="Inicio" /> -->
+<!-- 						<p:calendar id="inicioEvento" -->
+<!-- 							disabled="#{!gestionEventoBean.modoEdicion}" partialSubmit="true" -->
+<!-- 							value="#{gestionEventoBean.eventoDTOseleccionado.inicio}"> -->
+<!-- 							<p:ajax process="@this" partialSubmit="true"/> -->
+<!-- 							</p:calendar> -->
+<!-- 						<p:message for="inicioEvento" style="color:red" /> -->
 
 
-						<p:outputLabel value="Fin" />
-						<p:calendar id="finEvento"
-							disabled="#{!gestionEventoBean.modoEdicion}" partialSubmit="true"
-							value="#{gestionEventoBean.eventoDTOseleccionado.fin}" >
-							<p:ajax process="@this" partialSubmit="true"/>
-							</p:calendar>
-						<p:message for="inicioEvento" style="color:red" />
+<!-- 						<p:outputLabel value="Fin" /> -->
+<!-- 						<p:calendar id="finEvento" -->
+<!-- 							disabled="#{!gestionEventoBean.modoEdicion}" partialSubmit="true" -->
+<!-- 							value="#{gestionEventoBean.eventoDTOseleccionado.fin}" > -->
+<!-- 							<p:ajax process="@this" partialSubmit="true"/> -->
+<!-- 							</p:calendar> -->
+<!-- 						<p:message for="inicioEvento" style="color:red" /> -->
+
+
+			        <p:outputLabel for="inicioEvento" value="Inicio" />
+			        <p:calendar id="inicioEvento"
+			                    value="#{gestionEventoBean.eventoDTOseleccionado.inicio}"
+			                    disabled="#{!gestionEventoBean.modoEdicion}"
+			                    maxdate="#{gestionEventoBean.eventoDTOseleccionado.fin}">
+			            <!-- Cuando elijas inicio, actualiza el mindate de fin -->
+			            <p:ajax event="dateSelect"
+			                    process="@this"
+			                    update="finEvento" />
+			        </p:calendar>
+			        <p:message for="inicioEvento" style="color:red" />
+			
+			        <p:outputLabel for="finEvento" value="Fin" />
+			        <p:calendar id="finEvento"
+			                    value="#{gestionEventoBean.eventoDTOseleccionado.fin}"
+			                    disabled="#{!gestionEventoBean.modoEdicion}"
+			                    mindate="#{gestionEventoBean.eventoDTOseleccionado.inicio}">
+			            <!-- Cuando elijas fin, actualiza el maxdate de inicio -->
+			            <p:ajax event="dateSelect"
+			                    process="@this"
+			                    update="inicioEvento" />
+			        </p:calendar>
+			        <p:message for="finEvento" style="color:red" />
+
 
 						<p:outputLabel value="Localización" />
 						<p:inputText id="localizacionEvento"

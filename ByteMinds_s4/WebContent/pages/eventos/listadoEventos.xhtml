@@ -147,13 +147,13 @@
 				<f:facet name="header">Fecha de inicio</f:facet>
 				
 				<p:outputLabel value="#{evento.inicio}">
-				<f:convertDateTime pattern="MM/dd/yyyy"/>
+				<f:convertDateTime pattern="dd/MM/yyyy"/>
 				 </p:outputLabel>
 			</p:column>
 			<p:column sortBy="#{evento.fin}">
 				<f:facet name="header">Fecha de fin</f:facet>
 				<p:outputLabel value="#{evento.fin}" >
-				<f:convertDateTime pattern="MM/dd/yyyy"/>
+				<f:convertDateTime pattern="dd/MM/yyyy"/>
 				 </p:outputLabel>
 				
 				

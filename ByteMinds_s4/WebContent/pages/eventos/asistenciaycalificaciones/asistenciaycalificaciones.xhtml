@@ -172,9 +172,11 @@
 						</p:column>
 
 						<p:column>
-							<f:facet name="header">Calificacion</f:facet>
+							<f:facet name="header">Calificación</f:facet>
 							<p:selectOneMenu value="#{convocado.calificacion}">
+								<f:selectItem itemLabel="Seleccione calificación" itemValue="" />
 								<f:selectItems value="#{gestionConvocatoriaAsistenciaEventoEstudianteBean.calificaciones}" />
+<!-- 								<f:selectItems value="#{combosBean.comboCalificacionesSelectItem}" /> -->
 							</p:selectOneMenu>
 						</p:column>
 

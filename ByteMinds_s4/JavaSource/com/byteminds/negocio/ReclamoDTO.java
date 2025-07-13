@@ -2,7 +2,10 @@ package com.byteminds.negocio;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.TimeZone;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -23,8 +26,8 @@ public class ReclamoDTO implements Serializable {
 	@Length(min = 1, max = 40 , message = "El titulo del reclamo debe tener entre 1 y 40 caracteres")
 	private String titulo;
 
-	@NotBlank (message = "El detalle del reclamo es obligatorio")
-	@Size(min = 1, max = 45, message = "El detalle del reclamo debe tener entre menos de 200 caracteres")
+	@NotBlank (message = "La descripcion del reclamo es obligatorio")
+	@Size(min = 1, max = 45, message = "La descripcion del reclamo debe tener entre menos de 200 caracteres")
 	private String detalle;
 
 	private Date fecha;
@@ -40,6 +43,8 @@ public class ReclamoDTO implements Serializable {
 	private Integer creditos;
 
 	@NotNull (message = "El semestre es obligatorio")
+	@Min(value = 1, message = "Los semestes son del 1 al 8")
+	@Max(value = 8, message = "Los semestes son del 1 al 8")
 	private Integer semestre;
 
 	private Boolean activo;
@@ -90,7 +95,12 @@ public class ReclamoDTO implements Serializable {
 	}
 
 	public Date getFecha() {
-		return fecha;
+	    if(this.fecha != null) {
+	        // Ajustar la fecha según la zona horaria necesaria
+	        TimeZone.setDefault(TimeZone.getTimeZone("America/Uruguay")); 
+	        return this.fecha;
+	    }
+	    return null;
 	}
 
 	public void setFecha(Date fecha) {
